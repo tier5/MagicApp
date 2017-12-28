@@ -1,0 +1,11 @@
+{
+    "development":{
+        "DB_NAME":"magicAppDb",
+        "DB_USER":"root",
+        "DB_PASS":"root",
+        "DB_HOST":"localhost"
+    },
+    "production":{
+        
+    }
+}
