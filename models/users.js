@@ -1,45 +1,47 @@
-const Sequelize = require('sequelize');
+const mongoose = require('./index');
+const Schema = mongoose.Schema;
+const validator = require('validator');
 const db = require('./index');
-const bycrpt = require('bcrypt');
-
-const Users = db.define('users', {
-    user_id: {
-        type: Sequelize.INTEGER, 
-        autoIncrement: true, 
-        primaryKey: true
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); 
+const UserSchema =  new Schema({
+    email:{
+        type:String,
+        required:[true,'Email is required'],
+        unique:[true,'Email is unique'],
+        trim: true,
     },
-    first_name: {
-        type: Sequelize.STRING(50),
-        allowNull:false
+    first_name:{
+        type:String,required:[true,'First Name is required']
     },
-    last_name: {
-        type: Sequelize.STRING(50),
-        allowNull:false,
+    last_name:{
+        type:String,required:[true, 'Last Name is required']
     },
-    email: {
-        type: Sequelize.STRING(150),
-        allowNull:false,
-        unique: true,
-        validate: {
-            isEmail: true
-        },
+    password:{
+        type:String,required:[true, 'Password is required']
     },
-    email_verified:{
-        type:Sequelize.BOOLEAN,
-        defaultValue:0
-    },
-    password: {
-        type: Sequelize.STRING(200),
-        allowNull:false,
-    },
-    avatar_url:{type: Sequelize.STRING(400)}
+    accessToken:{
+        type:String
+    }
 
 });
-Users.sync({force:true}).then(()=>{
-    console.log('Table is created');
 
-}).catch((err)=>{
-    console.log('err in creating table');
-});
+UserSchema.pre('save', function (next) {
+    var user = this;
+  
+    if (user.isModified('password')) {
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(user.password, salt, (err, hash) => {
+          user.password = hash;
+          user.accessToken = jwt.sign({ email: user.email },"TEST");
+          next();
+        });
+      });
+    } else {
+      next();
+    }
+  });
 
-module.exports= Users
+var User = db.model('Users', UserSchema);
+
+module.exports = User

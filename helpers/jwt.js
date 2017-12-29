@@ -1,18 +1,21 @@
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 
-module.exports.create = function(obj){
-    var token = jwt.sign(obj,process.env.JWT_SECRET,{ algorithm: 'HS256', expiresIn: 60*60*24 });
-    return token;
-};
+// module.exports.createToken = function(obj){
+//     console.log("hagshdgashgdsad");
+//     var token = jwt.sign(obj,"TEST",{ algorithm: 'HS256', expiresIn: 60*60*24 });
+//     return token;
+// };
 
-module.exports.decode = function(token){
-    jwt.verify(token,process.env.JWT_SECRET,function(err,decoded){
-        return new Promise(function(resolve,reject){
-            if(err){
-                reject(err);
-            } else {
-                resolve(decoded);
-            }
-        })
-    })
-}
+// module.exports.decodeToken = function(token){
+//     jwt.verify(token,"TEST",function(err,decoded){
+//         return new Promise(function(resolve,reject){
+//             if(err){
+//                 reject(err);
+//             } else {
+//                 resolve(decoded);
+//             }
+//         })
+//     })
+// }
+
+// not needed now 

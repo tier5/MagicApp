@@ -1,20 +1,8 @@
-const Sequelize = require('sequelize');
-const { DB_NAME, DB_USER,DB_PASS,DB_HOST } = process.env;
-const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
-    host: DB_HOST,
-    dialect: 'mysql',
-  });
-
-  sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
+var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/magicAppDb').then((db)=>{
+    console.log('Connected to db')
+  }).catch((err)=>{
+    console.log(err);
   })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
-  
-module.exports = sequelize ;
-
-
-
+ module.exports= mongoose

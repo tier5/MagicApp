@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -10,7 +11,6 @@ var app = express();
 require('./config/config');
 require('./models/index');
 var appRoutes = require('./routes/index');
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -28,13 +28,16 @@ app.get('/',function(req,res){
 });
 app.get('/ping',function(req,res){
   res.status(200).send("pong");
-})
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
 });
+var jwt = require('jsonwebtoken');
+var token = jwt.sign({},"jahsjdhasjda");
+console.log(token);
+// catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   var err = new Error('Not Found');
+//   err.status = 404;
+//   next(err);
+// });
 // error handler
 // app.use(function(err, req, res, next) {
 //   // set locals, only providing error in development
