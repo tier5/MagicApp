@@ -4,14 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "ENV='development' nodemon ./bin/www",
-    "prod":"ENV='production' node ./bin/www"
+    "prod": "ENV='production' node ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.15.5",
+    "jsonwebtoken": "^8.1.0",
     "morgan": "~1.9.0",
     "mysql2": "^1.5.1",
     "sequelize": "^4.28.6",
