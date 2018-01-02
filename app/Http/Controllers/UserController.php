@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Response,Auth,Hash;
 use App\Model\Users;
+use App\Model\Zapiertoken;
 
 class UserController extends Controller
 {
@@ -98,8 +99,8 @@ class UserController extends Controller
                         'success' => false,
                         'error'   => true,
                         'status'  => false,
-                        'response'=> $saveUser,
-                        'message' => 'Admin User Saved !'
+                        'response'=> [],
+                        'message' => 'Admin User Not Saved !'
                     ]);
 
                 }
@@ -145,5 +146,64 @@ class UserController extends Controller
         }
 
         return $randomString;
+    }
+
+    function createZapierToken(Request $request){
+        $tokenName  = $request->tokenName;
+        $userId     = $request->userId;
+        $zapierToken = $this->generateRandomString();
+
+        if($userId!=""){
+
+            $checkUser = Users::where('id',$userId)->first();
+            if(count($checkUser)!=0){
+
+                $saveToken = new Zapiertoken;
+                $saveToken->user_id = $userId;
+                $saveToken->token_name = $tokenName;
+                $saveToken->token = $zapierToken;
+                $saveToken->status = 1;
+                if($saveToken->save()){
+                    
+                    $response = [ 'tokenName' => $saveToken->token_name, 'token' => $saveToken->token ];
+                    return Response()->json([
+                        'code'    => 200,
+                        'success' => true,
+                        'error'   => false,
+                        'status'  => true,
+                        'response'=> $response,
+                        'message' => 'Zapier Token Created !'
+                    ]);
+                }else{
+                    return Response()->json([
+                        'code'    => 400,
+                        'error'   => true,
+                        'success' => false,
+                        'status'  => false,
+                        'response'=> [],
+                        'message' => 'Zapier Token Not Created !'
+                    ]);
+
+                }
+            }else{
+                return Response()->json([
+                    'code'    => 400,
+                    'error'   => true,
+                    'success' => false,
+                    'status'  => false,
+                    'response'=> [],
+                    'message' => 'No User Found !'
+                ]);
+            }
+        }else{
+            return Response()->json([
+                'code'    => 400,
+                'error'   => true,
+                'success' => false,
+                'status'  => false,
+                'response'=> [],
+                'message' => 'Please provide valid data !'
+            ]);
+        }
     }
 }

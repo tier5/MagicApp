@@ -21,4 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('userlogin','UserController@userLogin');
 // route for user suginup/registration
 Route::post('signup','UserController@userSignUp');
+//route for creating the zapier token
+Route::post('create-zapier-token','UserController@createZapierToken');
+
 
