@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Response,Auth,Hash;
 use App\Model\Users;
 use App\Model\Zapiertoken;
+use App\Model\Zap;
+use App\Model\Zapfilds;
 
 class UserController extends Controller
 {
@@ -28,7 +30,7 @@ class UserController extends Controller
                 'code'     => 400,
                 'response' => $validator->messages(),
                 'message'  => null
-            ));
+            ),400);
 
         }
 
@@ -48,7 +50,7 @@ class UserController extends Controller
                 'error'    => false,
                 'response' => $response,
                 'message'  => "Logged in Successfully."
-            ));
+            ),200);
 
         } else {
 
@@ -58,7 +60,7 @@ class UserController extends Controller
                 'error'   => true,
                 'response'=> [],
                 'message' => 'Invalid email or password!'
-            ));
+            ),400);
 
         }
     }
@@ -91,7 +93,7 @@ class UserController extends Controller
                         'status'  => true,
                         'response'=> $response,
                         'message' => 'Admin User Saved !'
-                    ]);
+                    ],200);
                 }else{
 
                     return Response()->json([
@@ -101,7 +103,7 @@ class UserController extends Controller
                         'status'  => false,
                         'response'=> [],
                         'message' => 'Admin User Not Saved !'
-                    ]);
+                    ],400);
 
                 }
 
@@ -114,7 +116,7 @@ class UserController extends Controller
                     'status'  => false,
                     'response'=> [],
                     'message' => 'Email ID exist,please choose new email id !'
-                ]);
+                ],400);
             }
         }else{
             return Response()->json([
@@ -124,7 +126,7 @@ class UserController extends Controller
                 'status'  => false,
                 'response'=> [],
                 'message' => 'Please provide valid data !'
-            ]);
+            ],400);
         }
     }
 
@@ -164,7 +166,7 @@ class UserController extends Controller
                 $saveToken->token = $zapierToken;
                 $saveToken->status = 1;
                 if($saveToken->save()){
-                    
+
                     $response = [ 'tokenName' => $saveToken->token_name, 'token' => $saveToken->token ];
                     return Response()->json([
                         'code'    => 200,
@@ -173,7 +175,7 @@ class UserController extends Controller
                         'status'  => true,
                         'response'=> $response,
                         'message' => 'Zapier Token Created !'
-                    ]);
+                    ],200);
                 }else{
                     return Response()->json([
                         'code'    => 400,
@@ -182,7 +184,7 @@ class UserController extends Controller
                         'status'  => false,
                         'response'=> [],
                         'message' => 'Zapier Token Not Created !'
-                    ]);
+                    ],400);
 
                 }
             }else{
@@ -193,7 +195,7 @@ class UserController extends Controller
                     'status'  => false,
                     'response'=> [],
                     'message' => 'No User Found !'
-                ]);
+                ],400);
             }
         }else{
             return Response()->json([
@@ -203,7 +205,62 @@ class UserController extends Controller
                 'status'  => false,
                 'response'=> [],
                 'message' => 'Please provide valid data !'
-            ]);
+            ],400);
+        }
+    }
+
+    public function createUserZap(Request $request)
+    {
+        $userId         = $request->userId;
+        $zapName        = $request->zapName;
+
+        $zapFields      = $request->zapFields;
+        $validationId   = $request->validationId;
+        $zapValue       = $request->zapValue;
+
+        dd($zapFields);
+
+        if ($userId != "" && $zapName != "") {
+            $saveZap = new Zap;
+            $saveZap->user_id = $userId;
+            $saveZap->zap_name = $zapName;
+            $saveZap->status = 1;   //1 -->active 2-->deleted
+            if ($saveZap->save()) {
+                $zapId = $saveZap->id;
+                //foreach($zapFileds as $value){
+                $saveZapFild = new Zapfilds;
+                $saveZapFild->zap_id = $zapId;
+
+                $saveZapFild->zap_fild = $zapFileds;
+
+                $saveZapFild->zap_value = $zapValue;
+
+                $saveZapFild->validation_id = $validationId;
+
+                $saveZapFild->save();
+                //}
+
+                return Response()->json([
+                    'code' => 200,
+                    'error' => false,
+                    'success' => true,
+                    'status' => true,
+                    'response' => [],
+                    'message' => 'User zap saved successfully !'
+                ], 200);
+
+            } else {
+
+                return Response()->json([
+                    'code' => 400,
+                    'error' => true,
+                    'success' => false,
+                    'status' => false,
+                    'response' => [],
+                    'message' => 'Please provide valid data !'
+                ], 400);
+            }
+
         }
     }
 }

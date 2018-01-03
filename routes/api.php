@@ -23,5 +23,8 @@ Route::post('userlogin','UserController@userLogin');
 Route::post('signup','UserController@userSignUp');
 //route for creating the zapier token
 Route::post('create-zapier-token','UserController@createZapierToken');
+//route for creating the zap
+Route::post('create-user-zap','UserController@createUserZap');
+
 
 

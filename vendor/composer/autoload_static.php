@@ -321,6 +321,8 @@ class ComposerStaticInit54586d6a64c1984dbe653e7c9c76fe65
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Model\\Users' => __DIR__ . '/../..' . '/app/Model/Users.php',
+        'App\\Model\\Zap' => __DIR__ . '/../..' . '/app/Model/Zap.php',
+        'App\\Model\\Zapiertoken' => __DIR__ . '/../..' . '/app/Model/Zapiertoken.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
