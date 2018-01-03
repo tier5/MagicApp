@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateZapFildsTable extends Migration
+class CreateZapValidationTypeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateZapFildsTable extends Migration
      */
     public function up()
     {
-        Schema::create('zap_fields', function (Blueprint $table) {
+        Schema::create('zap_validation_type', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('zap_id');
-            $table->string('zap_field')->nullable();
-            $table->string('validation_id')->nullable();
-            $table->string('zap_value')->nullable();
+            $table->string('validation_type');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateZapFildsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zap_filds');
+        Schema::dropIfExists('zap_validation_type');
     }
 }

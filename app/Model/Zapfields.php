@@ -6,7 +6,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Zapfilds extends Model
+class Zapfields extends Model
 {
     /**
      * @var boolean
@@ -16,5 +16,5 @@ class Zapfilds extends Model
     /**
      * @var null|string
      */
-    protected $table = 'zap_filds';
+    protected $table = 'zap_fields';
 }

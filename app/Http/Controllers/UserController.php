@@ -7,7 +7,7 @@ use Response,Auth,Hash;
 use App\Model\Users;
 use App\Model\Zapiertoken;
 use App\Model\Zap;
-use App\Model\Zapfilds;
+use App\Model\Zapfields;
 
 class UserController extends Controller
 {
@@ -211,14 +211,14 @@ class UserController extends Controller
 
     public function createUserZap(Request $request)
     {
-        $userId         = $request->userId;
-        $zapName        = $request->zapName;
+        $userId         = $request->user['userId'];
+        $zapName        = $request->newZap['zapName'];
+        $zapParams      = $request->newZap['params'];
 
-        $zapFields      = $request->zapFields;
-        $validationId   = $request->validationId;
-        $zapValue       = $request->zapValue;
+//        $zapFields      = $request->zapFields;
+//        $validationId   = $request->validationId;
+//        $zapValue       = $request->zapValue;
 
-        dd($zapFields);
 
         if ($userId != "" && $zapName != "") {
             $saveZap = new Zap;
@@ -227,18 +227,15 @@ class UserController extends Controller
             $saveZap->status = 1;   //1 -->active 2-->deleted
             if ($saveZap->save()) {
                 $zapId = $saveZap->id;
-                //foreach($zapFileds as $value){
-                $saveZapFild = new Zapfilds;
-                $saveZapFild->zap_id = $zapId;
+                foreach($zapParams as $zapValue){
 
-                $saveZapFild->zap_fild = $zapFileds;
-
-                $saveZapFild->zap_value = $zapValue;
-
-                $saveZapFild->validation_id = $validationId;
-
-                $saveZapFild->save();
-                //}
+                    $saveZapFild = new Zapfields;
+                    $saveZapFild->zap_id = $zapId;
+                    $saveZapFild->zap_field = $zapValue['zapField'];
+                    $saveZapFild->zap_value = $zapValue['zapValue'];
+                    $saveZapFild->validation_id = $zapValue['validationId'];
+                    $saveZapFild->save();
+                }
 
                 return Response()->json([
                     'code' => 200,
