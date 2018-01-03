@@ -150,82 +150,62 @@ class UserController extends Controller
         return $randomString;
     }
 
-    function createZapierToken(Request $request){
-        $tokenName  = $request->tokenName;
-        $userId     = $request->userId;
-        $zapierToken = $this->generateRandomString();
+    function createZapierToken(Request $request)
+    {
+        $tokenName      = $request->tokenName;
+        $userId         = $request->userId;
+        $zapierToken    = $this->generateRandomString();
+        if ($userId != "")
+        {
+            $checkUser = Users::where('id', $userId)->first();
+            if (count($checkUser) != 0)
+            {
+                $checkZapierToken = Zapiertoken::where('user_id', $userId)->first();
+                if (count($checkZapierToken) == 0)
+                {
+                    $saveToken = new Zapiertoken;
+                    $saveToken->user_id = $userId;
+                    $saveToken->token_name = $tokenName;
+                    $saveToken->token = $zapierToken;
+                    $saveToken->status = 1;
+                    if ($saveToken->save())
+                    {
+                        $response = ['tokenName' => $saveToken->token_name, 'token' => $saveToken->token];
+                        return Response()->json(['code' => 200, 'success' => true, 'error' => false, 'status' => true, 'response' => $response, 'message' => 'Zapier Token Created !'], 200);
+                    } else {
 
-        if($userId!=""){
+                        return Response()->json(['code' => 400, 'error' => true, 'success' => false, 'status' => false, 'response' => [], 'message' => 'Zapier Token Not Created !'], 400);
+                    }
+                } else {
 
-            $checkUser = Users::where('id',$userId)->first();
-            if(count($checkUser)!=0){
-
-                $saveToken = new Zapiertoken;
-                $saveToken->user_id = $userId;
-                $saveToken->token_name = $tokenName;
-                $saveToken->token = $zapierToken;
-                $saveToken->status = 1;
-                if($saveToken->save()){
-
-                    $response = [ 'tokenName' => $saveToken->token_name, 'token' => $saveToken->token ];
-                    return Response()->json([
-                        'code'    => 200,
-                        'success' => true,
-                        'error'   => false,
-                        'status'  => true,
-                        'response'=> $response,
-                        'message' => 'Zapier Token Created !'
-                    ],200);
-                }else{
-                    return Response()->json([
-                        'code'    => 400,
-                        'error'   => true,
-                        'success' => false,
-                        'status'  => false,
-                        'response'=> [],
-                        'message' => 'Zapier Token Not Created !'
-                    ],400);
-
+                    return Response()->json(['code' => 400, 'error' => true, 'success' => false, 'status' => false, 'response' => [], 'message' => 'Zapier token already exists !'], 400);
                 }
-            }else{
-                return Response()->json([
-                    'code'    => 400,
-                    'error'   => true,
-                    'success' => false,
-                    'status'  => false,
-                    'response'=> [],
-                    'message' => 'No User Found !'
-                ],400);
+            } else {
+
+                return Response()->json(['code' => 400, 'error' => true, 'success' => false, 'status' => false, 'response' => [], 'message' => 'No User Found !'], 400);
             }
-        }else{
-            return Response()->json([
-                'code'    => 400,
-                'error'   => true,
-                'success' => false,
-                'status'  => false,
-                'response'=> [],
-                'message' => 'Please provide valid data !'
-            ],400);
+        } else {
+
+            return Response()->json(['code' => 400, 'error' => true, 'success' => false, 'status' => false, 'response' => [], 'message' => 'Please provide valid data !'], 400);
         }
     }
+
+
+
 
     public function createUserZap(Request $request)
     {
         $userId         = $request->user['userId'];
         $zapName        = $request->newZap['zapName'];
         $zapParams      = $request->newZap['params'];
-
-//        $zapFields      = $request->zapFields;
-//        $validationId   = $request->validationId;
-//        $zapValue       = $request->zapValue;
-
-
         if ($userId != "" && $zapName != "") {
+
             $saveZap = new Zap;
             $saveZap->user_id = $userId;
             $saveZap->zap_name = $zapName;
             $saveZap->status = 1;   //1 -->active 2-->deleted
             if ($saveZap->save()) {
+
                 $zapId = $saveZap->id;
                 foreach($zapParams as $zapValue){
 
@@ -237,12 +217,14 @@ class UserController extends Controller
                     $saveZapFild->save();
                 }
 
+                $getZapResponse = Zap::where('id',$zapId)->with('params')->get();
+
                 return Response()->json([
                     'code' => 200,
                     'error' => false,
                     'success' => true,
                     'status' => true,
-                    'response' => [],
+                    'response' => $getZapResponse,
                     'message' => 'User zap saved successfully !'
                 ], 200);
 
@@ -258,6 +240,162 @@ class UserController extends Controller
                 ], 400);
             }
 
+        }
+    }
+
+    public function userZapList(Request $request)
+    {
+        $userId = $request->userId;
+        if($userId!=""){
+            $getUserZapList = Zap::where('user_id',$userId)->get();
+
+            return Response()->json([
+                'code'    => 200,
+                'success' => true,
+                'error'   => false,
+                'status'  => true,
+                'response'=> $getUserZapList,
+                'message' => 'User Zap List !'
+            ],200);
+
+        }else{
+
+            return Response()->json([
+                'code'      => 400,
+                'error'     => true,
+                'success'   => false,
+                'status'    => false,
+                'response'  => [],
+                'message'   => 'Please provide valid data !'
+            ], 400);
+        }
+    }
+
+    public function getZapData(Request $request)
+    {
+        $zapId = $request->zapId;
+        if($zapId!=""){
+            $getZapData = Zap::where('id',$zapId)->with('params')->get();
+
+            return Response()->json([
+                'code'    => 200,
+                'success' => true,
+                'error'   => false,
+                'status'  => true,
+                'response'=> $getZapData,
+                'message' => 'Zap Data !'
+            ],200);
+
+        }else{
+
+            return Response()->json([
+                'code'      => 400,
+                'error'     => true,
+                'success'   => false,
+                'status'    => false,
+                'response'  => [],
+                'message'   => 'Please provide valid data !'
+            ], 400);
+        }
+    }
+
+    public function updateUserZap(Request $request)
+    {
+        $zapId          = $request->newZap['id'];
+        $userId         = $request->user['userId'];
+        $zapName        = $request->newZap['zapName'];
+        $zapParams      = $request->newZap['params'];
+
+        if($zapId!=""){
+
+            $checkZap = Zap::where('id',$zapId)->first();
+            if(count($checkZap)!=""){
+
+                $checkZap->zap_name = $zapName;
+                if($checkZap->save()){
+                    //delete previous data
+                    $deleteZapFild = Zapfields::where('zap_id',$zapId)->delete();
+                    foreach($zapParams as $zapValue){
+
+                        $saveZapFild = new Zapfields;
+                        $saveZapFild->zap_id = $zapId;
+                        $saveZapFild->zap_field = $zapValue['zapField'];
+                        $saveZapFild->zap_value = $zapValue['zapValue'];
+                        $saveZapFild->validation_id = $zapValue['validationId'];
+                        $saveZapFild->save();
+                    }
+
+                    $getZapResponse = Zap::where('id',$zapId)->with('params')->get();
+
+                    return Response()->json([
+                        'code' => 200,
+                        'error' => false,
+                        'success' => true,
+                        'status' => true,
+                        'response' => $getZapResponse,
+                        'message' => 'User zap saved successfully !'
+                    ], 200);
+                }else{
+
+                    return Response()->json([
+                        'code'      => 400,
+                        'error'     => true,
+                        'success'   => false,
+                        'status'    => false,
+                        'response'  => [],
+                        'message'   => 'sorry data not updated !'
+                    ], 400);
+                }
+            }else{
+
+                return Response()->json([
+                    'code'      => 400,
+                    'error'     => true,
+                    'success'   => false,
+                    'status'    => false,
+                    'response'  => [],
+                    'message'   => 'sorry No zap found with the id !'
+                ], 400);
+            }
+        }else{
+
+            return Response()->json([
+                'code'      => 400,
+                'error'     => true,
+                'success'   => false,
+                'status'    => false,
+                'response'  => [],
+                'message'   => 'Please provide valid data !'
+            ], 400);
+        }
+    }
+
+    public function deleteUserZap(Request $request){
+        $zapId = $request->zapId;
+
+        if($zapId!=""){
+            $deleteZapData = Zap::where('id',$zapId)->with('params')->delete();
+            $deleteZapFieldData = Zapfields::where('zap_id',$zapId)->delete();
+
+            return Response()->json([
+                'code'    => 200,
+                'success' => true,
+                'error'   => false,
+                'status'  => true,
+                'response'=> [],
+                'message' => 'Zap Data deleted !'
+            ],200);
+
+        }else{
+
+            return Response()->json([
+                'code'      => 400,
+                'error'     => true,
+                'success'   => false,
+                'status'    => false,
+                'response'  => [],
+                'message'   => 'Please provide valid data !'
+            ], 400);
         }
     }
 }

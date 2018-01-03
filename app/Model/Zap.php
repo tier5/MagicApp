@@ -17,4 +17,8 @@ class Zap extends Model
      * @var null|string
      */
     protected $table = 'zap';
+
+    public function params(){
+        return $this->hasMany('App\Model\Zapfields','zap_id','id');
+    }
 }

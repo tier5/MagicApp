@@ -25,6 +25,16 @@ Route::post('signup','UserController@userSignUp');
 Route::post('create-zapier-token','UserController@createZapierToken');
 //route for creating the zap
 Route::post('create-user-zap','UserController@createUserZap');
+//route for get the list of user zaps
+Route::post('user-zap-list','UserController@userZapList');
+//route for getting the pariculler zap data for Edit
+Route::post('get-zap-data','UserController@getZapData');
+//route for update the user zap
+Route::post('update-user-zap','UserController@updateUserZap');
+//route for delete the user zap
+Route::post('delete-user-zap','UserController@deleteUserZap');
+
+
 
 
 
