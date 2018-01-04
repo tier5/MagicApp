@@ -63,3 +63,8 @@ public/build
 
 ./public/node_modules
 ./public/build
+/vendor
+/.idea
+/storage/*.key
+
+

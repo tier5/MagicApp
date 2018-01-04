@@ -33,6 +33,12 @@ Route::post('get-zap-data','UserController@getZapData');
 Route::post('update-user-zap','UserController@updateUserZap');
 //route for delete the user zap
 Route::post('delete-user-zap','UserController@deleteUserZap');
+//route for validate and send the user zaps to zapier trigger
+Route::any('send-user-zap/{api_key?}','ZapierController@getZapDataList');
+//route for sending the zap data to zapier trigger
+Route::any('send-zap-data/{zapId?}','ZapierController@sentZapData');
+
+
 
 
 

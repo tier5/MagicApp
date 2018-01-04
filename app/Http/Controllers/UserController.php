@@ -302,7 +302,6 @@ class UserController extends Controller
     public function updateUserZap(Request $request)
     {
         $zapId          = $request->newZap['id'];
-        $userId         = $request->user['userId'];
         $zapName        = $request->newZap['zapName'];
         $zapParams      = $request->newZap['params'];
 
@@ -370,7 +369,8 @@ class UserController extends Controller
         }
     }
 
-    public function deleteUserZap(Request $request){
+    public function deleteUserZap(Request $request)
+    {
         $zapId = $request->zapId;
 
         if($zapId!=""){
