@@ -82,4 +82,37 @@ class ZapierController extends Controller
             ),403);
         }
     }
+
+    public function saveScriptData(Request $request)
+    {
+        \Log::info(print_r($request->all(),true));
+        $zapId  = $request['zapId'];
+        $params = $request['params'];       //array containing params
+        if( $zapId != "" ){
+
+            $getAllZapParams = Zapfields::where('zap_id',$zapId)->select('zap_field','validation_id','zap_value')->get();
+
+            if( count($getAllZapParams) != 0 ){
+
+                foreach($getAllZapParams as $key=>$zapparams){
+                    foreach($params as $paramsKey=>$paramsValue){
+                         // do Something with the data
+                    }
+                }
+            }else{
+                return Response::json(array(
+                    'status'   => false,
+                    'response' => [],
+                    'message'  => 'No data found !'
+                ),403);
+            }
+        }else{
+
+            return Response::json(array(
+                'status'   => false,
+                'response' => [],
+                'message'  => 'please provide valid data !'
+            ),403);
+        }
+    }
 }

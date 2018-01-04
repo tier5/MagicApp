@@ -37,6 +37,8 @@ Route::post('delete-user-zap','UserController@deleteUserZap');
 Route::any('send-user-zap/{api_key?}','ZapierController@getZapDataList');
 //route for sending the zap data to zapier trigger
 Route::any('send-zap-data/{zapId?}','ZapierController@sentZapData');
+//route to save data from the script
+Route::post('script-data','ZapierController@saveScriptData');
 
 
 
