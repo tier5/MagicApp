@@ -12,9 +12,9 @@ router.post('/register',function(req,res,next){
   var body = req.body;
   var user = new Users(body)
   user.save().then((data)=>{
-    res.status(200).send({status:true,message:"User created", data:data})
+    res.status(200).send({status:true,message:"User created", token:data.accessToken})
   }).catch((err)=>{
-    res.status(400).send({status:false, err: err});
+    res.status(400).send({status:false, err: err.errmsg});
   })
 });
 // login user 

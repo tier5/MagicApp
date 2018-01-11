@@ -17,14 +17,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '/public/dist')));
+app.use(express.static(path.join(__dirname, '/public/frontend/dist')));
 
 // all api related routes
 app.use('/api',appRoutes);
 
 // send frontend 
 app.get('/',function(req,res){
-  res.sendFile(path.join(__dirname + '/public/dist/index.html'))
+  res.sendFile(path.join(__dirname + '/public/frontend/dist/index.html'))
 });
 app.get('/ping',function(req,res){
   res.status(200).send("pong");
@@ -35,6 +35,7 @@ var token = jwt.sign({},"jahsjdhasjda");
 // app.use(function(req, res, next) {
 //   var err = new Error('Not Found');
 //   err.status = 404;
+//   err.message = 'Not Found'
 //   next(err);
 // });
 // error handler

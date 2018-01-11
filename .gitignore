@@ -58,10 +58,12 @@ typings/
 .env
 
 # front_end | client ignore
-public/node_modules
+public/frontend/node_modules
 public/build
 
-./public/node_modules
+./public/frontend/node_modules
 ./public/build
 
 node_modules
+
+public/script/node_modules

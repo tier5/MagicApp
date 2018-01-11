@@ -12,12 +12,13 @@ const UserSchema =  new Schema({
         unique:[true,'Email is unique'],
         trim: true,
     },
-    first_name:{
-        type:String,required:[true,'First Name is required']
-    },
-    last_name:{
-        type:String,required:[true, 'Last Name is required']
-    },
+    // first_name:{
+    //     type:String,required:[true,'First Name is required']
+    // },
+    // last_name:{
+    //     type:String,required:[true, 'Last Name is required']
+    // },
+    name:{type:String,required:[true]},
     password:{
         type:String,required:[true, 'Password is required']
     },
