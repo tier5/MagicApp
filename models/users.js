@@ -1,4 +1,5 @@
-const mongoose = require('./index');
+
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
 const db = require('./index');
@@ -22,7 +23,27 @@ const UserSchema =  new Schema({
     },
     accessToken:{
         type:String
-    }
+    },
+    zaps:[
+        {
+            name:{
+                type:String,required:[true,'Zap name is required']
+            },
+            params:[
+                {
+                    field_name:{
+                        type:String
+                    },
+                    validationType :{
+                        type:String
+                    },
+                    field_value : {
+                        type:String
+                    }
+                }
+            ]
+        }
+    ]
 
 });
 

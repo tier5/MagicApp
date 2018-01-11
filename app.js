@@ -31,7 +31,6 @@ app.get('/ping',function(req,res){
 });
 var jwt = require('jsonwebtoken');
 var token = jwt.sign({},"jahsjdhasjda");
-console.log(token);
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   var err = new Error('Not Found');

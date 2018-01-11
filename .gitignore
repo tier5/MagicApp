@@ -63,3 +63,5 @@ public/build
 
 ./public/node_modules
 ./public/build
+
+node_modules
