@@ -3,7 +3,7 @@
 var Users = require('../models/users');
 var _ = require('lodash');
 var mongoose = require('mongoose');
-module.exports= function(body){
+module.exports.getZap= function(body){
     return new Promise(function(resolve,reject){
         var id = mongoose.Types.ObjectId(body.zapId);
         Users.aggregate([
@@ -28,5 +28,22 @@ module.exports= function(body){
                 resolve(zap)
             }
         })
+    })
+}
+
+module.exports.deleteZap = function(id,token,res){
+    Users.findOne({accessToken: token}).then((data)=>{
+        //console.log(data.zaps);
+
+    var new_zaps = _.remove(data.zaps, function(n) {
+            return n._id != id
+          });
+          data.zaps = new_zaps 
+          data.save().then((dt)=>{
+            //console.log(dt);
+            res.status(200).send({message: 'Zap Deleted',status :true})
+          }).catch((err)=>{
+            res.status(400).send({message: 'Something went wrong',status :false})
+          })
     })
 }

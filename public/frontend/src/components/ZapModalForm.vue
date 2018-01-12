@@ -14,15 +14,15 @@
             <div class="modal-body">
               <slot name="body">
                 <form>
-                  <div class="row form-group" v-bind:class="{ 'form-group--error': $v.newZap.zapName.$error }">
+                  <div class="row form-group" v-bind:class="{ 'form-group--error': $v.newZap.name.$error }">
                     <div class="col-md-6">
                       <input type="text"
                              class="form-control"
                              placeholder="Zap Name"
-                             v-model="newZap.zapName"
-                             @blur="$v.newZap.zapName.$touch">
+                             v-model="newZap.name"
+                             @blur="$v.newZap.name.$touch">
                       <span class="form-group__message"
-                            v-if="!$v.newZap.zapName.required && $v.newZap.zapName.$error">
+                            v-if="!$v.newZap.name.required && $v.newZap.name.$error">
                         Zap Name is Required
                       </span>
                     </div>
@@ -36,12 +36,12 @@
                   <div class="clearfix"></div>
                   <div class="row form-group" v-for="(param,zapIndex) in newZap.params">
                     <div class="col-md-3">
-                      <input type="text" class="form-control" placeholder="Name" v-model="param.zapField" required>
+                      <input type="text" class="form-control" placeholder="Name" v-model="param.field_name" required>
                     </div>
                     <div class="col-md-3">
-                      <select class="form-control" v-model="param.validationId">
+                      <select class="form-control" v-model="param.validationType">
                         <option value="">Select Options</option>
-                        <option v-for="(item, index) in validationType" :value="item.id">
+                        <option v-for="(item, index) in validationType" :value="item.type">
                           {{item.type}}
                         </option>
                       </select>
@@ -50,8 +50,8 @@
                       <input type="text"
                              class="form-control"
                              placeholder="Value"
-                             v-model="param.zapValue"
-                             v-if="param.validationId ===2 || param.validationId==3">
+                             v-model="param.field_value"
+                             v-if="param.validationType ==='=' || param.validationType=='!='">
                     </div>
                     <div class="col-md-1">
                       <a @click="addRemoveZapParams(zapIndex,3)" ><span class="glyphicon glyphicon-minus"></span></a>
@@ -102,7 +102,6 @@
         ],
         newZap:{
           id:'',
-          zapName:'',
           params:[]
         }
       }
@@ -114,9 +113,9 @@
       addRemoveZapParams(index,type){
         if (type==2){
           this.newZap.params.push({
-            zapField:'',
-            validationId:'',
-            zapValue:''
+            field_name:'',
+            validationType:'',
+            field_value:''
           })
         } else {
           //console.log(index);
@@ -124,10 +123,8 @@
         }
       },
       createNewZap(){
-        var obj = {};
-        obj.newZap = this.newZap;
-        obj.user= this.user;
-        this.$store.dispatch('createNewZap',obj);
+        console.log(this.newZap);
+        this.$store.dispatch('createNewZap',this.newZap);
       },
     },
     computed: {
@@ -138,7 +135,7 @@
     },
     validations:{
       newZap:{
-        zapName:{
+        name:{
           required
         }
       }

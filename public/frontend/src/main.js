@@ -12,9 +12,7 @@ Vue.http.options.root = 'http://127.0.0.1:3000/api/';
 Vue.config.productionTip = false
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Content-Type', 'application/json');
-  //request.headers.set('Access-Control-Allow-Origin', '*');
-  //request.headers.set('Access-Control-Request-Method', '*');
-  //request.headers.set('')
+  request.headers.set('Authorization',localStorage.getItem('token'));
   next()
 });
 

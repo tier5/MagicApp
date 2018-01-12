@@ -30,11 +30,12 @@ const mutations = {
     state.zaps = [...payload]
   },
   addZap:(state,payload)=>{
+    console.log(payload);
     state.zaps = [...state.zaps,{...payload}]
   },
   deleteZap:(state,payload)=>{
 
-    const index = state.zaps.findIndex(zap => zap.id === payload);
+    const index = state.zaps.findIndex(zap => zap._id === payload);
     const oldZaps = [...state.zaps];
     oldZaps.splice(index, 1);
     state.zaps = oldZaps;
@@ -51,11 +52,11 @@ const mutations = {
 
 const actions = {
   createNewZap:({commit}, payload)=>{
-    Vue.http.post('create-user-zap', payload)
+    Vue.http.post('zaps', payload)
       .then(
         (res) => {
           if(res.body.status) {
-            commit('addZap',res.body.response[0]);
+            commit('addZap',res.body.zap);
             commit('hideModal');
             let message = res.body.message;
             commit('successMessage',message);
@@ -73,7 +74,7 @@ const actions = {
       )
   },
   createZapAuthToken:({commit},payload)=>{
-    Vue.http.post('create-zapier-token', payload)
+    Vue.http.post('zaps', payload)
       .then(
         (res) => {
           if(res.body.status) {
@@ -89,12 +90,11 @@ const actions = {
       )
   },
   getZap:({commit},payload)=>{
-    Vue.http.post('user-zap-list', payload)
+    Vue.http.get('zaps', payload)
       .then(
         (res) => {
           if(res.body.status) {
-
-            commit('getZap',res.body.response)
+            commit('getZap',res.body.zaps)
           } else {
 
           }
@@ -105,7 +105,7 @@ const actions = {
       )
   },
   deleteZap:({commit},payload)=>{
-    Vue.http.post('delete-user-zap?zapId=' + payload)
+    Vue.http.delete('zaps/' + payload)
       .then(
         (res) => {
           if(res.body.status) {

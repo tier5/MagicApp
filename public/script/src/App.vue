@@ -19,7 +19,7 @@ export default {
     var requestObj = {
       location : requestLocation,
       params: this.getAllParams(),
-      zapId : '5a5608023535426d8f14e8c5'
+      zapId : zapId
     }
     var body = requestObj
    this.$http.post('http://127.0.0.1:3000/api/script-data',body).then(function(data){

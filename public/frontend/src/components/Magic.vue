@@ -20,14 +20,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(zap,index) in zaps">
+            <tr v-for="(zap, index) in zaps" :key="zap._id">
               <td>{{index+1}}</td>
-              <td>{{zap.zap_name}}</td>
-              <td>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap.id}}&gt; &lt;&#47;script&gt;</td>
+              <td>{{zap.name}}</td>
+              <td>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</td>
               <td>
                 <span>
-                  <a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                  <a href="" @click.prevent="deleteZap(zap.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                  <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
+                  <a href="" @click.prevent="deleteZap(zap._id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 </span>
               </td>
             </tr>
@@ -50,7 +50,7 @@
     },
     methods:{
       deleteZap(id){
-        //console.log(id);
+        console.log(id);
         this.$store.dispatch('deleteZap',id);
       },
       ShowModal(){
