@@ -84,10 +84,10 @@ class ZapierController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return JSON
      * Validating params with database params field
      * Storing data from the script into database.
+     * @param Request $request
+     * @return mixed
      */
     public function saveScriptData(Request $request)
     {
@@ -100,7 +100,8 @@ class ZapierController extends Controller
             $validationCount = 0;
             $zapFieldArray=[];
             $getAllZapParams = Zapfields::where('zap_id',$zapId)->select('id','zap_field','validation_id','zap_value')->get();
-            if( count($getAllZapParams) != 0 ){
+            $allParamcount= count($getAllZapParams);
+            if( $allParamcount != 0 ){
                 foreach($getAllZapParams as $key=>$zapparams){
                     foreach($params as $paramsKey=>$paramsValue){
                         // do Something with the data
@@ -109,32 +110,47 @@ class ZapierController extends Controller
                             if ($zapParam->validation_id == 1){
                                 if (count($zapParam)!=0){
                                     $validationCount +=1;
-                                    $zapFieldArray[$validationCount]['zap_id'] = $zapId;
-                                    $zapFieldArray[$validationCount]['zap_field_id']= $zapparams['id'];
-                                    $zapFieldArray[$validationCount]['zap_value']= $paramsValue;
-                                    $zapFieldArray[$validationCount]['url']= $request['zap']['location'];
+                                    $zapFieldArray[$paramsKey]['zap_id'] = $zapId;
+                                    $zapFieldArray[$paramsKey]['zap_field_id']= $zapparams['id'];
+                                    $zapFieldArray[$paramsKey]['zap_value']= $paramsValue;
+                                    $zapFieldArray[$paramsKey]['url']= $request['zap']['location'];
                                 }
                             }else if($zapParam->validation_id == 2){
                                 if ($zapParam->zap_value == $paramsValue){
                                     $validationCount +=1;
-                                    $zapFieldArray[$validationCount]['zap_id'] = $zapId;
-                                    $zapFieldArray[$validationCount]['zap_field_id']= $zapparams['id'];
-                                    $zapFieldArray[$validationCount]['zap_value']= $paramsValue;
-                                    $zapFieldArray[$validationCount]['url']= $request['zap']['location'];
+                                    $zapFieldArray[$paramsKey]['zap_id'] = $zapId;
+                                    $zapFieldArray[$paramsKey]['zap_field_id']= $zapparams['id'];
+                                    $zapFieldArray[$paramsKey]['zap_value']= $paramsValue;
+                                    $zapFieldArray[$paramsKey]['url']= $request['zap']['location'];
                                 }
                             }else if($zapParam->validation_id == 3){
                                 if ($zapParam->zap_value != $paramsValue){
                                     $validationCount +=1;
-                                    $zapFieldArray[$validationCount]['zap_id'] = $zapId;
-                                    $zapFieldArray[$validationCount]['zap_field_id']= $zapparams['id'];
-                                    $zapFieldArray[$validationCount]['zap_value']= $paramsValue;
-                                    $zapFieldArray[$validationCount]['url']= $request['zap']['location'];
+                                    $zapFieldArray[$paramsKey]['zap_id'] = $zapId;
+                                    $zapFieldArray[$paramsKey]['zap_field_id']= $zapparams['id'];
+                                    $zapFieldArray[$paramsKey]['zap_value']= $paramsValue;
+                                    $zapFieldArray[$paramsKey]['url']= $request['zap']['location'];
                                 }
                             }
                         }
                     }
                 }
-                if ($validationCount == 3){
+                if ($validationCount == $allParamcount){
+                    foreach($params as $paramsKey=>$paramsValue){
+                        if(!array_key_exists($paramsKey, $zapFieldArray)){
+                            $saveZapFiels = new Zapfields;
+                            $saveZapFiels->zap_id = $zapId;
+                            $saveZapFiels->zap_field = $paramsKey;
+                            $saveZapFiels->validation_id = 1;
+                            $saveZapFiels->zap_value = $paramsValue;
+                            $saveZapFiels->save();
+
+                            $zapFieldArray[$paramsKey]['zap_id'] = $zapId;
+                            $zapFieldArray[$paramsKey]['zap_field_id']= $saveZapFiels->id;
+                            $zapFieldArray[$paramsKey]['zap_value']= $paramsValue;
+                            $zapFieldArray[$paramsKey]['url']= $request['zap']['location'];
+                        }
+                    }
                     foreach ($zapFieldArray as $key=>$zapValue){
                         $saveZapData = new Zapdata;
                         $saveZapData->zap_id = $zapValue['zap_id'];
