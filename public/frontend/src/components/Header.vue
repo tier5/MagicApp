@@ -15,7 +15,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a @click="onSignOut">Logout</a></li>
-                <!-- <li><a @click="onZapierAuth">Zapier Token</a></li> -->
+                <li><a @click="onZapierAuth">Zapier Token</a></li>
                 <li><a @click="home">Home</a></li>
               </ul>
             </li>

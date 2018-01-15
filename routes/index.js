@@ -134,18 +134,20 @@ router.get('/users_script_zap/:zapId',function(req,res){
         data.params.forEach(ob => {
           resData[ob.field_name] = ob.field_value
         });
-  
-        res.status(200).send(resData);
+        var resArr = [];
+        resArr.push(resData);
+        res.status(200).send({response: resArr, message: 'Success',status:true});
     }).catch((err)=>{
       console.log(err);
-      res.status(400).send({message: 'Something went wrong!',status:false});
+      res.status(400).send({message: 'Something went wrong!',status:false,response:[]});
     })
-})
+});
+// endpoint for sending user's zap to 
 router.get('/users_zaps/:api_key',function(req,res,next){
   Users.aggregate([
     {
         $match:{
-            "accessToken":req.params.api_key
+            "accessToken" : req.params.api_key
         }
     }
   ],function(err,data){

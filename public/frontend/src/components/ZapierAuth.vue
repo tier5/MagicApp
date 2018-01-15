@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row">
+    <!--div class="row">
       <div class="col-md-12">
         <form class="form-inline" @submit.prevent="createZapAuthToken">
           <div class="form-group mx-sm-3 mb-2">
@@ -10,21 +10,23 @@
           <button type="submit" class="btn btn-primary mb-2">Submit</button>
         </form>
       </div>
-    </div>
+    </div -->
     <div class="clearfix"></div>
     <div class="row">
-      <table class="table table-bordered" style="width: 50%">
+      <div class="table-responsive">
+        <table class="table table-bordered">
         <tbody>
-        <tr>
-          <td class="col-md-3">
-            <p>{{zapierAuthToken.tokenName}}</p>
-          </td>
-          <td class="col-md-3">
-            <p>{{zapierAuthToken.token}}</p>
-          </td>
-        </tr>
+          <tr>
+            <td class="col-md-3">
+              <p>Zapier Api Key </p>
+            </td>
+            <td class="col-md-3">
+              <p>{{token}}</p>
+            </td>
+          </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 </template>
@@ -39,18 +41,18 @@
     },
     computed:{
       ...mapGetters([
-        'user',
-        'zapierAuthToken'
+        'token'
       ])
     },
     methods:{
-      createZapAuthToken(){
-        var obj = {
-          tokenName: this.name
-        };
-        obj.userId= this.user.userId;
-        this.$store.dispatch('createZapAuthToken',obj)
-      }
+      // createZapAuthToken(){
+      //   var obj = {
+      //     tokenName: this.name
+      //   };
+      //   obj.userId= this.user.userId;
+      //   this.$store.dispatch('createZapAuthToken',obj)
+      // }
+
     },
     created(){
       this.createZapAuthToken()
