@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="row app_register">
       <div class="col-md-3"></div>
       <div class="col-md-6 app_register_form">
@@ -50,9 +50,9 @@
           </div>
           <div class="row">
             <div class="col-md-2"></div>
-            <div class="col-md-3">
+            <div class="col-md-6">
               <button type="submit" class="btn btn-primary" :disabled="$v.user.$invalid">Login</button>
-              <button type="reset" class="btn btn-primary pull-right">Reset</button>
+              <button type="reset" class="btn btn-primary">Reset</button>
             </div>
             <div class="col-md-4">
               <a><router-link to="/register">Don't Have An Account ?</router-link></a>

@@ -27,11 +27,12 @@ router.post('/login',function(req,res,next){
       if (data) {
         res.status(200).send({status:true,message:"success", token:user.accessToken})
       } else {
-        res.status(400).send({status:false, err: err});
+        console.log(err);
+        res.status(400).send({status:false, err: err, message: 'Password Incorrect !'});
       }
     });
   }).catch((err)=>{
-    res.status(400).send({status:false, err: err});
+    res.status(400).send({status:false, message:'User not Exists!' });
   })
 })
 // endpoints to create zaps 
