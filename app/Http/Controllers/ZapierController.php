@@ -9,6 +9,7 @@ use App\Model\Zapiertoken;
 use App\Model\Zap;
 use App\Model\Zapfields;
 use App\Model\Zapdata;
+use ZapierHelper;
 
 class ZapierController extends Controller
 {
@@ -172,6 +173,36 @@ class ZapierController extends Controller
                 'status'   => false,
                 'response' => [],
                 'message'  => 'please provide valid data !'
+            ),403);
+        }
+    }
+    public function fetchZapData($zapId)
+    {
+        if( $zapId != "" ) {
+            $fetchZapData = Zapdata::where('zap_id',$zapId)->get();
+            if (count($fetchZapData)) {
+                dd(ZapierHelper::myTest());
+                dd($fetchZapData);
+                dd($fetchZapData);
+                foreach ($fetchZapData as $x=>$each_zap_data) {
+                }
+                return Response::json(array(
+                    'status'   => true,
+                    'response' => $fetchZapData,
+                    'message'  => 'valid zap data !'
+                ),200);
+            } else {
+                return Response::json(array(
+                    'status'   => true,
+                    'response' => [],
+                    'message'  => 'No data found !'
+                ),200);
+            }
+        } else {
+            return Response::json(array(
+                'status'   => false,
+                'response' => [],
+                'message'  => 'No data found !'
             ),403);
         }
     }
