@@ -22,7 +22,7 @@ export default {
       zapId : zapId
     }
     var body = requestObj
-   this.$http.post('http://127.0.0.1:3000/api/script-data',body).then(function(data){
+   this.$http.post('https://www.amagiczap.com/api/script-data',body).then(function(data){
         console.log(data)
     }).catch((err)=>{
       console.log(err);

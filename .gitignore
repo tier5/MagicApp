@@ -59,10 +59,8 @@ typings/
 
 # front_end | client ignore
 public/frontend/node_modules
-public/build
 
 ./public/frontend/node_modules
-./public/build
 
 node_modules
 

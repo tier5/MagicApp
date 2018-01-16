@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "ENV='development' nodemon ./bin/www",
-    "prod": "ENV='production' node ./bin/www"
+    "prod": "ENV='production' node ./bin/www",
+    "start":"node ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
