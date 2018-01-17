@@ -10,9 +10,10 @@ Vue.use(Vuelidate);
 import config from '../config/config';
 if(process.env.NODE_ENV =='development'){
   Vue.http.options.root = config.dev_url;
-} else{
+} else {
   Vue.http.options.root = 'https://www.amagiczap.com/api/';
 }
+Vue.use(Vuelidate)
 Vue.config.productionTip = false
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Content-Type', 'application/json');
