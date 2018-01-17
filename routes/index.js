@@ -84,12 +84,15 @@ router.post('/script-data',function(req,res,next){
   res.status(200).send({message:'Ok'});
   scriptVal.getZap(body).then((zap)=>{
     var zap_params = zap.params;
+    // console.log(zap_params);
+    // console.log(script_params);
     validation.isAllParamsExists(zap_params,script_params).then(()=>{
       validation.isAllValidationPassed(zap_params,script_params).then(()=>{
         //console.log('Jai Mahesmati');
         scriptCtrl(req.body);
 
-      }).catch(()=>{
+      }).catch((err)=>{
+        console.log(err);
         console.log('Params Validation Failed!')
       })
     }).catch((err)=>{
@@ -102,42 +105,31 @@ router.post('/script-data',function(req,res,next){
 // endpoint for zapier to get data from magic App
 router.get('/users_script_zap/:zapId',function(req,res){
   var zapId = req.params.zapId
-  
-  // var test = [];
-  // ZapData.aggregate([
-  //   {
-  //     $project:
-  //     {
-  //       _id:0,
-  //       location:1,
-  //       params:1
-  //     }
-  //   }
-  // ],function(err,data){
-  //   if (err) { console.log(err) }
-  //   else {
-  //     var testArray = []
-  //     data.forEach(obj=>{
-  //       var tempObj = {}
-  //       tempObj.location = obj.location;
+    // fetching all data from database for the scriptid
+    ZapData.find({zapId:zapId}).then((data)=>{
+      if (data.length==0){
+        res.status(200).send({response: [], message: 'Success',status:true});
+      } else {
+        var resArr = []
+        // changing nested document to linear data 
+        try {
+          data.forEach(function(obj){
+            var eachObj = {}
+            eachObj.location = obj.location;
 
-  //       obj.params.forEach(obj2 => {
-  //         tempObj[obj2.field_name]= obj2.field_value
-  //       });
-  //       testArray.push(tempObj);
-  //     })
-  //     res.status(200).send(testArray);
-  //   }
-  // })
-    ZapData.findOne({zapId:zapId}).then((data)=>{
-      var resData = {}
-        resData.location = data.location
-        data.params.forEach(ob => {
-          resData[ob.field_name] = ob.field_value
-        });
-        var resArr = [];
-        resArr.push(resData);
-        res.status(200).send({response: resArr, message: 'Success',status:true});
+            obj.params.forEach(ob => {
+              eachObj[ob.field_name] = ob.field_value
+            });
+
+            resArr.push(eachObj);
+          });
+
+          res.status(200).send({response: resArr, message: 'Success',status:true});
+        } catch (error) {
+          console.log(error);
+        }
+      }
+        
     }).catch((err)=>{
       console.log(err);
       res.status(400).send({message: 'Something went wrong!',status:false,response:[]});

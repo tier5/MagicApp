@@ -23,9 +23,14 @@ module.exports.getZap= function(body){
                 console.log(err);
                 reject(err)
             } else {
-                var zaps = data[0].zaps
-                var zap = _.find(zaps, function(o) { return o._id = body.zapId; });
-                resolve(zap)
+                //console.log(data);
+                if (data.length == 0){
+                    reject({message:'Zap not found!'});
+                } else {
+                    var zaps = data[0].zaps
+                    var zap = _.find(zaps, function(o) { return o._id = body.zapId; });
+                    resolve(zap)
+                }
             }
         })
     })

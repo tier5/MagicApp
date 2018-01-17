@@ -19,14 +19,15 @@ export default {
     var requestObj = {
       location : requestLocation,
       params: this.getAllParams(),
-      zapId : zapId
+      zapId : '5a5f3291abedfa5f1375d8da'
     }
-    var body = requestObj
-   this.$http.post('https://www.amagiczap.com/api/script-data',body).then(function(data){
-        console.log(data)
-    }).catch((err)=>{
-      console.log(err);
-    })
+		var body = requestObj
+		var postUrl = 'https://www.amagiczap.com/api/script-data'
+		this.$http.post('http://localhost:3000/api/script-data',body).then(function(data){
+					//console.log(data)
+		}).catch((err)=>{
+				console.log(err);
+		})
   },
   methods:{
     getAllParams(url){
