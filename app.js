@@ -30,7 +30,7 @@ app.use(function(req, res, next) {
 app.use('/api',appRoutes);
 
 // send frontend 
-app.get('/',function(req,res){
+app.get('*',function(req,res){
   res.sendFile(path.join(__dirname + '/public/frontend/dist/index.html'))
 });
 app.get('/ping',function(req,res){

@@ -23,7 +23,7 @@
             <tr v-for="(zap, index) in zaps" :key="zap._id">
               <td>{{index+1}}</td>
               <td>{{zap.name}}</td>
-              <td>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</td>
+              <td>&lt;script type="text/javascript" src= "http://www.amagiczap.com/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</td>
               <td>
                 <span>
                   <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
