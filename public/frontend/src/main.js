@@ -6,8 +6,7 @@ import store from './store/index';
 import Vuelidate from 'vuelidate'
 
 Vue.use(VueResource);
-Vue.use(Vuelidate)
-//var node_env = process.env.NODE_ENV;
+Vue.use(Vuelidate);
 import config from '../config/config';
 if(process.env.NODE_ENV =='development'){
   Vue.http.options.root = config.dev_url;
