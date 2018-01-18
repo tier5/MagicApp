@@ -11,6 +11,10 @@ const UserSchema =  new Schema({
         required:[true,'Email is required'],
         unique:[true,'Email is unique'],
         trim: true,
+        validate: {
+            validator: validator.isEmail,
+            message: '{VALUE} is not a valid email'
+        }
     },
     // first_name:{
     //     type:String,required:[true,'First Name is required']
@@ -44,7 +48,10 @@ const UserSchema =  new Schema({
                 }
             ]
         }
-    ]
+    ],
+    isAdmin:{
+        type:Boolean,default:false
+    }
 
 });
 
