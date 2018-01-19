@@ -3,10 +3,15 @@ import App from './App'
 import VueResource from 'vue-resource';
 import router from './router'
 import store from './store/index';
-import Vuelidate from 'vuelidate'
-
+import Vuelidate from 'vuelidate';
+import VuePaginate from 'vue-paginate';
+import ToggleButton from 'vue-js-toggle-button';
+import loading from 'vue-full-loading';
+Vue.use(loading);
+Vue.use(ToggleButton)
 Vue.use(VueResource);
-Vue.use(Vuelidate)
+Vue.use(Vuelidate);
+Vue.use(VuePaginate);
 //var node_env = process.env.NODE_ENV;
 import config from '../config/config';
 if(process.env.NODE_ENV =='development'){

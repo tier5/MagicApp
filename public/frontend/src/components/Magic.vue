@@ -41,8 +41,8 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
-    import Modal from './ZapModalForm.vue'
+  import { mapGetters } from 'vuex';
+  import Modal from './ZapModalForm.vue'
   export default {
     data () {
       return {
@@ -57,15 +57,15 @@
         this.$store.commit('showModal');
       }
     },
-      computed: {
-          // mix the getters into computed with object spread operator
-          ...mapGetters([
-              'user',
-              'zaps',
-              'isShowModal'
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'user',
+            'zaps',
+            'isShowModal'
 
-          ])
-      },
+        ])
+    },
     created(){
       this.$store.dispatch('getZap',this.user);
     },

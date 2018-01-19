@@ -5,18 +5,19 @@
       <nav class="navbar app__header">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">Magic App</a>
+            <a class="navbar-brand" ><router-link to="/magic">Magic App</router-link></a>
           </div>
-
+          
           <ul class="nav navbar-nav navbar-right">
+            <li v-if="user.isAdmin"><a href=""><router-link to="/users">Users</router-link></a></li>
             <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                 <span class="glyphicon glyphicon-user"></span>Profile<b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a @click="onSignOut">Logout</a></li>
-                <li><a @click="onZapierAuth">Zapier Token</a></li>
-                <li><a @click="home">Home</a></li>
+                <li><a @click.prevent="onSignOut" href="">Logout</a></li>
+                <li><a @click.prevent="onZapierAuth" href="">Zapier Token</a></li>
+                <li><a @click.prevent="home" href="">Home</a></li>
               </ul>
             </li>
           </ul>
@@ -28,7 +29,8 @@
 </template>
 
 <script>
-  import router from '../router/index'
+  import router from '../router/index';
+  import { mapGetters } from 'vuex';
   export default {
     data () {
       return {
@@ -44,6 +46,12 @@
       home(){
         router.push('/magic')
       }
+    },
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'user'
+        ])
     }
   }
 </script>
@@ -52,6 +60,7 @@
 <style scoped>
   a {
     pointer : cursor;
+    text-decoration: none;
   }
   .app__header{
     border-bottom: solid 1px #cccccc;
