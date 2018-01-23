@@ -116,14 +116,13 @@ router.get('/users_script_zap/:zapId',function(req,res){
           data.forEach(function(obj){
             var eachObj = {}
             eachObj.location = obj.location;
-
             obj.params.forEach(ob => {
               eachObj[ob.field_name] = ob.field_value
             });
-
+	   eachObj.id = obj._id;
             resArr.push(eachObj);
           });
-
+	
           res.status(200).send({response: resArr, message: 'Success',status:true});
         } catch (error) {
           console.log(error);

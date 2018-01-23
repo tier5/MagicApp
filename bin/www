@@ -26,13 +26,13 @@ var certificate = fs.readFileSync('/etc/nginx/ssl/50e3c029406380d7.crt', 'utf8')
 */
 var credentials = {key: privateKey, cert: certificate};
 var httpsServer = https.createServer(credentials, app);
-httpsServer.listen(8443);
-httpsServer.on('error',function(err){
-console.log(err);
-});
-httpsServer.on('listening',function(){
-console.log('HTTPS is on port 8443')
-});
+//httpsServer.listen(8443);
+//httpsServer.on('error',function(err){
+//console.log(err);
+//});
+//httpsServer.on('listening',function(){
+//console.log('HTTPS is on port 8443')
+//});
 
 /**
  * Create HTTP server.

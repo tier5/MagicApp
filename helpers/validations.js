@@ -42,7 +42,7 @@ function isAllValidationPassed(zap_params,script_params){
                 break;
               case '=':
                 if(prp_val == script_params[prop]){
-                  break
+                 break
                 } else {
                   flag = false
                   break

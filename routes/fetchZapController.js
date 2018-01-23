@@ -28,7 +28,7 @@ module.exports.getZap= function(body){
                     reject({message:'Zap not found!'});
                 } else {
                     var zaps = data[0].zaps
-                    var zap = _.find(zaps, function(o) { return o._id = body.zapId; });
+		    var zap = _.find(zaps,function(z_zap){return z_zap._id == body.zapId});
                     resolve(zap)
                 }
             }
