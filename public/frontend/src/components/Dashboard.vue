@@ -8,7 +8,8 @@
     <div class="row">
       <div class="col-md-2">&nbsp;</div>
       <div class="col-md-8">
-        <router-view/>
+        <account-hold v-if="!user.isActive"></account-hold>
+        <router-view v-if="user.isActive"/>
       </div>
       <div class="col-md-2">&nbsp;</div>
     </div>
@@ -17,7 +18,9 @@
 
 <script>
   import Header from './Header.vue'
-  import Sidebars from './Sidebars.vue'
+  import Sidebars from './Sidebars.vue';
+  import { mapGetters } from 'vuex';
+  import AccountHold from './AccountHold.vue';
   export default {
     data () {
       return {
@@ -26,8 +29,15 @@
     },
     components:{
       appHeader:Header,
-      appSidebars:Sidebars
-    }
+      appSidebars:Sidebars,
+      AccountHold
+    },
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'user'
+        ])
+    },
   }
 </script>
 

@@ -34,27 +34,50 @@
                     </div>
                   </div>
                   <div class="clearfix"></div>
-                  <div class="row form-group" v-for="(param,zapIndex) in newZap.params">
-                    <div class="col-md-3">
-                      <input type="text" class="form-control" placeholder="Name" v-model="param.field_name" required>
+                  <div class="row form-group" v-for="(param,zapIndex) in newZap.params" :key="zapIndex">
+                    <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.params.$each[zapIndex].field_name.$error }">
+                      <input  type="text" 
+                              class="form-control" 
+                              placeholder="Name" 
+                              v-model="param.field_name" 
+                              @blur="$v.newZap.params.$each[zapIndex].field_name.$touch">
+                      <span class="form-group__message"
+                            v-if="!$v.newZap.params.$each[zapIndex].field_name.required && $v.newZap.params.$each[zapIndex].field_name.$error">
+                        Required!      
+                      </span>
+                      <span class="form-group__message"
+                            v-if="!$v.newZap.params.$each[zapIndex].field_name.noSpace && $v.newZap.params.$each[zapIndex].field_name.$error">
+                        No Space is allowed!      
+                      </span>
+                      <span class="form-group__message"
+                            v-if="!$v.newZap.params.$each[zapIndex].field_name.noUpperCase && $v.newZap.params.$each[zapIndex].field_name.$error">
+                        No UpperCase is allowed!      
+                      </span>
                     </div>
-                    <div class="col-md-3">
-                      <select class="form-control" v-model="param.validationType">
+                    <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.params.$each[zapIndex].validationType.$error }">
+                      <select class="form-control" 
+                              v-model.trim="param.validationType"
+                               @blur="$v.newZap.params.$each[zapIndex].validationType.$touch">
                         <option value="">Select Options</option>
-                        <option v-for="(item, index) in validationType" :value="item.type">
+                        <option v-for="(item, index) in validationTypes" :value="item.type" :key="index">
                           {{item.type}}
                         </option>
                       </select>
+                      <span class="form-group__message"
+                            v-if="!$v.newZap.params.$each[zapIndex].validationType.required && $v.newZap.params.$each[zapIndex].validationType.$error">
+                        Required!      
+                      </span>
                     </div>
                     <div class="col-md-3">
                       <input type="text"
                              class="form-control"
                              placeholder="Value"
-                             v-model="param.field_value"
-                             v-if="param.validationType ==='=' || param.validationType=='!='">
+                             v-model.trim="param.field_value"
+                             v-if="param.validationType ==='=' || param.validationType=='!='"
+                             @blur="$v.newZap.params.$each[zapIndex].field_value.$touch">
                     </div>
                     <div class="col-md-1">
-                      <a @click="addRemoveZapParams(zapIndex,3)" ><span class="glyphicon glyphicon-minus"></span></a>
+                      <a @click.prevent="addRemoveZapParams(zapIndex,3)" href=""><span class="fa fa-trash-o fa-2x"></span></a>
                     </div>
                     <div class="clearfix"></div>
                   </div>
@@ -86,7 +109,7 @@
   export default {
     data () {
       return {
-        validationType:[
+        validationTypes:[
           {
             id:1,
             type:'Exists'
@@ -123,7 +146,6 @@
         }
       },
       createNewZap(){
-        console.log(this.newZap);
         this.$store.dispatch('createNewZap',this.newZap);
       },
     },
@@ -137,6 +159,39 @@
       newZap:{
         name:{
           required
+        },
+        params:{
+          $each:{
+            field_name:{
+              required,
+              noSpace:function(field_name){
+               var indexOfWhiteSpace = field_name.indexOf(' ');
+               if (indexOfWhiteSpace === -1){
+                return true
+               } else {
+                return false
+               }
+              },
+              noUpperCase:function(value){
+                var toLowerCase = value.toLowerCase();
+                if(toLowerCase === value){
+                  return true
+                } else {
+                  return false
+                }
+              },
+              noIdField:function(value){
+                if (value !== 'id'){
+                  return true
+                } else {
+                  return false
+                }
+              }
+            },
+            validationType:{
+              required
+            }
+          }
         }
       }
     }
@@ -185,16 +240,6 @@
   .modal-default-button {
     float: right;
   }
-
-  /*
-   * The following styles are auto-applied to elements with
-   * transition="modal" when their visibility is toggled
-   * by Vue.js.
-   *
-   * You can easily play with the modal transition by editing
-   * these styles.
-   */
-
   .modal-enter {
     opacity: 0;
   }
@@ -203,6 +248,9 @@
     opacity: 0;
   }
   .form-group--error input{
+    border-color: red;
+  }
+  .form-group--error select{
     border-color: red;
   }
   .form-group__message{

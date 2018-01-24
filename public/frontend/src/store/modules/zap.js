@@ -52,6 +52,7 @@ const mutations = {
 
 const actions = {
   createNewZap:({commit}, payload)=>{
+    commit('changeLoading',true);
     Vue.http.post('zaps', payload)
       .then(
         (res) => {
@@ -59,8 +60,10 @@ const actions = {
             commit('addZap',res.body.zap);
             commit('hideModal');
             let message = res.body.message;
+            commit('changeLoading',false);
             commit('successMessage',message);
             commit('successTrue');
+
           } else {
 
           }
@@ -78,10 +81,9 @@ const actions = {
       .then(
         (res) => {
           if(res.body.status) {
-             //console.log(res.body.response);
             commit('zapierAuthToken',res.body.response)
           } else {
-
+            console.log(err.body.message);
           }
         },
         (err) => {

@@ -49,7 +49,8 @@ function getScriptZaps(req,res,next){
             obj.params.forEach(ob => {
               eachObj[ob.field_name] = ob.field_value
             });
-
+            
+            eachObj.id = obj._id;
             resArr.push(eachObj);
           });
 

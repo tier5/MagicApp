@@ -42,7 +42,8 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import Modal from './ZapModalForm.vue'
+  import Modal from './ZapModalForm.vue';
+  import swal from 'sweetalert2';
   export default {
     data () {
       return {
@@ -51,7 +52,26 @@
     methods:{
       deleteZap(id){
         console.log(id);
-        this.$store.dispatch('deleteZap',id);
+        swal({
+          title: 'Are you sure?',
+          text: 'You will not be able to recover the zap',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, keep it'
+        }).then((result) => {
+          if (result.value) {
+            this.$store.dispatch('deleteZap',id);
+          // result.dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+          } else if (result.dismiss === 'cancel') {
+            swal(
+              'Cancelled',
+              'Your zap is safe :)',
+              'error'
+            )
+          }
+        })
+        
       },
       ShowModal(){
         this.$store.commit('showModal');

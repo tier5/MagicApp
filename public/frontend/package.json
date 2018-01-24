@@ -10,8 +10,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "sweetalert2": "^7.6.3",
     "vue": "^2.5.2",
     "vue-js-toggle-button": "^1.2.2",
+    "vue-loading-spinner": "^1.0.11",
     "vue-paginate": "^3.5.1",
     "vue-resource": "^1.3.5",
     "vue-router": "^3.0.1",

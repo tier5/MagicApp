@@ -71,11 +71,12 @@ function findZap (zapId){
                 reject(err)
             } else {
                 //console.log(data);
+                console.log(data);
                 if (data.length == 0){
                     reject({message:'Zap not found!'});
                 } else {
                     var zaps = data[0].zaps
-                    var zap = _.find(zaps, function(o) { return o._id = zapId; });
+                    var zap = _.find(zaps, function(o) { return o._id == zapId; });
                     resolve(zap)
                 }
             }

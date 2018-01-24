@@ -6,12 +6,14 @@ import store from './store/index';
 import Vuelidate from 'vuelidate';
 import VuePaginate from 'vue-paginate';
 import ToggleButton from 'vue-js-toggle-button';
-import loading from 'vue-full-loading';
-Vue.use(loading);
+import swal from 'sweetalert2';
+import {RotateSquare2} from 'vue-loading-spinner'
+
 Vue.use(ToggleButton)
 Vue.use(VueResource);
 Vue.use(Vuelidate);
 Vue.use(VuePaginate);
+Vue.use(RotateSquare2);
 //var node_env = process.env.NODE_ENV;
 import config from '../config/config';
 if(process.env.NODE_ENV =='development'){

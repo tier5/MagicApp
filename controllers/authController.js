@@ -9,7 +9,8 @@ function userRegister(req,res,next){
     var sendUserData ={
       email : user.email,
       name : user.name,
-      isAdmin: user.isAdmin
+      isAdmin: user.isAdmin,
+      isActive:user.isActive
     }
     res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
   }).catch((err)=>{
@@ -17,7 +18,7 @@ function userRegister(req,res,next){
        return res.status(400).send({status:false, message :'User Already Exists'});
     } else {
   
-      return res.status(400).send({status:false,err :err});
+      return res.status(400).send({status:false,err:err});
     }
     
   })
@@ -32,7 +33,8 @@ function userLogin(req,res,next){
         var sendUserData ={
           email : user.email,
           name : user.name,
-          isAdmin: user.isAdmin
+          isAdmin: user.isAdmin,
+          isActive:user.isActive
         }
         res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
       } else {

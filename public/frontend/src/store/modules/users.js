@@ -2,29 +2,18 @@ import Vue from 'vue';
 
 const state = {
     USERS : [],
-    isLoading:false
+    
 };
 
 const getters = {
     USERS: (state) => {
       return state.USERS;
-    },
-    isLoading :(state) =>{
-        return state.isLoading
     }
 };
 
 const mutations = {
     getUsers:(state,payload)=>{
       state.USERS = [...payload]
-    },
-    changeLoading:(state,payload) =>{
-        if(payload){
-            state.isLoading = true
-        }else{
-            state.isLoading = false
-        }
-        
     }
   }
   

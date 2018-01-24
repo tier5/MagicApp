@@ -4,6 +4,7 @@ import Auth from './modules/auth';
 import Zap from './modules/zap';
 import Alert from './modules/alert';
 import Users from './modules/users';
+import Loader from './modules/loader';
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     Auth,
     Zap,
     Alert,
-    Users
+    Users,
+    Loader
   }
 })
