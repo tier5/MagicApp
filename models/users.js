@@ -59,6 +59,8 @@ const UserSchema =  new Schema({
         type:Boolean,default : true
     }
 
+},{
+    usePushEach: true
 });
 
 UserSchema.pre('save', function (next) {

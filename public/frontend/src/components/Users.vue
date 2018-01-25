@@ -2,10 +2,11 @@
   <div>
      <div class="row">
          <div class="col-md-12">
-            <h3>List of Users</h3>
+            <h3 v-if="USERS.length">List of Users</h3>
+            <h3 v-if="!USERS.length">No Users found!</h3>
          </div>
      </div>
-     <div class="row">
+     <div class="row" v-if="USERS.length">
          <div class="col-md-12">
              <div class="table-responsive">
                  <table class="table table-striped">

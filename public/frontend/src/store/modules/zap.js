@@ -30,7 +30,6 @@ const mutations = {
     state.zaps = [...payload]
   },
   addZap:(state,payload)=>{
-    console.log(payload);
     state.zaps = [...state.zaps,{...payload}]
   },
   deleteZap:(state,payload)=>{
@@ -65,13 +64,14 @@ const actions = {
             commit('successTrue');
 
           } else {
-
+            commit('changeLoading',false);
           }
         },
         (err) => {
           let message = err.body.message
           commit('errorMessage',message);
           commit('errorTrue');
+          commit('changeLoading',false);
           console.log(err.body);
         }
       )

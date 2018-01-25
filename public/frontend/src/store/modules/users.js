@@ -46,11 +46,15 @@ const mutations = {
                 commit('successMessage',message);
                 commit('successTrue');
               } else {
-    
+                commit('changeLoading',false);
               }
             },
             (err) => {
               console.log(err.body.message);
+              commit('changeLoading',false);
+              var message = err.body.message;
+              commit('errorMessage',message);
+              commit('errorTrue');
             }
           )
       }

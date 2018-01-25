@@ -9,7 +9,7 @@
           </div>
           
           <ul class="nav navbar-nav navbar-right">
-            <li v-if="user.isAdmin"><a href=""><router-link to="/users">Users</router-link></a></li>
+            <li v-if="user.isAdmin"><a href="" @click.prevent="customRouterPush('users')">Users</a></li>
             <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                 <span class="glyphicon glyphicon-user"></span>Profile<b class="caret"></b>
@@ -45,6 +45,15 @@
       },
       home(){
         router.push('/magic')
+      },
+      customRouterPush(routeRef){
+        switch (routeRef){
+          case 'users':
+            router.push('/users');
+            break;
+          default :
+            router.push('/magic');
+        }
       }
     },
     computed: {

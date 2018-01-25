@@ -19,7 +19,7 @@ export default {
     var requestObj = {
       location : requestLocation,
       params: this.getAllParams(),
-      zapId : '5a6060b8cd58e342f4f17b48'
+      zapId : '5a69f7e440a06e18dfca6a9a'
     }
 		var body = requestObj
 		var postUrl = 'https://www.amagiczap.com/api/script-data'

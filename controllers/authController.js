@@ -123,7 +123,6 @@ function isUserAdmin(token){
       },
       { $limit : 1 }
     ],function(err,admins){
-      console.log(admins.length)
       if(admins.length != 0){
         resolve(admins);
       } else {

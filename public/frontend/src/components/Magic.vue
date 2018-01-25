@@ -7,7 +7,7 @@
    </div>
     <div class="clearfix"></div>
     <div class="clearfix"></div>
-    <div class="row">
+    <div class="row" v-if="zaps.length">
       <div class="col-md-12">
         <div class="table-responsive">
           <table class="table table-bordered">
@@ -23,11 +23,12 @@
             <tr v-for="(zap, index) in zaps" :key="zap._id">
               <td>{{index+1}}</td>
               <td>{{zap.name}}</td>
-              <td>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</td>
+              <td>
+                <textarea rows="1" cols="115" disabled=true>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</textarea></td>
               <td>
                 <span>
                   <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
-                  <a href="" @click.prevent="deleteZap(zap._id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                  <a href="" @click.prevent="deleteZap(zap._id)"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
                 </span>
               </td>
             </tr>

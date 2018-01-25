@@ -47,11 +47,15 @@
                       </span>
                       <span class="form-group__message"
                             v-if="!$v.newZap.params.$each[zapIndex].field_name.noSpace && $v.newZap.params.$each[zapIndex].field_name.$error">
-                        No Space is allowed!      
+                        No Spaces is allowed!      
                       </span>
                       <span class="form-group__message"
                             v-if="!$v.newZap.params.$each[zapIndex].field_name.noUpperCase && $v.newZap.params.$each[zapIndex].field_name.$error">
                         No UpperCase is allowed!      
+                      </span>
+                      <span class="form-group__message"
+                            v-if="!$v.newZap.params.$each[zapIndex].field_name.noIdField && $v.newZap.params.$each[zapIndex].field_name.$error">
+                        Id field is not allowed!      
                       </span>
                     </div>
                     <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.params.$each[zapIndex].validationType.$error }">
@@ -74,7 +78,7 @@
                              placeholder="Value"
                              v-model.trim="param.field_value"
                              v-if="param.validationType ==='=' || param.validationType=='!='"
-                             @blur="$v.newZap.params.$each[zapIndex].field_value.$touch">
+                             >
                     </div>
                     <div class="col-md-1">
                       <a @click.prevent="addRemoveZapParams(zapIndex,3)" href=""><span class="fa fa-trash-o fa-2x"></span></a>

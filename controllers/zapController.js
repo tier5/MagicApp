@@ -62,22 +62,22 @@ function findZap (zapId){
             {
                 $project:{
                 _id: 0,
-                zaps: 1 
+                zaps: 1,
+                isActive:1
                 }
-            }
+            },
+            { $limit : 1 }
         ],function(err,data){
             if(err) {
                 console.log(err);
                 reject(err)
             } else {
-                //console.log(data);
-                console.log(data);
-                if (data.length == 0){
-                    reject({message:'Zap not found!'});
-                } else {
-                    var zaps = data[0].zaps
+                if(data.length && data[0].isActive){
+                    var zaps = data[0].zaps;
                     var zap = _.find(zaps, function(o) { return o._id == zapId; });
-                    resolve(zap)
+                    resolve(zap);
+                } else {
+                    reject({message:'Either data not found or users script is not active'});
                 }
             }
         })
