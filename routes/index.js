@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var {userLogin,userRegister,getAllUsers,updateUser} = require('../controllers/authController');
-var {createZap,getZaps,deleteZap} = require('../controllers/zapController');
+var {createZap,getZaps,deleteZap,updateZap} = require('../controllers/zapController');
 var {saveScriptData} = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps} = require('../controllers/zapierController');
 var {isAuthorized} = require('./middleware');
@@ -13,6 +13,7 @@ router.post('/login',userLogin);
 router.post('/zaps',createZap)
 router.get('/zaps',getZaps);
 router.delete('/zaps/:id',deleteZap);
+router.put('/zaps/:id',updateZap);
 // endpoint for script to save data to the db 
 router.post('/script-data',saveScriptData);
 // endpoint for zapier to get script data

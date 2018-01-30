@@ -16,7 +16,8 @@
               <th>#</th>
               <th>Zap Name</th>
               <th>Script</th>
-              <th>Action</th>
+              <th>Magic Option</th>
+              <th>Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -24,7 +25,11 @@
               <td>{{index+1}}</td>
               <td>{{zap.name}}</td>
               <td>
-                <textarea rows="1" cols="115" disabled=true>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</textarea></td>
+                <textarea rows="1" cols="115" disabled=true>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</textarea>
+              </td>
+              <td>
+                <toggle-button v-model="zap.magicOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
+              </td>
               <td>
                 <span>
                   <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
@@ -52,7 +57,6 @@
     },
     methods:{
       deleteZap(id){
-        console.log(id);
         swal({
           title: 'Are you sure?',
           text: 'You will not be able to recover the zap',
@@ -63,7 +67,6 @@
         }).then((result) => {
           if (result.value) {
             this.$store.dispatch('deleteZap',id);
-          // result.dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
           } else if (result.dismiss === 'cancel') {
             swal(
               'Cancelled',
@@ -76,6 +79,9 @@
       },
       ShowModal(){
         this.$store.commit('showModal');
+      },
+      updateZap(zap){
+
       }
     },
     computed: {
@@ -87,11 +93,11 @@
 
         ])
     },
+    components:{
+      Modal
+    },
     created(){
       this.$store.dispatch('getZap',this.user);
-    },
-    components:{
-      'modal': Modal
     }
   }
 </script>

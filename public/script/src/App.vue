@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-
+		<headers></headers>
   </div>
 </template>
 
 <script>
+import Headers from './Headers.vue'
 export default {
   data () {
     return {
@@ -14,19 +15,32 @@ export default {
   created(){
     var scriptElement = document.getElementById('magic_app_script');
     var zapId = scriptElement.getAttribute('data-script-id')
-    var location = window.location;
+		var location = window.location;
+		var queryParams = window.location.href.split('?')[1];
     var requestLocation  = location.protocol + '//' + location.host + location.pathname
     var requestObj = {
       location : requestLocation,
       params: this.getAllParams(),
-      zapId : '5a69f7e440a06e18dfca6a9a'
+      zapId : zapId
     }
 		var body = requestObj
 		var postUrl = 'https://www.amagiczap.com/api/script-data'
 		this.$http.post('http://localhost:3000/api/script-data',body).then(function(data){
-					//console.log(data)
+					//console.log(data.body);
+					var links = document.getElementsByTagName('a');
+					for(var i = 0;i<links.length;i++){
+						var oldhref = links[i].getAttribute('href');
+						if(oldhref.indexOf('?') === -1){
+							var newHref = oldhref +'?'+ queryParams;
+							links[i].setAttribute('href',newHref);
+						} else {
+							var newHref = oldhref +'&'+ queryParams;
+							links[i].setAttribute('href',newHref);
+						}
+						
+					}
 		}).catch((err)=>{
-				console.log(err);
+				//console.error(err.body.message);
 		})
   },
   methods:{
@@ -90,7 +104,10 @@ export default {
 
 			  return obj;
     }
-  }
+	},
+	components:{
+		Headers
+	}
 }
 </script>
 

@@ -19,10 +19,9 @@ function isAllParamsExists (zap_params,script_params){
        });
        //console.log(paramsFound)
        if(paramsFound.length == zap_params.length){
-
            resolve()
        } else{
-           reject()
+           reject({message:'All params not exists'});
        }
    })
 };
@@ -63,11 +62,9 @@ function isAllValidationPassed(zap_params,script_params){
       });
   
       if (flag ){
-        console.log('test passed');
         resolve()
       } else {
-        console.log('test failed');
-        reject()
+        reject({message:'params validation failed'});
       }
  })   
 }

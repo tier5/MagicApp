@@ -37,6 +37,9 @@ const UserSchema =  new Schema({
             name:{
                 type:String,required:[true,'Zap name is required']
             },
+            magicOption:{
+                type:Boolean, default: false
+            },
             params:[
                 {
                     field_name:{

@@ -83,9 +83,13 @@ function findZap (zapId){
         })
     })
 }
+function updateZap(req,res,next){
+    res.status(200).send('ajsdhasjdas');
+}
 module.exports = {
     getZaps,
     createZap,
     deleteZap,
-    findZap
+    findZap,
+    updateZap
 }
