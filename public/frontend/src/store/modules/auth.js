@@ -24,22 +24,22 @@ const mutations = {
   userSignIn: (state, payload) => {
     state.isAuthenticated = true;
     state.token = payload.token;
-    //state.user = payload;
+    state.user = payload.user;
     localStorage.setItem('token', payload.token);
-    //localStorage.setItem('user', JSON.stringify(payload));
+    localStorage.setItem('user', JSON.stringify(payload.user));
   },
   userSignOut: (state) => {
     state.isAuthenticated = false;
     state.token = '';
     state.user = {};
     localStorage.removeItem('token');
-    //localStorage.removeItem('user');
+    localStorage.removeItem('user');
   },
   checkUserAuthentication: (state) => {
     if (localStorage.getItem('token') !== null && localStorage.getItem('token') !== undefined) {
       state.isAuthenticated = true;
       state.token = localStorage.getItem('token');
-      //state.user = JSON.parse(localStorage.getItem('user'));
+      state.user = JSON.parse(localStorage.getItem('user'));
       router.push('/magic');
     } else {
       state.isAuthenticated = false;

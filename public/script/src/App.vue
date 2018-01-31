@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
   </div>
 </template>
 
@@ -14,19 +13,54 @@ export default {
   created(){
     var scriptElement = document.getElementById('magic_app_script');
     var zapId = scriptElement.getAttribute('data-script-id')
-    var location = window.location;
+		var location = window.location;
+		var hostname = location.hostname;
+		var queryParams = window.location.href.split('?')[1];
     var requestLocation  = location.protocol + '//' + location.host + location.pathname
     var requestObj = {
       location : requestLocation,
       params: this.getAllParams(),
-      zapId : '5a5f3291abedfa5f1375d8da'
+      zapId : zapId
     }
 		var body = requestObj
 		var postUrl = 'https://www.amagiczap.com/api/script-data'
-		this.$http.post('http://localhost:3000/api/script-data',body).then(function(data){
-					//console.log(data)
+		this.$http.post(postUrl,body).then(function(data){
+					if (data.body.appendUrls){
+							var links = document.getElementsByTagName('a');
+							for(var i = 0;i<links.length;i++){
+								var oldhref = links[i].getAttribute('href');
+								if (oldhref.indexOf('http')!==-1){
+
+										if (oldhref.indexOf(hostname)!==-1){
+
+											if(oldhref.indexOf('?') === -1){
+													var newHref = oldhref +'?'+ queryParams;
+													links[i].setAttribute('href',newHref);
+											} else {
+													var newHref = oldhref +'&'+ queryParams;
+													links[i].setAttribute('href',newHref);
+											}
+
+										}
+
+								} else {
+									if (oldhref ==='#'){
+											// var newHref = oldhref +'/?'+ queryParams;
+											// links[i].setAttribute('href',newHref);
+									} else {
+										if(oldhref.indexOf('?') === -1){
+											var newHref = oldhref +'?'+ queryParams;
+											links[i].setAttribute('href',newHref);
+										} else {
+											var newHref = oldhref +'&'+ queryParams;
+											links[i].setAttribute('href',newHref);
+										}
+									}
+								}		
+							}
+					}
 		}).catch((err)=>{
-				console.log(err);
+				//console.error(err.body.message);
 		})
   },
   methods:{
@@ -90,7 +124,7 @@ export default {
 
 			  return obj;
     }
-  }
+	}
 }
 </script>
 

@@ -4,8 +4,8 @@ const connection = require('./index');
 
 
 const scriptDataSchema = new Schema({
-    location:{type:String},
-    zapId:{type:String},
+    location:{type:String,required:true},
+    zapId:{type:String,required:true},
     params:[
         {
             field_name:{

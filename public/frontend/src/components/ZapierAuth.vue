@@ -55,7 +55,7 @@
 
     },
     created(){
-      this.createZapAuthToken()
+      
     }
   }
 </script>

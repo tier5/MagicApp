@@ -9,8 +9,9 @@ const UserSchema =  new Schema({
     email:{
         type:String,
         required:[true,'Email is required'],
-        unique:[true,'Email is unique'],
+        unique:true,
         trim: true,
+        validate: [{validator: value => validator.isEmail(value), msg : 'Not an email'}]
     },
     // first_name:{
     //     type:String,required:[true,'First Name is required']
@@ -18,17 +19,23 @@ const UserSchema =  new Schema({
     // last_name:{
     //     type:String,required:[true, 'Last Name is required']
     // },
-    name:{type:String,required:[true]},
+    name:{
+        type:String,
+        required:true
+    },
     password:{
         type:String,required:[true, 'Password is required']
     },
     accessToken:{
-        type:String
+        type:String,unique:true
     },
     zaps:[
         {
             name:{
                 type:String,required:[true,'Zap name is required']
+            },
+            magicOption:{
+                type:Boolean, default: false
             },
             params:[
                 {
@@ -44,8 +51,16 @@ const UserSchema =  new Schema({
                 }
             ]
         }
-    ]
+    ],
+    isAdmin:{
+        type:Boolean,default:false
+    },
+    isActive:{
+        type:Boolean,default : true
+    }
 
+},{
+    usePushEach: true
 });
 
 UserSchema.pre('save', function (next) {

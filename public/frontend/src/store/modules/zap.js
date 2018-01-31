@@ -30,7 +30,6 @@ const mutations = {
     state.zaps = [...payload]
   },
   addZap:(state,payload)=>{
-    console.log(payload);
     state.zaps = [...state.zaps,{...payload}]
   },
   deleteZap:(state,payload)=>{
@@ -39,6 +38,17 @@ const mutations = {
     const oldZaps = [...state.zaps];
     oldZaps.splice(index, 1);
     state.zaps = oldZaps;
+  },
+  updateZap:(state,payload)=>{
+    const index = state.zaps.findIndex(zap => zap._id === payload._id)
+    const someZap = state.zap[index]
+    const updatedZap = {
+        ...someZap,
+        ...payload
+    }
+    const zaps = [...state.zap]
+    zaps[index] = updatedZap
+    state.zaps = [...zaps]
   },
   showModal:(state)=>{
     state.isShowModal = true ;
@@ -52,6 +62,7 @@ const mutations = {
 
 const actions = {
   createNewZap:({commit}, payload)=>{
+    commit('changeLoading',true);
     Vue.http.post('zaps', payload)
       .then(
         (res) => {
@@ -59,16 +70,19 @@ const actions = {
             commit('addZap',res.body.zap);
             commit('hideModal');
             let message = res.body.message;
+            commit('changeLoading',false);
             commit('successMessage',message);
             commit('successTrue');
-          } else {
 
+          } else {
+            commit('changeLoading',false);
           }
         },
         (err) => {
           let message = err.body.message
           commit('errorMessage',message);
           commit('errorTrue');
+          commit('changeLoading',false);
           console.log(err.body);
         }
       )
@@ -78,10 +92,9 @@ const actions = {
       .then(
         (res) => {
           if(res.body.status) {
-             //console.log(res.body.response);
             commit('zapierAuthToken',res.body.response)
           } else {
-
+            console.log(err.body.message);
           }
         },
         (err) => {
@@ -118,6 +131,30 @@ const actions = {
           }
         },
         (err) => {
+          let message = err.body.message;
+          commit('errorMessage',message);
+          commit('errorTrue');
+          console.log(err.body);
+        }
+      )
+  },
+  updateZap:({commit},payload)=>{
+    commit('changeLoading',true);
+    Vue.http.put('zaps/' + payload._id,payload)
+      .then(
+        (res) => {
+          if(res.body.status) {
+            commit('changeLoading',false);
+            //commit('updateZap',payload);
+            let message = res.body.message;
+            commit('successMessage',message);
+            commit('successTrue');
+          } else {
+            commit('changeLoading',false);
+          }
+        },
+        (err) => {
+          commit('changeLoading',false);
           let message = err.body.message;
           commit('errorMessage',message);
           commit('errorTrue');

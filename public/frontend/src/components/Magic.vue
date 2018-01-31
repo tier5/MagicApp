@@ -7,7 +7,7 @@
    </div>
     <div class="clearfix"></div>
     <div class="clearfix"></div>
-    <div class="row">
+    <div class="row" v-if="zaps.length">
       <div class="col-md-12">
         <div class="table-responsive">
           <table class="table table-bordered">
@@ -16,18 +16,24 @@
               <th>#</th>
               <th>Zap Name</th>
               <th>Script</th>
-              <th>Action</th>
+              <th>Magic Option</th>
+              <th>Delete</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(zap, index) in zaps" :key="zap._id">
               <td>{{index+1}}</td>
               <td>{{zap.name}}</td>
-              <td>&lt;script type="text/javascript" src= "https://www.amagiczap.com/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</td>
+              <td>
+                <textarea rows="1" cols="115" disabled=true>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</textarea>
+              </td>
+              <td>
+                <toggle-button v-model="zap.magicOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
+              </td>
               <td>
                 <span>
                   <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
-                  <a href="" @click.prevent="deleteZap(zap._id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                  <a href="" @click.prevent="deleteZap(zap._id)"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
                 </span>
               </td>
             </tr>
@@ -41,8 +47,9 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
-    import Modal from './ZapModalForm.vue'
+  import { mapGetters } from 'vuex';
+  import Modal from './ZapModalForm.vue';
+  import swal from 'sweetalert2';
   export default {
     data () {
       return {
@@ -50,27 +57,47 @@
     },
     methods:{
       deleteZap(id){
-        console.log(id);
-        this.$store.dispatch('deleteZap',id);
+        swal({
+          title: 'Are you sure?',
+          text: 'You will not be able to recover the zap',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, keep it'
+        }).then((result) => {
+          if (result.value) {
+            this.$store.dispatch('deleteZap',id);
+          } else if (result.dismiss === 'cancel') {
+            swal(
+              'Cancelled',
+              'Your zap is safe :)',
+              'error'
+            )
+          }
+        })
+        
       },
       ShowModal(){
         this.$store.commit('showModal');
+      },
+      updateZap(zap){
+        this.$store.dispatch('updateZap',zap);
       }
     },
-      computed: {
-          // mix the getters into computed with object spread operator
-          ...mapGetters([
-              'user',
-              'zaps',
-              'isShowModal'
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'user',
+            'zaps',
+            'isShowModal'
 
-          ])
-      },
-    created(){
-      this.$store.dispatch('getZap',this.user);
+        ])
     },
     components:{
-      'modal': Modal
+      Modal
+    },
+    created(){
+      this.$store.dispatch('getZap',this.user);
     }
   }
 </script>

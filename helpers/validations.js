@@ -19,10 +19,9 @@ function isAllParamsExists (zap_params,script_params){
        });
        //console.log(paramsFound)
        if(paramsFound.length == zap_params.length){
-
            resolve()
        } else{
-           reject()
+           reject({message:'All params not exists'});
        }
    })
 };
@@ -33,7 +32,7 @@ function isAllValidationPassed(zap_params,script_params){
     zap_params.forEach(element => {
         var prp = element.field_name
         var prp_val = element.field_value
-        var valiTy= element.validationType
+        var valiTy = element.validationType
         for (const prop in script_params) {
           if (prp === prop ){
             switch (valiTy) {
@@ -63,11 +62,9 @@ function isAllValidationPassed(zap_params,script_params){
       });
   
       if (flag ){
-        console.log('test passed');
         resolve()
       } else {
-        console.log('test failed');
-        reject()
+        reject({message:'params validation failed'});
       }
  })   
 }

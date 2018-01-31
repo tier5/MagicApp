@@ -8,6 +8,7 @@ import Magic from '../components/Magic.vue'
 import AuthGaurd from './gaurds/auth-gaurd';
 import NotAuthGaurd from './gaurds/not-auth-gaurd';
 import ZapierAuth from '../components/ZapierAuth.vue';
+import Users from '../components/Users.vue';
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
         path:'zapier-auth',
         name:'ZapierAuth',
         component:ZapierAuth
+      },
+      {
+        path:'users',
+        name:'Users',
+        component: Users
       }
     ]
     },
