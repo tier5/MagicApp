@@ -14,10 +14,11 @@ Vue.use(VueResource);
 Vue.use(Vuelidate);
 Vue.use(VuePaginate);
 Vue.use(RotateSquare2);
-//var node_env = process.env.NODE_ENV;
 import config from '../config/config';
 if(process.env.NODE_ENV =='development'){
   Vue.http.options.root = config.dev_url;
+} else {
+  Vue.http.options.root = config.prod_url;
 }
 Vue.config.productionTip = false
 Vue.http.interceptors.push((request, next) => {
