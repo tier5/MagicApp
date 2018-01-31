@@ -11,10 +11,7 @@ const UserSchema =  new Schema({
         required:[true,'Email is required'],
         unique:true,
         trim: true,
-        validate: {
-            validator: validator.isEmail,
-            message: '{VALUE} is not a valid email'
-        }
+        validate: [{validator: value => validator.isEmail(value), msg : 'Not an email'}]
     },
     // first_name:{
     //     type:String,required:[true,'First Name is required']
