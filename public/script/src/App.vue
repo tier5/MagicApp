@@ -1,11 +1,9 @@
 <template>
   <div id="app">
-		<headers></headers>
   </div>
 </template>
 
 <script>
-import Headers from './Headers.vue'
 export default {
   data () {
     return {
@@ -16,6 +14,7 @@ export default {
     var scriptElement = document.getElementById('magic_app_script');
     var zapId = scriptElement.getAttribute('data-script-id')
 		var location = window.location;
+		var hostname = location.hostname;
 		var queryParams = window.location.href.split('?')[1];
     var requestLocation  = location.protocol + '//' + location.host + location.pathname
     var requestObj = {
@@ -25,19 +24,37 @@ export default {
     }
 		var body = requestObj
 		var postUrl = 'https://www.amagiczap.com/api/script-data'
-		this.$http.post('http://localhost:3000/api/script-data',body).then(function(data){
-					//console.log(data.body);
-					var links = document.getElementsByTagName('a');
-					for(var i = 0;i<links.length;i++){
-						var oldhref = links[i].getAttribute('href');
-						if(oldhref.indexOf('?') === -1){
-							var newHref = oldhref +'?'+ queryParams;
-							links[i].setAttribute('href',newHref);
-						} else {
-							var newHref = oldhref +'&'+ queryParams;
-							links[i].setAttribute('href',newHref);
-						}
-						
+		this.$http.post(postUrl,body).then(function(data){
+					if (data.body.appendUrls){
+							var links = document.getElementsByTagName('a');
+							for(var i = 0;i<links.length;i++){
+								var oldhref = links[i].getAttribute('href');
+								if (oldhref.indexOf('http')!==-1){
+
+										if (oldhref.indexOf(hostname)!==-1){
+
+											if(oldhref.indexOf('?') === -1){
+													var newHref = oldhref +'?'+ queryParams;
+													links[i].setAttribute('href',newHref);
+											} else {
+													var newHref = oldhref +'&'+ queryParams;
+													links[i].setAttribute('href',newHref);
+											}
+
+										}
+
+								} else {
+
+										if(oldhref.indexOf('?') === -1){
+											var newHref = oldhref +'?'+ queryParams;
+											links[i].setAttribute('href',newHref);
+										} else {
+											var newHref = oldhref +'&'+ queryParams;
+											links[i].setAttribute('href',newHref);
+										}
+
+								}		
+							}
 					}
 		}).catch((err)=>{
 				//console.error(err.body.message);
@@ -104,9 +121,6 @@ export default {
 
 			  return obj;
     }
-	},
-	components:{
-		Headers
 	}
 }
 </script>

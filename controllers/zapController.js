@@ -84,7 +84,21 @@ function findZap (zapId){
     })
 }
 function updateZap(req,res,next){
-    res.status(200).send('ajsdhasjdas');
+    var zapId = req.params.id;
+    var token = req.headers.authorization;
+    var id = mongoose.Types.ObjectId(zapId);
+    var magicOption = req.body.magicOption;
+
+    var conditions = { accessToken: token, 'zaps._id' : zapId }
+    ,   update = { $set: { 'zaps.$.magicOption': magicOption }}
+    ,   options = { multi: false };
+
+    Users.updateOne(conditions, update, options).then((data)=>{
+        res.status(200).send({message:'Updated',status:true});
+    }).catch((err)=>{
+        console.log(err);
+        res.status(200).send({message:'Update unsuccessful',status:false});
+    });
 }
 module.exports = {
     getZaps,

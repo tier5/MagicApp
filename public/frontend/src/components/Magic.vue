@@ -81,7 +81,7 @@
         this.$store.commit('showModal');
       },
       updateZap(zap){
-
+        this.$store.dispatch('updateZap',zap);
       }
     },
     computed: {

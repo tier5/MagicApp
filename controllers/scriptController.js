@@ -26,7 +26,6 @@ function saveScriptData(req,res,next){
             }
             return zapData.save()
         }).then((data)=>{
-            console.log(userZap);
             var resData = {
                 message:'Success',
                 status:true,

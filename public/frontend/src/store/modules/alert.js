@@ -19,14 +19,14 @@ const mutations = {
     setTimeout(()=>{
       state.isSuccess = false
       state.successMessage = ''
-    },800)
+    },1000)
   },
   errorTrue : state => {
     state.isError = true
     setTimeout(()=>{
       state.isError = false
       state.errorMessage = ''
-    },800)
+    },1000)
 
   },
   successMessage:(state,payload) => state.successMessage = payload ,

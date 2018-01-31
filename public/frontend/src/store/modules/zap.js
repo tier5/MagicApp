@@ -39,6 +39,17 @@ const mutations = {
     oldZaps.splice(index, 1);
     state.zaps = oldZaps;
   },
+  updateZap:(state,payload)=>{
+    const index = state.zaps.findIndex(zap => zap._id === payload._id)
+    const someZap = state.zap[index]
+    const updatedZap = {
+        ...someZap,
+        ...payload
+    }
+    const zaps = [...state.zap]
+    zaps[index] = updatedZap
+    state.zaps = [...zaps]
+  },
   showModal:(state)=>{
     state.isShowModal = true ;
   },
@@ -120,6 +131,30 @@ const actions = {
           }
         },
         (err) => {
+          let message = err.body.message;
+          commit('errorMessage',message);
+          commit('errorTrue');
+          console.log(err.body);
+        }
+      )
+  },
+  updateZap:({commit},payload)=>{
+    commit('changeLoading',true);
+    Vue.http.put('zaps/' + payload._id,payload)
+      .then(
+        (res) => {
+          if(res.body.status) {
+            commit('changeLoading',false);
+            //commit('updateZap',payload);
+            let message = res.body.message;
+            commit('successMessage',message);
+            commit('successTrue');
+          } else {
+            commit('changeLoading',false);
+          }
+        },
+        (err) => {
+          commit('changeLoading',false);
           let message = err.body.message;
           commit('errorMessage',message);
           commit('errorTrue');
