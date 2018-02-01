@@ -68,7 +68,7 @@
             <div class="col-md-3"></div>
             <div class="col-md-4">
               <button type="submit" class="btn btn-primary" :disabled="$v.userSU.$invalid">Register</button>
-              <button type="reset" class="btn btn-primary" @click.prevent="$v.userSU.$reset">Reset</button>
+              <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
             <div class="col-md-3">
               <a href=""> <router-link to="/login">Login</router-link></a>
@@ -97,6 +97,10 @@
       onSignUp () {
         this.$store.dispatch('userSignUp', this.userSU)
       },
+      resetForm(){
+        this.userSU = {};
+        this.$v.userSU.$reset();
+      }
     },
     validations:{
       userSU:{

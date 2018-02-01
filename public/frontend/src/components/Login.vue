@@ -52,7 +52,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-6">
               <button type="submit" class="btn btn-primary" :disabled="$v.user.$invalid">Login</button>
-              <button type="reset" class="btn btn-primary" @click.prevent="$v.user.$reset">Reset</button>
+              <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
             <div class="col-md-4">
               <a><router-link to="/register">Don't Have An Account ?</router-link></a>
@@ -81,6 +81,10 @@
       onLogin () {
         this.$store.dispatch('userSignIn', this.user)
       },
+      resetForm(){
+        this.user = {};
+        this.$v.user.$reset();
+      }
     },
     validations:{
       user:{

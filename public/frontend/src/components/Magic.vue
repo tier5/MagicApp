@@ -12,37 +12,42 @@
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
-            <tr>
-              <th>#</th>
-              <th>Zap Name</th>
-              <th>Script</th>
-              <th>Magic Option</th>
-              <th>Delete</th>
-            </tr>
+              <tr>
+                <th>#</th>
+                <th>Zap Name</th>
+                <th>Script</th>
+                <th>Required</th>
+                <th>Magic Option</th>
+                <th>Delete</th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="(zap, index) in zaps" :key="zap._id">
-              <td>{{index+1}}</td>
-              <td>{{zap.name}}</td>
-              <td>
-                <textarea rows="1" cols="115" disabled=true>&lt;script type="text/javascript" src= "http://localhost:8000/mscript/build.js" id="magic_app_script" data-script-id={{zap._id}}&gt; &lt;&#47;script&gt;</textarea>
-              </td>
-              <td>
-                <toggle-button v-model="zap.magicOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
-              </td>
-              <td>
-                <span>
-                  <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
-                  <a href="" @click.prevent="deleteZap(zap._id)"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
-                </span>
-              </td>
-            </tr>
+              <tr v-for="(zap, index) in zaps" :key="zap._id">
+                <td>{{index+1}}</td>
+                <td>{{zap.name}}</td>
+                <td>
+                  <button v-clipboard="zap.scriptString" class="btn btn-success" @success="handleCopySuccess">Copy</button>
+                </td>
+                <td>
+                <a href="#" @click.prevent="viewParams(zap)"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
+                </td>
+                <td>
+                  <toggle-button v-model="zap.magicOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
+                </td>
+                <td>
+                  <span>
+                    <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
+                    <a href="#" @click.prevent="deleteZap(zap._id)"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
+                  </span>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
     <modal v-if="isShowModal"></modal>
+    <view-zap v-if="viewZap"></view-zap>
   </div>
 </template>
 
@@ -50,9 +55,11 @@
   import { mapGetters } from 'vuex';
   import Modal from './ZapModalForm.vue';
   import swal from 'sweetalert2';
+  import ViewZap from './ViewZap.vue'
   export default {
     data () {
       return {
+        viewZapData:{}
       }
     },
     methods:{
@@ -77,11 +84,18 @@
         })
         
       },
+      viewParams(zap){
+        this.$store.commit('viewZap',zap);
+        this.$store.commit('alterViewZap',true);
+      },
       ShowModal(){
         this.$store.commit('showModal');
       },
       updateZap(zap){
         this.$store.dispatch('updateZap',zap);
+      },
+      handleCopySuccess(e){
+        swal('Copied!');
       }
     },
     computed: {
@@ -89,12 +103,14 @@
         ...mapGetters([
             'user',
             'zaps',
-            'isShowModal'
+            'isShowModal',
+            'viewZap'
 
-        ])
+        ]),
     },
     components:{
-      Modal
+      Modal,
+      ViewZap
     },
     created(){
       this.$store.dispatch('getZap',this.user);
@@ -169,5 +185,10 @@
   .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
+  }
+
+  .copy-alert {
+    position: absolute;
+    float: right;
   }
 </style>

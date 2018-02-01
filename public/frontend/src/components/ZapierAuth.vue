@@ -21,7 +21,10 @@
               <p>Zapier Api Key </p>
             </td>
             <td class="col-md-3">
-              <p>{{token}}</p>
+              <p id="zapier-token">{{token}}</p>
+            </td>
+            <td class="col-md-3">
+              <button class="btn btn-success" v-clipboard="token" @success="handleCopyAuthSuccess">Copy</button>
             </td>
           </tr>
         </tbody>
@@ -33,6 +36,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
+  import swal from 'sweetalert2';
   export default {
     data () {
       return {
@@ -45,14 +49,9 @@
       ])
     },
     methods:{
-      // createZapAuthToken(){
-      //   var obj = {
-      //     tokenName: this.name
-      //   };
-      //   obj.userId= this.user.userId;
-      //   this.$store.dispatch('createZapAuthToken',obj)
-      // }
-
+      handleCopyAuthSuccess(e){
+        swal('Copied!');
+      }
     },
     created(){
       
