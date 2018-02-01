@@ -7,6 +7,8 @@ const state ={
   },
   isShowModal: false,
   zaps:[],
+  viewZap:false,
+  zap : {}
 
 }
 
@@ -19,7 +21,9 @@ const getters = {
   },
   isShowModal:(state)=>{
     return state.isShowModal
-  }
+  },
+  viewZap:state => state.viewZap,
+  zap:state => state.zap
 };
 
 const mutations = {
@@ -27,10 +31,16 @@ const mutations = {
     state.zapierAuth = {...payload}
   },
   getZap:(state,payload)=>{
-    state.zaps = [...payload]
+    const data = [...payload];
+    for(let i = 0; i < data.length; i++) {
+      data[i].scriptString = `<script src= 'https://amagiczap.com/mscript/build.js' id ='magic_app_script' data-script-id='${data[i]._id}'>`;
+    }
+    state.zaps = [...data]
   },
   addZap:(state,payload)=>{
-    state.zaps = [...state.zaps,{...payload}]
+    const data = {...payload};
+    data.scriptString = `<script src= 'https://amagiczap.com/mscript/build.js' id ='magic_app_script' data-script-id='${data._id}'>`;
+    state.zaps = [...state.zaps,{...data}]
   },
   deleteZap:(state,payload)=>{
 
@@ -55,6 +65,12 @@ const mutations = {
   },
   hideModal:(state)=>{
     state.isShowModal = false ;
+  },
+  viewZap:(state,payload)=>{
+    state.zap = {...payload}
+  },
+  alterViewZap:(state,payload)=>{
+    state.viewZap = payload
   }
 
 }

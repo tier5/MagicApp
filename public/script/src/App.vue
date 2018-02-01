@@ -48,6 +48,7 @@ export default {
 											// var newHref = oldhref +'/?'+ queryParams;
 											// links[i].setAttribute('href',newHref);
 									} else {
+
 										if(oldhref.indexOf('?') === -1){
 											var newHref = oldhref +'?'+ queryParams;
 											links[i].setAttribute('href',newHref);
@@ -56,6 +57,7 @@ export default {
 											links[i].setAttribute('href',newHref);
 										}
 									}
+
 								}		
 							}
 					}

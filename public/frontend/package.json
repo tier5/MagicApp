@@ -12,6 +12,7 @@
   "dependencies": {
     "sweetalert2": "^7.6.3",
     "vue": "^2.5.2",
+    "vue-clipboards": "^1.2.1",
     "vue-js-toggle-button": "^1.2.2",
     "vue-loading-spinner": "^1.0.11",
     "vue-paginate": "^3.5.1",

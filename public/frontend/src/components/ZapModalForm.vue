@@ -222,7 +222,9 @@
   }
 
   .modal-container {
-    width: 90%;
+    width: 60%;
+    overflow-y: auto;
+    height: 60%;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
