@@ -1,5 +1,6 @@
 var Users = require('../models/users');
 var ZapData = require('../models/zaps');
+var _ = require('lodash');
 // send zaps to zapier after auth 
 function usersZaps(req,res,next){
     Users.aggregate([
