@@ -6,18 +6,14 @@ const state = {
   token: '',
   user:{},
   forgotPassClicked:false,
+  plans:[]
 };
 
 const getters = {
-  isAuthenticated: (state) => {
-    return state.isAuthenticated;
-  },
-  token: (state) => {
-    return state.token;
-  },
-  user: (state) => {
-    return state.user;
-  }
+  isAuthenticated: state => state.isAuthenticated,
+  token: state => state.token,
+  user: state => state.user,
+  plans: state => state.plans
 };
 
 const mutations = {
@@ -50,14 +46,19 @@ const mutations = {
   },
   toggleForgotPasswordClicked:(state)=>{
     state.forgotPassClicked = !state.forgotPassClicked
+  },
+  getPlans:(state,payload)=>{
+    state.plans = [...payload]
   }
 };
 
 const actions = {
   userSignIn: ({commit}, payload) => {
+    commit('changeLoading',true);
     Vue.http.post('login', payload)
       .then(
         (res) => {
+          commit('changeLoading',false);
           if(res.body.status) {
             // console.log(res.body.response);
             commit('userSignIn',res.body);
@@ -75,28 +76,46 @@ const actions = {
       )
   },
   userSignUp: ({commit}, payload) => {
+    commit('changeLoading',true);
     Vue.http.post('register', payload)
       .then(
         (res) => {
+          commit('changeLoading',false);
           if(res.body.status) {
             // console.log(res.body.response);
             commit('userSignIn',res.body);
             router.push('/magic');
           } else {
-
           }
         },
         (err) => {
+          commit('changeLoading',false);
           var message = err.body.message;
           commit('errorMessage',message);
           commit('errorTrue');
         }
       )
   },
-    userSignOut:({commit})=>{
-      commit('userSignOut');
-      router.push('/login');
-    }
+  userSignOut:({commit})=>{
+    commit('userSignOut');
+    router.push('/login');
+  },
+  getPlans:({commit})=>{
+    Vue.http.get('plans')
+      .then(
+        (res) => {
+          if(res.body.status) {
+            // console.log(res.body.response);
+            commit('getPlans',res.body.data);
+          } else {
+          }
+        },
+        (err) => {
+          var message = err.body.message;
+        }
+      )
+  }
+
 };
 
 export default { state, getters, mutations, actions }

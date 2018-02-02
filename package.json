@@ -26,6 +26,7 @@
     "mysql2": "^1.5.1",
     "sequelize": "^4.28.6",
     "serve-favicon": "~2.4.5",
+    "stripe": "^5.4.0",
     "validator": "^9.2.0"
   }
 }

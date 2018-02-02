@@ -1,27 +1,36 @@
 
 var Users = require('../models/users');
 var bcrypt = require('bcrypt');
+var {createCustomer} = require('../helpers/stripe');
 
 function userRegister(req,res,next){
   var body = req.body;
-  var user = new Users(body)
-  user.save().then((user)=>{
-    var sendUserData ={
-      email : user.email,
-      name : user.name,
-      isAdmin: user.isAdmin,
-      isActive:user.isActive
-    }
-    res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
-  }).catch((err)=>{
-    if(err.code === 11000) {
-       return res.status(400).send({status:false, message :'User Already Exists'});
-    } else {
-  
-      return res.status(400).send({status:false,err:err});
-    }
-    
-  })
+  var user = new Users(body);
+  // create a customer for stripe 
+  createCustomer(body.email)
+    .then((customer)=>{
+      body.customerId = customer.id;
+      var user = new Users(body)
+      return user.save();
+    })
+    .then((user)=>{
+      var sendUserData = {
+        email : user.email,
+        name : user.name,
+        isAdmin: user.isAdmin,
+        isActive:user.isActive
+      }
+      res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
+    })
+    .catch((err)=>{
+
+      if(err.code === 11000) {
+        return res.status(400).send({status:false, message :'User Already Exists'});
+      } else {
+        return res.status(400).send({status:false,err:err, message: 'Somthing Went Wrong!'});
+      }
+
+    })
 }
 
 function userLogin(req,res,next){
@@ -79,6 +88,7 @@ function getAllUsers(req,res,next){
   })
   
 }
+
 function updateUser(req,res,next){
   var token = req.headers.authorization || req.headers.token
   var body = req.body;
@@ -100,6 +110,7 @@ function updateUser(req,res,next){
     res.status(403).send({message:'Forbidden',status:false})
   }) 
 }
+
 function isUserAdmin(token){
   return new Promise(function(resolve,reject){
     Users.aggregate([

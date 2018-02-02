@@ -6,6 +6,7 @@ var {createZap,getZaps,deleteZap,updateZap} = require('../controllers/zapControl
 var {saveScriptData} = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps} = require('../controllers/zapierController');
 var {isAuthorized} = require('./middleware');
+var {getAllPlansCtrl} = require('../controllers/stripeController');
 // register user
 router.post('/register',userRegister); 
 router.post('/login',userLogin);
@@ -26,4 +27,6 @@ router.get('/users',isAuthorized,getAllUsers);
 // deactive user for admin
 router.put('/users/:id', isAuthorized,updateUser);
 
+// stripe plans
+router.get('/plans',getAllPlansCtrl)
 module.exports = router;

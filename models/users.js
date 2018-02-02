@@ -57,6 +57,9 @@ const UserSchema =  new Schema({
     },
     isActive:{
         type:Boolean,default : true
+    },
+    customerId:{
+        type:String, required:true
     }
 
 },{
