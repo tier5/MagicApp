@@ -9,7 +9,18 @@ function isAuthorized(req,res,next){
         }
     })
 }
-
+// Used using user registration 
+function isUserExists(req,res,next){
+    Users.findOne({email:req.body.email}).then((user)=>{
+        console.log(user)
+        if(user) {
+            res.status(400).send({message: 'User Already exists!', status : false })
+        } else {
+            next()
+        }
+    })
+}
 module.exports = {
-    isAuthorized
+    isAuthorized,
+    isUserExists
 }

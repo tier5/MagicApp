@@ -1,36 +1,69 @@
 
 var Users = require('../models/users');
 var bcrypt = require('bcrypt');
-var {createCustomer} = require('../helpers/stripe');
+var {createCustomer , createSubscription, createCharge, deleteCustomer} = require('../helpers/stripe');
 
 function userRegister(req,res,next){
   var body = req.body;
-  var user = new Users(body);
-  // create a customer for stripe 
-  createCustomer(body.email)
-    .then((customer)=>{
-      body.customerId = customer.id;
-      var user = new Users(body)
-      return user.save();
-    })
-    .then((user)=>{
-      var sendUserData = {
-        email : user.email,
-        name : user.name,
-        isAdmin: user.isAdmin,
-        isActive:user.isActive
-      }
-      res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
-    })
-    .catch((err)=>{
-
-      if(err.code === 11000) {
-        return res.status(400).send({status:false, message :'User Already Exists'});
-      } else {
-        return res.status(400).send({status:false,err:err, message: 'Somthing Went Wrong!'});
-      }
-
-    })
+  body.planId = body.plan.id;
+  var userType = body.userType; // 'paid' or 'free'
+  if (userType === 'paid'){
+    createCustomer(body,userType)
+      .then((customer)=>{
+        body.customerId = customer.id;
+        return createCharge(body.cardToken,body.customerId,body.plan.amount,body.plan.currency)
+      })
+      .then((charge)=>{
+        body.chargeId = charge.id;
+        return createSubscription(body.customerId,body.planId)
+      })
+      .then((subscription)=>{
+        //console.log(subscription);
+        body.subscriptionId = subscription.id;
+        var user = new Users(body)
+        return user.save();
+      })
+      .then((user)=>{
+        var sendUserData = {
+          email : user.email,
+          name : user.name,
+          isAdmin: user.isAdmin,
+          isActive:user.isActive
+        }
+        res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
+      })
+      .catch((err)=>{
+        console.log(err);
+        deleteCustomer(body.customerId).then(confirmed => console.log('deleted')).catch(err=>console.log(err));
+        return res.status(400).send({status:false,message: 'Somthing Went Wrong!'});
+      })
+  } else {
+    // if the user is free, skip charge
+    createCustomer(body,userType)
+      .then((customer)=>{
+        body.customerId = customer.id;
+        return createSubscription(body.customerId,body.planId)
+      })
+      .then((subscription)=>{
+        body.subscriptionId = subscription.id;
+        var user = new Users(body)
+        return user.save();
+      })
+      .then((user)=>{
+        var sendUserData = {
+          email : user.email,
+          name : user.name,
+          isAdmin: user.isAdmin,
+          isActive:user.isActive
+        }
+        res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
+      })
+      .catch((err)=>{
+        console.log(err);
+        deleteCustomer(body.customerId).then(confirmed => console.log('deleted')).catch(err=>console.log(err));
+        return res.status(400).send({status:false,message: 'Somthing Went Wrong!'});
+      })
+  }
 }
 
 function userLogin(req,res,next){

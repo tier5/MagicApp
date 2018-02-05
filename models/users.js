@@ -13,12 +13,6 @@ const UserSchema =  new Schema({
         trim: true,
         validate: [{validator: value => validator.isEmail(value), msg : 'Not an email'}]
     },
-    // first_name:{
-    //     type:String,required:[true,'First Name is required']
-    // },
-    // last_name:{
-    //     type:String,required:[true, 'Last Name is required']
-    // },
     name:{
         type:String,
         required:true
@@ -60,6 +54,22 @@ const UserSchema =  new Schema({
     },
     customerId:{
         type:String, required:true
+    },
+    planId:{
+        type:String,required:true
+    },
+    subscriptionId:{
+        type: String,required:true
+    },
+    cardToken:{
+        type: String
+    },
+    chargeId:{
+        type:String
+    },
+    userType : {
+        // free or paid
+        type: String, required : true
     }
 
 },{

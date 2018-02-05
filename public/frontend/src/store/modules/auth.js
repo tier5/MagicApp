@@ -6,14 +6,16 @@ const state = {
   token: '',
   user:{},
   forgotPassClicked:false,
-  plans:[]
+  plans:[],
+  cardToken:''
 };
 
 const getters = {
   isAuthenticated: state => state.isAuthenticated,
   token: state => state.token,
   user: state => state.user,
-  plans: state => state.plans
+  plans: state => state.plans,
+  cardToken: state => state.cardToken,
 };
 
 const mutations = {
@@ -49,6 +51,9 @@ const mutations = {
   },
   getPlans:(state,payload)=>{
     state.plans = [...payload]
+  },
+  addCardToken:(state,payload)=>{
+    state.cardToken = payload
   }
 };
 
@@ -101,9 +106,11 @@ const actions = {
     router.push('/login');
   },
   getPlans:({commit})=>{
+    commit('changeLoading',true);
     Vue.http.get('plans')
       .then(
         (res) => {
+          commit('changeLoading',false);
           if(res.body.status) {
             // console.log(res.body.response);
             commit('getPlans',res.body.data);
@@ -111,6 +118,7 @@ const actions = {
           }
         },
         (err) => {
+          commit('changeLoading',false);
           var message = err.body.message;
         }
       )

@@ -5,10 +5,10 @@ var {userLogin,userRegister,getAllUsers,updateUser} = require('../controllers/au
 var {createZap,getZaps,deleteZap,updateZap} = require('../controllers/zapController');
 var {saveScriptData} = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps} = require('../controllers/zapierController');
-var {isAuthorized} = require('./middleware');
+var {isAuthorized , isUserExists} = require('./middleware');
 var {getAllPlansCtrl} = require('../controllers/stripeController');
 // register user
-router.post('/register',userRegister); 
+router.post('/register',isUserExists,userRegister); 
 router.post('/login',userLogin);
 // users Zap CRUD
 router.post('/zaps',createZap)
