@@ -1,13 +1,15 @@
 <template>
   <div id='app'>
-    <h1>Please give us your payment details:</h1>
-    <card class='stripe-card'
-      :class='{ complete }'
-      stripe='pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
-      :options='stripeOptions'
-      @change='complete = $event.complete'
-    />
-    <button class='pay-with-stripe' @click='pay' :disabled='!complete'>Pay with credit card</button>
+    <div class="row">
+      <h4 class="col-md-3">Payment Details : </h4>
+      <card class='stripe-card col-md-7 form-control'
+        :class='{ complete }'
+        stripe='pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
+        :options='stripeOptions'
+        @change='complete = $event.complete'
+      />
+      <button class='col-md-2 pay-with-stripe btn btn-success' style="margin-left:2px;" @click='pay' :disabled='!complete'>Submit</button>
+    </div>
   </div>
 </template>
 
@@ -21,23 +23,7 @@ export default {
         complete: false,
         stripeOptions: {
         // see https://stripe.com/docs/stripe.js#element-options for details
-            style:{
-                base: {
-                    color: '#303238',
-                    fontSize: '16px',
-                    color: "#32325d",
-                    fontSmoothing: 'antialiased',
-                    '::placeholder': {
-                    color: '#ccc',
-                },
-                },
-                invalid: {
-                    color: '#e5424d',
-                    ':focus': {
-                    color: '#303238',
-                    },
-                }
-            }
+            
         }
     }
   },

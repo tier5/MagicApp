@@ -4,20 +4,24 @@
       <div class="col-md-3"></div>
       <div class="col-md-6 app_register_form">
         <form @submit.prevent="onSignUp">
-          <div class="row">
-            <div class="col-md-3 plans_box" v-for="(plan,index) in plans" :key="index">
-              <label>
-                <p>{{plan.name}}</p>
-                <p>${{(plan.amount) !== 0 ? (plan.amount/100): 0}}</p>
-              </label>
-              <input type="radio" v-model="userSU.plan" :value="plan">
-            </div>
-          </div>
           <div class="row form-group">
             <div class="col-md-12">
               <p style="text-align: center"><b>AMAGICZAP</b></p>
             </div>
           </div>
+          <div class="row plans_container">
+            <div class="col-md-3 plans_box" 
+                  v-for="(plan,index) in plans" :key="index" 
+                   @click="selectPlan(plan)" 
+                   v-bind:class="{ plans_box_seleted: (userSU.plan == plan) }">
+              <label>
+                <p style="text-align:centre;">{{plan.name}}</p>
+                <p>${{(plan.amount) !== 0 ? (plan.amount/100): 0}}</p>
+              </label>
+              <!-- <input type="radio" v-model="userSU.plan" :value="plan"> -->
+            </div>
+          </div>
+          <div class="clearfix"></div>
           <div class="row form-group"
                v-bind:class="{ 'form-group--error': $v.userSU.email.$error }">
             <div class="col-md-12">
@@ -90,10 +94,24 @@
               </div>
             </div>
           </div>
+          <div class="row form-group" v-if="userSU.plan.amount">
+            <div class="col-md-12">
+              <label  class="control-label col-md-2">Payments</label>
+              <div class="col-md-10">
+                <card class='stripe-card form-control'
+                  :class='{ complete }'
+                  stripe='pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
+                  :options='stripeOptions'
+                  @change='complete = $event.complete'
+                />
+            </div>  
+          </div>
+          </div>
           <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-4">
-              <button type="submit" class="btn btn-primary" :disabled="$v.userSU.$invalid">Register</button>
+              <button type="submit" class="btn btn-primary" v-if="!userSU.plan.amount" :disabled="$v.userSU.$invalid">Register</button>
+              <button type="submit" class="btn btn-primary" v-if="userSU.plan.amount" :disabled="(!complete) || ($v.userSU.$invalid)">Register</button>
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
             <div class="col-md-3">
@@ -101,7 +119,6 @@
             </div>
           </div>
         </form>
-        <payment-card></payment-card>
       </div>
       <div class="col-md-3"></div>
     </div>
@@ -111,7 +128,9 @@
 <script>
   import { required, email, minLength, sameAs} from 'vuelidate/lib/validators';
   import { mapGetters } from 'vuex';
-  import PaymentCard from './Card.vue'
+  import PaymentCard from './Card.vue';
+  //import { stripeKey, stripeOptions } from './stripeConfig.json'
+  import { Card, createToken } from 'vue-stripe-elements-plus';
   export default {
     data () {
       return {
@@ -121,22 +140,40 @@
           password:'',
           confirmPassword:'',
           plan:{
+            amount : 0
           },
           cardToken: ''
         },
+        complete: false,
+        stripeOptions: {
+        // see https://stripe.com/docs/stripe.js#element-options for details
+            
+        }
       }
     },
     methods:{
       onSignUp () {
         this.userSU.userType = (this.userSU.plan.amount === 0 ) ? 'free' : 'paid';
-        if (this.userSU.userType ==='paid'){
-          this.userSU.cardToken = this.cardToken
+        if(this.userSU.userType === 'free') {
+
+          this.$store.dispatch('userSignUp', this.userSU);
+
+        } else if(this.userSU.userType === 'paid') {
+          this.$store.commit('changeLoading', true)
+          createToken().then(data => {
+            //console.log(data.token)
+            this.userSU.cardToken = data.token.id;
+            this.$store.dispatch('userSignUp', this.userSU)
+          })
         }
-        this.$store.dispatch('userSignUp', this.userSU)
       },
       resetForm(){
         this.userSU = {};
         this.$v.userSU.$reset();
+      },
+      selectPlan(plan){
+        this.userSU.plan = plan;
+        //console.log(this.userSU.plan)
       }
     },
     computed: {
@@ -172,7 +209,10 @@
       this.$store.dispatch('getPlans');
     },
     components: {
-      PaymentCard
+      Card
+    },
+    watch:{
+
     }
   }
 </script>
@@ -182,6 +222,7 @@
   .app_register_form{
     border: solid 1px gray;
     padding: 20px;
+    border-radius:25px;
 
   }
   .app_register {
@@ -194,8 +235,24 @@
     color: red;
   }
   .plans_box{
-    border: solid 1px green;
-    margin-right :3px 
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
   }
+  .plans_box:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  .plans_container {
+    padding: 2px 16px;
+  }
+  .plans_box_seleted {
+    border: solid 1px green
+  }
+  .stripe-card {
+  width: 300px;
+  border: 1px solid grey;
+}
+.stripe-card.complete {
+  border-color: green;
+}
   
 </style>

@@ -6,7 +6,7 @@
         <form @submit.prevent="onLogin">
           <div class="row form-group">
             <div class="col-md-12">
-              <p style="text-align: center"><b>MAGIC APP</b></p>
+              <p style="text-align: center"><b>AMGAGICZAP</b></p>
             </div>
           </div>
           <div class="row form-group"
@@ -105,7 +105,7 @@
   .app_register_form{
     border: solid 1px gray;
     padding: 20px;
-
+    border-radius:25px;
   }
   .app_register {
     margin-top: 200px;

@@ -28,5 +28,17 @@ router.get('/users',isAuthorized,getAllUsers);
 router.put('/users/:id', isAuthorized,updateUser);
 
 // stripe plans
-router.get('/plans',getAllPlansCtrl)
+router.get('/plans',getAllPlansCtrl);
+
+// webhook for stripe
+router.post("/stripe/webhook/customer/subscription/trial_will_end", function(request, response) {
+    // Retrieve the request's body and parse it as JSON
+    //var event_json = JSON.parse(request.body);
+    console.log(typeof request.body);
+    //var body = request.body;
+    //console.log('event id ', body.id);
+    // Do something with event_json
+  
+    response.status(200).send('success');
+  });
 module.exports = router;

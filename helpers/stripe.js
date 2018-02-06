@@ -88,25 +88,43 @@ var stripe = require("stripe")(
   }
 
   function deleteCustomer(customerId){
-      return new Promise((resolve,reject)=>{
-          stripe.customers.del(
-            customerId,
-            function(err, confirmation) {
-              // asynchronously called
-              if(!err){
-                resolve(confirmation)
-              } else {
-                reject(err)
-              }
+    return new Promise((resolve,reject)=>{
+        stripe.customers.del(
+        customerId,
+        function(err, confirmation) {
+            // asynchronously called
+            if(!err){
+            resolve(confirmation)
+            } else {
+            reject(err)
             }
-          );
-      })
+        }
+        );
+    })
   }
+
+  function retrieveCustomer (customerId){
+    return new Promise((resolve,reject)=>{
+        stripe.customers.retrieve(
+          customerId,
+          function(err, confirmation) {
+            // asynchronously called
+            if(!err){
+              resolve(confirmation)
+            } else {
+              reject(err)
+            }
+          }
+        );
+    })
+  }
+  
 
 module.exports = {
     createCustomer,
     getAllPlans,
     createSubscription,
     createCharge,
-    deleteCustomer
+    deleteCustomer,
+    retrieveCustomer
 }
