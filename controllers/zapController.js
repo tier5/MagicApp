@@ -1,7 +1,19 @@
+/**
+ * Name: zapController.js
+ * Purpose : Zap Controller controls all the zap operation
+ */
+
 var Users = require('../models/users');
 var _ = require('lodash');
 var mongoose = require('mongoose');
 
+/**
+ * function to get all zaps
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ * @returns response 
+ */
 function getZaps(req,res,next){
   var token = req.headers.token || req.headers.authorization;
   Users.findOne({accessToken: token}).then(function(user){
@@ -11,7 +23,13 @@ function getZaps(req,res,next){
     res.status(403).send({ message:'Whoops Something Went Wrong!',status:false })
   })
 }
-
+/**
+ * function to create a zap
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ * @returns response 
+ */
 function createZap(req,res,next){
     var body = req.body;
     var token = req.headers.token || req.headers.authorization;
@@ -32,7 +50,13 @@ function createZap(req,res,next){
         res.status(403).send({message: 'Unautherized',status:false});
     })
 }
-
+/**
+ * function to delete a zap
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ * @returns response 
+ */
 function deleteZap (req,res,next){
     var zap_id = req.params.id;
     var token = req.headers.token||req.headers.authorization;
@@ -49,7 +73,11 @@ function deleteZap (req,res,next){
         })
     })
 }
-
+/**
+ * function to find a zap
+ * @param {string} zapId
+ * @returns promise 
+ */
 function findZap (zapId){
     return new Promise(function(resolve,reject){
         var id = mongoose.Types.ObjectId(zapId);
@@ -77,27 +105,34 @@ function findZap (zapId){
                     var zap = _.find(zaps, function(o) { return o._id == zapId; });
                     resolve(zap);
                 } else {
-                    reject({message:'Either data not found or users script is not active'});
+                    reject({ message:'Either data not found or users script is not active'});
                 }
             }
         })
     })
 }
+/**
+ * function to update a zap in users collection
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ * @returns response 
+ */
 function updateZap(req,res,next){
-    var zapId = req.params.id;
-    var token = req.headers.authorization;
-    var id = mongoose.Types.ObjectId(zapId);
-    var magicOption = req.body.magicOption;
+    var zapId = req.params.id
+    ,   token = req.headers.authorization
+    ,   id = mongoose.Types.ObjectId(zapId)
+    ,   magicOption = req.body.magicOption;
 
     var conditions = { accessToken: token, 'zaps._id' : zapId }
     ,   update = { $set: { 'zaps.$.magicOption': magicOption }}
     ,   options = { multi: false };
 
     Users.updateOne(conditions, update, options).then((data)=>{
-        res.status(200).send({message:'Updated',status:true});
+        return res.status(200).send({ message:'Updated', status:true });
     }).catch((err)=>{
         console.log(err);
-        res.status(200).send({message:'Update unsuccessful',status:false});
+        return res.status(200).send({ message:'Update unsuccessful', status:false });
     });
 }
 module.exports = {

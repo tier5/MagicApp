@@ -4,9 +4,7 @@
         "DB_USER":"root",
         "DB_PASS":"root",
         "DB_HOST":"localhost",
-        "JWT_SECRET":"test"
-    },
-    "production":{
-        
+        "JWT_SECRET":"qwertyuiopasdfghjklzxcvbnm",
+        "STRIPE_KEY": "sk_test_un7R5V4zG4n3bmwoYNbK8ME6"
     }
 }

@@ -1,6 +1,17 @@
+/**
+ * Name: zapierController.js
+ * Purpose : Zapier Controller controls all the zapier operation
+ */
 var Users = require('../models/users');
 var ZapData = require('../models/zaps');
-// send zaps to zapier after auth 
+
+/**
+ * function to send all zaps created
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ * @returns response 
+ */
 function usersZaps(req,res,next){
     Users.aggregate([
         {
@@ -31,7 +42,13 @@ function usersZaps(req,res,next){
           }
     })
 }
-
+/**
+ * function to get all the script data stored in script_data model and send to zapier
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ * @returns response 
+ */
 function getScriptZaps(req,res,next){
     var zapId = req.params.zapId
     // fetching all data from database for the scriptid
@@ -54,7 +71,7 @@ function getScriptZaps(req,res,next){
             resArr.push(eachObj);
           });
 
-          res.status(200).send({response: resArr, message: 'Success',status:true});
+          return res.status(200).send({response: resArr, message: 'Success',status:true});
         } catch (error) {
           console.log(error);
         }
@@ -62,7 +79,7 @@ function getScriptZaps(req,res,next){
         
     }).catch((err)=>{
       console.log(err);
-      res.status(400).send({message: 'Something went wrong!',status:false,response:[]});
+      return res.status(400).send({message: 'Something went wrong!',status:false,response:[]});
     })
 }
 

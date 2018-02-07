@@ -1,6 +1,17 @@
+/**
+ * Name: scriptController.js
+ * Purpose : Script Controller controls everything from script
+ */
 var ZapData = require('../models/zaps');
 var {findZap} = require('./zapController');
 var validation = require('../helpers/validations');
+
+/**
+ * Function to save script data 
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ */
 function saveScriptData(req,res,next){
     var body = req.body;
     var location = req.body.location;
@@ -12,9 +23,11 @@ function saveScriptData(req,res,next){
             userZap = zap;
             zapParams = zap.params;
             return validation.isAllParamsExists(zapParams,scriptParams);
-        }).then(()=>{
+        })
+        .then(()=>{
             return validation.isAllValidationPassed(zapParams,scriptParams);
-        }).then(()=>{
+        })
+        .then(()=>{
             zapData = new ZapData()
             zapData.zapId = body.zapId
             zapData.location= body.location
@@ -25,16 +38,18 @@ function saveScriptData(req,res,next){
                 })
             }
             return zapData.save()
-        }).then((data)=>{
+        })
+        .then((data)=>{
             var resData = {
                 message:'Success',
                 status:true,
                 appendUrls: userZap.magicOption
             }
-            res.status(200).send(resData);
-        }).catch((err)=>{
+            return res.status(200).send(resData);
+        })
+        .catch((err)=>{
             console.log(err);
-            res.status(400).send({message:'Something went wrong!',err:err,status:false})
+            return res.status(400).send({message:'Something went wrong!',err:err,status:false})
         });
 }
 

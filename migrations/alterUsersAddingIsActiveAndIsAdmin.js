@@ -1,7 +1,7 @@
-/*
-* Running this file will update the users table;
-* Adding fields isActive , isAdmin if these fields are not there; 
-*/
+/**
+ * Running this file will update the users table
+ * Adding fields isActive , isAdmin if these fields are not there
+ */
 
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');

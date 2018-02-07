@@ -1,3 +1,7 @@
+/**
+ * Name : users.seeder.js
+ * Purpose: create an admin for the application
+ */
 const connection = require('../models/index');
 const Users = require('../models/users');
 

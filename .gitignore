@@ -65,3 +65,8 @@ public/frontend/node_modules
 node_modules
 
 public/script/node_modules
+
+# JetBrains 
+.idea
+# env variables 
+.env

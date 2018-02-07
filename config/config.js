@@ -1,3 +1,7 @@
+/**
+ * Name : config.js
+ * Purpose : Set all the variables which are in index.json to process.env only in development mode
+ */
 var env = process.env.NODE_ENV || 'development';
 
 if (env === 'development' || env === 'test') {
@@ -6,5 +10,5 @@ if (env === 'development' || env === 'test') {
 
     Object.keys(envConfig).forEach((key) => {
         process.env[key] = envConfig[key];
-});
+    });
 }

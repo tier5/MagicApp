@@ -1,4 +1,7 @@
-
+/**
+ * Name : users.js
+ * Purpose : Users model 
+ */
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
@@ -76,6 +79,9 @@ const UserSchema =  new Schema({
     usePushEach: true
 });
 
+/**
+ * Function to hash password before save 
+ */
 UserSchema.pre('save', function (next) {
     var user = this;
   
