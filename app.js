@@ -1,9 +1,10 @@
-/* -----------------------------------------------------------
-*  Node, Express, Mongodb and Vuejs Application 
-*  -----------------------------------------------------------
-*  @NAME : app.js
-*  @PURPOSE : Application Boostrap
-*/
+/**
+ * -----------------------------------------------------------------
+ * Node, Express, Mongodb and Vuejs Application 
+ * -----------------------------------------------------------------
+ * NAME : app.js
+ * PURPOSE : Application Boostrap
+ */
 
 // Module Loading 
 var express = require('express');
@@ -25,9 +26,9 @@ require('dotenv').config();
 // Routes of the application 
 var appRoutes = require('./routes/index');
 
-/* 
-* Middleware
-*/
+/** 
+ * Middleware
+ */
   app.use(logger('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,8 +57,7 @@ var appRoutes = require('./routes/index');
   app.use(function(err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
-    res.locals.error = req.app.get('ENV') === 'development' ? err : {};
-
+    res.locals.error = process.env.NODE_ENV === 'development' ? err : {};
     // render the error page
     res.status(err.status || 500);
     res.send('error');

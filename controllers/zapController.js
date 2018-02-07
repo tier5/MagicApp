@@ -15,14 +15,19 @@ var mongoose = require('mongoose');
  * @returns response 
  */
 function getZaps(req,res,next){
-  var token = req.headers.token || req.headers.authorization;
-  Users.findOne({accessToken: token}).then(function(user){
-    var zaps = user.zaps;
-    res.status(200).send({zaps:zaps , status:true,message:'fetched all zap'});
-  }).catch((err)=>{
-    res.status(403).send({ message:'Whoops Something Went Wrong!',status:false })
-  })
+
+    var token = req.headers.token || req.headers.authorization;
+    Users
+        .findOne({accessToken: token})
+        .then(user => {
+            var zaps = user.zaps;
+            return res.status(200).send({zaps:zaps , status:true,message:'fetched all zap'});
+        })
+        .catch(err => {
+            return res.status(403).send({ message:'Whoops Something Went Wrong!',status:false })
+        })
 }
+
 /**
  * function to create a zap
  * @param {object} req 
@@ -31,25 +36,33 @@ function getZaps(req,res,next){
  * @returns response 
  */
 function createZap(req,res,next){
+
     var body = req.body;
     var token = req.headers.token || req.headers.authorization;
-    Users.findOne({accessToken : token}).then(function(data){
-        data.zaps.push(body);
-        data.save().then(function(dt){
-        var zaps = dt.zaps
-        var zap = zaps.find((el)=>{
-            return el.name == body.name
+
+    Users
+        .findOne({accessToken : token})
+        .then((data)=>{
+            data.zaps.push(body);
+            data.save()
+                .then((dt)=>{
+                    var zaps = dt.zaps
+                    var zap = zaps.find((el)=>{
+                        return el.name == body.name
+                    })
+                    return res.status(200).send({message:'Zap created !',zap:zap,status:true});
+                })
+                .catch(err=>{
+                    console.log(err);
+                    return res.status(400).send({message:'Something went wrong',status:false});
+                })
         })
-        res.status(200).send({message:'Zap created !',zap:zap,status:true});
-        }).catch(function(err){
+        .catch((err)=>{
             console.log(err);
-            res.status(400).send({message:'Something went wrong',status:false});
+            return res.status(403).send({message: 'Unautherized',status:false});
         })
-    }).catch(function(err){
-        console.log(err);
-        res.status(403).send({message: 'Unautherized',status:false});
-    })
 }
+
 /**
  * function to delete a zap
  * @param {object} req 
@@ -58,21 +71,27 @@ function createZap(req,res,next){
  * @returns response 
  */
 function deleteZap (req,res,next){
+    
     var zap_id = req.params.id;
     var token = req.headers.token||req.headers.authorization;
 
-    Users.findOne({accessToken: token}).then((data)=>{
-        var new_zaps = _.remove(data.zaps, function(n) {
-                return n._id != zap_id
-        });
-        data.zaps = new_zaps 
-        data.save().then((dt)=>{
-            res.status(200).send({message: 'Zap Deleted',status :true})
-        }).catch((err)=>{
-            res.status(400).send({message: 'Something went wrong',status :false})
+    var conditions = { accessToken : token , "zaps._id": zap_id}
+    ,   update = {$pull : { zaps : {_id : zap_id}}}
+    ,   options = {} ;
+
+    Users
+        .update(conditions,update,options)
+        .then(result=>{
+            if (result.n==1){
+                return res.status(200).send({message: 'Zap Deleted', status :true})
+            }
         })
-    })
+        .catch(err=>{
+            console.log(err);
+            return res.status(400).send({message: 'Something went wrong',status :false})
+        })
 }
+
 /**
  * function to find a zap
  * @param {string} zapId
@@ -111,6 +130,7 @@ function findZap (zapId){
         })
     })
 }
+
 /**
  * function to update a zap in users collection
  * @param {object} req 
@@ -135,6 +155,7 @@ function updateZap(req,res,next){
         return res.status(200).send({ message:'Update unsuccessful', status:false });
     });
 }
+
 module.exports = {
     getZaps,
     createZap,
