@@ -4,7 +4,16 @@
  */
 var Users = require('../models/users');
 var bcrypt = require('bcrypt');
+var moment = require('moment');
 var {createCustomer , createSubscription, createCharge, deleteCustomer , retrieveCustomer} = require('../helpers/stripe');
+
+// addDate method to date object 
+Date.prototype.addDays = function (num) {
+    var value = this.valueOf();
+    value += 86400000 * num;
+    return new Date(value);
+}
+
 
 /**
  * function to register a user
@@ -15,24 +24,48 @@ var {createCustomer , createSubscription, createCharge, deleteCustomer , retriev
  */
 function userRegister(req,res,next){
   var body = req.body;
-  body.planId = body.plan.id;
-  var userType = body.userType; // 'paid' or 'free'
+  var userType = body.userType; // 'paid' or 'free';
+  body.stripe= {};
+  body.stripe.plan = {
+      id : body.plan.id
+  };
+  body.stripe.cards=[];
+  // creating an object to store card details
+  if(body.card.id !== null){
+    var card = {
+        id : body.card.id,
+        isDefault : true
+    };
+    body.stripe.cards.push(card);
+  }
+  // create customer for the stripe 
   createCustomer(body,userType)
         .then((customer)=>{
-            body.customerId = customer.id;
-            return createSubscription(body.customerId,body.planId)
-        })
+            body.stripe.customer = {
+                id : customer.id
+            }
+            return createSubscription(body.stripe.customer.id,body.stripe.plan.id)
+        }) // create a subscription 
         .then((subscription)=>{
-            body.subscriptionId = subscription.id;
+            // adding subscribtion id to the body 
+            body.stripe.subscription = {
+                id : subscription.id,
+            };
+            // start date and end date of the subscription
+            var startDate = new Date ;
+            var endDate = startDate.addDays(body.plan.trial_period_days);
+            body.stripe.subscription.startDate = startDate ;
+            body.stripe.subscription.endDate = moment(endDate).format();
             var user = new Users(body)
             return user.save();
-        })
+        }) // create a user 
         .then((user)=>{
             var sendUserData = {
                 email : user.email,
                 name : user.name,
                 isAdmin: user.isAdmin,
-                isActive:user.isActive
+                isActive:user.isActive,
+                isSubscribed : true
             }
             return res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
         })
@@ -59,17 +92,34 @@ function userLogin(req,res,next){
 
     Users
         .findOne({email})
+        .select({ email:1,password:1,stripe:1,isActive:1,isAdmin:1,userType:1, accessToken: 1})
         .then(user=>{
             bcrypt
                 .compare(password, user.password, (err, data) => {
                     if (data) {
-                        var sendUserData ={
-                            email : user.email,
-                            name : user.name,
-                            isAdmin: user.isAdmin,
-                            isActive:user.isActive,
+                        if(user.userType == 'free'){
+                            var currentDate = new Date ;
+                            var isSubscribed = moment(currentDate).isSameOrBefore(user.stripe.subscription.endDate)
+                            var sendUserData ={
+                                email : user.email,
+                                name : user.name,
+                                isAdmin: user.isAdmin,
+                                isActive:user.isActive,
+                                isSubscribed: isSubscribed
+                            }
+                            console.log(sendUserData);
+                            return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
+
+                        } else {
+                            var sendUserData ={
+                                email : user.email,
+                                name : user.name,
+                                isAdmin: user.isAdmin,
+                                isActive:user.isActive,
+                                isSubscribed: true
+                            }
+                            return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
                         }
-                        return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
                         
                     } else {
                         console.log(err);

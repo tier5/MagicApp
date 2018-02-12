@@ -10,7 +10,7 @@ var {userLogin,userRegister,getAllUsers,updateUser} = require('../controllers/au
 var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
 var {saveScriptData}                                = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
-var {isAuthorized , isUserExists}                   = require('./middleware');
+var {isAuthorized , isUserExists, isUserSubscribed} = require('./middleware');
 var {getAllPlansCtrl}                               = require('../controllers/stripeController');
 
 /**
@@ -22,10 +22,10 @@ var {getAllPlansCtrl}                               = require('../controllers/st
 /**
  * Create, read, update and delete Zaps
  */
-  router.post('/zaps',isAuthorized,createZap)
-  router.get('/zaps',isAuthorized,getZaps);
-  router.delete('/zaps/:id',isAuthorized,deleteZap);
-  router.put('/zaps/:id',isAuthorized,updateZap);
+  router.post('/zaps',isUserSubscribed,createZap)
+  router.get('/zaps',isUserSubscribed,getZaps);
+  router.delete('/zaps/:id',isUserSubscribed,deleteZap);
+  router.put('/zaps/:id',isUserSubscribed,updateZap);
 
 // Saves script's data to database  
   router.post('/script-data',saveScriptData);

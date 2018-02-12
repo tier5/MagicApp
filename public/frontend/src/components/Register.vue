@@ -128,8 +128,6 @@
 <script>
   import { required, email, minLength, sameAs} from 'vuelidate/lib/validators';
   import { mapGetters } from 'vuex';
-  import PaymentCard from './Card.vue';
-  //import { stripeKey, stripeOptions } from './stripeConfig.json'
   import { Card, createToken } from 'vue-stripe-elements-plus';
   export default {
     data () {
@@ -142,7 +140,8 @@
           plan:{
             amount : 0
           },
-          cardToken: ''
+          cardToken: '',
+          card:{}
         },
         complete: false,
         stripeOptions: {
@@ -159,11 +158,15 @@
           this.$store.dispatch('userSignUp', this.userSU);
 
         } else if(this.userSU.userType === 'paid') {
+          
           this.$store.commit('changeLoading', true)
+
           createToken().then(data => {
-            //console.log(data.token)
             this.userSU.cardToken = data.token.id;
+            this.userSU.card = data.token.card;
             this.$store.dispatch('userSignUp', this.userSU)
+          }).catch((err)=>{
+            console.log(err);
           })
         }
       },
@@ -206,7 +209,7 @@
       }
     },
     created(){
-      this.$store.dispatch('getPlans');
+      this.$store.dispatch('getPlans'); 
     },
     components: {
       Card

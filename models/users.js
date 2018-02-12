@@ -55,24 +55,38 @@ const UserSchema =  new Schema({
     isActive:{
         type:Boolean,default : true
     },
-    customerId:{
-        type:String, required:true
-    },
-    planId:{
-        type:String,required:true
-    },
-    subscriptionId:{
-        type: String,required:true
-    },
-    cardToken:{
-        type: String
-    },
-    chargeId:{
-        type:String
-    },
     userType : {
         // free or paid
         type: String, required : true
+    },
+    stripe:{
+        subscription : {
+            id : {
+                type: String
+            },
+            startDate:{
+                type:Date, default: Date.now
+            },
+            endDate:{
+                type:Date
+            }
+        },
+        plan:{
+            id:{
+                type:String
+            }
+        },
+        customer:{
+            id:{
+                type:String
+            }
+        },
+        cards:[
+            {
+                id:{ type:String  },
+                isDefault:{type:Boolean, default: true}
+            }
+        ]
     }
 
 },{

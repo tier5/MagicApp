@@ -5,11 +5,12 @@
       <nav class="navbar app__header">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a class="navbar-brand" ><router-link to="/magic">Magic App</router-link></a>
+            <a class="navbar-brand" ><router-link to="/magic">Magic Zap</router-link></a>
           </div>
           
           <ul class="nav navbar-nav navbar-right">
-            <li v-if="user.isAdmin"><a href="" @click.prevent="customRouterPush('users')">Users</a></li>
+            <li v-if="user.isAdmin"><a href="" @click.prevent="customRouterPush('/users')">Users</a></li>
+            <li><a href="" @click.prevent="customRouterPush('/plans')">Plans</a></li>
             <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                 <span class="glyphicon glyphicon-user"></span>Profile<b class="caret"></b>
@@ -47,13 +48,8 @@
         router.push('/magic')
       },
       customRouterPush(routeRef){
-        switch (routeRef){
-          case 'users':
-            router.push('/users');
-            break;
-          default :
-            router.push('/magic');
-        }
+        var slashRoute = routeRef;
+        router.push(slashRoute)
       }
     },
     computed: {
