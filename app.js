@@ -14,6 +14,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var helmet = require('helmet');
 
 // create an instance of the application 
 var app = express();
@@ -40,6 +41,8 @@ var appRoutes = require('./routes/index');
     next();
   })
   app.use('/api',appRoutes);
+  app.use(helmet());
+  app.disable('x-powered-by');
 
 // send all get request to frontend to handle  
   app.get('*',function(req,res){

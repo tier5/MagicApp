@@ -6,18 +6,25 @@ var express = require('express');
 var router = express.Router();
 
 // import all controllers for the routes 
-var {userLogin,userRegister,getAllUsers,updateUser} = require('../controllers/authController');
 var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
 var {saveScriptData}                                = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
 var {isAuthorized , isUserExists, isUserSubscribed} = require('./middleware');
 var {getAllPlansCtrl}                               = require('../controllers/stripeController');
+var { userLogin, 
+      userRegister,
+      getAllUsers,
+      updateUser, 
+      userForgetPassword,
+      userResetPassword}                           = require('../controllers/authController');
 
 /**
- * Users Registration and Login
+ * Users Registration, Login, Forget Password and Reset Password 
  */
   router.post('/register',isUserExists,userRegister); 
   router.post('/login',userLogin);
+  router.post('/forget-password',userForgetPassword);
+  router.post('/reset-password',userResetPassword)
 
 /**
  * Create, read, update and delete Zaps

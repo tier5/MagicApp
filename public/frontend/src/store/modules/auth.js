@@ -5,7 +5,7 @@ const state = {
   isAuthenticated: false,
   token: '',
   user:{},
-  forgotPassClicked:false,
+  forgetPassword:false,
   plans:[],
   cardToken:''
 };
@@ -16,6 +16,7 @@ const getters = {
   user: state => state.user,
   plans: state => state.plans,
   cardToken: state => state.cardToken,
+  forgetPassword : state => state.forgetPassword
 };
 
 const mutations = {
@@ -54,6 +55,9 @@ const mutations = {
   },
   addCardToken:(state,payload)=>{
     state.cardToken = payload
+  },
+  changeForgetPassword:(state,payload)=>{
+    state.forgetPassword = payload
   }
 };
 
@@ -121,6 +125,26 @@ const actions = {
         (err) => {
           commit('changeLoading',false);
           var message = err.body.message;
+        }
+      )
+  },
+  forgetPassword:({commit}, payload) => {
+    commit('changeLoading',true);
+    Vue.http.post('forget-password',payload)
+      .then(
+        (res)=>{
+          commit('changeLoading',false);
+          if(res.body.status){
+            var message = res.body.message 
+            commit('successMessage',message);
+            commit('successTrue');
+          }
+        },
+        (err) => {
+          commit('changeLoading',false);
+          var message = err.body.message; 
+          commit('errorMessage',message);
+          commit('errorTrue');
         }
       )
   }

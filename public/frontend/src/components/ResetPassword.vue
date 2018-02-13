@@ -1,6 +1,6 @@
 <template>
   <div>
-    forget password template
+    {{msg}}
   </div>
 </template>
 

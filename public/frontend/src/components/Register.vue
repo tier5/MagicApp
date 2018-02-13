@@ -116,11 +116,14 @@
             </div>
             <div class="col-md-3">
               <a href=""> <router-link to="/login">Login</router-link></a>
+              <a href="" @click.prevent="openForgetPassword"> Forget Password ?</a>
             </div>
           </div>
         </form>
       </div>
-      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <forget-password v-if="forgetPassword"></forget-password>
+      </div>
     </div>
   </div>
 </template>
@@ -129,6 +132,7 @@
   import { required, email, minLength, sameAs} from 'vuelidate/lib/validators';
   import { mapGetters } from 'vuex';
   import { Card, createToken } from 'vue-stripe-elements-plus';
+  import ForgetPassword from './ForgetPassword.vue';
   export default {
     data () {
       return {
@@ -177,13 +181,17 @@
       selectPlan(plan){
         this.userSU.plan = plan;
         //console.log(this.userSU.plan)
+      },
+      openForgetPassword(){
+        this.$store.commit('changeForgetPassword',true);
       }
     },
     computed: {
         // mix the getters into computed with object spread operator
         ...mapGetters([
             'plans',
-            'cardToken'
+            'cardToken',
+            'forgetPassword'
 
         ]),
     },
@@ -212,7 +220,8 @@
       this.$store.dispatch('getPlans'); 
     },
     components: {
-      Card
+      Card,
+      ForgetPassword
     },
     watch:{
 

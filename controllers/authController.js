@@ -6,6 +6,8 @@ var Users = require('../models/users');
 var bcrypt = require('bcrypt');
 var moment = require('moment');
 var {createCustomer , createSubscription, createCharge, deleteCustomer , retrieveCustomer} = require('../helpers/stripe');
+var {sendForgetPasswordMail} = require('../helpers/nodemailer.js');
+var jwt = require('jsonwebtoken');
 
 // addDate method to date object 
 Date.prototype.addDays = function (num) {
@@ -56,6 +58,7 @@ function userRegister(req,res,next){
             var endDate = startDate.addDays(body.plan.trial_period_days);
             body.stripe.subscription.startDate = startDate ;
             body.stripe.subscription.endDate = moment(endDate).format();
+            body.accessToken = jwt.sign({ email: body.email },"amagiczap.com");
             var user = new Users(body)
             return user.save();
         }) // create a user 
@@ -255,9 +258,65 @@ function isUserAdmin(token){
         })
     })
 }
+/**
+ * Function for user's forget password
+ * @param {object} req
+ * @param {object} res
+ */
+function userForgetPassword(req,res){
+    var email = req.body.email;
+    Users
+        .findOne({email})
+        .select({email:1})
+        .then(user =>{
+            var resetToken = jwt.sign({ email: user.email },"amagiczap.com" , { expiresIn: 60 * 60 });
+            sendForgetPasswordMail(email,resetToken,function(err,info){
+                if (!err){
+                    res.status(200).send({message: 'An email has been sent to reset password', status: true});
+                } else {
+                    res.status(500).send({message: 'Something went wrong!', status: false});
+                }
+            })
+        })
+        .catch(err=>{
+            res.status(500).send({message: 'Something went wrong!', status: false});
+        })
+}
+/**
+ * Function for users's reset password
+ * @param {object} req 
+ * @param {object} res
+ */
+function userResetPassword(req,res){
+    var token = req.headers.authorization;
+    var password = req.body.password;
+    jwt.verify(token, 'amagiczap.com',function(err, decoded){
+        if (!err){
+            Users
+                .findOne({email : decoded.email})
+                .select({password: 1})
+                .then(user => {
+                    user.password = password ;
+                     return user.save()
+                })
+                .then(docs=>{
+                        return res.status(200).send({message:'Password updated',status:true})
+                })
+                .catch(err=>{
+                    console.log(err);
+                    res.status(500).send({message:'Something went wrong',status:false})
+                })
+        } else {
+            res.status(400).send({message: 'Something went wrong', status: false})
+        }        
+
+    });
+}
 module.exports = {
     userRegister,
     userLogin,
     getAllUsers,
-    updateUser
+    updateUser,
+    userForgetPassword,
+    userResetPassword
 }

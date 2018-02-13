@@ -2,24 +2,8 @@
   <div>
     <div class="container" >
       <div class="row">
-        <div class="col-md-3 col-sm-3" v-for="(plan,index) in plans" :key="index">
-          <v-layout v-if="plan.amount">
-            <v-flex xs12 sm6 offset-sm3>
-              <v-card>
-                <v-card-title primary-title>
-                  <div>
-                    <h3 class="headline mb-0">{{plan.name}}</h3>
-                  </div>
-                </v-card-title>
-                <v-card-text>
-                  <div>${{(plan.amount) !== 0 ? (plan.amount/100): 0}}</div>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn flat color="orange">Select</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
-          </v-layout>
+        <div class="col-md-4 col-sm-4" v-for="(plan,index) in plans" :key="index">
+          {{plan}}
         </div>
       </div>
     </div>

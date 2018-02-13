@@ -10,6 +10,7 @@ import NotAuthGaurd from './gaurds/not-auth-gaurd';
 import ZapierAuth from '../components/ZapierAuth.vue';
 import Users from '../components/Users.vue';
 import Plans  from '../components/Plans.vue';
+import ResetPassword from '../components/ResetPassword.vue';
 
 Vue.use(Router)
 
@@ -53,6 +54,12 @@ export default new Router({
       name: 'Login',
       beforeEnter:NotAuthGaurd,
       component: Login
-    }
+    },
+    {
+      path: '/reset-password',
+      name: 'ResetPassword',
+      component: ResetPassword
+    },
+    
   ]
 })
