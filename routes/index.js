@@ -10,7 +10,7 @@ var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/za
 var {saveScriptData}                                = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
 var {isAuthorized , isUserExists, isUserSubscribed} = require('./middleware');
-var {getAllPlansCtrl}                               = require('../controllers/stripeController');
+var {getAllPlansCtrl, updateUserSubscribtion}       = require('../controllers/stripeController');
 var { userLogin, 
       userRegister,
       getAllUsers,
@@ -24,7 +24,7 @@ var { userLogin,
   router.post('/register',isUserExists,userRegister); 
   router.post('/login',userLogin);
   router.post('/forget-password',userForgetPassword);
-  router.post('/reset-password',userResetPassword)
+  router.post('/reset-password/:token',userResetPassword)
 
 /**
  * Create, read, update and delete Zaps
@@ -53,15 +53,6 @@ var { userLogin,
  * Stripe 
  */
   router.get('/plans',getAllPlansCtrl);
-  router.post("/stripe/webhook/customer/subscription/trial_will_end", function(request, response) {
-    // Retrieve the request's body and parse it as JSON
-    //var event_json = JSON.parse(request.body);
-    console.log(typeof request.body);
-    //var body = request.body;
-    //console.log('event id ', body.id);
-    // Do something with event_json
-  
-    response.status(200).send('success');
-  });
+  router.put('/subscriptions',updateUserSubscribtion)
   
 module.exports = router;

@@ -1,18 +1,7 @@
 <template>
   <div>
-    <!--div class="row">
-      <div class="col-md-12">
-        <form class="form-inline" @submit.prevent="createZapAuthToken">
-          <div class="form-group mx-sm-3 mb-2">
-            <label class="sr-only">Name </label>
-            <input type="text" class="form-control" v-model="name" placeholder="Token Name">
-          </div>
-          <button type="submit" class="btn btn-primary mb-2">Submit</button>
-        </form>
-      </div>
-    </div -->
     <div class="clearfix"></div>
-    <div class="row">
+    <div class="row" v-if="user.isSubscribed">
       <div class="table-responsive">
         <table class="table table-bordered">
         <tbody>
@@ -31,6 +20,9 @@
       </table>
       </div>
     </div>
+    <div v-if="!user.isSubscribed">
+     <p>Your subscription is over please subscribe to some paid plan</p>
+   </div>
   </div>
 </template>
 
@@ -45,7 +37,8 @@
     },
     computed:{
       ...mapGetters([
-        'token'
+        'token',
+        'user'
       ])
     },
     methods:{

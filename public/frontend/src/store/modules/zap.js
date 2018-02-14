@@ -83,7 +83,9 @@ const actions = {
       .then(
         (res) => {
           if(res.body.status) {
-            commit('addZap',res.body.zap);
+            if (res.body.zap){
+              commit('addZap',res.body.zap);
+            }
             commit('hideModal');
             let message = res.body.message;
             commit('changeLoading',false);
@@ -123,7 +125,9 @@ const actions = {
       .then(
         (res) => {
           if(res.body.status) {
-            commit('getZap',res.body.zaps)
+            if(res.body.zaps){
+              commit('getZap',res.body.zaps)
+            }
           } else {
 
           }

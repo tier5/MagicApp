@@ -110,7 +110,7 @@ function userLogin(req,res,next){
                                 isActive:user.isActive,
                                 isSubscribed: isSubscribed
                             }
-                            console.log(sendUserData);
+                            //console.log(sendUserData);
                             return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
 
                         } else {
@@ -288,7 +288,7 @@ function userForgetPassword(req,res){
  * @param {object} res
  */
 function userResetPassword(req,res){
-    var token = req.headers.authorization;
+    var token = req.headers.authorization || req.params.token;
     var password = req.body.password;
     jwt.verify(token, 'amagiczap.com',function(err, decoded){
         if (!err){

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import router from '../../router';
 
 const state = {
     USERS : [],
@@ -57,7 +58,34 @@ const mutations = {
               commit('errorTrue');
             }
           )
-      }
+    },
+    updateSubscription : ({commit},payload)=>{
+      commit('changeLoading',true);
+      Vue.http.put('subscriptions',payload)
+          .then(
+            (res) => {
+              if(res.body.status) {
+                commit('changeLoading',false);
+                var message = res.body.message;
+                commit('successMessage',message);
+                commit('successTrue');
+                commit('userSignIn',res.body);
+                router.push('/magic');
+                
+              } else {
+                commit('changeLoading',false);
+              }
+            },
+            (err) => {
+              console.log(err.body.message);
+              commit('changeLoading',false);
+              var message = err.body.message;
+              commit('errorMessage',message);
+              commit('errorTrue');
+            }
+          )
+    }
+
     
   }
   

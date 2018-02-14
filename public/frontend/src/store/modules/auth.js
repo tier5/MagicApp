@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import router from '../../router';
+import swal from 'sweetalert2';
 
 const state = {
   isAuthenticated: false,
@@ -44,7 +45,7 @@ const mutations = {
       state.isAuthenticated = false;
       state.token = '';
       state.user = {};
-      router.push('/login');
+      //router.push('/login');
     }
   },
   toggleForgotPasswordClicked:(state)=>{
@@ -138,6 +139,37 @@ const actions = {
             var message = res.body.message 
             commit('successMessage',message);
             commit('successTrue');
+            commit('changeForgetPassword',false);
+          }
+        },
+        (err) => {
+          commit('changeLoading',false);
+          var message = err.body.message; 
+          commit('errorMessage',message);
+          commit('errorTrue');
+        }
+      )
+  },
+  resetForget:({commit},payload)=>{
+    commit('changeLoading',true);
+    Vue.http.post('reset-password/' + payload.token,payload)
+      .then(
+        (res)=>{
+          commit('changeLoading',false);
+          if(res.body.status){
+            var message = res.body.message 
+            // commit('successMessage',message);
+            // commit('successTrue');
+            swal({
+              position: 'center',
+              type: 'success',
+              title: 'Your password has been changed',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            setTimeout(()=>{
+              router.push('/login');
+            },1500)
           }
         },
         (err) => {

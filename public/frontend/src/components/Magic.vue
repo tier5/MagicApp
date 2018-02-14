@@ -1,10 +1,11 @@
 <template>
   <div>
-   <div class="row">
-     <div class="col-md-12">
-       <button class="btn btn-primary" @click.prevent="ShowModal()">New Zap</button>
-     </div>
-   </div>
+   <div v-if="user.isSubscribed">
+    <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary" @click.prevent="ShowModal()">New Zap</button>
+    </div>
+    </div>
     <div class="clearfix"></div>
     <div class="clearfix"></div>
     <div class="row" v-if="zaps.length">
@@ -48,6 +49,10 @@
     </div>
     <modal v-if="isShowModal"></modal>
     <view-zap v-if="viewZap"></view-zap>
+   </div>
+   <div v-if="!user.isSubscribed">
+     <p>Your subscription is over please subscribe to some paid plan</p>
+   </div>
   </div>
 </template>
 
@@ -105,7 +110,6 @@
             'zaps',
             'isShowModal',
             'viewZap'
-
         ]),
     },
     components:{

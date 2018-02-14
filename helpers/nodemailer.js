@@ -1,7 +1,7 @@
 /** 
  *  NAME : nodemailer.js
  *  PURPOSE : Helper function for nodemailer
- *  API REFERENCE : https://stripe.com/docs/api
+ *  
  */
 const nodemailer = require('nodemailer');
 
@@ -18,10 +18,10 @@ function sendForgetPasswordMail(email,token,callback){
         let transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 587,
-            secure: false, // true for 465, false for other ports
+            secure: false,
             auth: {
-                user: 'work.test.tier5@gmail.com', // generated ethereal user
-                pass: '!Aworker2#'  // generated ethereal password
+                user: 'work.test.tier5@gmail.com',
+                pass: '!Aworker2#' 
             }
         });
         var mailOptions = {
@@ -31,7 +31,7 @@ function sendForgetPasswordMail(email,token,callback){
             text : `Hi,
                     Looks like you'd like to change your Amagiczap password. Please click the following link to do so:
 
-                    https://localhost:8080/reset-password/?token=${token}
+                    http://localhost:8080/reset-password/${token}
 
                     Please disregard this e-mail if you did not request a password reset.
                     Cheers,

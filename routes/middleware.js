@@ -57,7 +57,7 @@ function isUserSubscribed(req,res,next){
                 if(isSubscribed){
                     next()
                 } else {
-                    res.status(200).send({status: true , message : 'Your subscription has been over'})
+                    res.status(400).send({status: false , message : 'Your subscription has been over'})
                 }
             } else {
                 next();

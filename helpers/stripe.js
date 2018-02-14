@@ -154,11 +154,54 @@ function retrieveCustomer (customerId){
     })
 }
 
+function createCard (customerId, cardToken){
+    return new Promise((resolve,reject)=>{
+        stripe.customers.createSource(
+            customerId,
+            { source: cardToken },
+            function(err, card) {
+              // asynchronously called
+              if(!err){
+                resolve(card)
+                } else {
+                reject(err)
+                }
+            }
+          );
+    })
+}
+
+async function updateSubscription(subscriptionId,planId){
+    return new Promise((resolve,reject)=>{
+        stripe.subscriptions.retrieve(subscriptionId,function(err,subscription){
+            if (!err){
+                stripe.subscriptions.update(subscriptionId, {
+                    items: [{
+                      id: subscription.items.data[0].id,
+                      plan: planId,
+                    }]
+                  },function(err,sub){
+                    // asynchronously called
+                    if(!err){
+                        resolve(sub)
+                        } else {
+                        reject(err)
+                        }
+                  });
+            } else {
+                reject(err)
+            }
+        });
+    })
+}
+
 module.exports = {
     createCustomer,
     getAllPlans,
     createSubscription,
     createCharge,
     deleteCustomer,
-    retrieveCustomer
+    retrieveCustomer,
+    createCard,
+    updateSubscription
 }
