@@ -16,7 +16,6 @@ Date.prototype.addDays = function (num) {
     return new Date(value);
 }
 
-
 /**
  * function to register a user
  * @param {object} req 
@@ -307,6 +306,7 @@ function userResetPassword(req,res){
                     res.status(500).send({message:'Something went wrong',status:false})
                 })
         } else {
+            console.log(err);
             res.status(400).send({message: 'Something went wrong', status: false})
         }        
 

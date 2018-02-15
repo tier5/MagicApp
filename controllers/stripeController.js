@@ -69,7 +69,6 @@ function getAllPlansCtrl (req,res,next){
                    return user.save()
                 })
                 .then(updatedUser=>{
-                    console.log(updatedUser);
                     var sendUserData = {
                         email : updatedUser.email,
                         name : updatedUser.name,

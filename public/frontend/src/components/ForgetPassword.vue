@@ -6,7 +6,7 @@
           <div class="modal-container">
             <div class="modal-header">
               <slot name="header">
-                <b>Forget Your Password ? </b>
+                <b>Forgot Your Password ? </b>
               </slot>
             </div>
 
@@ -14,7 +14,13 @@
               <slot name="body">
                 <div class="row">
                   <form>
-                    <input type="email" name="" id="" v-model="email" required placeholder="Email Address" class="form-control">
+                    <div class="form-group" v-bind:class="{ 'form-group--error': $v.email.$error }">
+                      <input  type="email" 
+                              v-model="email" 
+                              placeholder="Email Address" 
+                              class="form-control"
+                              @blur="$v.email.$touch">
+                    </div>
                   </form>
                 </div>
               </slot>
@@ -23,7 +29,7 @@
               <slot name="footer">
                 <div class="row">
                   <div class="col-sm-2 pull-right">
-                    <button class="modal-default-button btn btn-success" @click.prevent="submitForgetPassword">Forget Password</button>
+                    <button class="modal-default-button btn btn-success" @click.prevent="submitForgetPassword" :disabled="$v.email.$invalid">Forgot Password</button>
                   </div>
                   <div class="col-sm-3 pull-right">
                     <button class="modal-default-button btn btn-primary" @click.prevent="closeForgetPassword">Cancel</button>
@@ -39,10 +45,11 @@
 </template>
 
 <script>
+import { required, email, minLength, sameAs} from 'vuelidate/lib/validators';
+
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
       email:''
     }
   },
@@ -55,6 +62,12 @@ export default {
     },
     closeForgetPassword(){
       this.$store.commit('changeForgetPassword',false);
+    }
+  },
+  validations:{
+    email :{
+      required,
+      email
     }
   }
 }

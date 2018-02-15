@@ -20,8 +20,8 @@ function sendForgetPasswordMail(email,token,callback){
             port: 587,
             secure: false,
             auth: {
-                user: 'work.test.tier5@gmail.com',
-                pass: '!Aworker2#' 
+                user: '',
+                pass: '' 
             }
         });
         var mailOptions = {
@@ -31,7 +31,7 @@ function sendForgetPasswordMail(email,token,callback){
             text : `Hi,
                     Looks like you'd like to change your Amagiczap password. Please click the following link to do so:
 
-                    http://localhost:8080/reset-password/${token}
+                    https://www.amagiczap.com/reset-password/${token}
 
                     Please disregard this e-mail if you did not request a password reset.
                     Cheers,

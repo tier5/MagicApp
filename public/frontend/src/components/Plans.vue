@@ -1,34 +1,44 @@
 <template>
   <div>
     <div class="container">
-         <div class="row">
-            <div class="col-md-4 col-sm-4" v-for="(plan,index) in plans" :key="index" v-if="plan.amount">
-               <div class="cd-pricing-header">
-                  <h2>{{plan.name}}</h2>
-                  <div class="cd-price">
-                     <span>${{plan.amount/100}}</span>
-                     <span>/month</span>
-                  </div>
-               </div>
-               <div class="body-wrap">
-               <div class="cd-pricing-features">
-                 <div class="col-md-12">
-                    <div class="col-md-10">
-                      <card class='stripe-card form-control'
-                        :class='{ complete }'
-                        stripe='pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
-                        :options='stripeOptions'
-                        @change='complete = $event.complete'
-                      />
-                    </div>  
-                  </div>
-               </div>
-               <footer class="cd-pricing-footer">
-                  <button class="btn btn-primary" :disabled="!complete" @click="updateSubscription(plan)">Subscribe</button>
-               </footer>
-               </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h3>List of Subscription Plans</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div  class="col-md-4 col-sm-4" 
+                v-for="(plan,index) in plans" 
+                :key="index" 
+                v-if="plan.amount" 
+                @click="selectPlan(plan)"
+                >
+          <div class="cd-pricing-header" 
+                  v-bind:class="{ plans_box_seleted: (selectedPlan == plan) }">
+            <h2>{{plan.name}}</h2>
+            <div class="cd-price">
+                <span>${{plan.amount/100}}</span>
+                <span>for every {{plan.interval_count}} month</span>
             </div>
-         </div>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <form v-if="isEmptyObject(selectedPlan)" >
+        <div class="row" v-if="!user.isAdmin">
+          <div class="col-md-6">
+            <card class='stripe-card form-control'
+                      :class='{ complete }'
+                      stripe='pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
+                      :options='stripeOptions'
+                      @change='complete = $event.complete'
+                    />
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-primary" :disabled="!complete" @click.prevent="updateSubscription()">Subscribe</button>
+          </div>
+        </div>
+      </form>
       </div>
   </div>
 </template>
@@ -39,11 +49,10 @@ import { Card, createToken } from 'vue-stripe-elements-plus';
 export default {
   data () {
     return {
-      plan : {},
+      selectedPlan : {},
       complete: false,
       stripeOptions: {
       // see https://stripe.com/docs/stripe.js#element-options for details
-          
       }
     }
   },
@@ -51,22 +60,34 @@ export default {
         // mix the getters into computed with object spread operator
         ...mapGetters([
             'plans',
+            'user'
         ]),
   },
   methods:{
-    updateSubscription(plan){
+    updateSubscription(){
+      //console.log(plan);
+      this.$store.commit('changeLoading',true);
       createToken()
         .then(data => {
             var payload = {}
-
             payload.cardToken = data.token.id;
             payload.card = data.token.card;
-            payload.plan = plan 
+            payload.plan = this.selectedPlan ;
             this.$store.dispatch('updateSubscription',payload)
         }).catch((err)=>{
             console.log(err);
         })
-    }
+    },
+    selectPlan(plan){
+      this.selectedPlan = plan ;
+    },
+    isEmptyObject(obj){
+      for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return true;
+      }
+      return false;
+      }
   },
   created(){
       this.$store.dispatch('getPlans');
@@ -174,4 +195,7 @@ body{margin:0; padding:0; font-family: "Open Sans", sans-serif;}
 .stripe-card.complete {
   border-color: green;
 }
+.plans_box_seleted {
+    border: solid 2px green
+  }
 </style>

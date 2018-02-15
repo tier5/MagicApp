@@ -141,7 +141,7 @@ const actions = {
             commit('successTrue');
             commit('changeForgetPassword',false);
           }
-        },
+        },  
         (err) => {
           commit('changeLoading',false);
           var message = err.body.message; 

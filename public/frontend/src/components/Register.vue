@@ -3,22 +3,24 @@
     <div class="row app_register">
       <div class="col-md-3"></div>
       <div class="col-md-6 app_register_form">
-        <form @submit.prevent="onSignUp">
+        <form>
           <div class="row form-group">
             <div class="col-md-12">
               <p style="text-align: center"><b>AMAGICZAP</b></p>
             </div>
           </div>
-          <div class="row plans_container">
-            <div class="col-md-3 plans_box" 
-                  v-for="(plan,index) in plans" :key="index" 
-                   @click="selectPlan(plan)" 
-                   v-bind:class="{ plans_box_seleted: (userSU.plan == plan) }">
-              <label>
-                <p style="text-align:centre;">{{plan.name}}</p>
-                <p>${{(plan.amount) !== 0 ? (plan.amount/100): 0}}</p>
-              </label>
-              <!-- <input type="radio" v-model="userSU.plan" :value="plan"> -->
+          <div class="row">
+            <div class="col-md-4 col-sm-4" 
+              v-for="(plan,index) in plans" :key="index"
+              @click="selectPlan(plan)" 
+              >
+              <div class="cd-pricing-header" v-bind:class="{ plans_box_seleted: (userSU.plan == plan) }">
+                  <h2>{{plan.name}}</h2>
+                  <div class="cd-price">
+                    <span>${{plan.amount/100}}</span>
+                    <span>for every {{plan.interval_count}} month</span>
+                  </div>
+              </div>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -109,20 +111,19 @@
           </div>
           <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-4">
-              <button type="submit" class="btn btn-primary" v-if="!userSU.plan.amount" :disabled="$v.userSU.$invalid">Register</button>
-              <button type="submit" class="btn btn-primary" v-if="userSU.plan.amount" :disabled="(!complete) || ($v.userSU.$invalid)">Register</button>
+            <div class="col-md-4" v-if="userSU.plan.id">
+              <button type="submit" class="btn btn-success" v-if="!userSU.plan.amount" :disabled="($v.userSU.$invalid)" @click.prevent="onSignUp">Register</button>
+              <button type="submit" class="btn btn-success" v-if="userSU.plan.amount" :disabled="(!complete) || ($v.userSU.$invalid)" @click.prevent="onSignUp">Register</button>
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
             <div class="col-md-3">
-              <a href=""> <router-link to="/login">Login</router-link></a>
-              <a href="" @click.prevent="openForgetPassword"> Forget Password ?</a>
+              <button class="btn btn-default" @click.prevent="changeRoute('/login')"> Back to the login</button>
             </div>
           </div>
         </form>
       </div>
       <div class="col-md-3">
-        <forget-password v-if="forgetPassword"></forget-password>
+        
       </div>
     </div>
   </div>
@@ -132,7 +133,8 @@
   import { required, email, minLength, sameAs} from 'vuelidate/lib/validators';
   import { mapGetters } from 'vuex';
   import { Card, createToken } from 'vue-stripe-elements-plus';
-  import ForgetPassword from './ForgetPassword.vue';
+  
+  import router from '../router/index';
   export default {
     data () {
       return {
@@ -142,6 +144,7 @@
           password:'',
           confirmPassword:'',
           plan:{
+            id:'',
             amount : 0
           },
           cardToken: '',
@@ -182,8 +185,8 @@
         this.userSU.plan = plan;
         //console.log(this.userSU.plan)
       },
-      openForgetPassword(){
-        this.$store.commit('changeForgetPassword',true);
+      changeRoute(link){
+        router.push(link);
       }
     },
     computed: {
@@ -220,8 +223,7 @@
       this.$store.dispatch('getPlans'); 
     },
     components: {
-      Card,
-      ForgetPassword
+      Card
     },
     watch:{
 
@@ -257,7 +259,7 @@
     padding: 2px 16px;
   }
   .plans_box_seleted {
-    border: solid 1px green
+    border: solid 2px green
   }
   .stripe-card {
   width: 300px;
@@ -266,5 +268,89 @@
 .stripe-card.complete {
   border-color: green;
 }
+
+.cd-pricing-header {
+    padding: 25px 1em;
+    background-color: #337ab7;
+    border-radius: .25em .25em 0 0;
+    box-shadow: inset 0 1px 0 #c1cfa2;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+    margin-top: 20px;
+}
+
+
+ .cd-pricing-header h2 {
+	font-size: 2.6rem;
+	margin: 0;
+	padding: 5px;
+	font-weight: 700;
+}
+.cd-pricing-header .cd-price {
+	display: inline-block;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.body-wrap{ border: 1px solid #ccc;}
+
+.cd-pricing-features {
+	padding: 2.8em 1em 2.5em;
+ 
+}
+.cd-pricing-features li {
+    line-height: 1.5;
+    margin-bottom: .4em;
+    list-style: none;
+    font-size: 20px;
+    
+}
+.cd-pricing-features em {
+    position: relative;
+    padding-left: 28px;
+}
+.cd-pricing-features em::before {
+	position: absolute;
+	content: '';
+	left: 0;
+	top: 50%;
+	bottom: auto;
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	transform: translateY(-50%);
+	height: 24px;
+	width: 24px;
+}
+
+.cd-pricing {
+	text-align: center;
+}
+.cd-pricing-features .available em::before {
+    background-position: 0 0;
+}
+
+.cd-pricing-features{background: #fff;}
+.cd-pricing-footer {
+	padding-bottom: 1.7em; background:#fff; text-align: center;
+}
+.cd-pricing-footer a, .cd-form input[type="submit"] {
+	display: inline-block;
+	padding: 1em 1.8em;
+	border-radius: 50em;
+	text-transform: uppercase;
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+.cd-pricing-footer a {
+	border: 1px solid rgba(223, 79, 113, 0.4);
+	color: #df4f71;
+}
+.cd-pricing-footer a:hover{text-decoration: none;}
+
   
 </style>
