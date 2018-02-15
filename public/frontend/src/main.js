@@ -9,7 +9,7 @@ import ToggleButton from 'vue-js-toggle-button';
 import swal from 'sweetalert2';
 import {RotateSquare2} from 'vue-loading-spinner';
 import VueClipboards from 'vue-clipboards';
-
+import Vuetify from 'vuetify';
 
 Vue.use(ToggleButton);
 Vue.use(VueResource);
@@ -17,6 +17,8 @@ Vue.use(Vuelidate);
 Vue.use(VuePaginate);
 Vue.use(RotateSquare2);
 Vue.use(VueClipboards);
+Vue.use(Vuetify)
+
 
 import config from '../config/config';
 if(process.env.NODE_ENV =='development'){

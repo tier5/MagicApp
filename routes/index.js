@@ -1,29 +1,58 @@
+/**
+ * Name  : index.js
+ * Purpose : All Routes of the application 
+ */
 var express = require('express');
 var router = express.Router();
 
-var {userLogin,userRegister,getAllUsers,updateUser} = require('../controllers/authController');
-var {createZap,getZaps,deleteZap,updateZap} = require('../controllers/zapController');
-var {saveScriptData} = require('../controllers/scriptController');
-var {usersZaps,getScriptZaps} = require('../controllers/zapierController');
-var {isAuthorized} = require('./middleware');
-// register user
-router.post('/register',userRegister); 
-router.post('/login',userLogin);
-// users Zap CRUD
-router.post('/zaps',createZap)
-router.get('/zaps',getZaps);
-router.delete('/zaps/:id',deleteZap);
-router.put('/zaps/:id',updateZap);
-// endpoint for script to save data to the db 
-router.post('/script-data',saveScriptData);
-// endpoint for zapier to get script data
-router.get('/users_script_zap/:zapId',getScriptZaps);
-// endpoint for sending user's zap 
-router.get('/users_zaps/:api_key',usersZaps);
+// import all controllers for the routes 
+var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
+var {saveScriptData}                                = require('../controllers/scriptController');
+var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
+var {isAuthorized , isUserExists, isUserSubscribed} = require('./middleware');
+var {getAllPlansCtrl, updateUserSubscribtion}       = require('../controllers/stripeController');
+var { userLogin, 
+      userRegister,
+      getAllUsers,
+      updateUser, 
+      userForgetPassword,
+      userResetPassword}                           = require('../controllers/authController');
 
-// get all users if the user is admin 
-router.get('/users',isAuthorized,getAllUsers);
-// deactive user for admin
-router.put('/users/:id', isAuthorized,updateUser);
+/**
+ * Users Registration, Login, Forget Password and Reset Password 
+ */
+  router.post('/register',isUserExists,userRegister); 
+  router.post('/login',userLogin);
+  router.post('/forget-password',userForgetPassword);
+  router.post('/reset-password/:token',userResetPassword)
 
+/**
+ * Create, read, update and delete Zaps
+ */
+  router.post('/zaps',isUserSubscribed,createZap)
+  router.get('/zaps',isUserSubscribed,getZaps);
+  router.delete('/zaps/:id',isUserSubscribed,deleteZap);
+  router.put('/zaps/:id',isUserSubscribed,updateZap);
+
+// Saves script's data to database  
+  router.post('/script-data',saveScriptData);
+
+/**
+ * Zapier Authenicate and send data to zapier
+ */
+  router.get('/users_script_zap/:zapId',getScriptZaps);
+  router.get('/users_zaps/:api_key',usersZaps);
+
+/**
+ * Admin get users and active , deactive users's activety
+ */
+  router.get('/users',isAuthorized,getAllUsers);
+  router.put('/users/:id', isAuthorized,updateUser);
+  
+/**
+ * Stripe 
+ */
+  router.get('/plans',getAllPlansCtrl);
+  router.put('/subscriptions',updateUserSubscribtion)
+  
 module.exports = router;

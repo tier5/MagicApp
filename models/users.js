@@ -1,4 +1,7 @@
-
+/**
+ * Name : users.js
+ * Purpose : Users model 
+ */
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
@@ -13,12 +16,6 @@ const UserSchema =  new Schema({
         trim: true,
         validate: [{validator: value => validator.isEmail(value), msg : 'Not an email'}]
     },
-    // first_name:{
-    //     type:String,required:[true,'First Name is required']
-    // },
-    // last_name:{
-    //     type:String,required:[true, 'Last Name is required']
-    // },
     name:{
         type:String,
         required:true
@@ -57,12 +54,48 @@ const UserSchema =  new Schema({
     },
     isActive:{
         type:Boolean,default : true
+    },
+    userType : {
+        // free or paid
+        type: String, required : true
+    },
+    stripe:{
+        subscription : {
+            id : {
+                type: String
+            },
+            startDate:{
+                type:Date, default: Date.now
+            },
+            endDate:{
+                type:Date
+            }
+        },
+        plan:{
+            id:{
+                type:String
+            }
+        },
+        customer:{
+            id:{
+                type:String
+            }
+        },
+        cards:[
+            {
+                id:{ type:String  },
+                isDefault:{type:Boolean, default: true}
+            }
+        ]
     }
 
 },{
     usePushEach: true
 });
 
+/**
+ * Function to hash password before save 
+ */
 UserSchema.pre('save', function (next) {
     var user = this;
   
@@ -70,7 +103,6 @@ UserSchema.pre('save', function (next) {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(user.password, salt, (err, hash) => {
           user.password = hash;
-          user.accessToken = jwt.sign({ email: user.email },"TEST");
           next();
         });
       });

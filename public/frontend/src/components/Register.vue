@@ -3,17 +3,32 @@
     <div class="row app_register">
       <div class="col-md-3"></div>
       <div class="col-md-6 app_register_form">
-        <form @submit.prevent="onSignUp">
+        <form>
           <div class="row form-group">
             <div class="col-md-12">
-              <p style="text-align: center"><b>MAGIC APP</b></p>
+              <p style="text-align: center"><b>AMAGICZAP</b></p>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-4 col-sm-4" 
+              v-for="(plan,index) in plans" :key="index"
+              @click="selectPlan(plan)" 
+              >
+              <div class="cd-pricing-header" v-bind:class="{ plans_box_seleted: (userSU.plan == plan) }">
+                  <h2>{{plan.name}}</h2>
+                  <div class="cd-price">
+                    <span>${{plan.amount/100}}</span>
+                    <span>for every {{plan.interval_count}} month</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
           <div class="row form-group"
                v-bind:class="{ 'form-group--error': $v.userSU.email.$error }">
             <div class="col-md-12">
-              <label class="control-label col-xs-2">Email</label>
-              <div class="col-xs-10">
+              <label class="control-label col-md-2">Email</label>
+              <div class="col-md-10">
                 <input type="email"
                        class="form-control"
                        placeholder="Email"
@@ -33,8 +48,8 @@
           <div class="row form-group"
                v-bind:class="{ 'form-group--error': $v.userSU.name.$error }">
             <div class="col-md-12">
-              <label  class="control-label col-xs-2">Name</label>
-              <div class="col-xs-10">
+              <label  class="control-label col-md-2">Name</label>
+              <div class="col-md-10">
                 <input type="text"
                        class="form-control"
                        placeholder="Name"
@@ -50,8 +65,8 @@
           <div class="row form-group"
                v-bind:class="{ 'form-group--error': $v.userSU.password.$error }">
             <div class="col-md-12">
-              <label  class="control-label col-xs-2">Password</label>
-              <div class="col-xs-10">
+              <label  class="control-label col-md-2">Password</label>
+              <div class="col-md-10">
                 <input type="password"
                        class="form-control"
                        placeholder="Password"
@@ -64,43 +79,124 @@
               </div>
             </div>
           </div>
+          <div class="row form-group"
+               v-bind:class="{ 'form-group--error': $v.userSU.confirmPassword.$error }">
+            <div class="col-md-12">
+              <label  class="control-label col-md-2">Confirm Password</label>
+              <div class="col-md-10">
+                <input type="password"
+                       class="form-control"
+                       placeholder="Password"
+                       v-model="userSU.confirmPassword"
+                       @blur="$v.userSU.confirmPassword.$touch">
+                <span class="form-group__message"
+                      v-if="!$v.userSU.confirmPassword.sameAs && $v.userSU.password.$error">
+                  Didn't Match with your password
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row form-group" v-if="userSU.plan.amount">
+            <div class="col-md-12">
+              <label  class="control-label col-md-2">Payments</label>
+              <div class="col-md-10">
+                <card class='stripe-card form-control'
+                  :class='{ complete }'
+                  stripe='pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
+                  :options='stripeOptions'
+                  @change='complete = $event.complete'
+                />
+              </div>  
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-4">
-              <button type="submit" class="btn btn-primary" :disabled="$v.userSU.$invalid">Register</button>
+            <div class="col-md-4" v-if="userSU.plan.id">
+              <button type="submit" class="btn btn-success" v-if="!userSU.plan.amount" :disabled="($v.userSU.$invalid)" @click.prevent="onSignUp">Register</button>
+              <button type="submit" class="btn btn-success" v-if="userSU.plan.amount" :disabled="(!complete) || ($v.userSU.$invalid)" @click.prevent="onSignUp">Register</button>
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
             <div class="col-md-3">
-              <a href=""> <router-link to="/login">Login</router-link></a>
+              <button class="btn btn-default" @click.prevent="changeRoute('/login')"> Back to the login</button>
             </div>
           </div>
         </form>
       </div>
-      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import { required, email} from 'vuelidate/lib/validators'
+  import { required, email, minLength, sameAs} from 'vuelidate/lib/validators';
+  import { mapGetters } from 'vuex';
+  import { Card, createToken } from 'vue-stripe-elements-plus';
+  
+  import router from '../router/index';
   export default {
     data () {
       return {
         userSU:{
           name:'',
           email:'',
-          password:''
+          password:'',
+          confirmPassword:'',
+          plan:{
+            id:'',
+            amount : 0
+          },
+          cardToken: '',
+          card:{}
+        },
+        complete: false,
+        stripeOptions: {
+        // see https://stripe.com/docs/stripe.js#element-options for details
+            
         }
       }
     },
     methods:{
       onSignUp () {
-        this.$store.dispatch('userSignUp', this.userSU)
+        this.userSU.userType = (this.userSU.plan.amount === 0 ) ? 'free' : 'paid';
+        if(this.userSU.userType === 'free') {
+
+          this.$store.dispatch('userSignUp', this.userSU);
+
+        } else if(this.userSU.userType === 'paid') {
+          
+          this.$store.commit('changeLoading', true)
+
+          createToken().then(data => {
+            this.userSU.cardToken = data.token.id;
+            this.userSU.card = data.token.card;
+            this.$store.dispatch('userSignUp', this.userSU)
+          }).catch((err)=>{
+            console.log(err);
+          })
+        }
       },
       resetForm(){
         this.userSU = {};
         this.$v.userSU.$reset();
+      },
+      selectPlan(plan){
+        this.userSU.plan = plan;
+        //console.log(this.userSU.plan)
+      },
+      changeRoute(link){
+        router.push(link);
       }
+    },
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'plans',
+            'cardToken',
+            'forgetPassword'
+
+        ]),
     },
     validations:{
       userSU:{
@@ -112,9 +208,25 @@
           email
         },
         password:{
-          required
-        }
+          required,
+          minLength: minLength(6)
+        },
+        confirmPassword:{
+          sameAsPassword: sameAs('password')
+        },
+        plan:{
+          required,
+        },
       }
+    },
+    created(){
+      this.$store.dispatch('getPlans'); 
+    },
+    components: {
+      Card
+    },
+    watch:{
+
     }
   }
 </script>
@@ -124,6 +236,7 @@
   .app_register_form{
     border: solid 1px gray;
     padding: 20px;
+    border-radius:25px;
 
   }
   .app_register {
@@ -135,4 +248,109 @@
   .form-group__message{
     color: red;
   }
+  .plans_box{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+  .plans_box:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  .plans_container {
+    padding: 2px 16px;
+  }
+  .plans_box_seleted {
+    border: solid 2px green
+  }
+  .stripe-card {
+  width: 300px;
+  border: 1px solid grey;
+}
+.stripe-card.complete {
+  border-color: green;
+}
+
+.cd-pricing-header {
+    padding: 25px 1em;
+    background-color: #337ab7;
+    border-radius: .25em .25em 0 0;
+    box-shadow: inset 0 1px 0 #c1cfa2;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+    margin-top: 20px;
+}
+
+
+ .cd-pricing-header h2 {
+	font-size: 2.6rem;
+	margin: 0;
+	padding: 5px;
+	font-weight: 700;
+}
+.cd-pricing-header .cd-price {
+	display: inline-block;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.body-wrap{ border: 1px solid #ccc;}
+
+.cd-pricing-features {
+	padding: 2.8em 1em 2.5em;
+ 
+}
+.cd-pricing-features li {
+    line-height: 1.5;
+    margin-bottom: .4em;
+    list-style: none;
+    font-size: 20px;
+    
+}
+.cd-pricing-features em {
+    position: relative;
+    padding-left: 28px;
+}
+.cd-pricing-features em::before {
+	position: absolute;
+	content: '';
+	left: 0;
+	top: 50%;
+	bottom: auto;
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	transform: translateY(-50%);
+	height: 24px;
+	width: 24px;
+}
+
+.cd-pricing {
+	text-align: center;
+}
+.cd-pricing-features .available em::before {
+    background-position: 0 0;
+}
+
+.cd-pricing-features{background: #fff;}
+.cd-pricing-footer {
+	padding-bottom: 1.7em; background:#fff; text-align: center;
+}
+.cd-pricing-footer a, .cd-form input[type="submit"] {
+	display: inline-block;
+	padding: 1em 1.8em;
+	border-radius: 50em;
+	text-transform: uppercase;
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+.cd-pricing-footer a {
+	border: 1px solid rgba(223, 79, 113, 0.4);
+	color: #df4f71;
+}
+.cd-pricing-footer a:hover{text-decoration: none;}
+
+  
 </style>

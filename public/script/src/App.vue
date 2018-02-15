@@ -22,47 +22,43 @@ export default {
       params: this.getAllParams(),
       zapId : zapId
     }
-		var body = requestObj
 		var postUrl = 'https://www.amagiczap.com/api/script-data'
-		this.$http.post(postUrl,body).then(function(data){
-					if (data.body.appendUrls){
-							var links = document.getElementsByTagName('a');
-							for(var i = 0;i<links.length;i++){
-								var oldhref = links[i].getAttribute('href');
-								if (oldhref.indexOf('http')!==-1){
+			this.$http.get('https://freegeoip.net/json/').then(res=>{
+				requestObj.clientIp = res.body.ip;
+				this.$http.post(postUrl,requestObj).then(function(data){
+				if (data.body.appendUrls){
+						var links = document.getElementsByTagName('a');
+						for(var i = 0;i<links.length;i++){
+							var oldhref = links[i].getAttribute('href');
+							if (oldhref.indexOf('http')!==-1){
 
-										if (oldhref.indexOf(hostname)!==-1){
-
-											if(oldhref.indexOf('?') === -1){
-													var newHref = oldhref +'?'+ queryParams;
-													links[i].setAttribute('href',newHref);
-											} else {
-													var newHref = oldhref +'&'+ queryParams;
-													links[i].setAttribute('href',newHref);
-											}
-
-										}
-
-								} else {
-									if (oldhref ==='#'){
-											// var newHref = oldhref +'/?'+ queryParams;
-											// links[i].setAttribute('href',newHref);
-									} else {
+									if (oldhref.indexOf(hostname)!==-1){
 
 										if(oldhref.indexOf('?') === -1){
-											var newHref = oldhref +'?'+ queryParams;
-											links[i].setAttribute('href',newHref);
+												var newHref = oldhref +'?'+ queryParams;
+												links[i].setAttribute('href',newHref);
 										} else {
-											var newHref = oldhref +'&'+ queryParams;
-											links[i].setAttribute('href',newHref);
+												var newHref = oldhref +'&'+ queryParams;
+												links[i].setAttribute('href',newHref);
 										}
 									}
 
-								}		
-							}
-					}
-		}).catch((err)=>{
-				//console.error(err.body.message);
+							} else {
+
+									if(oldhref.indexOf('?') === -1){
+										var newHref = oldhref +'?'+ queryParams;
+										links[i].setAttribute('href',newHref);
+									} else {
+										var newHref = oldhref +'&'+ queryParams;
+										links[i].setAttribute('href',newHref);
+									}
+
+							}   
+						}
+				}
+			}).catch((err)=>{
+					//console.error(err.body.message);
+			})
 		})
   },
   methods:{

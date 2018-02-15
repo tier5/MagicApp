@@ -6,7 +6,7 @@
         <form @submit.prevent="onLogin">
           <div class="row form-group">
             <div class="col-md-12">
-              <p style="text-align: center"><b>MAGIC APP</b></p>
+              <p style="text-align: center"><b>AMGAGICZAP</b></p>
             </div>
           </div>
           <div class="row form-group"
@@ -49,25 +49,33 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-6">
+          <div class="col-md-12">
+            <div class="col-md-3"></div>
+            <div class="col-md-4">
               <button type="submit" class="btn btn-primary" :disabled="$v.user.$invalid">Login</button>
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
-            <div class="col-md-4">
-              <a><router-link to="/register">Don't Have An Account ?</router-link></a>
+            <div class="col-md-3">
+              <router-link to="/register"><button class="btn btn-default">Register Here</button></router-link>
+            </div>
+            <div class="col-md-3">
+              <button @click.prevent="openForgetPassword" class="btn btn-default"> Forgot Password</button>
+            </div>
             </div>
           </div>
         </form>
       </div>
-      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <forget-password v-if="forgetPassword"></forget-password>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex';
-  import { required, email} from 'vuelidate/lib/validators'
+  import { required, email} from 'vuelidate/lib/validators';
+  import ForgetPassword from './ForgetPassword.vue';
   export default {
     data () {
       return {
@@ -84,7 +92,10 @@
       resetForm(){
         this.user = {};
         this.$v.user.$reset();
-      }
+      },
+      openForgetPassword(){
+        this.$store.commit('changeForgetPassword',true);
+      },
     },
     validations:{
       user:{
@@ -96,7 +107,16 @@
           required
         }
       }
-    }
+    },
+    components: {
+      ForgetPassword
+    },
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'forgetPassword'
+        ]),
+    },
   }
 </script>
 
@@ -105,7 +125,7 @@
   .app_register_form{
     border: solid 1px gray;
     padding: 20px;
-
+    border-radius:25px;
   }
   .app_register {
     margin-top: 200px;
