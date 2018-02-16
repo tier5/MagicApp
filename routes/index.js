@@ -17,6 +17,7 @@ var { userLogin,
       updateUser, 
       userForgetPassword,
       userResetPassword}                           = require('../controllers/authController');
+var {createUser} = require('../controllers/usersController');
 
 /**
  * Users Registration, Login, Forget Password and Reset Password 
@@ -48,6 +49,7 @@ var { userLogin,
  */
   router.get('/users',isAuthorized,getAllUsers);
   router.put('/users/:id', isAuthorized,updateUser);
+  router.post('/users',createUser)
   
 /**
  * Stripe 

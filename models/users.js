@@ -12,13 +12,13 @@ const UserSchema =  new Schema({
     email:{
         type:String,
         required:[true,'Email is required'],
-        unique:true,
+        unique:[true, 'Email must be unique'],
         trim: true,
         validate: [{validator: value => validator.isEmail(value), msg : 'Not an email'}]
     },
     name:{
         type:String,
-        required:true
+        required:[true, 'name is required']
     },
     password:{
         type:String,required:[true, 'Password is required']
@@ -63,12 +63,6 @@ const UserSchema =  new Schema({
         subscription : {
             id : {
                 type: String
-            },
-            startDate:{
-                type:Date, default: Date.now
-            },
-            endDate:{
-                type:Date
             }
         },
         plan:{

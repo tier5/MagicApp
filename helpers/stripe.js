@@ -9,18 +9,15 @@ var stripe = require("stripe")(stripeKey);
 
 /**
  * Function for creating customer in stripe
- * @param {object} body
- * @param {string} userType free or paid
+ * @param {object} email
+ * @param {string} cardToken payment card token
  * @returns Promise
  */
-function createCustomer(body, userType){
+function createCustomer(email, cardToken){
     var user = {
         description : 'Customer for amagiczap application',
-        email : body.email
-    };
-    // if the user type is paid then a card token must be present to create a customer 
-    if (userType =='paid'){
-        user.source = body.cardToken;
+        email : email,
+        source: cardToken
     };
     return new Promise((resolve,reject)=>{
         stripe.customers.create(user, function(err, customer) {
@@ -153,7 +150,11 @@ function retrieveCustomer (customerId){
         );
     })
 }
-
+/**
+ * Function to create a card for the customer
+ * @param {string} customerId 
+ * @param {string} cardToken 
+ */
 function createCard (customerId, cardToken){
     return new Promise((resolve,reject)=>{
         stripe.customers.createSource(
@@ -170,8 +171,12 @@ function createCard (customerId, cardToken){
           );
     })
 }
-
-async function updateSubscription(subscriptionId,planId){
+/**
+ * Function to update the subscription 
+ * @param {string} subscriptionId 
+ * @param {string} planId 
+ */
+function updateSubscription(subscriptionId,planId){
     return new Promise((resolve,reject)=>{
         stripe.subscriptions.retrieve(subscriptionId,function(err,subscription){
             if (!err){
@@ -195,6 +200,20 @@ async function updateSubscription(subscriptionId,planId){
     })
 }
 
+function retriveSubscription(subscriptionId){
+    return new Promise((resolve,reject)=>{
+        stripe.subscriptions.retrieve(subscriptionId,function(err,subscription){
+            if(!err){
+                resolve(subscription);
+            } else {
+                reject(err);
+            }
+        })
+
+    })
+}
+
+
 module.exports = {
     createCustomer,
     getAllPlans,
@@ -203,5 +222,6 @@ module.exports = {
     deleteCustomer,
     retrieveCustomer,
     createCard,
-    updateSubscription
+    updateSubscription,
+    retriveSubscription
 }

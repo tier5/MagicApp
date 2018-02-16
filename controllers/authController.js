@@ -7,14 +7,7 @@ var bcrypt = require('bcrypt');
 var moment = require('moment');
 var {createCustomer , createSubscription, createCharge, deleteCustomer , retrieveCustomer} = require('../helpers/stripe');
 var {sendForgetPasswordMail} = require('../helpers/nodemailer.js');
-var jwt = require('jsonwebtoken');
-
-// addDate method to date object 
-Date.prototype.addDays = function (num) {
-    var value = this.valueOf();
-    value += 86400000 * num;
-    return new Date(value);
-}
+var {createAccessToken} = require('../helpers/jwt');
 
 /**
  * function to register a user
@@ -24,23 +17,22 @@ Date.prototype.addDays = function (num) {
  * @returns response 
  */
 function userRegister(req,res,next){
-  var body = req.body;
-  var userType = body.userType; // 'paid' or 'free';
-  body.stripe= {};
-  body.stripe.plan = {
-      id : body.plan.id
-  };
-  body.stripe.cards=[];
-  // creating an object to store card details
-  if(body.card.id !== null){
+    var body = req.body;
+    body.userType = 'paid'  // always have to pay to use the application
+    body.stripe= {};
+    body.stripe.plan = {
+        id : body.plan.id
+    };
+    body.stripe.cards=[];
+    // creating an object to store card details
     var card = {
         id : body.card.id,
         isDefault : true
-    };
+    }
     body.stripe.cards.push(card);
-  }
-  // create customer for the stripe 
-  createCustomer(body,userType)
+
+    // create customer for the stripe 
+    createCustomer(body.email,body.cardToken)
         .then((customer)=>{
             body.stripe.customer = {
                 id : customer.id
@@ -52,12 +44,7 @@ function userRegister(req,res,next){
             body.stripe.subscription = {
                 id : subscription.id,
             };
-            // start date and end date of the subscription
-            var startDate = new Date ;
-            var endDate = startDate.addDays(body.plan.trial_period_days);
-            body.stripe.subscription.startDate = startDate ;
-            body.stripe.subscription.endDate = moment(endDate).format();
-            body.accessToken = jwt.sign({ email: body.email },"amagiczap.com");
+            body.accessToken = createAccessToken(body.email);
             var user = new Users(body)
             return user.save();
         }) // create a user 
@@ -74,11 +61,11 @@ function userRegister(req,res,next){
         .catch((err)=>{
             console.log(err);
 
-            deleteCustomer(body.customerId)
-                .then(confirmed => console.log('deleted'))
-                .catch(err=>console.log(err));
+            // deleteCustomer(body.stripe.customer.id)
+            //     .then(confirmed => console.log('deleted'))
+            //     .catch(err=>console.log(err));
 
-            return res.status(400).send({status:false,message: 'Somthing Went Wrong!'});
+            return res.status(400).send({status:false, message: err.message});
         })
 }
 
