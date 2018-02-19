@@ -50,7 +50,7 @@
           </div>
           <div class="row">
           <div class="col-md-12">
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
             <div class="col-md-4">
               <button type="submit" class="btn btn-primary" :disabled="$v.user.$invalid">Login</button>
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>

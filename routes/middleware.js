@@ -75,8 +75,32 @@ function isUserSubscribed(req,res,next){
         })
 }
 
+/**
+ * function to check only Admin can go further or not  
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Object} next 
+ * @returns response  
+ */
+
+function onlyAdminCan(req,res,next){
+    var token = req.headers.authorization ;
+    Users
+        .findOne({accessToken: token, isAdmin: true})
+        .select({email:1,isAdmin: 1})
+        .then(admin=>{
+            if (admin){
+                next()
+            } else {
+                res.status(403).send({message: `You're are not allowed!`, status: false});
+            }
+        })
+        .catch(err=> console.log(err));
+}
+
 module.exports = {
     isAuthorized,
     isUserExists,
-    isUserSubscribed
+    isUserSubscribed,
+    onlyAdminCan
 }

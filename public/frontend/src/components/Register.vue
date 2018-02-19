@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <div class="row app_register">
       <div class="col-md-3"></div>
       <div class="col-md-6 app_register_form">

@@ -1,23 +1,31 @@
 <template>
   <div class='credit-card-inputs' :class='{ complete }'>
-    <card-number class='stripe-element card-number' style="border: 1px solid; width:150px"
+    <div class="row">
+      <div class="col-md-4 col-sm-4">
+    <card-number class='stripe-element card-number form-control'
       ref='cardNumber'
       :stripe='stripe'
       :options='options'
       @change='number = $event.complete'
     />
-    <card-expiry class='stripe-element card-expiry' style="border: 1px solid; width:70px"
+      </div>
+      <div class="col-md-4 col-sm-4">
+    <card-expiry class='stripe-element card-expiry form-control'
       ref='cardExpiry'
       :stripe='stripe'
       :options='options'
       @change='expiry = $event.complete'
     />
-    <card-cvc class='stripe-element card-cvc' style="border: 1px solid; width:40px"
+      </div>
+      <div class="col-md-4 col-sm-4">
+    <card-cvc class='stripe-element card-cvc form-control' 
       ref='cardCvc'
       :stripe='stripe'
       :options='options'
       @change='cvc = $event.complete'
     />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,10 +82,11 @@ export default {
 </script>
 
 <style>
-.credit-card-inputs {
+/* .credit-card-inputs {
   width: 300px
-} 
-.credit-card-inputs input{
+}  */
+/* .credit-card-inputs input{
   float:left;
-}
+} */
+
 </style>

@@ -63,7 +63,9 @@ var appRoutes = require('./routes/index');
     res.locals.error = process.env.NODE_ENV === 'development' ? err : {};
     // render the error page
     res.status(err.status || 500);
-    res.send('error');
+    console.log('app.js line no 66',err)
+    res.status(500).send({message:'Server Internal Error', status: false});
+
   });
 
 module.exports = app;
