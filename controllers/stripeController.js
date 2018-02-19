@@ -2,9 +2,14 @@
  * Name: stripeController.js
  * Purpose : Stripe Controller
  */
-var {getAllPlans, createCard , createSubscription, updateSubscription}   = require('../helpers/stripe');
-var Users           = require('../models/users');
-var moment = require('moment');
+var moment                  = require('moment');
+var Users                   = require('../models/users');
+var {
+        getAllPlans, 
+        createCard , 
+        createSubscription, 
+        updateSubscription,
+        retriveCustomerCard}   = require('../helpers/stripe');
 
 
 // addDate method to date object 
@@ -86,8 +91,30 @@ function getAllPlansCtrl (req,res,next){
         })
  }
 
+ /**
+  * Function to retrive a user's card 
+  * @param {object} req
+  * @param {object} res
+  * @returns response
+  */
+ function retriveUsersCard(req,res){
+    var token = req.headers.authorization;
+    Users
+        .findOne({accessToken : token })
+        .select({stripe: 1})
+        .then(user=>{
+            let customerId = user.stripe.customer.id;
+            return retriveCustomerCard(customerId)
+        })
+        .then(cards=>{
+            res.status(200).send({message: 'Cards', status : true, data: cards.data});
+        })
+        .catch(err=> console.log(err));
+ }
+
 
 module.exports = {
     getAllPlansCtrl,
-    updateUserSubscribtion
+    updateUserSubscribtion,
+    retriveUsersCard
 }

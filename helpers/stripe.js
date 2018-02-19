@@ -197,9 +197,13 @@ function updateSubscription(subscriptionId,planId){
                 reject(err)
             }
         });
-    })
-}
+    });
+};
 
+/**
+ * Function to retrive Subscriptions
+ * @param {Object} subscriptionId 
+ */
 function retriveSubscription(subscriptionId){
     return new Promise((resolve,reject)=>{
         stripe.subscriptions.retrieve(subscriptionId,function(err,subscription){
@@ -207,9 +211,28 @@ function retriveSubscription(subscriptionId){
                 resolve(subscription);
             } else {
                 reject(err);
-            }
-        })
+            };
+        });
 
+    });
+};
+
+/**
+ * Function to retrive customer's cards 
+ * @param {String} custometId
+ * @param {String} cardId
+ * @returns Promise 
+ */
+function retriveCustomerCard(customerId){
+    return new Promise ((resolve,reject)=>{
+        stripe.customers.listCards(customerId, function(err, cards) {
+            // asynchronously called
+            if (!err){
+                resolve(cards);
+            } else {
+                reject(err);
+            }
+          });
     })
 }
 
@@ -223,5 +246,6 @@ module.exports = {
     retrieveCustomer,
     createCard,
     updateSubscription,
-    retriveSubscription
+    retriveSubscription,
+    retriveCustomerCard
 }

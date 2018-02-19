@@ -53,3 +53,10 @@
 
 
 var stripe = require("stripe")('sk_test_un7R5V4zG4n3bmwoYNbK8ME6');
+
+stripe.customers.listCards('cus_CLvT7QbVACO677', function(err, cards) {
+    // asynchronously called
+    if (!err){
+        console.log(cards);
+    }
+  });

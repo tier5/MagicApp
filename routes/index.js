@@ -10,7 +10,7 @@ var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/za
 var {saveScriptData}                                = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
 var {isAuthorized , isUserExists, isUserSubscribed, onlyAdminCan} = require('./middleware');
-var {getAllPlansCtrl, updateUserSubscribtion}       = require('../controllers/stripeController');
+var {getAllPlansCtrl, updateUserSubscribtion, retriveUsersCard}       = require('../controllers/stripeController');
 var { userLogin, 
       userRegister, 
       userForgetPassword,
@@ -53,6 +53,7 @@ var {createUser,getAllUsers, updateUser} = require('../controllers/usersControll
  * Stripe 
  */
   router.get('/plans',getAllPlansCtrl);
-  router.put('/subscriptions',updateUserSubscribtion)
+  router.put('/subscriptions',updateUserSubscribtion);
+  router.get('/cards',retriveUsersCard)
   
 module.exports = router;
