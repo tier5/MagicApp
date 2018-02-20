@@ -231,12 +231,68 @@ function retriveCustomerCard(customerId){
                 resolve(cards);
             } else {
                 reject(err);
+            };
+          });
+    });
+};
+/**
+ * Function To create source for the existing customer
+ * @param {String} customerId 
+ * @param {String} cardToken 
+ * @returns PROMISE 
+ */
+function createSource(customerId,cardToken){
+    return new Promise((resolve,reject)=>{
+        stripe.customers.createSource(customerId,{
+            source:cardToken
+        },function(err,source){
+            if (!err){
+                resolve(source);
+            } else {
+                reject(err);
+            }
+        });
+    });
+};
+
+/**
+ * Function to change the default source of the existing customer
+ * @param {String} customerId 
+ * @param {String} cardToken 
+ * @returns PROMISE 
+ */
+function defaultSource(customerId,cardId){
+    return new Promise((resolve,reject)=>{
+        stripe.customers.update(customerId, {
+            default_source: cardId  
+          },function(err,data){
+            if (!err){
+                resolve(data);
+            } else { 
+                reject(err);
+            }
+          });
+    });
+};
+
+/**
+ * Function to delete a card of existing customer
+ * @param {String} customerId 
+ * @param {String} cardId 
+ * @returns PROMISE 
+ */
+
+function deleteCard (customerId,cardId){
+    return new Promise((resolve,reject)=>{
+        stripe.customers.deleteCard(customerId,cardId,function(err,confirmation){
+            if (!err){
+                resolve(confirmation);
+            } else { 
+                reject(err);
             }
           });
     })
 }
-
-
 module.exports = {
     createCustomer,
     getAllPlans,
@@ -247,5 +303,8 @@ module.exports = {
     createCard,
     updateSubscription,
     retriveSubscription,
-    retriveCustomerCard
+    retriveCustomerCard,
+    createSource,
+    defaultSource,
+    deleteCard
 }

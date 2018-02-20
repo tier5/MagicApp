@@ -9,7 +9,10 @@ var {
         createCard , 
         createSubscription, 
         updateSubscription,
-        retriveCustomerCard}   = require('../helpers/stripe');
+        retriveCustomerCard,
+        createSource,
+        defaultSource,
+        deleteCard}   = require('../helpers/stripe');
 
 
 // addDate method to date object 
@@ -104,17 +107,76 @@ function getAllPlansCtrl (req,res,next){
         .select({stripe: 1})
         .then(user=>{
             let customerId = user.stripe.customer.id;
-            return retriveCustomerCard(customerId)
+            if (customerId){
+                return retriveCustomerCard(customerId)
+            } else {
+                res.status(200).send({message: 'Cards', status : true, data:[]});
+            }
         })
         .then(cards=>{
             res.status(200).send({message: 'Cards', status : true, data: cards.data});
         })
         .catch(err=> console.log(err));
+ };
+ /**
+  * Function to add a new card to the user
+  * @param {Object} req 
+  * @param {Object} res 
+  */
+ function addNewCardToUser(req,res){
+    var token = req.headers.authorization;
+    var cardToken = req.body.cardToken;
+    var customerId =''
+    Users
+        .findOne({accessToken: token})
+        .select({stripe:1})
+        .then(user=>{
+            customerId = user.stripe.customer.id;
+            return createSource(customerId,cardToken);
+        })
+        .then(card=>{
+            var cardId = card.id
+            return defaultSource(customerId,cardId)
+        })
+        .then(confirm=>{
+            res.status(200).send({message: 'Card Added',status : true})
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(400).send({message:err.message, status:false});
+        })
+ };
+
+ function deleteUserCard(req,res){
+    var cardId = req.params.cardId;
+    var token = req.headers.authorization;
+    var that = this
+    Users
+        .findOne({accessToken: token})
+        .select({stripe:1})
+        .then(user=>{
+            let customerId = user.stripe.customer.id;
+            //console.log(cardId);
+            return deleteCard(customerId,req.params.cardId);
+        })
+        .then(confirmation=>{
+            if(confirmation.deleted){
+                res.status(200).send({message: 'Card Deleted',status : true})
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(400).send({message: err.message, status:false});
+        })
  }
+
+
 
 
 module.exports = {
     getAllPlansCtrl,
     updateUserSubscribtion,
-    retriveUsersCard
+    retriveUsersCard,
+    addNewCardToUser,
+    deleteUserCard
 }

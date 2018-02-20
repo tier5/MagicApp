@@ -9,13 +9,20 @@ var router = express.Router();
 var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
 var {saveScriptData}                                = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
-var {isAuthorized , isUserExists, isUserSubscribed, onlyAdminCan} = require('./middleware');
-var {getAllPlansCtrl, updateUserSubscribtion, retriveUsersCard}       = require('../controllers/stripeController');
+var { isAuthorized , 
+      isUserExists, 
+      isUserSubscribed, 
+      onlyAdminCan}                                 = require('./middleware');
+var { getAllPlansCtrl, 
+      updateUserSubscribtion, 
+      retriveUsersCard, 
+      addNewCardToUser,
+      deleteUserCard}                             = require('../controllers/stripeController');
 var { userLogin, 
       userRegister, 
       userForgetPassword,
-      userResetPassword}                           = require('../controllers/authController');
-var {createUser,getAllUsers, updateUser} = require('../controllers/usersController');
+      userResetPassword}                            = require('../controllers/authController');
+var {createUser,getAllUsers, updateUser}            = require('../controllers/usersController');
 
 /**
  * Users Registration, Login, Forget Password and Reset Password 
@@ -54,6 +61,8 @@ var {createUser,getAllUsers, updateUser} = require('../controllers/usersControll
  */
   router.get('/plans',getAllPlansCtrl);
   router.put('/subscriptions',updateUserSubscribtion);
-  router.get('/cards',retriveUsersCard)
+  router.get('/cards',retriveUsersCard);
+  router.post('/cards',addNewCardToUser);
+  router.delete('/cards/:cardId',deleteUserCard);
   
 module.exports = router;

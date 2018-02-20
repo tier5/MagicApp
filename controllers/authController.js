@@ -54,7 +54,8 @@ function userRegister(req,res,next){
                 name : user.name,
                 isAdmin: user.isAdmin,
                 isActive:user.isActive,
-                isSubscribed : true
+                isSubscribed : true,
+                userType:user.userType
             }
             return res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
         })
@@ -81,7 +82,7 @@ function userLogin(req,res,next){
 
     Users
         .findOne({email})
-        .select({ email:1,password:1,stripe:1,isActive:1,isAdmin:1,userType:1, accessToken: 1})
+        .select({ email:1,password:1,stripe:1,isActive:1,isAdmin:1,userType:1, accessToken: 1,userType:1})
         .then(user=>{
             bcrypt
                 .compare(password, user.password, (err, data) => {
@@ -94,7 +95,8 @@ function userLogin(req,res,next){
                                 name : user.name,
                                 isAdmin: user.isAdmin,
                                 isActive:user.isActive,
-                                isSubscribed: isSubscribed
+                                isSubscribed: isSubscribed,
+                                userType: user.userType
                             }
                             //console.log(sendUserData);
                             return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
@@ -105,7 +107,9 @@ function userLogin(req,res,next){
                                 name : user.name,
                                 isAdmin: user.isAdmin,
                                 isActive:user.isActive,
-                                isSubscribed: true
+                                isSubscribed: true,
+                                userType: user.userType
+                                
                             }
                             return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
                         }
