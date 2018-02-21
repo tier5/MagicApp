@@ -2,6 +2,7 @@
  * Name: stripeController.js
  * Purpose : Stripe Controller
  */
+var _                       = require('lodash');
 var moment                  = require('moment');
 var Users                   = require('../models/users');
 var {
@@ -12,7 +13,8 @@ var {
         retriveCustomerCard,
         createSource,
         defaultSource,
-        deleteCard}   = require('../helpers/stripe');
+        deleteCard,
+        retrieveCustomer}   = require('../helpers/stripe');
 
 
 // addDate method to date object 
@@ -102,19 +104,33 @@ function getAllPlansCtrl (req,res,next){
   */
  function retriveUsersCard(req,res){
     var token = req.headers.authorization;
+    var customerId;
+    var userCards=[]
     Users
         .findOne({accessToken : token })
         .select({stripe: 1})
         .then(user=>{
-            let customerId = user.stripe.customer.id;
+            customerId = user.stripe.customer.id;
             if (customerId){
                 return retriveCustomerCard(customerId)
             } else {
                 res.status(200).send({message: 'Cards', status : true, data:[]});
             }
         })
-        .then(cards=>{
-            res.status(200).send({message: 'Cards', status : true, data: cards.data});
+        .then(data=>{
+            cards = data.data
+            return retrieveCustomer(customerId)
+        })
+        .then(customer=>{
+            var defaultCard = customer.default_source;
+            cards.forEach(obj => {
+                if (defaultCard == obj.id){
+                    obj.defaultCard = true
+                } else {
+                    obj.defaultCard = false
+                }
+            });
+            res.status(200).send({message: 'Cards', status : true, data: cards});
         })
         .catch(err=> console.log(err));
  };
@@ -146,18 +162,21 @@ function getAllPlansCtrl (req,res,next){
             res.status(400).send({message:err.message, status:false});
         })
  };
-
+/**
+ * Function to delete a card 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
  function deleteUserCard(req,res){
     var cardId = req.params.cardId;
     var token = req.headers.authorization;
-    var that = this
     Users
         .findOne({accessToken: token})
         .select({stripe:1})
         .then(user=>{
             let customerId = user.stripe.customer.id;
             //console.log(cardId);
-            return deleteCard(customerId,req.params.cardId);
+            return defaultSource(customerId,cardId)
         })
         .then(confirmation=>{
             if(confirmation.deleted){
@@ -170,6 +189,31 @@ function getAllPlansCtrl (req,res,next){
         })
  }
 
+ /**
+  * Function to change user's default card
+  * 
+  */
+ function usersDefaultCard(req,res){
+    var cardId = req.params.cardId;
+    var token = req.headers.authorization;
+    Users
+        .findOne({accessToken: token})
+        .select({stripe:1})
+        .then(user=>{
+            let customerId = user.stripe.customer.id;
+            //console.log(cardId);
+            return defaultSource(customerId,cardId);
+        })
+        .then(confirmation=>{
+            res.status(200).send({message: 'Default Card Changed',status : true})
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(400).send({message: err.message, status:false});
+        })
+ }
+
+
 
 
 
@@ -178,5 +222,6 @@ module.exports = {
     updateUserSubscribtion,
     retriveUsersCard,
     addNewCardToUser,
-    deleteUserCard
+    deleteUserCard,
+    usersDefaultCard
 }

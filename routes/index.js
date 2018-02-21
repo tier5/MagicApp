@@ -17,7 +17,7 @@ var { getAllPlansCtrl,
       updateUserSubscribtion, 
       retriveUsersCard, 
       addNewCardToUser,
-      deleteUserCard}                             = require('../controllers/stripeController');
+      deleteUserCard, usersDefaultCard}             = require('../controllers/stripeController');
 var { userLogin, 
       userRegister, 
       userForgetPassword,
@@ -64,5 +64,6 @@ var {createUser,getAllUsers, updateUser}            = require('../controllers/us
   router.get('/cards',retriveUsersCard);
   router.post('/cards',addNewCardToUser);
   router.delete('/cards/:cardId',deleteUserCard);
+  router.put('/cards/:cardId',usersDefaultCard)
   
 module.exports = router;

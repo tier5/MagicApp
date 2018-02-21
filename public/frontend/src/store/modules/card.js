@@ -94,6 +94,32 @@ const actions = {
                     commit('errorTrue');
                 }
             )
+    },
+    changeDefaultCard:({commit,dispatch},payload)=>{
+        commit('changeLoading',true);
+        Vue.http.put('cards/'+ payload)
+            .then(
+                (res) => {
+                    if(res.body.status) {
+                        commit('changeLoading',false);
+                        // commit('getUserCards',res.body.data)
+                        var message = res.body.message;
+                        commit('successMessage',message);
+                        commit('successTrue');
+                        dispatch('getUserCards');
+                        
+                    } else {
+        
+                    }
+                },
+                (err) => {
+                    console.log(err.body.message);
+                    var message = err.body.message;
+                    commit('changeLoading',false);
+                    commit('errorMessage',message);
+                    commit('errorTrue');
+                }
+            )
     }
 
 }

@@ -3,7 +3,6 @@
     <div class="row app_register">
       <div class="col-md-3"></div>
       <div class="col-md-6 app_register_form">
-        <form>
           <div class="row form-group">
             <div class="col-md-12">
               <p style="text-align: center"><b>AMAGICZAP</b></p>
@@ -20,10 +19,14 @@
                     <span>${{plan.amount/100}}</span>
                     <!--span>for every {{plan.interval_count}} month</span-->
                   </div>
+                  <footer class="cd-pricing-footer">
+                    <a href="#0">Select</a>
+                  </footer>
               </div>
             </div>
           </div>
           <div class="clearfix"></div>
+          <form v-if="userSU.plan.id">
           <div class="row form-group"
                v-bind:class="{ 'form-group--error': $v.userSU.email.$error }">
             <div class="col-md-12">
@@ -76,6 +79,10 @@
                       v-if="!$v.userSU.password.required && $v.userSU.password.$error">
                   Required!
                 </span>
+                <span class="form-group__message"
+                      v-if="!$v.userSU.minLength && $v.userSU.password.$error">
+                  Minimum Lenght should be six characters long
+                </span>
               </div>
             </div>
           </div>
@@ -90,7 +97,7 @@
                        v-model="userSU.confirmPassword"
                        @blur="$v.userSU.confirmPassword.$touch">
                 <span class="form-group__message"
-                      v-if="!$v.userSU.confirmPassword.sameAs && $v.userSU.password.$error">
+                      v-if="!$v.userSU.confirmPassword.sameAs && $v.userSU.confirmPassword.$error">
                   Didn't Match with your password
                 </span>
               </div>
@@ -321,9 +328,9 @@
     background-position: 0 0;
 }
 
-.cd-pricing-features{background: #fff;}
+.cd-pricing-features{background: #337ab7;}
 .cd-pricing-footer {
-	padding-bottom: 1.7em; background:#fff; text-align: center;
+	padding-bottom: 1.7em; background:#337ab7; text-align: center;
 }
 .cd-pricing-footer a, .cd-form input[type="submit"] {
 	display: inline-block;
@@ -334,8 +341,8 @@
 	font-weight: bold;
 }
 .cd-pricing-footer a {
-	border: 1px solid rgba(223, 79, 113, 0.4);
-	color: #df4f71;
+	border: 1px solid #ccc;;
+	color: #ccc;;
 }
 .cd-pricing-footer a:hover{text-decoration: none;}
 

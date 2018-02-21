@@ -36,6 +36,8 @@
             </div>
           </div>	
         </div>
+        <div><button class="btn btn-default" :disabled="userCard.defaultCard" v-if="userCard.defaultCard">Default Card</button></div>
+        <div><button class="btn btn-default" v-if="!userCard.defaultCard" @click="makeDefault(userCard.id)">Make Default</button></div>        
       </div>
 		</div>
     <hr>
@@ -66,6 +68,9 @@ export default {
     },
     newCard(){
       this.$store.commit('changeCardModal',true);
+    },
+    makeDefault(id){
+      this.$store.dispatch('changeDefaultCard',id);
     }
   },
   created(){
