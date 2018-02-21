@@ -21,7 +21,7 @@ MongoClient.connect(url, function(err, client) {
 
   const collection = db.collection('users');
   
-  collection.updateMany({userType:null},{$set:{usersType:'free'}},function(err, result) {
+  collection.updateMany({userType:null},{$set:{userType:'free'}},function(err, result) {
     console.log("Updated all the documents with userType field");
     client.close();
   });
