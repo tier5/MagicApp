@@ -9,18 +9,15 @@ var stripe = require("stripe")(stripeKey);
 
 /**
  * Function for creating customer in stripe
- * @param {object} body
- * @param {string} userType free or paid
+ * @param {object} email
+ * @param {string} cardToken payment card token
  * @returns Promise
  */
-function createCustomer(body, userType){
+function createCustomer(email, cardToken){
     var user = {
         description : 'Customer for amagiczap application',
-        email : body.email
-    };
-    // if the user type is paid then a card token must be present to create a customer 
-    if (userType =='paid'){
-        user.source = body.cardToken;
+        email : email,
+        source: cardToken
     };
     return new Promise((resolve,reject)=>{
         stripe.customers.create(user, function(err, customer) {
@@ -153,7 +150,11 @@ function retrieveCustomer (customerId){
         );
     })
 }
-
+/**
+ * Function to create a card for the customer
+ * @param {string} customerId 
+ * @param {string} cardToken 
+ */
 function createCard (customerId, cardToken){
     return new Promise((resolve,reject)=>{
         stripe.customers.createSource(
@@ -170,8 +171,12 @@ function createCard (customerId, cardToken){
           );
     })
 }
-
-async function updateSubscription(subscriptionId,planId){
+/**
+ * Function to update the subscription 
+ * @param {string} subscriptionId 
+ * @param {string} planId 
+ */
+function updateSubscription(subscriptionId,planId){
     return new Promise((resolve,reject)=>{
         stripe.subscriptions.retrieve(subscriptionId,function(err,subscription){
             if (!err){
@@ -192,9 +197,102 @@ async function updateSubscription(subscriptionId,planId){
                 reject(err)
             }
         });
+    });
+};
+
+/**
+ * Function to retrive Subscriptions
+ * @param {Object} subscriptionId 
+ */
+function retriveSubscription(subscriptionId){
+    return new Promise((resolve,reject)=>{
+        stripe.subscriptions.retrieve(subscriptionId,function(err,subscription){
+            if(!err){
+                resolve(subscription);
+            } else {
+                reject(err);
+            };
+        });
+
+    });
+};
+
+/**
+ * Function to retrive customer's cards 
+ * @param {String} custometId
+ * @param {String} cardId
+ * @returns Promise 
+ */
+function retriveCustomerCard(customerId){
+    return new Promise ((resolve,reject)=>{
+        stripe.customers.listCards(customerId, function(err, cards) {
+            // asynchronously called
+            if (!err){
+                resolve(cards);
+            } else {
+                reject(err);
+            };
+          });
+    });
+};
+/**
+ * Function To create source for the existing customer
+ * @param {String} customerId 
+ * @param {String} cardToken 
+ * @returns PROMISE 
+ */
+function createSource(customerId,cardToken){
+    return new Promise((resolve,reject)=>{
+        stripe.customers.createSource(customerId,{
+            source:cardToken
+        },function(err,source){
+            if (!err){
+                resolve(source);
+            } else {
+                reject(err);
+            }
+        });
+    });
+};
+
+/**
+ * Function to change the default source of the existing customer
+ * @param {String} customerId 
+ * @param {String} cardToken 
+ * @returns PROMISE 
+ */
+function defaultSource(customerId,cardId){
+    return new Promise((resolve,reject)=>{
+        stripe.customers.update(customerId, {
+            default_source: cardId  
+          },function(err,data){
+            if (!err){
+                resolve(data);
+            } else { 
+                reject(err);
+            }
+          });
+    });
+};
+
+/**
+ * Function to delete a card of existing customer
+ * @param {String} customerId 
+ * @param {String} cardId 
+ * @returns PROMISE 
+ */
+
+function deleteCard (customerId,cardId){
+    return new Promise((resolve,reject)=>{
+        stripe.customers.deleteCard(customerId,cardId,function(err,confirmation){
+            if (!err){
+                resolve(confirmation);
+            } else { 
+                reject(err);
+            }
+          });
     })
 }
-
 module.exports = {
     createCustomer,
     getAllPlans,
@@ -203,5 +301,10 @@ module.exports = {
     deleteCustomer,
     retrieveCustomer,
     createCard,
-    updateSubscription
+    updateSubscription,
+    retriveSubscription,
+    retriveCustomerCard,
+    createSource,
+    defaultSource,
+    deleteCard
 }

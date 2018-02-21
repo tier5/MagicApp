@@ -2,9 +2,19 @@
  * Name: stripeController.js
  * Purpose : Stripe Controller
  */
-var {getAllPlans, createCard , createSubscription, updateSubscription}   = require('../helpers/stripe');
-var Users           = require('../models/users');
-var moment = require('moment');
+var _                       = require('lodash');
+var moment                  = require('moment');
+var Users                   = require('../models/users');
+var {
+        getAllPlans, 
+        createCard , 
+        createSubscription, 
+        updateSubscription,
+        retriveCustomerCard,
+        createSource,
+        defaultSource,
+        deleteCard,
+        retrieveCustomer}   = require('../helpers/stripe');
 
 
 // addDate method to date object 
@@ -86,8 +96,132 @@ function getAllPlansCtrl (req,res,next){
         })
  }
 
+ /**
+  * Function to retrive a user's card 
+  * @param {object} req
+  * @param {object} res
+  * @returns response
+  */
+ function retriveUsersCard(req,res){
+    var token = req.headers.authorization;
+    var customerId;
+    var userCards=[]
+    Users
+        .findOne({accessToken : token })
+        .select({stripe: 1})
+        .then(user=>{
+            customerId = user.stripe.customer.id;
+            if (customerId){
+                return retriveCustomerCard(customerId)
+            } else {
+                res.status(200).send({message: 'Cards', status : true, data:[]});
+            }
+        })
+        .then(data=>{
+            cards = data.data
+            return retrieveCustomer(customerId)
+        })
+        .then(customer=>{
+            var defaultCard = customer.default_source;
+            cards.forEach(obj => {
+                if (defaultCard == obj.id){
+                    obj.defaultCard = true
+                } else {
+                    obj.defaultCard = false
+                }
+            });
+            res.status(200).send({message: 'Cards', status : true, data: cards});
+        })
+        .catch(err=> console.log(err));
+ };
+ /**
+  * Function to add a new card to the user
+  * @param {Object} req 
+  * @param {Object} res 
+  */
+ function addNewCardToUser(req,res){
+    var token = req.headers.authorization;
+    var cardToken = req.body.cardToken;
+    var customerId =''
+    Users
+        .findOne({accessToken: token})
+        .select({stripe:1})
+        .then(user=>{
+            customerId = user.stripe.customer.id;
+            return createSource(customerId,cardToken);
+        })
+        .then(card=>{
+            var cardId = card.id
+            return defaultSource(customerId,cardId)
+        })
+        .then(confirm=>{
+            res.status(200).send({message: 'Card Added',status : true})
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(400).send({message:err.message, status:false});
+        })
+ };
+/**
+ * Function to delete a card 
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+ function deleteUserCard(req,res){
+    var cardId = req.params.cardId;
+    var token = req.headers.authorization;
+    Users
+        .findOne({accessToken: token})
+        .select({stripe:1})
+        .then(user=>{
+            let customerId = user.stripe.customer.id;
+            //console.log(cardId);
+            return defaultSource(customerId,cardId)
+        })
+        .then(confirmation=>{
+            if(confirmation.deleted){
+                res.status(200).send({message: 'Card Deleted',status : true})
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(400).send({message: err.message, status:false});
+        })
+ }
+
+ /**
+  * Function to change user's default card
+  * 
+  */
+ function usersDefaultCard(req,res){
+    var cardId = req.params.cardId;
+    var token = req.headers.authorization;
+    Users
+        .findOne({accessToken: token})
+        .select({stripe:1})
+        .then(user=>{
+            let customerId = user.stripe.customer.id;
+            //console.log(cardId);
+            return defaultSource(customerId,cardId);
+        })
+        .then(confirmation=>{
+            res.status(200).send({message: 'Default Card Changed',status : true})
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(400).send({message: err.message, status:false});
+        })
+ }
+
+
+
+
 
 module.exports = {
     getAllPlansCtrl,
-    updateUserSubscribtion
+    updateUserSubscribtion,
+    retriveUsersCard,
+    addNewCardToUser,
+    deleteUserCard,
+    usersDefaultCard
 }

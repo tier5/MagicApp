@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="container">
      <div class="row">
          <div class="col-md-12">
+            <button class="btn btn-default" @click.prevent="openModal"> Create New User</button>
             <h3 v-if="USERS.length">List of Users</h3>
             <h3 v-if="!USERS.length">No Users found!</h3>
          </div>
@@ -32,13 +33,17 @@
              </div>
          </div>
      </div>
+     <div >
+         <new-user v-if="openCreateUsersModel"></new-user>
+     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import {paginate} from 'vue-paginate';
-import ToggleButton from 'vue-js-toggle-button'
+import ToggleButton from 'vue-js-toggle-button';
+import NewUser from './CreateUsers.vue';
 export default {
     data () {
         return {
@@ -51,20 +56,23 @@ export default {
     methods:{
         updateUser(data){
             this.$store.dispatch('updateUsers',data);
+        },
+        openModal(){
+            this.$store.commit('changeOpenCreateUsersModel', true);
         }
     },
     computed: {
         // mix the getters into computed with object spread operator
         ...mapGetters([
-            'USERS'
+            'USERS',
+            'openCreateUsersModel'
         ])
     },
     created(){
         this.$store.dispatch('getUsers');
     },
-    component:{
-        'paginate':paginate,
-        'ToggleButton':ToggleButton
+    components:{
+        NewUser
     }
 
 }
