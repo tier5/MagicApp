@@ -30,11 +30,11 @@
                   <div class="clearfix"></div>
                   <div class="row">
                     <div class="col-md-2">
-                      <button class="btn btn-default" @click.prevent="addRemoveZapParams('',2)">Add</button>
+                      <button class="btn btn-default" @click.prevent="addRemoveZapParams('',2)">Add Params</button>
                     </div>
                   </div>
                   <div class="clearfix"></div>
-                  <div class="row form-group" v-for="(param,zapIndex) in newZap.params" :key="zapIndex">
+                  <div class="row form-group" v-for="(param,zapIndex) in newZap.params" :key="param.zapIndex">
                     <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.params.$each[zapIndex].field_name.$error }">
                       <input  type="text" 
                               class="form-control" 
@@ -85,6 +85,35 @@
                     </div>
                     <div class="clearfix"></div>
                   </div>
+                  <div class="clearfix"></div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <button class="btn btn-default" @click.prevent="addRemoveElementAttributes('',2)">Add Element Attribute</button>
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="row form-group" v-for="(elem,elemIndex) in newZap.element_attributes" :key="elemIndex">
+                      <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.element_attributes.$each[elemIndex].attribute_name.$error }">
+                        <input  type="text" 
+                                class="form-control" 
+                                placeholder="Name" 
+                                v-model="elem.attribute_name" 
+                                @blur="$v.newZap.element_attributes.$each[elemIndex].attribute_name.$touch">
+                        <span class="form-group__message"
+                              v-if="!$v.newZap.element_attributes.$each[elemIndex].attribute_name.required && $v.newZap.element_attributes.$each[elemIndex].attribute_name.$error">
+                          Required!      
+                        </span>
+                        <span class="form-group__message"
+                              v-if="!$v.newZap.element_attributes.$each[elemIndex].attribute_name.noIdField && $v.newZap.element_attributes.$each[elemIndex].attribute_name.$error">
+                          Id field is not allowed!      
+                        </span>
+                      </div>
+                      <div class="col-md-1">
+                        <a @click.prevent="addRemoveElementAttributes(elemIndex,3)" href=""><span class="fa fa-trash-o fa-2x"></span></a>
+                      </div>
+                      <div class="clearfix"></div>
+                  </div>
                 </form>
               </slot>
             </div>
@@ -94,8 +123,11 @@
                   <div class="col-sm-1 pull-right">
                     <button class="modal-default-button btn btn-primary" @click.prevent="HideModal()">Close</button>
                   </div>
-                  <div class="col-sm-1 pull-right">
+                  <div class="col-sm-1 pull-right" v-if="!newZap._id">
                     <button class="btn btn-success pull-right" @click.prevent="createNewZap()" :disabled="$v.newZap.$invalid">Submit</button>
+                  </div>
+                  <div class="col-sm-1 pull-right" v-if="newZap._id">
+                    <button class="btn btn-success pull-right" @click.prevent="updateZap()" :disabled="$v.newZap.$invalid">Update</button>
                   </div>
                 </div>
               </slot>
@@ -103,6 +135,7 @@
           </div>
         </div>
       </div>
+      
     </transition>
   </div>
 </template>
@@ -129,7 +162,8 @@
         ],
         newZap:{
           id:'',
-          params:[]
+          params:[],
+          element_attributes:[]
         }
       }
     },
@@ -149,14 +183,28 @@
           this.newZap.params.splice(index,1);
         }
       },
+      addRemoveElementAttributes(index,type){
+        if (type==2){
+          this.newZap.element_attributes.push({
+            attribute_name:''
+          })
+        } else {
+          //console.log(index);
+          this.newZap.element_attributes.splice(index,1);
+        }
+      },
       createNewZap(){
         this.$store.dispatch('createNewZap',this.newZap);
       },
+      updateZap(){
+        this.$store.dispatch('updateZap',this.newZap);
+      }
     },
     computed: {
       // mix the getters into computed with object spread operator
       ...mapGetters([
-        'user'
+        'user',
+        'zap'
       ])
     },
     validations:{
@@ -196,8 +244,30 @@
               required
             }
           }
+        },
+        element_attributes:{
+          $each:{
+            attribute_name: {
+              required,
+              noIdField:function(value){
+                if (value !== 'id'){
+                  return true
+                } else {
+                  return false
+                }
+              }
+            }
+          }
         }
       }
+    },
+    created:function(){
+      if (this.zap._id){
+        this.newZap = this.zap;
+      }
+    },
+    destroyed: function(){
+      this.$store.commit('viewZap',{});
     }
   }
 </script>

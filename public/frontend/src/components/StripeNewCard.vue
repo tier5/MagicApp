@@ -6,38 +6,28 @@
           <div class="modal-container">
             <div class="modal-header">
               <slot name="header">
-                <b>Forgot Your Password ? </b>
+                <b>Add New Card </b>
               </slot>
             </div>
 
             <div class="modal-body">
               <slot name="body">
                 <div class="row">
-                  <form>
-                    <div class="form-group" v-bind:class="{ 'form-group--error': $v.email.$error }">
-                      <input  type="email" 
-                              v-model="email" 
-                              placeholder="Email Address" 
-                              class="form-control"
-                              @blur="$v.email.$touch">
-                    </div>
-                  </form>
+                  <div class="col-md-8">
+                   <stripe-card stripe="pk_test_aFYmaDW3rf5AHh7MkX2BSshB" :options="options"></stripe-card>
+                  </div>
                 </div>
               </slot>
             </div>
             <div class="modal-footer">
               <slot name="footer">
                 <div class="row">
-                  <div class="col-md-6"></div>
-                  <div class="col-md-6">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <button class="btn btn-success" @click.prevent="submitForgetPassword" :disabled="$v.email.$invalid">Forgot Password</button>
-                      </div>
-                      <div class="col-md-3">
-                        <button class="btn btn-primary" @click.prevent="closeForgetPassword">Cancel</button>
-                      </div>
-                    </div>
+                  <div class="col-sm-6 pull-right">
+                    <button class="modal-default-button btn btn-success" @click.prevent="addNewCard" :disabled ="!isCardValid">Add </button>
+                    <button class="modal-default-button btn btn-primary" @click.prevent="hideCardModal" style="margin-right:5px;">Cancel</button>
+                  </div>
+                  <div class="col-sm-2 pull-right">
+                    
                   </div>
                 </div>
               </slot>
@@ -50,31 +40,44 @@
 </template>
 
 <script>
-import { required, email, minLength, sameAs} from 'vuelidate/lib/validators';
-
+import { mapGetters } from 'vuex';
+import StripeCard from './StripeCard.vue';
+import { createToken } from 'vue-stripe-elements-plus';
 export default {
   data () {
     return {
-      email:''
+     options:{},
     }
   },
   methods:{
-    submitForgetPassword(){
-      var payload = {
-        email: this.email
-      }
-      this.$store.dispatch('forgetPassword',payload);
+    addNewCard(){
+      this.$store.commit('changeLoading',true);
+      createToken()
+        .then(data => {
+            var payload = {
+              cardToken : data.token.id,
+              card : data.token.card
+            }
+            this.$store.dispatch('addUserCard',payload)
+        }).catch((err)=>{
+            console.log(err);
+        })
     },
-    closeForgetPassword(){
-      this.$store.commit('changeForgetPassword',false);
+    hideCardModal(){
+      this.$store.commit('changeCardModal',false);
     }
   },
-  validations:{
-    email :{
-      required,
-      email
-    }
-  }
+  components:{
+    StripeCard
+  },
+  computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+          'isCardValid',
+          ''
+        ]),
+  },
+
 }
 </script>
 
@@ -98,7 +101,7 @@ export default {
   }
 
   .modal-container {
-    width: 50%;
+    width: 60%;
     overflow-y: auto;
     height: 30%;
     margin: 0px auto;
@@ -128,14 +131,5 @@ export default {
 
   .modal-leave-active {
     opacity: 0;
-  }
-  .form-group--error input{
-    border-color: red;
-  }
-  .form-group--error select{
-    border-color: red;
-  }
-  .form-group__message{
-    color: red;
   }
 </style>

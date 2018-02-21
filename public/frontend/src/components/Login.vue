@@ -48,19 +48,19 @@
               </div>
             </div>
           </div>
+          <div class="clearfix"></div>
           <div class="row">
-          <div class="col-md-12">
-            <div class="col-md-3"></div>
-            <div class="col-md-4">
+            <div class="col-md-2">
               <button type="submit" class="btn btn-primary" :disabled="$v.user.$invalid">Login</button>
+            </div>
+            <div class="col-md-2">
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <router-link to="/register"><button class="btn btn-default">Register Here</button></router-link>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <button @click.prevent="openForgetPassword" class="btn btn-default"> Forgot Password</button>
-            </div>
             </div>
           </div>
         </form>

@@ -7,16 +7,24 @@ var router = express.Router();
 
 // import all controllers for the routes 
 var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
-var {saveScriptData}                                = require('../controllers/scriptController');
+var {saveScriptData, getElementAttribute}           = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
-var {isAuthorized , isUserExists, isUserSubscribed} = require('./middleware');
-var {getAllPlansCtrl, updateUserSubscribtion}       = require('../controllers/stripeController');
+var { isAuthorized , 
+      isUserExists, 
+      isUserSubscribed, 
+      onlyAdminCan}                                 = require('./middleware');
+var { getAllPlansCtrl, 
+      updateUserSubscribtion, 
+      retriveUsersCard, 
+      addNewCardToUser,
+      deleteUserCard, usersDefaultCard}             = require('../controllers/stripeController');
 var { userLogin, 
-      userRegister,
-      getAllUsers,
-      updateUser, 
+      userRegister, 
       userForgetPassword,
-      userResetPassword}                           = require('../controllers/authController');
+      userResetPassword}                            = require('../controllers/authController');
+var {createUser,getAllUsers, updateUser}            = require('../controllers/usersController');
+
+var {createUserFromHook , deleteUserFromHook} = require('../controllers/hooksController');
 
 /**
  * Users Registration, Login, Forget Password and Reset Password 
@@ -36,6 +44,7 @@ var { userLogin,
 
 // Saves script's data to database  
   router.post('/script-data',saveScriptData);
+  router.get('/script-data/:id',getElementAttribute);
 
 /**
  * Zapier Authenicate and send data to zapier
@@ -46,13 +55,24 @@ var { userLogin,
 /**
  * Admin get users and active , deactive users's activety
  */
-  router.get('/users',isAuthorized,getAllUsers);
-  router.put('/users/:id', isAuthorized,updateUser);
+  router.get('/users',isAuthorized,onlyAdminCan,getAllUsers);
+  router.put('/users/:id', isAuthorized,onlyAdminCan,updateUser);
+  router.post('/users',isAuthorized,onlyAdminCan,createUser)
   
 /**
  * Stripe 
  */
   router.get('/plans',getAllPlansCtrl);
-  router.put('/subscriptions',updateUserSubscribtion)
+  router.put('/subscriptions',updateUserSubscribtion);
+  router.get('/cards',retriveUsersCard);
+  router.post('/cards',addNewCardToUser);
+  router.delete('/cards/:cardId',deleteUserCard);
+  router.put('/cards/:cardId',usersDefaultCard);
+
+/**
+ * WebHooks
+ */
+  router.post('/hooks/users', createUserFromHook);
+  router.delete('/hooks/users', deleteUserFromHook);
   
 module.exports = router;

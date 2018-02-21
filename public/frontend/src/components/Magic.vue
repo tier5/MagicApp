@@ -17,9 +17,11 @@
                 <th>#</th>
                 <th>Zap Name</th>
                 <th>Script</th>
-                <th>Required</th>
+                <th>View</th>
                 <th>Magic Option</th>
+                <th>Append HTML</th>
                 <th>Delete</th>
+                <th>Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -30,15 +32,24 @@
                   <button v-clipboard="zap.scriptString" class="btn btn-success" @success="handleCopySuccess">Copy</button>
                 </td>
                 <td>
-                <a href="#" @click.prevent="viewParams(zap)"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
+                  <a href="#" @click.prevent="viewParams(zap)"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
                 </td>
                 <td>
                   <toggle-button v-model="zap.magicOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
                 </td>
                 <td>
+                  <toggle-button v-model="zap.elementOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
+                </td>
+                <td>
                   <span>
                     <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
                     <a href="#" @click.prevent="deleteZap(zap._id)"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></a>
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    <!--a href=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a-->
+                    <a href="#" @click.prevent="editZap(zap)"><i class="fa fa-edit fa-2x" aria-hidden="true"></i></a>
                   </span>
                 </td>
               </tr>
@@ -101,6 +112,10 @@
       },
       handleCopySuccess(e){
         swal('Copied!');
+      },
+      editZap(zap){
+        this.$store.commit('showModal');
+        this.$store.commit('viewZap',zap);
       }
     },
     computed: {

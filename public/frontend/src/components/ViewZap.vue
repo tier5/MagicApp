@@ -13,6 +13,11 @@
             <div class="modal-body">
               <slot name="body">
                 <div class="row">
+                  <div class="col-md-12 col-sm-6">
+                    <p>Zaps params </p>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-md-12 table-responsive">
                     <table class="table table-bordered">
                       <thead>
@@ -27,6 +32,28 @@
                           <td>{{field.field_name}}</td>
                           <td>{{field.validationType}}</td>
                           <td>{{field.field_value}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                  <div class="col-md-12 col-sm-6">
+                    <p>Element Attributes  </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3 table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Attribute Name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(field, index) in zap.element_attributes" :key="index">
+                          <td>{{field.attribute_name}}</td>
                         </tr>
                       </tbody>
                     </table>

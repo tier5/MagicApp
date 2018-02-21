@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <div class="row app_register">
       <div class="col-md-3"></div>
       <div class="col-md-6 app_register_form">
-        <form>
           <div class="row form-group">
             <div class="col-md-12">
-              <p style="text-align: center"><b>AMAGICZAP</b></p>
+              <h3 style="text-align: center"><strong>AMAGICZAP</strong></h3>
             </div>
           </div>
+          <p> <strong> Please select Subscription Plan</strong></p>
           <div class="row">
             <div class="col-md-4 col-sm-4" 
               v-for="(plan,index) in plans" :key="index"
@@ -18,12 +18,16 @@
                   <h2>{{plan.name}}</h2>
                   <div class="cd-price">
                     <span>${{plan.amount/100}}</span>
-                    <span>for every {{plan.interval_count}} month</span>
+                    <!--span>for every {{plan.interval_count}} month</span-->
                   </div>
+                  <footer class="cd-pricing-footer">
+                    <a href="#0">Select</a>
+                  </footer>
               </div>
             </div>
           </div>
           <div class="clearfix"></div>
+          <form>
           <div class="row form-group"
                v-bind:class="{ 'form-group--error': $v.userSU.email.$error }">
             <div class="col-md-12">
@@ -76,6 +80,10 @@
                       v-if="!$v.userSU.password.required && $v.userSU.password.$error">
                   Required!
                 </span>
+                <span class="form-group__message"
+                      v-if="!$v.userSU.minLength && $v.userSU.password.$error">
+                  Minimum Lenght should be six characters long
+                </span>
               </div>
             </div>
           </div>
@@ -90,30 +98,27 @@
                        v-model="userSU.confirmPassword"
                        @blur="$v.userSU.confirmPassword.$touch">
                 <span class="form-group__message"
-                      v-if="!$v.userSU.confirmPassword.sameAs && $v.userSU.password.$error">
+                      v-if="!$v.userSU.confirmPassword.sameAs && $v.userSU.confirmPassword.$error">
                   Didn't Match with your password
                 </span>
               </div>
             </div>
           </div>
-          <div class="row form-group" v-if="userSU.plan.amount">
+          <div class="row form-group" v-if="userSU.plan.id">
             <div class="col-md-12">
               <label  class="control-label col-md-2">Payments</label>
               <div class="col-md-10">
-                <card class='stripe-card form-control'
-                  :class='{ complete }'
-                  stripe='pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
-                  :options='stripeOptions'
-                  @change='complete = $event.complete'
-                />
+                <stripe-card stripe='pk_test_aFYmaDW3rf5AHh7MkX2BSshB' :options="stripeOptions"></stripe-card>
               </div>  
             </div>
           </div>
+          <div class="clearfix"></div>
           <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-4" v-if="userSU.plan.id">
-              <button type="submit" class="btn btn-success" v-if="!userSU.plan.amount" :disabled="($v.userSU.$invalid)" @click.prevent="onSignUp">Register</button>
-              <button type="submit" class="btn btn-success" v-if="userSU.plan.amount" :disabled="(!complete) || ($v.userSU.$invalid)" @click.prevent="onSignUp">Register</button>
+            <div class="col-md-2" v-if="userSU.plan.id">
+              <button type="submit" class="btn btn-success" :disabled="(!isCardValid) || ($v.userSU.$invalid)" @click.prevent="onSignUp">Register</button>
+            </div>
+            <div class="col-md-2">
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
             <div class="col-md-3">
@@ -132,7 +137,8 @@
 <script>
   import { required, email, minLength, sameAs} from 'vuelidate/lib/validators';
   import { mapGetters } from 'vuex';
-  import { Card, createToken } from 'vue-stripe-elements-plus';
+  import StripeCard from './StripeCard.vue';
+  import { createToken } from 'vue-stripe-elements-plus';
   
   import router from '../router/index';
   export default {
@@ -150,7 +156,6 @@
           cardToken: '',
           card:{}
         },
-        complete: false,
         stripeOptions: {
         // see https://stripe.com/docs/stripe.js#element-options for details
             
@@ -158,14 +163,7 @@
       }
     },
     methods:{
-      onSignUp () {
-        this.userSU.userType = (this.userSU.plan.amount === 0 ) ? 'free' : 'paid';
-        if(this.userSU.userType === 'free') {
-
-          this.$store.dispatch('userSignUp', this.userSU);
-
-        } else if(this.userSU.userType === 'paid') {
-          
+      onSignUp () {  
           this.$store.commit('changeLoading', true)
 
           createToken().then(data => {
@@ -175,11 +173,9 @@
           }).catch((err)=>{
             console.log(err);
           })
-        }
       },
       resetForm(){
-        this.userSU = {};
-        this.$v.userSU.$reset();
+        window.location.reload();
       },
       selectPlan(plan){
         this.userSU.plan = plan;
@@ -194,7 +190,8 @@
         ...mapGetters([
             'plans',
             'cardToken',
-            'forgetPassword'
+            'forgetPassword',
+            'isCardValid'
 
         ]),
     },
@@ -223,7 +220,7 @@
       this.$store.dispatch('getPlans'); 
     },
     components: {
-      Card
+      StripeCard
     },
     watch:{
 
@@ -334,9 +331,9 @@
     background-position: 0 0;
 }
 
-.cd-pricing-features{background: #fff;}
+.cd-pricing-features{background: #337ab7;}
 .cd-pricing-footer {
-	padding-bottom: 1.7em; background:#fff; text-align: center;
+	padding-bottom: 1.7em; background:#337ab7; text-align: center;
 }
 .cd-pricing-footer a, .cd-form input[type="submit"] {
 	display: inline-block;
@@ -347,8 +344,8 @@
 	font-weight: bold;
 }
 .cd-pricing-footer a {
-	border: 1px solid rgba(223, 79, 113, 0.4);
-	color: #df4f71;
+	border: 1px solid #ccc;;
+	color: #ccc;;
 }
 .cd-pricing-footer a:hover{text-decoration: none;}
 

@@ -5,16 +5,10 @@
 var Users = require('../models/users');
 var bcrypt = require('bcrypt');
 var moment = require('moment');
-var {createCustomer , createSubscription, createCharge, deleteCustomer , retrieveCustomer} = require('../helpers/stripe');
+var {createCustomer , createSubscription, createCharge, deleteCustomer , retrieveCustomer, retriveSubscription} = require('../helpers/stripe');
 var {sendForgetPasswordMail} = require('../helpers/nodemailer.js');
+var {createAccessToken} = require('../helpers/jwt');
 var jwt = require('jsonwebtoken');
-
-// addDate method to date object 
-Date.prototype.addDays = function (num) {
-    var value = this.valueOf();
-    value += 86400000 * num;
-    return new Date(value);
-}
 
 /**
  * function to register a user
@@ -24,23 +18,22 @@ Date.prototype.addDays = function (num) {
  * @returns response 
  */
 function userRegister(req,res,next){
-  var body = req.body;
-  var userType = body.userType; // 'paid' or 'free';
-  body.stripe= {};
-  body.stripe.plan = {
-      id : body.plan.id
-  };
-  body.stripe.cards=[];
-  // creating an object to store card details
-  if(body.card.id !== null){
+    var body = req.body;
+    body.userType = 'paid'  // always have to pay to use the application
+    body.stripe= {};
+    body.stripe.plan = {
+        id : body.plan.id
+    };
+    body.stripe.cards=[];
+    // creating an object to store card details
     var card = {
         id : body.card.id,
         isDefault : true
-    };
+    }
     body.stripe.cards.push(card);
-  }
-  // create customer for the stripe 
-  createCustomer(body,userType)
+
+    // create customer for the stripe 
+    createCustomer(body.email,body.cardToken)
         .then((customer)=>{
             body.stripe.customer = {
                 id : customer.id
@@ -52,12 +45,7 @@ function userRegister(req,res,next){
             body.stripe.subscription = {
                 id : subscription.id,
             };
-            // start date and end date of the subscription
-            var startDate = new Date ;
-            var endDate = startDate.addDays(body.plan.trial_period_days);
-            body.stripe.subscription.startDate = startDate ;
-            body.stripe.subscription.endDate = moment(endDate).format();
-            body.accessToken = jwt.sign({ email: body.email },"amagiczap.com");
+            body.accessToken = createAccessToken(body.email);
             var user = new Users(body)
             return user.save();
         }) // create a user 
@@ -67,18 +55,19 @@ function userRegister(req,res,next){
                 name : user.name,
                 isAdmin: user.isAdmin,
                 isActive:user.isActive,
-                isSubscribed : true
+                isSubscribed : true,
+                userType:user.userType
             }
             return res.status(200).send({status:true,message:"User created", token:user.accessToken , user:sendUserData})
         })
         .catch((err)=>{
             console.log(err);
 
-            deleteCustomer(body.customerId)
-                .then(confirmed => console.log('deleted'))
-                .catch(err=>console.log(err));
+            // deleteCustomer(body.stripe.customer.id)
+            //     .then(confirmed => console.log('deleted'))
+            //     .catch(err=>console.log(err));
 
-            return res.status(400).send({status:false,message: 'Somthing Went Wrong!'});
+            return res.status(400).send({status:false, message: err.message});
         })
 }
 
@@ -89,174 +78,52 @@ function userRegister(req,res,next){
  * @param {object} next 
  * @returns response 
  */
-function userLogin(req,res,next){
+async function userLogin(req,res,next){
     var { email, password } = req.body;
-
-    Users
-        .findOne({email})
-        .select({ email:1,password:1,stripe:1,isActive:1,isAdmin:1,userType:1, accessToken: 1})
-        .then(user=>{
-            bcrypt
-                .compare(password, user.password, (err, data) => {
-                    if (data) {
-                        if(user.userType == 'free'){
-                            var currentDate = new Date ;
-                            var isSubscribed = moment(currentDate).isSameOrBefore(user.stripe.subscription.endDate)
-                            var sendUserData ={
-                                email : user.email,
-                                name : user.name,
-                                isAdmin: user.isAdmin,
-                                isActive:user.isActive,
-                                isSubscribed: isSubscribed
-                            }
-                            //console.log(sendUserData);
-                            return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
-
-                        } else {
-                            var sendUserData ={
-                                email : user.email,
-                                name : user.name,
-                                isAdmin: user.isAdmin,
-                                isActive:user.isActive,
-                                isSubscribed: true
-                            }
-                            return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
-                        }
-                        
-                    } else {
-                        console.log(err);
-                        return res.status(400).send({status:false, err: err, message: 'Password Incorrect !'});
-                    }
-                });
-
-        })
-        .catch((err)=>{
-            return res.status(400).send({status:false, message:'User not Exists!' });
-        })
-}
-
-/**
- * function to get users list
- * @param {object} req 
- * @param {object} res 
- * @param {object} next 
- * @returns response 
- */
-function getAllUsers(req,res,next){
-
-    var token = req.headers.authorization || req.headers.token;
-
-    isUserAdmin(token).then((user)=>{
-        Users.aggregate([
-            {
-                $match:{
-                    isAdmin : false
-                },
-            },
-            {
-                $project:{
-                    email : 1,
-                    name : 1,
-                    isActive:1
-                }
+    try {
+        var user = await Users.findOne({email}).select({ email:1,password:1,stripe:1,isActive:1,isAdmin:1,userType:1, accessToken: 1,userType:1})
+        var decoded = await bcrypt.compare(password, user.password);
+        if (decoded) {
+            var sendUserData ={
+                email       :   user.email,
+                name        :   user.name,
+                isAdmin     :   user.isAdmin,
+                isActive    :   user.isActive,
+                userType    :   user.userType
             }
-        ],function(err,data){
-            if(!err){
+            if (user.userType == 'free') {
 
-                if(data.length === 0){
-                    return res.status(200).send({ message:'No user found',data:[],status:true});
-                } else {
-                    return res.status(200).send({ message:'Users Fetched',data:data,status:true})
-                }
+                sendUserData.isSubscribed = true ;
+
+            } else {
+
+                var subscribtion = await retriveSubscription(user.stripe.subscription.id);
                 
-            } else {
-                return res.status(500).send({message:'Whoops something went wrong',status:false});
-            }
-        })
-    })
-    .catch(()=>{
-        return res.status(200).send({ message:'Your not authorized',data:[],status:false});
-    })
-  
-}
+                if (subscribtion.status == 'active'){
 
-/**
- * function to update user
- * @param {object} req 
- * @param {object} res 
- * @param {object} next 
- * @returns response 
- */
-function updateUser(req,res,next){
-    var token = req.headers.authorization || req.headers.token
-    var body = req.body;
-    var isActive = req.body.isActive;
-    var user_id = req.params.id;
+                    sendUserData.isSubscribed = true;
 
-    isUserAdmin(token)
-        .then(()=>{   
-            var conditions = { _id:user_id }
-            ,   update = { $set: { isActive : isActive}}
-            ,   options = { multi: false };
+                } else {
 
-            Users
-                .update(conditions,update,options)
-                .then((data)=>{
+                    sendUserData.isSubscribed = false;
 
-                    if(data.ok ==1 && data.n==1 && data.nModified==1){
-                        return res.status(200).send({message:'Updated',status:true})
-                    }
-
-                }).catch(function(err){
-                    console.log(err)
-                    return res.status(400).send({message:'Something went wrong',status:false})
-                })
-
-        }).catch(function(err){
-            return res.status(403).send({message:'Forbidden',status:false})
-        }) 
-}
-
-/**
- * function to check token is for admin or not 
- * @param {string} token
- * @returns promise 
- */
-function isUserAdmin(token){
-    return new Promise(function(resolve,reject){
-        Users.aggregate([
-            {
-                $match:{
-                    $and:[
-                        {
-                            accessToken : token
-                        },
-                        {
-                            isAdmin : true
-                        }
-                    ]
                 }
-            },
-            {
-                $project : {
-                    email: 1,
-                    name: 1
-                }
-            },
-            { 
-                $limit : 1 
             }
-        ],function(err,admins){
+            return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
+    
+        } else {
 
-            if(admins.length != 0){
-                resolve(admins);
-            } else {
-                reject({message:'Not an admin'});
-            }
+            return res.status(400).send({status:false,message:"Either password or email is wrong!"})
+        }
+        
+    } catch (error) {
 
-        })
-    })
+        console.log(error);
+
+        return res.status(500).send({status:false,message:error})
+    }
 }
+
 /**
  * Function for user's forget password
  * @param {object} req
@@ -315,8 +182,6 @@ function userResetPassword(req,res){
 module.exports = {
     userRegister,
     userLogin,
-    getAllUsers,
-    updateUser,
     userForgetPassword,
     userResetPassword
 }

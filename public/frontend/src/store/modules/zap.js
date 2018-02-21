@@ -67,7 +67,7 @@ const mutations = {
     state.isShowModal = false ;
   },
   viewZap:(state,payload)=>{
-    state.zap = {...payload}
+    state.zap = payload
   },
   alterViewZap:(state,payload)=>{
     state.viewZap = payload
@@ -169,6 +169,7 @@ const actions = {
             let message = res.body.message;
             commit('successMessage',message);
             commit('successTrue');
+            commit('hideModal');
           } else {
             commit('changeLoading',false);
           }

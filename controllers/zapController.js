@@ -39,7 +39,6 @@ function createZap(req,res,next){
 
     var body = req.body;
     var token = req.headers.token || req.headers.authorization;
-
     Users
         .findOne({accessToken : token})
         .then((data)=>{
@@ -145,8 +144,8 @@ function updateZap(req,res,next){
     ,   magicOption = req.body.magicOption;
 
     var conditions = { accessToken: token, 'zaps._id' : zapId }
-    ,   update = { $set: { 'zaps.$.magicOption': magicOption }}
-    ,   options = { multi: false };
+    ,   update = { $set: { 'zaps.$': req.body }}
+    ,   options = { multi: false , upsert : true};
 
     Users.updateOne(conditions, update, options).then((data)=>{
         return res.status(200).send({ message:'Updated', status:true });

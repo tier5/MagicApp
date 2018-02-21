@@ -16,15 +16,41 @@ export default {
 		var location = window.location;
 		var hostname = location.hostname;
 		var queryParams = window.location.href.split('?')[1];
-    var requestLocation  = location.protocol + '//' + location.host + location.pathname
+		var requestLocation  = location.protocol + '//' + location.host + location.pathname
+		
     var requestObj = {
       location : requestLocation,
       params: this.getAllParams(),
       zapId : zapId
-    }
+		}
 		var postUrl = 'https://www.amagiczap.com/api/script-data'
+			this.$http.get(postUrl+'/'+requestObj.zapId).then(res=> {
+				let attributes = res.body.attributes; 
+				let trueIdsandValue =[]; // {id : name , value :'test'}
+				let params = this.getAllParams();
+				if (attributes.length){
+					attributes.forEach(element => {
+						for(let props in params){
+							if(element.attribute_name == props){
+								trueIdsandValue.push({
+									id : element.attribute_name,
+									value : requestObj.params[props]
+								})
+							}
+						}
+					});
+				}
+				if (trueIdsandValue.length){
+					trueIdsandValue.forEach(elem => {
+						this.isElementIsInput(elem.id) ? this.addValueToInputField(elem.id, elem.value): this.appendHtmlFunction(elem.id,elem.value)
+					})
+				}
+				
+
+			}).catch(err=> console.log(err))
+			
 			this.$http.get('https://freegeoip.net/json/').then(res=>{
-				requestObj.clientIp = res.body.ip;
+				requestObj.params.clientId = res.body.ip;
 				this.$http.post(postUrl,requestObj).then(function(data){
 				if (data.body.appendUrls){
 						var links = document.getElementsByTagName('a');
@@ -62,6 +88,16 @@ export default {
 		})
   },
   methods:{
+		appendHtmlFunction(id , value){
+			let elem = document.getElementById(id);
+			elem.innerHTML =value;
+		},
+		addValueToInputField(id, value){
+			document.getElementById(id).value= value;
+		},
+		isElementIsInput(id){
+			return document.getElementById(id).tagName =='INPUT'? true: false
+		},
     getAllParams(url){
       // get query string from url (optional) or window
 			  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
@@ -93,8 +129,8 @@ export default {
 			      var paramValue = typeof(a[1])==='undefined' ? true : a[1];
 
 			      // (optional) keep case consistent
-			      paramName = paramName.toLowerCase();
-			      paramValue = paramValue.toLowerCase();
+			      //paramName = paramName.toLowerCase();
+			      //paramValue = paramValue.toLowerCase();
 
 			      // if parameter name already exists
 			      if (obj[paramName]) {

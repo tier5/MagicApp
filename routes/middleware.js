@@ -4,6 +4,7 @@
  */
 var Users = require('../models/users');
 var moment = require('moment');
+var {retriveSubscription} = require('../helpers/stripe');
 
 /**
  * Function for autorization checking 
@@ -14,13 +15,16 @@ var moment = require('moment');
  */
 function isAuthorized(req,res,next){
     var token = req.headers.authorization || req.headers.token
-    Users.findOne({accessToken : token}).then(function(user){
-        if(user){
-            next()
-        } else {
-            res.status(401).send({message:'Unauthorized',status:false})
-        }
-    })
+    Users
+        .findOne({accessToken : token})
+        .then(function(user){
+            if(user){
+                next()
+            } else {
+                res.status(401).send({message:'Unauthorized',status:false})
+            }
+        })
+        
 }
 /**
  * Function for user's exists or not 
@@ -52,25 +56,51 @@ function isUserSubscribed(req,res,next){
         .findOne({accessToken : token})
         .select({userType:1,stripe:1})
         .then((data)=>{
-            if(data.userType == 'free'){
-                var isSubscribed = moment().isSameOrBefore(data.stripe.subscription.endDate);
-                if(isSubscribed){
-                    next()
-                } else {
-                    res.status(400).send({status: false , message : 'Your subscription has been over'})
-                }
+            if(data.userType == 'paid'){
+                return retriveSubscription(data.stripe.subscription.id)
+                    .then(data=>{
+                        if (data.status =='active'){
+                            next()
+                        } else {
+                            res.status(401).send({message : 'Your subscription is get over due to payment issue'})
+                        }
+                    }).catch(err=> console.error('middleware.js line 60',err))
             } else {
                 next();
             }
         })
         .catch(err => {
-            console.log(err)
-            res.status(500).send({message:'Whoops Something went wrong!' , status : false})
+            console.error('middleware.js line 70', err);
+            res.status(500).send({message:'Something Went Wrong!' , status : false})
         })
+}
+
+/**
+ * function to check only Admin can go further or not  
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Object} next 
+ * @returns response  
+ */
+
+function onlyAdminCan(req,res,next){
+    var token = req.headers.authorization ;
+    Users
+        .findOne({accessToken: token, isAdmin: true})
+        .select({email:1,isAdmin: 1})
+        .then(admin=>{
+            if (admin){
+                next()
+            } else {
+                res.status(403).send({message: `You're are not allowed!`, status: false});
+            }
+        })
+        .catch(err=> console.log(err));
 }
 
 module.exports = {
     isAuthorized,
     isUserExists,
-    isUserSubscribed
+    isUserSubscribed,
+    onlyAdminCan
 }
