@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="clearfix"></div>
-          <form v-if="userSU.plan.id">
+          <form>
           <div class="row form-group"
                v-bind:class="{ 'form-group--error': $v.userSU.email.$error }">
             <div class="col-md-12">
@@ -103,7 +103,7 @@
               </div>
             </div>
           </div>
-          <div class="row form-group" v-if="userSU.plan.amount">
+          <div class="row form-group" v-if="userSU.plan.id">
             <div class="col-md-12">
               <label  class="control-label col-md-2">Payments</label>
               <div class="col-md-10">
@@ -111,10 +111,13 @@
               </div>  
             </div>
           </div>
+          <div class="clearfix"></div>
           <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-4" v-if="userSU.plan.id">
+            <div class="col-md-2" v-if="userSU.plan.id">
               <button type="submit" class="btn btn-success" :disabled="(!isCardValid) || ($v.userSU.$invalid)" @click.prevent="onSignUp">Register</button>
+            </div>
+            <div class="col-md-2">
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
             <div class="col-md-3">
@@ -171,8 +174,7 @@
           })
       },
       resetForm(){
-        this.userSU = {};
-        this.$v.userSU.$reset();
+        window.location.reload();
       },
       selectPlan(plan){
         this.userSU.plan = plan;

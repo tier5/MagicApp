@@ -16,15 +16,16 @@ export default {
 		var location = window.location;
 		var hostname = location.hostname;
 		var queryParams = window.location.href.split('?')[1];
-    var requestLocation  = location.protocol + '//' + location.host + location.pathname
+		var requestLocation  = location.protocol + '//' + location.host + location.pathname
+		
     var requestObj = {
       location : requestLocation,
       params: this.getAllParams(),
       zapId : zapId
-    }
+		}
 		var postUrl = 'https://www.amagiczap.com/api/script-data'
 			this.$http.get('https://freegeoip.net/json/').then(res=>{
-				requestObj.clientIp = res.body.ip;
+				requestObj.params.clientId = res.body.ip;
 				this.$http.post(postUrl,requestObj).then(function(data){
 				if (data.body.appendUrls){
 						var links = document.getElementsByTagName('a');
@@ -93,8 +94,8 @@ export default {
 			      var paramValue = typeof(a[1])==='undefined' ? true : a[1];
 
 			      // (optional) keep case consistent
-			      paramName = paramName.toLowerCase();
-			      paramValue = paramValue.toLowerCase();
+			      //paramName = paramName.toLowerCase();
+			      //paramValue = paramValue.toLowerCase();
 
 			      // if parameter name already exists
 			      if (obj[paramName]) {

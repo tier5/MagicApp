@@ -28,11 +28,16 @@
             <div class="modal-footer">
               <slot name="footer">
                 <div class="row">
-                  <div class="col-sm-2 pull-right">
-                    <button class="modal-default-button btn btn-success" @click.prevent="submitForgetPassword" :disabled="$v.email.$invalid">Forgot Password</button>
-                  </div>
-                  <div class="col-sm-3 pull-right">
-                    <button class="modal-default-button btn btn-primary" @click.prevent="closeForgetPassword">Cancel</button>
+                  <div class="col-md-6"></div>
+                  <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <button class="btn btn-success" @click.prevent="submitForgetPassword" :disabled="$v.email.$invalid">Forgot Password</button>
+                      </div>
+                      <div class="col-md-3">
+                        <button class="btn btn-primary" @click.prevent="closeForgetPassword">Cancel</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </slot>
