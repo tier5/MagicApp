@@ -8,6 +8,7 @@ var moment = require('moment');
 var {createCustomer , createSubscription, createCharge, deleteCustomer , retrieveCustomer} = require('../helpers/stripe');
 var {sendForgetPasswordMail} = require('../helpers/nodemailer.js');
 var {createAccessToken} = require('../helpers/jwt');
+var jwt = require('jsonwebtoken');
 
 /**
  * function to register a user

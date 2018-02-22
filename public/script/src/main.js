@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueResource from 'vue-resource';
+import Router from 'vue-router';
+
+Vue.use(Router)
 var node = document.createElement("div");
 node.id = 'dynamicId';
 document.body.appendChild(node);

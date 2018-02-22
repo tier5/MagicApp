@@ -48,6 +48,8 @@
 
 import { mapGetters } from 'vuex';
 import StripeNewCard from './StripeNewCard';
+import swal from 'sweetalert2';
+
 export default {
   data () {
     return {
@@ -64,7 +66,24 @@ export default {
   },
   methods:{
     deleteCard(id){
-      this.$store.dispatch('deleteUserCard',id);
+      swal({
+          title: 'Are you sure?',
+          text: 'You will not be able to recover your card',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, keep it'
+        }).then((result) => {
+          if (result.value) {
+            this.$store.dispatch('deleteUserCard',id);
+          } else if (result.dismiss === 'cancel') {
+            swal(
+              'Cancelled',
+              'Your Card is safe :)',
+              'error'
+            )
+          }
+        })
     },
     newCard(){
       this.$store.commit('changeCardModal',true);

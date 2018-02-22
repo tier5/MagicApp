@@ -176,7 +176,7 @@ function getAllPlansCtrl (req,res,next){
         .then(user=>{
             let customerId = user.stripe.customer.id;
             //console.log(cardId);
-            return defaultSource(customerId,cardId)
+            return deleteCard(customerId,cardId)
         })
         .then(confirmation=>{
             if(confirmation.deleted){
