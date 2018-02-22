@@ -26,6 +26,7 @@ if(process.env.NODE_ENV =='development'){
 } else {
   Vue.http.options.root = config.prod_url;
 }
+Vue.use(Vuelidate)
 Vue.config.productionTip = false
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Content-Type', 'application/json');

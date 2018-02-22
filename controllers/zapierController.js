@@ -4,6 +4,7 @@
  */
 var Users = require('../models/users');
 var ZapData = require('../models/zaps');
+var _ = require('lodash');
 
 /**
  * function to send all zaps created
