@@ -5,7 +5,7 @@
 var Users = require('../models/users');
 var bcrypt = require('bcrypt');
 var moment = require('moment');
-var {createCustomer , createSubscription, createCharge, deleteCustomer , retrieveCustomer} = require('../helpers/stripe');
+var {createCustomer , createSubscription, createCharge, deleteCustomer , retrieveCustomer, retriveSubscription} = require('../helpers/stripe');
 var {sendForgetPasswordMail} = require('../helpers/nodemailer.js');
 var {createAccessToken} = require('../helpers/jwt');
 var jwt = require('jsonwebtoken');
@@ -78,54 +78,52 @@ function userRegister(req,res,next){
  * @param {object} next 
  * @returns response 
  */
-function userLogin(req,res,next){
+async function userLogin(req,res,next){
     var { email, password } = req.body;
+    try {
+        var user = await Users.findOne({email}).select({ email:1,password:1,stripe:1,isActive:1,isAdmin:1,userType:1, accessToken: 1,userType:1})
+        var decoded = await bcrypt.compare(password, user.password);
+        if (decoded) {
+            var sendUserData ={
+                email       :   user.email,
+                name        :   user.name,
+                isAdmin     :   user.isAdmin,
+                isActive    :   user.isActive,
+                userType    :   user.userType
+            }
+            if (user.userType == 'free') {
 
-    Users
-        .findOne({email})
-        .select({ email:1,password:1,stripe:1,isActive:1,isAdmin:1,userType:1, accessToken: 1,userType:1})
-        .then(user=>{
-            bcrypt
-                .compare(password, user.password, (err, data) => {
-                    if (data) {
-                        if(user.userType == 'free'){
-                            var currentDate = new Date ;
-                            var isSubscribed = moment(currentDate).isSameOrBefore(user.stripe.subscription.endDate)
-                            var sendUserData ={
-                                email : user.email,
-                                name : user.name,
-                                isAdmin: user.isAdmin,
-                                isActive:user.isActive,
-                                isSubscribed: isSubscribed,
-                                userType: user.userType
-                            }
-                            //console.log(sendUserData);
-                            return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
+                sendUserData.isSubscribed = true ;
 
-                        } else {
-                            var sendUserData ={
-                                email : user.email,
-                                name : user.name,
-                                isAdmin: user.isAdmin,
-                                isActive:user.isActive,
-                                isSubscribed: true,
-                                userType: user.userType
-                                
-                            }
-                            return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
-                        }
-                        
-                    } else {
-                        console.log(err);
-                        return res.status(400).send({status:false, err: err, message: 'Password Incorrect !'});
-                    }
-                });
+            } else {
 
-        })
-        .catch((err)=>{
-            return res.status(400).send({status:false, message:'User not Exists!' });
-        })
+                var subscribtion = await retriveSubscription(user.stripe.subscription.id);
+                
+                if (subscribtion.status == 'active'){
+
+                    sendUserData.isSubscribed = true;
+
+                } else {
+
+                    sendUserData.isSubscribed = false;
+
+                }
+            }
+            return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
+    
+        } else {
+
+            return res.status(400).send({status:false,message:"Either password or email is wrong!"})
+        }
+        
+    } catch (error) {
+
+        console.log(error);
+
+        return res.status(500).send({status:false,message:error})
+    }
 }
+
 /**
  * Function for user's forget password
  * @param {object} req

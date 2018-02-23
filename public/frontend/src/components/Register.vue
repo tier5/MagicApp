@@ -5,9 +5,10 @@
       <div class="col-md-6 app_register_form">
           <div class="row form-group">
             <div class="col-md-12">
-              <p style="text-align: center"><b>AMAGICZAP</b></p>
+              <h3 style="text-align: center"><strong>AMAGICZAP</strong></h3>
             </div>
           </div>
+          <p> <strong> Please select Subscription Plan</strong></p>
           <div class="row">
             <div class="col-md-4 col-sm-4" 
               v-for="(plan,index) in plans" :key="index"
