@@ -292,7 +292,22 @@ function deleteCard (customerId,cardId){
             }
           });
     })
-}
+};
+/**
+ * Function to create card token 
+ * 
+ */
+function demoCardToken (){
+    return stripe.tokens.create({
+        card: {
+          "number": '4242424242424242',
+          "exp_month": 12,
+          "exp_year": 2019,
+          "cvc": '123'
+        }
+      });
+};
+
 module.exports = {
     createCustomer,
     getAllPlans,
@@ -306,5 +321,6 @@ module.exports = {
     retriveCustomerCard,
     createSource,
     defaultSource,
-    deleteCard
+    deleteCard,
+    demoCardToken
 }

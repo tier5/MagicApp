@@ -24,6 +24,8 @@ var { userLogin,
       userResetPassword}                            = require('../controllers/authController');
 var {createUser,getAllUsers, updateUser}            = require('../controllers/usersController');
 
+var {createUserFromHook , deleteUserFromHook} = require('../controllers/hooksController');
+
 /**
  * Users Registration, Login, Forget Password and Reset Password 
  */
@@ -64,6 +66,12 @@ var {createUser,getAllUsers, updateUser}            = require('../controllers/us
   router.get('/cards',retriveUsersCard);
   router.post('/cards',addNewCardToUser);
   router.delete('/cards/:cardId',deleteUserCard);
-  router.put('/cards/:cardId',usersDefaultCard)
+  router.put('/cards/:cardId',usersDefaultCard);
+
+/**
+ * WebHooks
+ */
+  router.post('/hooks/users', createUserFromHook);
+  router.delete('/hooks/users', deleteUserFromHook);
   
 module.exports = router;
