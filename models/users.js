@@ -29,9 +29,12 @@ const UserSchema =  new Schema({
     zaps:[
         {
             name:{
-                type:String,required:[true,'Zap name is required']
+                type:String
             },
-            magicOption:{
+            magicOption: {
+                type:Boolean, default: false
+            },
+            elementOption: {
                 type:Boolean, default: false
             },
             params:[
@@ -44,6 +47,12 @@ const UserSchema =  new Schema({
                     },
                     field_value : {
                         type:String
+                    }
+                }
+            ],
+            element_attributes:[
+                {   attribute_name: {
+                    type : String
                     }
                 }
             ]

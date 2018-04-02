@@ -30,7 +30,7 @@
                   <div class="clearfix"></div>
                   <div class="row">
                     <div class="col-md-2">
-                      <button class="btn btn-default" @click.prevent="addRemoveZapParams('',2)">Add</button>
+                      <button class="btn btn-default" @click.prevent="addRemoveZapParams('',2)">Add Params</button>
                     </div>
                   </div>
                   <div class="clearfix"></div>
@@ -85,6 +85,35 @@
                     </div>
                     <div class="clearfix"></div>
                   </div>
+                  <div class="clearfix"></div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <button class="btn btn-default" @click.prevent="addRemoveElementAttributes('',2)">Add Element Attribute</button>
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="row form-group" v-for="(elem,elemIndex) in newZap.element_attributes" :key="elemIndex">
+                      <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.element_attributes.$each[elemIndex].attribute_name.$error }">
+                        <input  type="text" 
+                                class="form-control" 
+                                placeholder="Name" 
+                                v-model="elem.attribute_name" 
+                                @blur="$v.newZap.element_attributes.$each[elemIndex].attribute_name.$touch">
+                        <span class="form-group__message"
+                              v-if="!$v.newZap.element_attributes.$each[elemIndex].attribute_name.required && $v.newZap.element_attributes.$each[elemIndex].attribute_name.$error">
+                          Required!      
+                        </span>
+                        <span class="form-group__message"
+                              v-if="!$v.newZap.element_attributes.$each[elemIndex].attribute_name.noIdField && $v.newZap.element_attributes.$each[elemIndex].attribute_name.$error">
+                          Id field is not allowed!      
+                        </span>
+                      </div>
+                      <div class="col-md-1">
+                        <a @click.prevent="addRemoveZapParams(elemIndex,3)" href=""><span class="fa fa-trash-o fa-2x"></span></a>
+                      </div>
+                      <div class="clearfix"></div>
+                  </div>
                 </form>
               </slot>
             </div>
@@ -129,7 +158,8 @@
         ],
         newZap:{
           id:'',
-          params:[]
+          params:[],
+          element_attributes:[]
         }
       }
     },
@@ -147,6 +177,16 @@
         } else {
           //console.log(index);
           this.newZap.params.splice(index,1);
+        }
+      },
+      addRemoveElementAttributes(index,type){
+        if (type==2){
+          this.newZap.element_attributes.push({
+            attribute_name:''
+          })
+        } else {
+          //console.log(index);
+          this.newZap.element_attributes.splice(index,1);
         }
       },
       createNewZap(){
@@ -194,6 +234,20 @@
             },
             validationType:{
               required
+            }
+          }
+        },
+        element_attributes:{
+          $each:{
+            attribute_name: {
+              required,
+              noIdField:function(value){
+                if (value !== 'id'){
+                  return true
+                } else {
+                  return false
+                }
+              }
             }
           }
         }

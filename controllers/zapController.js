@@ -39,7 +39,7 @@ function createZap(req,res,next){
 
     var body = req.body;
     var token = req.headers.token || req.headers.authorization;
-
+    console.log(body);
     Users
         .findOne({accessToken : token})
         .then((data)=>{

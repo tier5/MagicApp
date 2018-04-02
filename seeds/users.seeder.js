@@ -11,7 +11,7 @@ var superAdmin = new Users({
     email: 'admin@amagiczap.com',
     password: 123456,
     isAdmin:true,
-    userType:'paid',
+    userType:'free',
     zaps:[],
     accessToken:jwt.sign({ email: 'admin@amagiczap'},"amagiczap.com")
 });

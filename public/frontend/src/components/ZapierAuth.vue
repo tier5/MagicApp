@@ -10,10 +10,15 @@
               <p>Zapier Api Key </p>
             </td>
             <td class="col-md-3">
-              <p id="zapier-token">{{token}}</p>
+              <button class="btn btn-success" v-clipboard="token" @success="handleCopyAuthSuccess">Copy</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-3">
+              <p>Zapier Invite link</p>
             </td>
             <td class="col-md-3">
-              <button class="btn btn-success" v-clipboard="token" @success="handleCopyAuthSuccess">Copy</button>
+              <button class="btn btn-success" v-clipboard="inviteLink" @success="handleCopyAuthSuccess">Copy</button>
             </td>
           </tr>
         </tbody>
@@ -32,7 +37,8 @@
   export default {
     data () {
       return {
-        name:''
+        name:'',
+        inviteLink:'https://zapier.com/developer/invite/84218/e764f4aed0918a3f1f88f157d3a12d18/'
       }
     },
     computed:{

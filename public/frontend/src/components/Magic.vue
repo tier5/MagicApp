@@ -17,7 +17,7 @@
                 <th>#</th>
                 <th>Zap Name</th>
                 <th>Script</th>
-                <th>Required</th>
+                <th>View</th>
                 <th>Magic Option</th>
                 <th>Delete</th>
               </tr>
