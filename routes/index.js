@@ -7,7 +7,7 @@ var router = express.Router();
 
 // import all controllers for the routes 
 var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
-var {saveScriptData}                                = require('../controllers/scriptController');
+var {saveScriptData, getElementAttribute}           = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
 var { isAuthorized , 
       isUserExists, 
@@ -44,6 +44,7 @@ var {createUserFromHook , deleteUserFromHook} = require('../controllers/hooksCon
 
 // Saves script's data to database  
   router.post('/script-data',saveScriptData);
+  router.get('/script-data/:id',getElementAttribute);
 
 /**
  * Zapier Authenicate and send data to zapier
