@@ -34,7 +34,7 @@
                     </div>
                   </div>
                   <div class="clearfix"></div>
-                  <div class="row form-group" v-for="(param,zapIndex) in newZap.params" :key="zapIndex">
+                  <div class="row form-group" v-for="(param,zapIndex) in newZap.params" :key="param.zapIndex">
                     <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.params.$each[zapIndex].field_name.$error }">
                       <input  type="text" 
                               class="form-control" 
@@ -110,7 +110,7 @@
                         </span>
                       </div>
                       <div class="col-md-1">
-                        <a @click.prevent="addRemoveZapParams(elemIndex,3)" href=""><span class="fa fa-trash-o fa-2x"></span></a>
+                        <a @click.prevent="addRemoveElementAttributes(elemIndex,3)" href=""><span class="fa fa-trash-o fa-2x"></span></a>
                       </div>
                       <div class="clearfix"></div>
                   </div>
@@ -123,8 +123,11 @@
                   <div class="col-sm-1 pull-right">
                     <button class="modal-default-button btn btn-primary" @click.prevent="HideModal()">Close</button>
                   </div>
-                  <div class="col-sm-1 pull-right">
+                  <div class="col-sm-1 pull-right" v-if="!newZap._id">
                     <button class="btn btn-success pull-right" @click.prevent="createNewZap()" :disabled="$v.newZap.$invalid">Submit</button>
+                  </div>
+                  <div class="col-sm-1 pull-right" v-if="newZap._id">
+                    <button class="btn btn-success pull-right" @click.prevent="updateZap()" :disabled="$v.newZap.$invalid">Update</button>
                   </div>
                 </div>
               </slot>
@@ -132,6 +135,7 @@
           </div>
         </div>
       </div>
+      
     </transition>
   </div>
 </template>
@@ -192,11 +196,15 @@
       createNewZap(){
         this.$store.dispatch('createNewZap',this.newZap);
       },
+      updateZap(){
+        this.$store.dispatch('updateZap',this.newZap);
+      }
     },
     computed: {
       // mix the getters into computed with object spread operator
       ...mapGetters([
-        'user'
+        'user',
+        'zap'
       ])
     },
     validations:{
@@ -252,6 +260,14 @@
           }
         }
       }
+    },
+    created:function(){
+      if (this.zap._id){
+        this.newZap = this.zap;
+      }
+    },
+    destroyed: function(){
+      this.$store.commit('viewZap',{});
     }
   }
 </script>

@@ -63,7 +63,8 @@ function getElementAttribute(req,res){
     let zap_id = req.params.id;
     findZap(zap_id)
         .then(zap=> {
-            res.send({message: 'ok', attributes: zap.element_attributes});
+            (zap.elementOption)? res.send({message: 'ok', attributes: zap.element_attributes}): res.send({message: 'ok', attributes:[]});
+            
         }).catch(error => {res.status(404).send('not found')})
 }
 
