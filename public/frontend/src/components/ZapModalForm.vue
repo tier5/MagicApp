@@ -109,6 +109,10 @@
                           Id field is not allowed!      
                         </span>
                       </div>
+                      <div class="col-md-3">
+                        <input type="radio" v-model="elem.attribute_type" value="id" :id="elemIndex"> <label :for="elemIndex">id</label>
+                        <input type="radio" v-model="elem.attribute_type" value="name" :id="elemIndex"> <label :for="elemIndex">name</label>
+                      </div>
                       <div class="col-md-1">
                         <a @click.prevent="addRemoveElementAttributes(elemIndex,3)" href=""><span class="fa fa-trash-o fa-2x"></span></a>
                       </div>
@@ -186,7 +190,8 @@
       addRemoveElementAttributes(index,type){
         if (type==2){
           this.newZap.element_attributes.push({
-            attribute_name:''
+            attribute_name:'',
+            attribute_type:'id'
           })
         } else {
           //console.log(index);
