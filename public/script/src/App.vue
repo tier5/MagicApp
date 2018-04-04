@@ -7,24 +7,15 @@
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+			msg: 'Welcome to Your Vue.js App',
+			postUrl: 'https://amagiczap.com/api/script-data'
     }
   },
-  created(){
-    var scriptElement = document.getElementById('magic_app_script');
+	mounted(){
+		var scriptElement = document.getElementById('magic_app_script');
     var zapId = scriptElement.getAttribute('data-script-id')
-		var location = window.location;
-		var hostname = location.hostname;
-		var queryParams = window.location.href.split('?')[1];
-		var requestLocation  = location.protocol + '//' + location.host + location.pathname
-		
-    var requestObj = {
-      location : requestLocation,
-      params: this.getAllParams(),
-      zapId : zapId
-		}
-		var postUrl = 'https://www.amagiczap.com/api/script-data'
-			this.$http.get(postUrl+'/'+requestObj.zapId).then(res=> {
+		var elements = document.getElementsByName('fname');
+			this.$http.get(this.postUrl+'/'+ zapId).then(res=> {
 				let attributes = res.body.attributes; 
 				let trueIdsandValue =[]; // {id : name , value :'test'}
 				let params = this.getAllParams();
@@ -34,24 +25,38 @@ export default {
 							if(element.attribute_name == props){
 								trueIdsandValue.push({
 									id : element.attribute_name,
-									value : requestObj.params[props]
+									value : params[props],
+									type : element.attribute_type
 								})
 							}
 						}
 					});
 				}
-				if (trueIdsandValue.length){
+				if (trueIdsandValue.length) {
 					trueIdsandValue.forEach(elem => {
-						this.isElementIsInput(elem.id) ? this.addValueToInputField(elem.id, elem.value): this.appendHtmlFunction(elem.id,elem.value)
+						this.isElementIsInput(elem.id, elem.type) ? this.addValueToInputField(elem.id, elem.value, elem.type): this.appendHtmlFunction(elem.id,elem.value, elem.type)
 					})
 				}
 				
 
 			}).catch(err=> console.log(err))
-			
+	},
+  created(){
+    var scriptElement = document.getElementById('magic_app_script');
+    var zapId = scriptElement.getAttribute('data-script-id')
+		var location = window.location;
+		var hostname = location.hostname;
+		var queryParams = window.location.href.split('?')[1];
+		var requestLocation  = location.protocol + '//' + location.host + location.pathname;
+
+    var requestObj = {
+      location : requestLocation,
+      params: this.getAllParams(),
+      zapId : zapId
+		}	
 			this.$http.get('https://freegeoip.net/json/').then(res=>{
 				requestObj.params.clientId = res.body.ip;
-				this.$http.post(postUrl,requestObj).then(function(data){
+				this.$http.post(this.postUrl,requestObj).then(function(data){
 				if (data.body.appendUrls){
 						var links = document.getElementsByTagName('a');
 						for(var i = 0;i<links.length;i++){
@@ -88,15 +93,40 @@ export default {
 		})
   },
   methods:{
-		appendHtmlFunction(id , value){
-			let elem = document.getElementById(id);
-			elem.innerHTML =value;
+		appendHtmlFunction(attributeName, attributeValue, attributeType){
+			if (attributeType == 'name'){
+				let elements = document.getElementsByName(attributeName);
+						elements.forEach(element => {
+							element.innerHTML = attributeValue
+						})
+			} else if (attributeType == 'id'){
+				let elem = document.getElementById(attributeName);
+				elem.innerHTML = attributeValue;
+			}
 		},
-		addValueToInputField(id, value){
-			document.getElementById(id).value= value;
+		addValueToInputField(attributeName,attributeValue, attributeType){
+			if (attributeType == 'name'){
+				let elements = document.getElementsByName(attributeName);
+						elements.forEach(element => {
+							element.value = attributeValue
+						})
+			} else if (attributeType == 'id'){
+				let elem = document.getElementById(attributeName)
+				elem && (elem.value = attributeValue)
+			}
 		},
-		isElementIsInput(id){
-			return document.getElementById(id).tagName =='INPUT'? true: false
+		isElementIsInput(attributeName, attributeType){
+			if (attributeType == 'name'){
+				let elements = document.getElementsByName(attributeName);
+						if (elements.length){
+								return elements[0].tagName == 'INPUT' ? true : false ;
+						}  else return false
+			} else if(attributeType == 'id') {
+				let elem = document.getElementById(attributeName);
+				if (elem){
+					return elem.tagName == 'INPUT' ? true : false ;
+				} else return false
+			}
 		},
     getAllParams(url){
       // get query string from url (optional) or window
@@ -146,12 +176,12 @@ export default {
 			        // if array index number specified...
 			        else {
 			          // put the value at that index number
-			          obj[paramName][paramNum] = paramValue;
+			          obj[paramName][paramNum] = decodeURIComponent(paramValue);
 			        }
 			      }
 			      // if param name doesn't exist yet, set it
 			      else {
-			        obj[paramName] = paramValue;
+			        obj[paramName] = decodeURIComponent(paramValue);
 			      }
 			    }
 			  }

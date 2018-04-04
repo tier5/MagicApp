@@ -52,7 +52,10 @@ const UserSchema =  new Schema({
             ],
             element_attributes:[
                 {   attribute_name: {
-                    type : String
+                        type : String
+                    },
+                    attribute_type:{
+                        type: String
                     }
                 }
             ]

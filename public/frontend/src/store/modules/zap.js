@@ -33,13 +33,13 @@ const mutations = {
   getZap:(state,payload)=>{
     const data = [...payload];
     for(let i = 0; i < data.length; i++) {
-      data[i].scriptString = `<script src= 'https://amagiczap.com/mscript/build.js' id ='magic_app_script' data-script-id='${data[i]._id}'>`;
+      data[i].scriptString = `<script src= 'https://amagiczap.com/mscript/build.js' id ='magic_app_script' data-script-id='${data[i]._id}'></script>`;
     }
     state.zaps = [...data]
   },
   addZap:(state,payload)=>{
     const data = {...payload};
-    data.scriptString = `<script src= 'https://amagiczap.com/mscript/build.js' id ='magic_app_script' data-script-id='${data._id}'>`;
+    data.scriptString = `<script src= 'https://amagiczap.com/mscript/build.js' id ='magic_app_script' data-script-id='${data._id}'></script>`;
     state.zaps = [...state.zaps,{...data}]
   },
   deleteZap:(state,payload)=>{
