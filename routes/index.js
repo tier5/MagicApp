@@ -73,6 +73,6 @@ var {createUserFromHook , deleteUserFromHook} = require('../controllers/hooksCon
  * WebHooks
  */
   router.post('/hooks/users', createUserFromHook);
-  router.delete('/hooks/users', deleteUserFromHook);
+  router.post('/hooks/users-delete', deleteUserFromHook);
   
 module.exports = router;

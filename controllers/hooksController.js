@@ -6,6 +6,7 @@
 const uuid = require('uuid/v4');
 var {demoCardToken, createCustomer, createSubscription, deleteCustomer} = require('../helpers/stripe');
 var Users = require('../models/users');
+var Zaps = require('../models/zaps');
 var _ = require('lodash');
 var {createAccessToken} = require('../helpers/jwt');
  /**
@@ -87,8 +88,17 @@ var {createAccessToken} = require('../helpers/jwt');
         if(!user) {
             return res.status(400).send({message: 'User not exists!', status : 'error', http_code: 400 })
         } else {
+            if (user.zaps.length) {
+                user.zaps.forEach( zap => {
+                    Zaps.remove({zapId : zap._id}).then(deleted=>{
+                        console.log('deleted');
+                    }).catch(error=>{
+                        console.log('not deleted')
+                    })
+                })
+            }
             let customerId = user.stripe.customer.id;
-            if (customerId){
+            if (user.userType == 'paid' && customerId){
                 
                 deleteCustomer(customerId).then(confirmation=> {
                     if (confirmation.deleted){
@@ -100,10 +110,14 @@ var {createAccessToken} = require('../helpers/jwt');
                     return res.status(500).send({message : 'Something Went Wrong!', http_code : 500, status :'error'})
                 })
             } else {
-                    return res.status(500).send({message : 'Something Went Wrong!', http_code : 500, status :'error'})
+                
+                Users.remove({email : user.email}).then(docs => {
+                    return res.status(200).send({http_code : 200, status :'success' , message : 'User deleted!'})
+                })
             }
         }
     }).catch(err => {
+    
         return res.status(500).send({message : 'Something Went Wrong!', http_code : 500, status :'error'})
     })
  }

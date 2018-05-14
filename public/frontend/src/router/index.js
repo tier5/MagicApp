@@ -37,19 +37,19 @@ export default new Router({
         name:'Users',
         component: Users
       },
-      {
-        path:'settings',
-        name:'Settings',
-        component: Settings
-      }
+      // {
+      //   path:'settings',
+      //   name:'Settings',
+      //   component: Settings
+      // }
     ]
     },
-    {
-      path: '/register',
-      name: 'Register',
-      beforeEnter:NotAuthGaurd,
-      component: Register
-    },
+    // {
+    //   path: '/register',
+    //   name: 'Register',
+    //   beforeEnter:NotAuthGaurd,
+    //   component: Register
+    // },
     {
       path: '/login',
       name: 'Login',

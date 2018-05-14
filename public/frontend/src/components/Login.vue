@@ -56,9 +56,9 @@
             <div class="col-md-2">
               <button type="reset" class="btn btn-primary" @click.prevent="resetForm">Reset</button>
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <router-link to="/register"><button class="btn btn-default">Register Here</button></router-link>
-            </div>
+            </div> -->
             <div class="col-md-2">
               <button @click.prevent="openForgetPassword" class="btn btn-default"> Forgot Password</button>
             </div>
