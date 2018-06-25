@@ -24,7 +24,10 @@ var { userLogin,
       userResetPassword}                            = require('../controllers/authController');
 var {createUser,getAllUsers, updateUser}            = require('../controllers/usersController');
 
-var {createUserFromHook , deleteUserFromHook} = require('../controllers/hooksController');
+var { createUserFromHook,
+      deleteUserFromHook,
+      suspendUserFromHook,
+      unsuspendUserFromHook }                         = require('../controllers/hooksController');
 
 /**
  * Users Registration, Login, Forget Password and Reset Password 
@@ -74,5 +77,6 @@ var {createUserFromHook , deleteUserFromHook} = require('../controllers/hooksCon
  */
   router.post('/hooks/users', createUserFromHook);
   router.post('/hooks/users-delete', deleteUserFromHook);
-  
+  router.post('/hooks/users-suspend', suspendUserFromHook);
+  router.post('/hooks/users-unsuspend', unsuspendUserFromHook);
 module.exports = router;
