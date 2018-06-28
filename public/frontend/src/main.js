@@ -23,8 +23,10 @@ Vue.use(Vuetify)
 import config from '../config/config';
 if(process.env.NODE_ENV =='development'){
   Vue.http.options.root = config.dev_url;
+  Vue.backend_url = config.dev_backend_url;
 } else {
   Vue.http.options.root = config.prod_url;
+  Vue.backend_url = config.prod_backend_url;
 }
 Vue.use(Vuelidate)
 Vue.config.productionTip = false

@@ -5,6 +5,7 @@ import Dashboard from '../components/Dashboard'
 import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
 import Magic from '../components/Magic.vue'
+import MagicScript from '../components/MagicScript.vue'
 import AuthGaurd from './gaurds/auth-gaurd';
 import NotAuthGaurd from './gaurds/not-auth-gaurd';
 import ZapierAuth from '../components/ZapierAuth.vue';
@@ -21,28 +22,34 @@ export default new Router({
     {
       path: '/',
       name: 'Dashboard',
-      component: Dashboard,beforeEnter: AuthGaurd,children :[
-      {
-        path:'magic',
-        name:'Magic',
-        component:Magic
-      },
-      {
-        path:'zapier-auth',
-        name:'ZapierAuth',
-        component:ZapierAuth
-      },
-      {
-        path:'users',
-        name:'Users',
-        component: Users
-      },
-      // {
-      //   path:'settings',
-      //   name:'Settings',
-      //   component: Settings
-      // }
-    ]
+      component: Dashboard,
+      beforeEnter: AuthGaurd,children :[
+        {
+          path:'magic',
+          name:'Magic',
+          component:Magic
+        },
+        {
+          path:'magic-script',
+          name:'MagicScript',
+          component:MagicScript
+        },
+        {
+          path:'zapier-auth',
+          name:'ZapierAuth',
+          component:ZapierAuth
+        },
+        {
+          path:'users',
+          name:'Users',
+          component: Users
+        },
+        // {
+        //   path:'settings',
+        //   name:'Settings',
+        //   component: Settings
+        // }
+      ]
     },
     // {
     //   path: '/register',
@@ -61,6 +68,6 @@ export default new Router({
       name: 'ResetPassword',
       component: ResetPassword
     },
-    
+
   ]
 })
