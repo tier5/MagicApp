@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import Header from './Header.vue'
+  import Header from './Header.vue';
   import Sidebars from './Sidebars.vue';
   import { mapGetters } from 'vuex';
   import AccountHold from './AccountHold.vue';

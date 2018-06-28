@@ -7,9 +7,14 @@
           <div class="navbar-header">
             <a class="navbar-brand" ><router-link to="/magic">Magic Zap</router-link></a>
           </div>
+
+          <ul class="nav navbar-nav navbar-left">
+            <li v-if="user.isAdmin"><a href="" @click.prevent="customRouterPush('/users')">Users</a></li>
+            <li><a href="" @click.prevent="customRouterPush('/magic')">Magic</a></li>
+            <li><a href="" @click.prevent="customRouterPush('/magic-script')">Magic Script</a></li>
+          </ul>
           
           <ul class="nav navbar-nav navbar-right">
-            <li v-if="user.isAdmin"><a href="" @click.prevent="customRouterPush('/users')">Users</a></li>
             <!-- <li><a href="" @click.prevent="customRouterPush('/plans')">Plans</a></li> -->
             <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
