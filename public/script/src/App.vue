@@ -7,14 +7,13 @@
 export default {
   data () {
     return {
-			msg: 'Welcome to Your Vue.js App',
 			postUrl: 'https://amagiczap.com/api/script-data'
     }
   },
 	mounted(){
 		var scriptElement = document.getElementById('magic_app_script');
-    var zapId = scriptElement.getAttribute('data-script-id')
-		var elements = document.getElementsByName('fname');
+		var zapId = scriptElement.getAttribute('data-script-id');
+		var elements = document.getElementById('gender');
 			this.$http.get(this.postUrl+'/'+ zapId).then(res=> {
 				let attributes = res.body.attributes; 
 				let trueIdsandValue =[]; // {id : name , value :'test'}
@@ -34,7 +33,23 @@ export default {
 				}
 				if (trueIdsandValue.length) {
 					trueIdsandValue.forEach(elem => {
-						this.isElementIsInput(elem.id, elem.type) ? this.addValueToInputField(elem.id, elem.value, elem.type): this.appendHtmlFunction(elem.id,elem.value, elem.type)
+						let tagName = this.getElementTagName(elem.id,elem.type);
+						switch(tagName){
+							case "INPUT":
+								this.addValueToInputField(elem.id, elem.value, elem.type)
+								break;
+							case "SELECT" :
+								this.addValueToSelectField(elem.id, elem.value, elem.type)
+								break;
+							case "SPAN":
+								this.appendHtmlFunction(elem.id,elem.value, elem.type)
+								break;
+							case false :
+								//console.log('tagnotfound!');
+								break;
+							default :
+								//console.log(tagName);
+						}
 					})
 				}
 				
@@ -54,8 +69,8 @@ export default {
       params: this.getAllParams(),
       zapId : zapId
 		}	
-			this.$http.get('https://freegeoip.net/json/').then(res=>{
-				requestObj.params.clientId = res.body.ip;
+		this.$http.get('http://gd.geobytes.com/GetCityDetails').then(res=>{
+				requestObj.params.clientId = res.body.geobytesipaddress;
 				this.$http.post(this.postUrl,requestObj).then(function(data){
 				if (data.body.appendUrls){
 						var links = document.getElementsByTagName('a');
@@ -105,6 +120,33 @@ export default {
 			}
 		},
 		addValueToInputField(attributeName,attributeValue, attributeType){
+
+			if (attributeType == 'name'){
+				let elements = document.getElementsByName(attributeName);
+						elements.forEach(element => {
+							if (element.attributes.type==='text'){
+									element.value = attributeValue
+							} else if (element.type ==='radio' || element.type ==='checkbox'){
+								if (element.value == attributeValue){
+									element.checked = true
+								}
+							}
+							
+						})
+			} else if (attributeType == 'id'){
+				let element = document.getElementById(attributeName)
+				if (element.attributes.type==='text'){
+						element.value = attributeValue
+				} else if (element.type ==='radio' || element.type ==='checkbox'){
+
+					if (element.value == attributeValue){
+								element.checked = true
+					}
+				}
+			}
+		},
+		addValueToSelectField(attributeName,attributeValue, attributeType){
+
 			if (attributeType == 'name'){
 				let elements = document.getElementsByName(attributeName);
 						elements.forEach(element => {
@@ -125,6 +167,20 @@ export default {
 				let elem = document.getElementById(attributeName);
 				if (elem){
 					return elem.tagName == 'INPUT' ? true : false ;
+				} else return false
+			}
+		},
+		getElementTagName(attributeName,attributeType){
+			if (attributeType == 'name'){
+				let elements = document.getElementsByName(attributeName);
+				console.log(elements);
+						if (elements.length){
+								return elements[0].tagName
+						} else return false
+			} else if(attributeType == 'id') {
+				let elem = document.getElementById(attributeName);
+				if (elem){
+					return elem.tagName;
 				} else return false
 			}
 		},

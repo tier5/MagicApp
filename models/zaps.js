@@ -20,7 +20,7 @@ const scriptDataSchema = new Schema({
             }
         }
     ]
-})
+} , { timestamps: true})
 
 var scriptData = connection.model('script_data', scriptDataSchema);
 

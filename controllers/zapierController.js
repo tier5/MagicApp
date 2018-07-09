@@ -51,9 +51,9 @@ function usersZaps(req,res,next){
  * @returns response 
  */
 function getScriptZaps(req,res,next){
-    var zapId = req.params.zapId
+    var zapId = req.params.zapId;
     // fetching all data from database for the scriptid
-    ZapData.find({zapId:zapId}).then((data)=>{
+    ZapData.find({zapId:zapId}).sort({"createdAt": -1}).then((data)=>{
       if (data.length==0){
         res.status(200).send({response: [], message: 'Success',status:true});
       } else {
