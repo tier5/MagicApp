@@ -34,7 +34,7 @@ function addDomain(req,res,next) {
                     Users
                         .find({"_id": user._id})
                         .then(function (userDomain) {
-                            var userDomains = userDomain.domains;
+                            var userDomains = userDomain[0].domains;
                             return res.status(200).send({status:true,message:'Domain added', domains: userDomains});
                         })
                         .catch(error => {

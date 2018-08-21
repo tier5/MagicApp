@@ -26,6 +26,7 @@ const UserSchema =  new Schema({
     accessToken:{
         type:String,unique:true
     },
+    domains: [],
     zaps:[
         {
             name:{
