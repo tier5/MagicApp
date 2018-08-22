@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+		
   </div>
 </template>
 
@@ -43,6 +44,9 @@ export default {
 								break;
 							case "SPAN":
 								this.appendHtmlFunction(elem.id,elem.value, elem.type)
+								break;
+							case "TEXTAREA":
+								this.addValueToTextArea(elem.id, elem.value, elem.type)
 								break;
 							case false :
 								//console.log('tagnotfound!');
@@ -125,9 +129,10 @@ export default {
 			if (attributeType == 'name'){
 				let elements = document.getElementsByName(attributeName);
 						elements.forEach(element => {
-							if (element.attributes.type==='text'){
+							if (element.type==='text' || element.type ==='email' || element.type==='password'){
 									element.value = attributeValue
 							} else if (element.type ==='radio' || element.type ==='checkbox'){
+								
 								if (element.value == attributeValue){
 									element.checked = true
 								}
@@ -136,10 +141,9 @@ export default {
 						})
 			} else if (attributeType == 'id'){
 				let element = document.getElementById(attributeName)
-				if (element.attributes.type==='text'){
+				if (element.type==='text' || element.type === 'email' || element.type==='password'){
 						element.value = attributeValue
 				} else if (element.type ==='radio' || element.type ==='checkbox'){
-
 					if (element.value == attributeValue){
 								element.checked = true
 					}
@@ -174,7 +178,6 @@ export default {
 		getElementTagName(attributeName,attributeType){
 			if (attributeType == 'name'){
 				let elements = document.getElementsByName(attributeName);
-				console.log(elements);
 						if (elements.length){
 								return elements[0].tagName
 						} else return false
@@ -183,6 +186,17 @@ export default {
 				if (elem){
 					return elem.tagName;
 				} else return false
+			}
+		},
+		addValueToTextArea(attributeName, attributeValue ,attributeType){
+			if (attributeType == 'name'){
+				let elements = document.getElementsByName(attributeName);
+						elements.forEach(element => {
+							element.value = attributeValue
+						})
+			} else if (attributeType == 'id'){
+				let elem = document.getElementById(attributeName);
+				elem && (elem.value = attributeValue)
 			}
 		},
     getAllParams(url){
