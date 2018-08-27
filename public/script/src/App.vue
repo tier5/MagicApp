@@ -8,7 +8,8 @@
 export default {
   data () {
     return {
-			postUrl: 'https://amagiczap.com/api/script-data'
+			postUrl: 'https://amagiczap.com/api/script-data',
+			hostname:''
     }
   },
 	mounted(){
@@ -64,10 +65,9 @@ export default {
     var scriptElement = document.getElementById('magic_app_script');
     var zapId = scriptElement.getAttribute('data-script-id')
 		var location = window.location;
-		var hostname = location.hostname;
+		this.hostname = location.hostname;
 		var queryParams = window.location.href.split('?')[1];
 		var requestLocation  = location.protocol + '//' + location.host + location.pathname;
-
     var requestObj = {
       location : requestLocation,
       params: this.getAllParams(),
@@ -77,38 +77,29 @@ export default {
 		//this.$http.get('http://gd.geobytes.com/GetCityDetails').then(res=>{
 				//requestObj.params.clientId = res.body.geobytesipaddress;
 				this.$http.post(this.postUrl,requestObj).then(function(data){
-				if (data.body.appendUrls){
-						var links = document.getElementsByTagName('a');
-						for(var i = 0;i<links.length;i++){
-							var oldhref = links[i].getAttribute('href');
-							if (oldhref.indexOf('http')!==-1){
-
-									if (oldhref.indexOf(hostname)!==-1){
-
-										if(oldhref.indexOf('?') === -1){
-												var newHref = oldhref +'?'+ queryParams;
-												links[i].setAttribute('href',newHref);
-										} else {
-												var newHref = oldhref +'&'+ queryParams;
-												links[i].setAttribute('href',newHref);
-										}
-									}
-
-							} else {
-
-									if(oldhref.indexOf('?') === -1){
-										var newHref = oldhref +'?'+ queryParams;
-										links[i].setAttribute('href',newHref);
-									} else {
-										var newHref = oldhref +'&'+ queryParams;
-										links[i].setAttribute('href',newHref);
-									}
-
-							}   
-						}
-				}
-			}).catch((err)=>{
-					//console.error(err.body.message);
+					// cached url 
+					this.addUrlToCookie()
+					if (data.body.appendUrls){
+							// append the url to the anchor tag
+							this.appendUrlsToAllLinksInTheDom(queryParams)
+					}
+			}).catch((err)=> {
+					let url = this.$cookie.get('cache_url');
+					// bad request
+					if (err.status === 400 && url) {
+						// take cached url from cookie
+						let cacheParams = this.getAllParams(url)
+						requestObj.params = cacheParams
+						// resend the data to zapier
+						this.$http.post(this.postUrl,requestObj).then(function(data) {
+								if (data.body.appendUrls) {
+									// if appendUrls is true then add the cached url to the dom
+									queryParams = url.split('?')[1]
+									this.appendUrlsToAllLinksInTheDom(queryParams)
+							}
+						})
+					}
+				
 			})
 		//})
   },
@@ -197,6 +188,40 @@ export default {
 			} else if (attributeType == 'id'){
 				let elem = document.getElementById(attributeName);
 				elem && (elem.value = attributeValue)
+			}
+		},
+		addUrlToCookie(){
+			let url = window.location.href
+			this.$cookie.set('cache_url', url, 365);
+		},
+		appendUrlsToAllLinksInTheDom(queryParams) {
+			var links = document.getElementsByTagName('a');
+			for(var i = 0;i<links.length;i++){
+				var oldhref = links[i].getAttribute('href');
+				if (oldhref.indexOf('http')!==-1){
+
+						if (oldhref.indexOf(this.hostname)!==-1){
+
+							if(oldhref.indexOf('?') === -1){
+									var newHref = oldhref +'?'+ queryParams;
+									links[i].setAttribute('href',newHref);
+							} else {
+									var newHref = oldhref +'&'+ queryParams;
+									links[i].setAttribute('href',newHref);
+							}
+						}
+
+				} else {
+
+						if(oldhref.indexOf('?') === -1){
+							var newHref = oldhref +'?'+ queryParams;
+							links[i].setAttribute('href',newHref);
+						} else {
+							var newHref = oldhref +'&'+ queryParams;
+							links[i].setAttribute('href',newHref);
+						}
+
+				}   
 			}
 		},
     getAllParams(url){
