@@ -5,6 +5,7 @@
 var ZapData = require('../models/zaps');
 var {findZap} = require('./zapController');
 var validation = require('../helpers/validations');
+var {sendDataToZapier} = require('./zapierController');
 
 /**
  * Function to save script data 
@@ -39,12 +40,33 @@ function saveScriptData(req,res,next){
             }
             return zapData.save()
         })
-        .then((data)=>{
+        .then((data)=> {
+            
             var resData = {
                 message:'Success',
                 status:true,
                 appendUrls: userZap.magicOption
             }
+            // this steps are for Zapier REST hooks
+            var dataForZapier = {}
+                dataForZapier.location = data.location;
+    
+                data.params.forEach(ob => {
+                    dataForZapier[ob.field_name] = ob.field_value
+                });
+                
+                
+                dataForZapier.id = data._id;
+                // send data to zapier if hook url is present
+                if (userZap.hooks_url){
+                    sendDataToZapier(userZap.hooks_url, dataForZapier).then(done=>{
+                        console.log('ok');
+                    }).catch(error=>{
+                        console.log('error');
+                    })
+                }
+                
+
             return res.status(200).send(resData);
         })
         .catch((err)=>{

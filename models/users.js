@@ -38,6 +38,7 @@ const UserSchema =  new Schema({
             elementOption: {
                 type:Boolean, default: false
             },
+            hooks_url : {type : String},
             params:[
                 {
                     field_name:{

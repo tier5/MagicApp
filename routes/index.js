@@ -8,7 +8,7 @@ var router = express.Router();
 // import all controllers for the routes
 var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
 var {saveScriptData, getElementAttribute}           = require('../controllers/scriptController');
-var {usersZaps,getScriptZaps}                       = require('../controllers/zapierController');
+var {usersZaps,getScriptZaps,subscribtionZaps}      = require('../controllers/zapierController');
 var { isAuthorized ,
       isUserExists,
       isUserSubscribed,
@@ -54,8 +54,9 @@ var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, bl
 /**
  * Zapier Authenicate and send data to zapier
  */
-  router.get('/users_script_zap/:zapId',getScriptZaps);
+  router.post('/users_script_zap/:zapId',getScriptZaps);
   router.get('/users_zaps/:api_key',usersZaps);
+  router.post('/users/:api_key/users_script_zap/:zapId/subscribe', subscribtionZaps)
 
 /**
  * Admin get users and active , deactive users's activety
@@ -94,7 +95,13 @@ var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, bl
 /**
  * block-script
  */
+  
   router.get('/block-iframe/:domainId', blockDomainId);
+  
+  // @todo make use for this route currently not in use
+  router.post('/users/:api_key/users_script_zap/:zapId/unsubscribe',(req,res)=>{
+    return res.status(200).send({message : 'Ok'})
+  })
 
 
 module.exports = router;
