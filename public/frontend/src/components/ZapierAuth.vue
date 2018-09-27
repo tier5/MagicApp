@@ -38,7 +38,7 @@
     data () {
       return {
         name:'',
-        inviteLink:'https://zapier.com/developer/invite/84218/e764f4aed0918a3f1f88f157d3a12d18/'
+        inviteLink:'https://zapier.com/developer/invite/96885/cd80710164f70d1253e86dd35cb877fd/'
       }
     },
     computed:{

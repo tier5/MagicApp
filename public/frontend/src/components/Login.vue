@@ -6,7 +6,7 @@
         <form @submit.prevent="onLogin">
           <div class="row form-group">
             <div class="col-md-12">
-              <p style="text-align: center"><b>AMGAGICZAP</b></p>
+              <p style="text-align: center"><b>AMAGICZAP</b></p>
             </div>
           </div>
           <div class="row form-group"
