@@ -32,6 +32,9 @@ var { createUserFromHook,
 
 var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, blockDomainId} = require('../controllers/domainController');
 
+var {usersAuthenticate,usersIntegromat,getScripts} = require('../controllers/integromatController');
+
+
 /**
  * Users Registration, Login, Forget Password and Reset Password
  */
@@ -58,6 +61,15 @@ var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, bl
   router.post('/users_script_zap/:zapId',getScriptZaps);
   router.get('/users_zaps/:api_key',usersZaps);
   router.post('/users/:api_key/users_script_zap/:zapId/subscribe', subscribtionZaps)
+
+
+/**
+ * Integromat Authenicate and send data to zapier
+ */
+  router.get('/integromat/authentication/:api_key',usersAuthenticate);
+  router.get('/integromat/fetchzaps/:api_key',usersIntegromat);
+  router.get('/integromat/zap_scripts/:zapId',getScripts);
+ 
 
 /**
  * Admin get users and active , deactive users's activety
@@ -102,6 +114,10 @@ var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, bl
   // @todo make use for this route currently not in use
   router.post('/users/:api_key/users_script_zap/:zapId/unsubscribe',(req,res)=>{
     return res.status(200).send({message : 'Ok'})
+  });
+
+  router.get('/ping', function(req, res){
+    res.send('pong');
   })
 
 

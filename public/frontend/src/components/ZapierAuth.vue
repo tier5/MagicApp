@@ -7,7 +7,7 @@
         <tbody>
           <tr>
             <td class="col-md-3">
-              <p>Zapier Api Key </p>
+              <p>Api Key </p>
             </td>
             <td class="col-md-3">
               <button class="btn btn-success" v-clipboard="token" @success="handleCopyAuthSuccess">Copy</button>
@@ -19,6 +19,14 @@
             </td>
             <td class="col-md-3">
               <button class="btn btn-success" v-clipboard="inviteLink" @success="handleCopyAuthSuccess">Copy</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-3">
+              <p>Integromat Invite link</p>
+            </td>
+            <td class="col-md-3">
+              <button class="btn btn-success" v-clipboard="integromatInviteLink" @success="handleCopyAuthSuccess">Copy</button>
             </td>
           </tr>
         </tbody>
@@ -38,7 +46,8 @@
     data () {
       return {
         name:'',
-        inviteLink:'https://zapier.com/developer/invite/96885/cd80710164f70d1253e86dd35cb877fd/'
+        inviteLink:'https://zapier.com/developer/invite/96885/cd80710164f70d1253e86dd35cb877fd/',
+        integromatInviteLink : 'https://www.integromat.com/en/apps/invite/mazic-zap-168950/43c7b263eed33e2204b5d36904956ec3'
       }
     },
     computed:{
