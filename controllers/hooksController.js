@@ -17,18 +17,18 @@ var {createAccessToken} = require('../helpers/jwt');
     let testTokenNumber  =  '1234511';
     var email = req.body.email;
     if(!token || token != testTokenNumber){
-        return res.status(400).send({http_code : 400, status :false , message : 'Token mismatch!'})
+        return res.status(200).send({http_code : 200, status :false , message : 'Token mismatch!'})
     };
-    if (!email){ return res.status(400).send({message : 'email is required!' , status : false})}
+    if (!email){ return res.status(200).send({message : 'email is required!' , status : false})}
     Users.findOne({email:req.body.email}).then((user)=>{
         //console.log(user)
         if(user) {
-            res.status(400).send({message: 'User Already exists!', status : false, http_code: 400 })
+            res.status(200).send({message: 'User Already exists!', status : false, http_code: 200 })
         } else {
             createUser(req,res);
         }
     }).catch(err => {
-        res.status(500).send({message : 'Something Went Wrong!', http_code : 500, status :false})
+        res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
     })
     
  };
@@ -66,10 +66,10 @@ var {createAccessToken} = require('../helpers/jwt');
             return user.save()
         }).then(user => {
             //console.log(user);
-            return res.status(201).send({http_code : 201, status :true , message : 'User Created'})
+            return res.status(200).send({http_code : 200, status :true , message : 'User Created'})
         }).catch(err => {
-            console.log(err);
-            res.status(400).send({message : 'Something went wrong', status:false ,http_code:400, error : err})
+            //console.log(err);
+            res.status(200).send({message : 'Something went wrong', status:false ,http_code:200, error : err})
         })
  };
 
@@ -79,14 +79,14 @@ var {createAccessToken} = require('../helpers/jwt');
     var email = req.body.email;
     // checking token 
     if(!token || token != testTokenNumber){
-        return res.status(400).send({http_code : 400, status :false , message : 'Token mismatch!'})
+        return res.status(200).send({http_code : 200, status :false , message : 'Token mismatch!'})
     };
     // checking email
-    if (!email){ return res.status(400).send({message : 'email is required!' , status : false})};
+    if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
     
     Users.findOne({email:req.body.email}).then((user)=>{
         if(!user) {
-            return res.status(400).send({message: 'User not exists!', status : false, http_code: 400 })
+            return res.status(200).send({message: 'User not exists!', status : false, http_code: 200 })
         } else {
             if (user.zaps.length) {
                 user.zaps.forEach( zap => {
@@ -107,7 +107,7 @@ var {createAccessToken} = require('../helpers/jwt');
                         }) 
                     }
                 }).catch(err => {
-                    return res.status(500).send({message : 'Something Went Wrong!', http_code : 500, status :false})
+                    return res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
                 })
             } else {
                 
@@ -118,7 +118,7 @@ var {createAccessToken} = require('../helpers/jwt');
         }
     }).catch(err => {
     
-        return res.status(500).send({message : 'Something Went Wrong!', http_code : 500, status :false})
+        return res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
     })
  }
 
@@ -128,10 +128,10 @@ var {createAccessToken} = require('../helpers/jwt');
     var email = req.body.email;
     // checking token 
     if(!token || token != testTokenNumber){
-        return res.status(400).send({http_code : 400, status :false , message : 'Token mismatch!'})
+        return res.status(200).send({http_code : 200, status :false , message : 'Token mismatch!'})
     };
     // checking email
-    if (!email){ return res.status(400).send({message : 'email is required!' , status : false})};
+    if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
     
     Users.findOneAndUpdate({
         email : email

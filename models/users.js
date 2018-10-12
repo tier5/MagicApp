@@ -95,24 +95,7 @@ const UserSchema =  new Schema({
                 isDefault:{type:Boolean, default: true}
             }
         ]
-    },
-    domains:[{
-        name : {
-            type: String,
-            required:[true,'Domain is required'],
-            unique:[true, 'Domain must be unique'],
-            trim: true,
-            validate: [{validator: value => validator.isURL(value), msg : 'Not a domain'}]
-        },
-        isActive: {
-            type: Boolean,
-            default: true
-        },
-        created_at: {
-            type: Date,
-            default: Date.now()
-        }
-    }]
+    }
 
 },{
     usePushEach: true

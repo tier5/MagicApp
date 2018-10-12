@@ -13,7 +13,6 @@ var superAdmin = new Users({
     isAdmin:true,
     userType:'free',
     zaps:[],
-    domains:[],
     accessToken:jwt.sign({ email: 'admin@amagiczap'},"amagiczap.com")
 });
 
