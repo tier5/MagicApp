@@ -5,6 +5,7 @@
 var Users = require('../models/users');
 var moment = require('moment');
 var {retriveSubscription} = require('../helpers/stripe');
+var multer = require('multer');
 
 /**
  * Function for autorization checking 
@@ -98,9 +99,16 @@ function onlyAdminCan(req,res,next){
         .catch(err=> console.log(err));
 }
 
+/**
+ * Upload a file if exists in multipart/form-data
+ */
+  const upload = multer({
+    dest: 'uploads/' // this saves your file into a directory called "uploads"
+  }); 
 module.exports = {
     isAuthorized,
     isUserExists,
     isUserSubscribed,
-    onlyAdminCan
+    onlyAdminCan,
+    upload
 }

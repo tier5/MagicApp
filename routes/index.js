@@ -12,7 +12,8 @@ var {usersZaps,getScriptZaps,subscribtionZaps}      = require('../controllers/za
 var { isAuthorized ,
       isUserExists,
       isUserSubscribed,
-      onlyAdminCan}                                 = require('./middleware');
+      onlyAdminCan,
+      upload}                                     = require('./middleware');
 var { getAllPlansCtrl,
       updateUserSubscribtion,
       retriveUsersCard,
@@ -78,10 +79,10 @@ var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, bl
 /**
  * WebHooks
  */
-  router.post('/hooks/users', createUserFromHook);
-  router.post('/hooks/users-delete', deleteUserFromHook);
-  router.post('/hooks/users-suspend', suspendUserFromHook);
-  router.post('/hooks/users-unsuspend', unsuspendUserFromHook);
+  router.post('/hooks/users',upload.single('avatar'), createUserFromHook);
+  router.post('/hooks/users-delete', upload.single('avatar'),deleteUserFromHook);
+  router.post('/hooks/users-suspend', upload.single('avatar'), suspendUserFromHook);
+  router.post('/hooks/users-unsuspend', upload.single('avatar'), unsuspendUserFromHook);
 
 
 /**
