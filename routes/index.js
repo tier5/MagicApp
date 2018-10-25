@@ -32,7 +32,7 @@ var { createUserFromHook,
 
 var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, blockDomainId} = require('../controllers/domainController');
 
-var {usersAuthenticate,usersIntegromat,getScripts} = require('../controllers/integromatController');
+var {usersAuthenticate,usersIntegromat,getScripts,subscribtionIntegromat} = require('../controllers/integromatController');
 
 
 /**
@@ -60,7 +60,7 @@ var {usersAuthenticate,usersIntegromat,getScripts} = require('../controllers/int
  */
   router.post('/users_script_zap/:zapId',getScriptZaps);
   router.get('/users_zaps/:api_key',usersZaps);
-  router.post('/users/:api_key/users_script_zap/:zapId/subscribe', subscribtionZaps)
+  router.post('/users/:api_key/users_script_zap/:zapId/subscribe', subscribtionZaps);
 
 
 /**
@@ -69,6 +69,8 @@ var {usersAuthenticate,usersIntegromat,getScripts} = require('../controllers/int
   router.get('/integromat/authentication/:api_key',usersAuthenticate);
   router.get('/integromat/fetchzaps/:api_key',usersIntegromat);
   router.get('/integromat/zap_scripts/:zapId',getScripts);
+  router.post('/integromat/:api_key/users_script_zap/:zapId/subscribe', subscribtionIntegromat)
+  
  
 
 /**
