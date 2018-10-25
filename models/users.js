@@ -26,7 +26,6 @@ const UserSchema =  new Schema({
     accessToken:{
         type:String,unique:true
     },
-    domains: [],
     zaps:[
         {
             name:{
@@ -39,6 +38,7 @@ const UserSchema =  new Schema({
                 type:Boolean, default: false
             },
             hooks_url : {type : String},
+            integromat_url : {type : String},
             params:[
                 {
                     field_name:{

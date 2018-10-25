@@ -6,6 +6,7 @@ var ZapData = require('../models/zaps');
 var {findZap} = require('./zapController');
 var validation = require('../helpers/validations');
 var {sendDataToZapier} = require('./zapierController');
+var {sendDataToIntigromat} =require('./integromatController');
 
 /**
  * Function to save script data 
@@ -60,6 +61,13 @@ function saveScriptData(req,res,next){
                 // send data to zapier if hook url is present
                 if (userZap.hooks_url){
                     sendDataToZapier(userZap.hooks_url, dataForZapier).then(done=>{
+                        console.log('ok');
+                    }).catch(error=>{
+                        console.log('error');
+                    })
+                }
+                if (userZap.integromat_url){
+                    sendDataToIntigromat(userZap.integromat_url, dataForZapier).then(done=>{
                         console.log('ok');
                     }).catch(error=>{
                         console.log('error');

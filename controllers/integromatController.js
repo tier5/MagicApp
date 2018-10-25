@@ -26,7 +26,7 @@ function usersAuthenticate(req,res,next){
         }
     ],function(err,data){
         if(err) {
-            res.status(401).send({message:'Unauthorized',status:false})
+            res.status(200).send({message:'Unauthorized',status:false})
         } else {
             res.status(200).send({message:'User Authenticated',status:true});
           }
@@ -111,8 +111,54 @@ function getScripts(req,res,next){
     })
 }
 
+/**
+ * Function used for getting zapier hooks url through subscriptions and adding in zaps for future post data
+ * @param {object} req 
+ * @param {object} res 
+ */
+function subscribtionIntegromat(req,res){
+    var zapId = req.params.zapId;
+    var api_key = req.params.api_key;
+    var target_url = req.body.url;
+    if (!api_key && !target_url){
+        return res.status(200).json({message : 'api_key is required'})
+    }
+    // save the hooks url coming from zapier for future post request
+    Users.findOne({accessToken : api_key}).then(user => {
+        if (!user) return res.status(200).json({ message : 'Invalid token', status : false })
+        user.target_url = target_url
+        user.zaps.forEach(zap => {
+            if (zap._id == zapId){
+                zap.integromat_url = target_url
+            }
+        })
+        return user.save()
+    }).then(user=> {
+        return ZapData.find({zapId:zapId}).sort({"createdAt": -1})
+    }).then(data=> {
+        res.status(200).send({message: 'ok',zapid:zapId});
+    }).then(dataFromZapier => {
+        res.status(200).send({message: 'ok'});
+    }).catch(err=>{
+        //console.log('here::', err)
+        res.status(200).send({message: 'not ok', error : err.message});
+    })
+}
+
+/** 
+ * Function to send data to zapier through a zapier hook links 
+ * @param hook_url String
+ * @param data object that needs to be sent 
+ * @returns promise 
+*/
+function sendDataToIntigromat(hooksUrl, dataToBeSend){
+    return axios.post(hooksUrl, dataToBeSend) 
+}
+
 module.exports ={
     usersIntegromat,
     usersAuthenticate,
-    getScripts
+    getScripts,
+    subscribtionIntegromat,
+    sendDataToIntigromat
 }
