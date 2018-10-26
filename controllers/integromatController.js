@@ -123,24 +123,47 @@ function subscribtionIntegromat(req,res){
     if (!api_key && !target_url){
         return res.status(200).json({message : 'api_key is required'})
     }
+    let sampleData={}
     // save the hooks url coming from zapier for future post request
     Users.findOne({accessToken : api_key}).then(user => {
         if (!user) return res.status(200).json({ message : 'Invalid token', status : false })
         user.target_url = target_url
         user.zaps.forEach(zap => {
             if (zap._id == zapId){
-                zap.integromat_url = target_url
+                zap.integromat_url = target_url;
+                sampleData = _.reduce(
+                    zap.params,
+                    (acc, { field_name}) => ({ ...acc, [field_name]: field_name }),
+                    {}
+                );
             }
         })
         return user.save()
     }).then(user=> {
         return ZapData.find({zapId:zapId}).sort({"createdAt": -1})
-    }).then(data=> {
-        res.status(200).send({message: 'ok',zapid:zapId});
+    }).then(data=> {  
+        if (data.length==0){
+            //console.log('sample',sampleData)
+            return sendDataToIntigromat(target_url, sampleData);
+          } else {
+            var resArr = []
+            // changing nested data structure to linear data structure 
+            data.forEach(function(obj){
+                var eachObj = {}
+                eachObj.location = obj.location;
+    
+                obj.params.forEach(ob => {
+                  eachObj[ob.field_name] = ob.field_value
+                });
+                
+                eachObj.id = obj._id;
+                resArr.push(eachObj);
+              });
+            return sendDataToIntigromat(target_url, resArr[0])  
+        }
     }).then(dataFromZapier => {
         res.status(200).send({message: 'ok'});
     }).catch(err=>{
-        //console.log('here::', err)
         res.status(200).send({message: 'not ok', error : err.message});
     })
 }
