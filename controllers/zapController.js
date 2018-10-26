@@ -6,6 +6,7 @@
 var Users = require('../models/users');
 var _ = require('lodash');
 var mongoose = require('mongoose');
+var {sendDataToIntigromat} =require('./integromatController');
 
 /**
  * function to get all zaps
@@ -138,6 +139,7 @@ function findZap (zapId){
  * @returns response 
  */
 function updateZap(req,res,next){
+    //console.log(req);
     var zapId = req.params.id
     ,   token = req.headers.authorization
     ,   id = mongoose.Types.ObjectId(zapId)
@@ -146,6 +148,19 @@ function updateZap(req,res,next){
     var conditions = { accessToken: token, 'zaps._id' : zapId }
     ,   update = { $set: { 'zaps.$': req.body }}
     ,   options = { multi: false , upsert : true};
+    
+    if(req.body.integromat_url){
+        let arr = req.body.params;
+        var parameters = {};
+        arr.forEach(ob => {
+            parameters[ob.field_name] = ob.field_name;
+        });
+        sendDataToIntigromat(req.body.integromat_url, parameters).then(done=>{
+            console.log('ok');
+        }).catch(error=>{
+            console.log('error');
+        })
+    }
 
     Users.updateOne(conditions, update, options).then((data)=>{
         return res.status(200).send({ message:'Updated', status:true });

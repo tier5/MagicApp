@@ -121,6 +121,18 @@
                 </form>
               </slot>
             </div>
+            <div class="clearfix"></div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <h5>Add Integromat Webhook</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 form-group">
+                <input  type="text" placeholder="Integromat Webhook" class="form-control"  v-model="newZap.integromat_url">
+              </div>
+            </div>
             <div class="modal-footer">
               <slot name="footer">
                 <div class="row">
