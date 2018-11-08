@@ -180,9 +180,39 @@ function userResetPassword(req,res){
 
     });
 }
+/**
+ * Function to update user's password
+ * @param {object} req 
+ * @param {object} res
+ */
+function userUpdatePassword(req,res){
+    var token = req.headers.authorization || req.params.token;
+    var password = req.body.password;
+    if (!password || !token){
+        return res.status(400).send({message:'Bad Request',status:false});
+    };
+    Users
+        .findOne({accessToken : token})
+        .select({password: 1})
+        .then(user => {
+            if(!user){
+                return res.status(400).send({message:'Bad Request',status:false});
+            }
+            user.password = password;
+            return user.save()
+        })
+        .then(docs=>{
+            return res.status(200).send({message:'Password updated',status:true});
+        })
+        .catch(err=>{
+            console.log(err);
+            return res.status(500).send({message:'Something went wrong',status:false});
+        })
+}
 module.exports = {
     userRegister,
     userLogin,
     userForgetPassword,
-    userResetPassword
+    userResetPassword,
+    userUpdatePassword,
 }

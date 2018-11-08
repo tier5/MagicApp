@@ -12,7 +12,9 @@ import ZapierAuth from '../components/ZapierAuth.vue';
 import Users from '../components/Users.vue';
 //import Plans  from '../components/Plans.vue';
 import ResetPassword from '../components/ResetPassword.vue';
-import Settings from '../components/Settings.vue'
+import Settings from '../components/Settings.vue';
+import ChangePassword from '../components/ChangePassword.vue';
+
 
 Vue.use(Router)
 
@@ -44,6 +46,11 @@ export default new Router({
           name:'Users',
           component: Users
         },
+        {
+          path:'change-password',
+          name:'ChangePassword',
+          component:ChangePassword
+        }
         // {
         //   path:'settings',
         //   name:'Settings',

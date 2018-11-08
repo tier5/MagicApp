@@ -13,7 +13,7 @@ var { isAuthorized ,
       isUserExists,
       isUserSubscribed,
       onlyAdminCan,
-      upload}                                     = require('./middleware');
+      upload}                                       = require('./middleware');
 var { getAllPlansCtrl,
       updateUserSubscribtion,
       retriveUsersCard,
@@ -22,15 +22,20 @@ var { getAllPlansCtrl,
 var { userLogin,
       userRegister,
       userForgetPassword,
-      userResetPassword}                            = require('../controllers/authController');
+      userResetPassword,
+      userUpdatePassword}                           = require('../controllers/authController');
 var {createUser,getAllUsers, updateUser}            = require('../controllers/usersController');
 
 var { createUserFromHook,
       deleteUserFromHook,
       suspendUserFromHook,
-      unsuspendUserFromHook }                         = require('../controllers/hooksController');
+      unsuspendUserFromHook }                       = require('../controllers/hooksController');
 
-var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, blockDomainId} = require('../controllers/domainController');
+var { addDomain, 
+      getAllDomain, 
+      updateDomain, 
+      deleteDomain, 
+      updateDomainStatus, blockDomainId}            = require('../controllers/domainController');
 
 /**
  * Users Registration, Login, Forget Password and Reset Password
@@ -38,7 +43,8 @@ var {addDomain, getAllDomain, updateDomain, deleteDomain, updateDomainStatus, bl
   router.post('/register',isUserExists,userRegister);
   router.post('/login',userLogin);
   router.post('/forget-password',userForgetPassword);
-  router.post('/reset-password/:token',userResetPassword)
+  router.post('/reset-password/:token',userResetPassword);
+  router.put('/change-password',userUpdatePassword);
 
 /**
  * Create, read, update and delete Zaps

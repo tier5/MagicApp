@@ -24,6 +24,7 @@
                 <li><a @click.prevent="onSignOut" href="">Logout</a></li>
                 <li><a @click.prevent="onZapierAuth" href="">Zapier Token</a></li>
                 <li><a @click.prevent="home" href="">Home</a></li>
+                <li><a @click.prevent="changePassword" href="">Change Password</a></li>
                 <!-- <li v-if='user.userType=="paid"'><a @click="customRouterPush('/settings')">Setting</a></li> -->
               </ul>
             </li>
@@ -52,6 +53,9 @@
       },
       home(){
         router.push('/magic')
+      },
+      changePassword(){
+        router.push('/change-password')
       },
       customRouterPush(routeRef){
         var slashRoute = routeRef;

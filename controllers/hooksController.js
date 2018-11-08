@@ -13,6 +13,7 @@ var {createAccessToken} = require('../helpers/jwt');
   * Function to create a user from a hook
   */
  function createUserFromHook(req,res){
+     console.log("req.body", req.body);
     var token = req.body.token ;
     let testTokenNumber  =  '1234511';
     var email = req.body.email;

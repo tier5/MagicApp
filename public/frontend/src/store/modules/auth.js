@@ -8,7 +8,8 @@ const state = {
   user:{},
   forgetPassword:false,
   plans:[],
-  cardToken:''
+  cardToken:'',
+  resetChangePasswordForm: false
 };
 
 const getters = {
@@ -17,7 +18,8 @@ const getters = {
   user: state => state.user,
   plans: state => state.plans,
   cardToken: state => state.cardToken,
-  forgetPassword : state => state.forgetPassword
+  forgetPassword : state => state.forgetPassword,
+  resetChangePasswordForm : state => state.resetChangePasswordForm
 };
 
 const mutations = {
@@ -59,6 +61,9 @@ const mutations = {
   },
   changeForgetPassword:(state,payload)=>{
     state.forgetPassword = payload
+  },
+  resetChangePasswordForm: (state, payload) => {
+    state.resetChangePasswordForm = payload
   }
 };
 
@@ -170,6 +175,31 @@ const actions = {
             setTimeout(()=>{
               router.push('/login');
             },1500)
+          }
+        },
+        (err) => {
+          commit('changeLoading',false);
+          var message = err.body.message; 
+          commit('errorMessage',message);
+          commit('errorTrue');
+        }
+      )
+  },
+  changePassord:({commit},payload)=>{
+    commit('changeLoading',true);
+    Vue.http.put('change-password/',payload)
+      .then(
+        (res)=>{
+          commit('changeLoading',false);
+          if(res.body.status){
+            commit('resetChangePasswordForm',true);
+            swal({
+              position: 'center',
+              type: 'success',
+              title: 'Your password has been changed',
+              showConfirmButton: false,
+              timer: 1500
+            })
           }
         },
         (err) => {
