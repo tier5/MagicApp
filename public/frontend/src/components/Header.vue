@@ -13,18 +13,16 @@
             <li><a href="" @click.prevent="customRouterPush('/magic')">Magic</a></li>
             <!-- <li><a href="" @click.prevent="customRouterPush('/magic-script')">Magic Script</a></li> -->
           </ul>
-          
           <ul class="nav navbar-nav navbar-right">
-            <!-- <li><a href="" @click.prevent="customRouterPush('/plans')">Plans</a></li> -->
             <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                 <span class="glyphicon glyphicon-user"></span>Profile<b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a @click.prevent="onSignOut" href="">Logout</a></li>
-                <li><a @click.prevent="onZapierAuth" href="">Zapier Token</a></li>
-                <li><a @click.prevent="home" href="">Home</a></li>
-                <li><a @click.prevent="changePassword" href="">Change Password</a></li>
+                <li><a @click.prevent="onSignOut">Logout</a></li>
+                <li><a @click.prevent="onZapierAuth">Zapier Token</a></li>
+                <li><a @click.prevent="home">Home</a></li>
+                <li><a @click.prevent="changePassword">Change Password</a></li>
                 <!-- <li v-if='user.userType=="paid"'><a @click="customRouterPush('/settings')">Setting</a></li> -->
               </ul>
             </li>

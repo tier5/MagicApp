@@ -62,24 +62,31 @@ export default {
 			}).catch(err=> console.log(err))
 	},
   created(){
-    var scriptElement = document.getElementById('magic_app_script');
-    var zapId = scriptElement.getAttribute('data-script-id')
+    	var scriptElement = document.getElementById('magic_app_script');
+    	var zapId = scriptElement.getAttribute('data-script-id')
 		var location = window.location;
 		this.hostname = location.hostname;
 		var queryParams = window.location.href.split('?')[1];
 		var requestLocation  = location.protocol + '//' + location.host + location.pathname;
-    var requestObj = {
-      location : requestLocation,
-      params: this.getAllParams(),
-      zapId : zapId
-		}	
+		var requestObj = {
+			location : requestLocation,
+			params: this.getAllParams(),
+			zapId : zapId
+		}
 		// IP tracking of the client
-		this.$http.get('http://gd.geobytes.com/GetCityDetails').then(res=>{
-				//console.log(res);
-				requestObj.params.clientId = res.body.geobytesipaddress;
+		Promise.all([this.$http.get('http://icanhazip.com'),this.$http.get(this.postUrl+'/'+ zapId)]).then((responseArray)=>{
+				
+				let ip = responseArray[0].body.trim();
+				
+				requestObj.params.clientId = ip;
+				
+				// condition checking to chache cooking if the backend flag is true is the creator
+				let cookieOption = responseArray[1].body.cookieOption || false;
+				//console.log(cookieOption);
 				this.$http.post(this.postUrl,requestObj).then(function(data){
-					// cached url 
-					this.addUrlToCookie()
+					// cached url if the cookie Option is On
+					cookieOption && this.addUrlToCookie();
+					
 					if (data.body.appendUrls){
 							// append the url to the anchor tag
 							this.appendUrlsToAllLinksInTheDom(queryParams)
@@ -102,6 +109,8 @@ export default {
 					}
 				
 			})
+		}).catch(err => {
+			console.log('jkashdgjhas', err);
 		})
   },
   methods:{
