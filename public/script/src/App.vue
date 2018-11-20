@@ -73,9 +73,10 @@ export default {
       params: this.getAllParams(),
       zapId : zapId
 		}	
-		// temporary suspend the ip sending
-		//this.$http.get('http://gd.geobytes.com/GetCityDetails').then(res=>{
-				//requestObj.params.clientId = res.body.geobytesipaddress;
+		// IP tracking of the client
+		this.$http.get('http://gd.geobytes.com/GetCityDetails').then(res=>{
+				//console.log(res);
+				requestObj.params.clientId = res.body.geobytesipaddress;
 				this.$http.post(this.postUrl,requestObj).then(function(data){
 					// cached url 
 					this.addUrlToCookie()
@@ -101,7 +102,7 @@ export default {
 					}
 				
 			})
-		//})
+		})
   },
   methods:{
 		appendHtmlFunction(attributeName, attributeValue, attributeType){
