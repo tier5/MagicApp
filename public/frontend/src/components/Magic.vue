@@ -42,7 +42,7 @@
                   <toggle-button v-model="zap.elementOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
                 </td>
                 <td>
-                  <toggle-button v-model="zap.elementOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
+                  <toggle-button v-model="zap.cookieOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
                 </td>
                 <td>
                   <span>
