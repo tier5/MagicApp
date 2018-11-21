@@ -20,7 +20,7 @@
                 <th>View</th>
                 <th><span data-toggle="tooltip" title="Add url params to all the anchor tag elements"> Magic Option</span></th>
                 <th><span data-toggle="tooltip" title="Change the dom with the url params and given params attribute">Append HTML</span></th>
-                <th><span data-toggle="tooltip" title="Stores all the url params in the cookie for future use">Cookie</span></th>
+                <th><span data-toggle="tooltip" title="Send stored cookie (existing url params) to the zapier">Cookie</span></th>
                 <th>Delete</th>
                 <th>Edit</th>
               </tr>

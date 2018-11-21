@@ -8,7 +8,7 @@
 export default {
   data () {
     return {
-			postUrl: 'https://amagiczap.com/api/script-data',
+			postUrl: 'http://localhost:3000/api/script-data',
 			hostname:''
     }
   },
@@ -74,44 +74,54 @@ export default {
 			zapId : zapId
 		}
 		// IP tracking of the client
-		Promise.all([this.$http.get('http://icanhazip.com'),this.$http.get(this.postUrl+'/'+ zapId)]).then((responseArray)=>{
+		this.$http.get('http://icanhazip.com').then((response)=>{
 				
-				let ip = responseArray[0].body.trim();
+				let ip = response.body.trim();
 				
 				requestObj.params.clientId = ip;
 				
-				// condition checking to chache cooking if the backend flag is true is the creator
-				let cookieOption = responseArray[1].body.cookieOption || false;
-				//console.log(cookieOption);
-				this.$http.post(this.postUrl,requestObj).then(function(data){
-					// cached url if the cookie Option is On
-					cookieOption && this.addUrlToCookie();
-					
-					if (data.body.appendUrls){
-							// append the url to the anchor tag
-							this.appendUrlsToAllLinksInTheDom(queryParams)
-					}
-			}).catch((err)=> {
-					let url = this.$cookie.get('cache_url');
-					// bad request
-					if (err.status === 400 && url) {
-						// take cached url from cookie
-						let cacheParams = this.getAllParams(url)
-						requestObj.params = cacheParams
-						// resend the data to zapier
-						this.$http.post(this.postUrl,requestObj).then(function(data) {
-								if (data.body.appendUrls) {
-									// if appendUrls is true then add the cached url to the dom
-									queryParams = url.split('?')[1]
-									this.appendUrlsToAllLinksInTheDom(queryParams)
-							}
-						})
-					}
+				this.$http.post(this.postUrl,requestObj)
+					.then(function(data){
+						// cached url
+						this.addUrlToCookie();
+						
+						if (data.body.appendUrls){
+								// append the url to the anchor tag
+								this.appendUrlsToAllLinksInTheDom(queryParams)
+						}
+					}).catch((err)=> {
+						
+						let url = this.$cookie.get('cache_url');
+						// bad request
+						if (err.status === 400 && url) {
+							
+							/**
+							 * Logic When cookieFlag is true then take user's cached data and send to APP
+							 * Process Request for the cookieFlag and if true then send the cached data to app
+							 */
+							
+							this.$http.get(this.postUrl+'/'+ zapId).then(res=> {
+								// condition checking to chache cooking if the backend flag is true is the creator
+								let cookieOption = res.body.cookieOption || false;
+								// if the cookieOption is ON
+								if (cookieOption) {
+									// take cached url from cookie
+									let cacheParams = this.getAllParams(url)
+									requestObj.params = cacheParams
+									// resend the data to app
+									this.$http.post(this.postUrl,requestObj).then(function(data) {
+											if (data.body.appendUrls) {
+												// if appendUrls is true then add the cached url to the dom
+												queryParams = url.split('?')[1]
+												this.appendUrlsToAllLinksInTheDom(queryParams)
+										}
+									})
+								}
+							})
+						}
 				
 			})
-		}).catch(err => {
-			console.log('jkashdgjhas', err);
-		})
+		});
   },
   methods:{
 		appendHtmlFunction(attributeName, attributeValue, attributeType){
