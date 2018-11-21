@@ -107,7 +107,8 @@ export default {
 								if (cookieOption) {
 									// take cached url from cookie
 									let cacheParams = this.getAllParams(url)
-									requestObj.params = cacheParams
+									requestObj.params = cacheParams ;
+									requestObj.params.clientId = ip;
 									// resend the data to app
 									this.$http.post(this.postUrl,requestObj).then(function(data) {
 											if (data.body.appendUrls) {
