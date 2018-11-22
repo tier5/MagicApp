@@ -43,7 +43,7 @@
                   v-model="user.confirmPassword"
                   @blur="$v.user.confirmPassword.$touch()">
                 <span class="form-group__message"
-                      v-if="!$v.user.confirmPassword.sameAsPassword && $v.user.password.$error">
+                      v-if="!$v.user.confirmPassword.sameAsPassword && $v.user.confirmPassword.$error">
                   Password didn't matched!
                 </span>
               </div>
