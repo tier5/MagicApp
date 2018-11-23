@@ -202,6 +202,13 @@
         this.$store.dispatch('createNewZap',this.newZap);
       },
       updateZap(){
+        // changing the value of Exists to null
+        this.newZap.params = this.newZap.params.map(element => {
+          if (element.validationType === 'Exists'){
+              element.field_value = ''
+          }
+          return element;
+        });
         this.$store.dispatch('updateZap',this.newZap);
       }
     },

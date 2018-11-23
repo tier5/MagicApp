@@ -109,7 +109,8 @@ function findZap (zapId){
                 $project:{
                 _id: 0,
                 zaps: 1,
-                isActive:1
+                isActive:1,
+                accessToken:1
                 }
             },
             { $limit : 1 }
@@ -119,9 +120,12 @@ function findZap (zapId){
                 reject(err)
             } else {
                 if(data.length && data[0].isActive){
+                    //console.log(data);
                     var zaps = data[0].zaps;
+                    var accessToken = data[0].accessToken
                     var zap = _.find(zaps, function(o) { return o._id == zapId; });
-                    resolve(zap);
+                    //console.log('accessToken',accessToken)
+                    resolve({ zap:zap, accessToken: accessToken });
                 } else {
                     reject({ message:'Either data not found or users script is not active'});
                 }
@@ -155,10 +159,49 @@ function updateZap(req,res,next){
     });
 }
 
+/**
+ * Function to update counter in the zap i.e. pageViewCounter and zapierTriggerCounter
+ * @param {string} userToken
+ * @param {string} zapId
+ * @param {string} counterName i.e.
+ *      
+ */
+function updateCounter(userToken,zapId,counterName){
+    var zapId = zapId
+    ,   token = userToken
+    ,   id = mongoose.Types.ObjectId(zapId);
+
+    var conditions = { accessToken: token, 'zaps._id' : zapId }
+    ,   options = { multi: false , upsert : false};
+
+    if(counterName === 'pageViewCounter'){
+
+        var update = {
+            $inc: { "zaps.$.pageViewCount": 1 } 
+        }
+
+    } else if (counterName === 'zapierTriggerCount'){
+
+        var update = {
+            $inc: { "zaps.$.zapierTriggerCount": 1 } 
+        }
+    } else {
+
+        var update = {
+
+        }
+    }
+
+    Users.update(conditions, update, options).then(updated=>{
+        console.log(updated);
+    });
+}
+
 module.exports = {
     getZaps,
     createZap,
     deleteZap,
     findZap,
-    updateZap
+    updateZap,
+    updateCounter
 }

@@ -3,7 +3,7 @@
  * Purpose : Script Controller controls everything from script
  */
 var ZapData = require('../models/zaps');
-var {findZap} = require('./zapController');
+var {findZap, updateCounter} = require('./zapController');
 var validation = require('../helpers/validations');
 var {sendDataToZapier} = require('./zapierController');
 
@@ -19,16 +19,21 @@ function saveScriptData(req,res,next){
     var scriptParams = req.body.params;
     var zapParams;
     var userZap;
+    var token = 
     findZap(body.zapId)
-        .then((zap)=>{
+        .then((data)=> {
+            var zap = data.zap;
+            token = data.accessToken;
             userZap = zap;
             zapParams = zap.params;
+            // update the page view counter
+            updateCounter(token, zap._id, 'pageViewCounter');
             return validation.isAllParamsExists(zapParams,scriptParams);
         })
         .then(()=>{
             return validation.isAllValidationPassed(zapParams,scriptParams);
         })
-        .then(()=>{
+        .then(()=> {
             zapData = new ZapData()
             zapData.zapId = body.zapId
             zapData.location= body.location
@@ -55,18 +60,18 @@ function saveScriptData(req,res,next){
                     dataForZapier[ob.field_name] = ob.field_value
                 });
                 
-                
                 dataForZapier.id = data._id;
                 // send data to zapier if hook url is present
                 if (userZap.hooks_url){
                     sendDataToZapier(userZap.hooks_url, dataForZapier).then(done=>{
                         console.log('ok');
+                        updateCounter(token, userZap._id, 'zapierTriggerCount');
                     }).catch(error=>{
                         console.log('error');
                     })
                 }
                 
-
+            
             return res.status(200).send(resData);
         })
         .catch((err)=>{
@@ -84,8 +89,8 @@ function saveScriptData(req,res,next){
 function getElementAttribute(req,res){
     let zap_id = req.params.id;
     findZap(zap_id)
-        .then(zap=> {
-            
+        .then(data=> {
+            let zap =data.zap;
             (zap.elementOption)? res.send({message: 'ok', attributes: zap.element_attributes, cookieOption: zap.cookieOption}): res.send({message: 'ok', attributes:[], cookieOption: zap.cookieOption});
             
         }).catch(error => {res.status(404).send('not found')})

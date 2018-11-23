@@ -17,10 +17,12 @@
                 <th>#</th>
                 <th>Zap Name</th>
                 <th>Script</th>
-                <th>View</th>
                 <th><span data-toggle="tooltip" title="Add url params to all the anchor tag elements"> Magic Option</span></th>
                 <th><span data-toggle="tooltip" title="Change the dom with the url params and given params attribute">Append HTML</span></th>
                 <th><span data-toggle="tooltip" title="Send stored cookie (existing url params) to the zapier">Cookie</span></th>
+                <th>Page Views</th>
+                <th>Zaps</th>
+                <th>View</th>
                 <th>Delete</th>
                 <th>Edit</th>
               </tr>
@@ -33,9 +35,6 @@
                   <button v-clipboard="zap.scriptString" class="btn btn-success" @success="handleCopySuccess">Copy</button>
                 </td>
                 <td>
-                  <a href="#" @click.prevent="viewParams(zap)"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
-                </td>
-                <td>
                   <toggle-button v-model="zap.magicOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
                 </td>
                 <td>
@@ -43,6 +42,15 @@
                 </td>
                 <td>
                   <toggle-button v-model="zap.cookieOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
+                </td>
+                <td>
+                  {{zap.pageViewCount}}
+                </td>
+                <td>
+                  {{zap.zapierTriggerCount}}
+                </td>
+                <td>
+                  <a href="#" @click.prevent="viewParams(zap)"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
                 </td>
                 <td>
                   <span>

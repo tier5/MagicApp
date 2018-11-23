@@ -41,6 +41,12 @@ const UserSchema =  new Schema({
             cookieOption: {
                 type:Boolean, default: false
             },
+            pageViewCount:{
+                type: Number, default:0
+            },
+            zapierTriggerCount:{
+                type:Number, default:0
+            },
             hooks_url : {type : String},
             params:[
                 {
