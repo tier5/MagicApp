@@ -19,7 +19,7 @@ function saveScriptData(req,res,next){
     var scriptParams = req.body.params;
     var zapParams;
     var userZap;
-    var token = 
+    var token = '';
     findZap(body.zapId)
         .then((data)=> {
             var zap = data.zap;
@@ -90,12 +90,21 @@ function getElementAttribute(req,res){
     let zap_id = req.params.id;
     findZap(zap_id)
         .then(data=> {
-            let zap =data.zap;
-            (zap.elementOption)? res.send({message: 'ok', attributes: zap.element_attributes, cookieOption: zap.cookieOption}): res.send({message: 'ok', attributes:[], cookieOption: zap.cookieOption});
-            
-        }).catch(error => {res.status(404).send('not found')})
-}
+            let zap = data.zap;
+            res.status(200).send({
+                message : 'Ok',
+                status : true,
+                attributes: zap.element_attributes ? zap.element_attributes : [],
+                cookieOption: zap.cookieOption? zap.cookieOption : false,
+                timeoutOption: zap.timeoutOption ? zap.timeoutOption : false,
+                magicOption : zap.magicOption ? zap.magicOption : false,
+                elementOption: zap.elementOption ? zap.elementOption : false,
+                timeout : zap.timeout ? zap.timeout : {},
+            });
 
+            
+        }).catch(error => {res.status(404).send({message : 'Not Allowed', status : false})})
+}
 module.exports = {
     saveScriptData,
     getElementAttribute

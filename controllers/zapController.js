@@ -97,9 +97,9 @@ function deleteZap (req,res,next){
  * @returns promise 
  */
 function findZap (zapId){
-    return new Promise(function(resolve,reject){
+    return new Promise(function(resolve,reject) {
         var id = mongoose.Types.ObjectId(zapId);
-        Users.aggregate([
+        Users.aggregate(
             {
                 $match:{
                     "zaps._id":id
@@ -113,25 +113,27 @@ function findZap (zapId){
                 accessToken:1
                 }
             },
-            { $limit : 1 }
-        ],function(err,data){
-            if(err) {
-                console.log(err);
-                reject(err)
-            } else {
-                if(data.length && data[0].isActive){
-                    //console.log(data);
-                    var zaps = data[0].zaps;
-                    var accessToken = data[0].accessToken
-                    var zap = _.find(zaps, function(o) { return o._id == zapId; });
-                    //console.log('accessToken',accessToken)
-                    resolve({ zap:zap, accessToken: accessToken });
-                } else {
-                    reject({ message:'Either data not found or users script is not active'});
+            { 
+                $unwind : "$zaps" 
+            },
+            {   $match : {
+                    "zaps._id" : id
                 }
-            }
-        })
-    })
+            }).then(docs => {
+                
+                if (docs.length && docs[0].isActive){
+                    let accessToken = docs[0].accessToken;
+                    let zap = docs[0].zaps;
+                    resolve({ zap:zap, accessToken: accessToken});
+                } else {
+                    reject({ message:'Forbidden', status : false});
+                }
+            }).catch(err=> {
+                //console.log(err);
+                reject({message: 'Something Went Wrong!', status : false});
+            });
+    });
+
 }
 
 /**

@@ -7,13 +7,32 @@
             <div class="modal-header">
               <slot name="header">
                 <b>Zap Name : </b> {{zap.name}}
+                
+                  <div class="col-md-6 pull-right">
+                    <div class="row ">
+                        <div class="col-md-3"><label for="">Timeout</label></div>
+                        <div class="col-md-3">
+                          <p>Day: {{zap.timeout.days}}</p>
+                            
+                          </div>
+                        <div class="col-md-3">
+                          <p>Hours : {{zap.timeout.hours}}</p>
+                          
+                          </div>
+                        <div class="col-md-3">
+                          <p>Minutes: {{zap.timeout.minutes}}</p>
+                            
+                          </div>
+                    </div>
+                  </div>
+                
               </slot>
             </div>
 
             <div class="modal-body">
               <slot name="body">
                 <div class="row">
-                  <div class="col-md-12 col-sm-6">
+                  <div class="col-md-6 col-sm-6">
                     <p>Zaps params </p>
                   </div>
                 </div>
@@ -44,16 +63,18 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-3 table-responsive">
+                  <div class="col-md-5 table-responsive">
                     <table class="table table-bordered">
                       <thead>
                         <tr>
                           <th>Attribute Name</th>
+                          <th>Attributes Identifier Type</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="(field, index) in zap.element_attributes" :key="index">
                           <td>{{field.attribute_name}}</td>
+                          <td>{{field.attribute_type}}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -159,6 +180,17 @@
   }
   .form-group__message{
     color: red;
+  }
+  .timer-area {
+    margin-top: -20px;
+  }
+  .timer-area p {
+    text-align: center;
+    margin-bottom: 3px;
+  }
+  .timer-area label {
+    margin-top: 26px;
+    display: inline-block;
   }
 
 </style>

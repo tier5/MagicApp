@@ -20,6 +20,7 @@
                 <th><span data-toggle="tooltip" title="Add url params to all the anchor tag elements"> Magic Option</span></th>
                 <th><span data-toggle="tooltip" title="Change the dom with the url params and given params attribute">Append HTML</span></th>
                 <th><span data-toggle="tooltip" title="Send stored cookie (existing url params) to the zapier">Cookie</span></th>
+                <th><span data-toggle="tooltip" title="Restrict the url parameters to go zapier for the given time">Timeout</span></th>
                 <th>Page Views</th>
                 <th>Zaps</th>
                 <th>View</th>
@@ -42,6 +43,9 @@
                 </td>
                 <td>
                   <toggle-button v-model="zap.cookieOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
+                </td>
+                <td>
+                  <toggle-button v-model="zap.timeoutOption" :labels="{checked: 'ON', unchecked: 'OFF'}" @change="updateZap(zap)"/>
                 </td>
                 <td>
                   {{zap.pageViewCount}}

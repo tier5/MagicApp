@@ -1,27 +1,30 @@
 <template>
   <div id="app">
-	  
-  </div>
+
+  </div>	
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-			postUrl: 'https://amagiczap.com/api/script-data',
-			hostname:''
-    }
-  },
+	data () {
+		return {
+				postUrl: 'https://amagiczap.com/api/script-data',
+				hostname:''
+		}
+	},
 	mounted(){
-		
+		// The whole process is for DOM Manipulation 
 		var scriptElement = document.getElementById('magic_app_script');
 		var zapId = scriptElement.getAttribute('data-script-id');
-		var elements = document.getElementById('gender');
-			this.$http.get(this.postUrl+'/'+ zapId).then(res=> {
+		this.$http.get(this.postUrl+'/'+ zapId).then(res=> {
 				let attributes = res.body.attributes; 
 				let trueIdsandValue =[]; // {id : name , value :'test'}
 				let params = this.getAllParams();
 				let cookie_url = this.$cookie.get('cache_url');
+				let elementOption = res.body.elementOption;
+				if(!elementOption){
+					return 
+				}; 
 				
 				let cookieOption = res.body.cookieOption || false;
 				if (cookieOption && cookie_url && !window.location.search) {
@@ -72,82 +75,97 @@ export default {
 
 			}).catch(err=> console.log(err))
 	},
-  created(){
-    	var scriptElement = document.getElementById('magic_app_script');
-    	var zapId = scriptElement.getAttribute('data-script-id')
-		var location = window.location;
-		this.hostname = location.hostname;
-		var queryParams = window.location.href.split('?')[1];
-		var requestLocation  = location.protocol + '//' + location.host + location.pathname;
-		var requestObj = {
-			location : requestLocation,
-			params: this.getAllParams(),
-			zapId : zapId
-		}
-		this.$http.get('https://icanhazip.com').then((response)=>{
-			let ip = response.body.trim();
-			requestObj.params.clientId = ip;
-			this.$http.get(this.postUrl+'/'+ zapId).then(res=> {
-				let url = this.$cookie.get('cache_url');
-				// condition checking to cache cooking if the backend flag is true 
-				let cookieOption = res.body.cookieOption || false;
-				
-				if(window.location.search) {
-					// cached url
-					this.addUrlToCookie();
-					this.$http.post(this.postUrl,requestObj).then(function(data) {
-						if (data.body.appendUrls) {
-							// if appendUrls is true then add the cached url to the dom
-							this.appendUrlsToAllLinksInTheDom(queryParams);
+	created(){
+			// The whole process is for sending data to api 
+			// @todo Change Promise to Async Function for cleaner code base
+			var scriptElement = document.getElementById('magic_app_script');
+			var zapId = scriptElement.getAttribute('data-script-id')
+			var location = window.location;
+			this.hostname = location.hostname;
+			var queryParams = window.location.href.split('?')[1];
+			var requestLocation  = location.protocol + '//' + location.host + location.pathname;
+			var requestObj = {
+				location : requestLocation,
+				params: this.getAllParams(),
+				zapId : zapId
+			}
+			this.$http.get('https://icanhazip.com').then((response)=>{
+				let ip = response.body.trim();
+				requestObj.params.clientId = ip;
+				this.$http.get(this.postUrl+'/'+ zapId).then(res => {
+					
+					let url = this.$cookie.get('cache_url');
+					// condition checking to cache cooking if the backend flag is true 
+					let cookieOption = res.body.cookieOption || false;
+
+					let timeoutOption = res.body.timeoutOption || false;
+					let magicOption	  = res.body.magicOption || false
+					let days = res.body.timeout.days ? res.body.timeout.days : null;
+					let hours = res.body.timeout.hours ? res.body.timeout.hours : null;
+					let minutes = res.body.timeout.minutes ? res.body.timeout.minutes : null;
+					
+					let timeout = {
+						days : days,
+						hours : hours, 
+						minutes: minutes,
+					};
+					
+					
+
+					if(window.location.search) {
+						// cached url
+						this.addUrlToCookie();
+						// Append the url if magicOption turn on
+						magicOption && this.appendUrlsToAllLinksInTheDom(queryParams);
+						this.timeoutCheck({timeoutOption,timeout})
+							.then(allowed => {
+								
+								if(allowed.isSendDataToZapier) {
+									this.sendDataToApi(this.postUrl, requestObj);
+								}
+							});
+					} else {
+
+						// if the cookieOption is ON
 						
+						if (cookieOption && url) {
+							// take cached url from cookie
+							let cacheParams = this.getAllParams(url);
+							requestObj.params = cacheParams;
+							requestObj.params.clientId = ip;
+							var cachedQueryParams = url.split('?')[1];
+							// Append the url if magicOption turn on
+							
+							magicOption && this.appendUrlsToAllLinksInTheDom(cachedQueryParams);
+							this.timeoutCheck({timeoutOption,timeout}).then(allowed => {
+								if(allowed.isSendDataToZapier) {
+									
+									this.sendDataToApi(this.postUrl, requestObj);
+								}
+							});
+							
 						}
-					}).catch(err=> {
-						console.log('Error');
-						//console.log(err)
-					})
 
-				} else {
+						if(!cookieOption) {
+							// Append the url if magicOption turn on
+							magicOption && this.appendUrlsToAllLinksInTheDom(queryParams);
 
-					// if the cookieOption is ON
-					if (cookieOption && url) {
-						// take cached url from cookie
-						let cacheParams = this.getAllParams(url);
-						requestObj.params = cacheParams;
-						requestObj.params.clientId = ip;
-						this.$http.post(this.postUrl,requestObj).then(function(data) {
-							if (data.body.appendUrls) {
-								// if appendUrls is true then add the cached url to the dom
-								queryParams = url.split('?')[1]
-								this.appendUrlsToAllLinksInTheDom(queryParams);
-							}
-						}).catch(err=> {
-							//console.log('Error');
-							//console.log(err)
-						})
+							this.timeoutCheck({timeoutOption,timeout}).then(allowed => {
+								if(allowed.isSendDataToZapier) {
+									
+									this.sendDataToApi(this.postUrl, requestObj);
+								}
+							});
+						}
 					}
+				}).catch(err => {
 
-					if(!cookieOption) {
-						this.$http.post(this.postUrl,requestObj).then(function(data) {
-							if (data.body.appendUrls) {
-								// if appendUrls is true then add the cached url to the dom
-								this.appendUrlsToAllLinksInTheDom(queryParams);
-							
-							}
-						}).catch(err => {
-							//console.log('Error');
-							
-						})
-
-					}
-				}
-			}).catch(err => {
-
+				})
+			}).catch(errorResp => {
+				console.log('Error in getting ip');
 			})
-		}).catch(errorResp => {
-			console.log('Error in getting ip');
-		})
-  },
-  methods:{
+	},
+	methods:{
 		appendHtmlFunction(attributeName, attributeValue, attributeType){
 			if (attributeType == 'name'){
 				let elements = document.getElementsByName(attributeName);
@@ -269,66 +287,116 @@ export default {
 				}   
 			}
 		},
-    getAllParams(url){
-      // get query string from url (optional) or window
-			  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+		setLastZapTime(){
+			let dateTimeNow = this.$moment().toISOString();
+			this.$cookie.set('_script_fire_on', dateTimeNow, 365);
+		},
+		timeoutCheck(obj){
+			return new Promise((resolve,reject) => {
+				let option = obj.timeoutOption;
+				let time = obj.timeout;
+				var now = this.$moment().toISOString();
+				
+				let lastInitiated = this.$cookie.get('_script_fire_on');
+				// if the timeout flag is off sent data to api
+				if (!option) { return resolve({isSendDataToZapier: true})}
+				// if lastInitiated is null then also send data to api
+				if (!lastInitiated) { return resolve({isSendDataToZapier: true})}
+				
+				let nextDate = this.$moment(lastInitiated);
 
-			  // we'll store the parameters here
-			  var obj = {};
+				//Add days to the last initiated 
+				if(time.days) {
+					nextDate = nextDate.add(time.days, 'd');
+				};
+				
+				// Add minutes to the last initiated
+				if (time.minutes){ 
+					nextDate = nextDate.add(time.minutes,'m');
+				};
 
-			  // if query string exists
-			  if (queryString) {
+				// Add hours to the last initiated
+				if(time.hours){
+					nextDate = nextDate.add(time.hours,'h');
+				}
 
-			    // stuff after # is not part of query string, so get rid of it
-			    queryString = queryString.split('#')[0];
+				let checkNextFiringTime = nextDate.isBefore(now);
+				if (!checkNextFiringTime){
+					
+					return resolve({isSendDataToZapier: false})
+				} else {
+					
+					return resolve({isSendDataToZapier: true})
+				}
+				
+			})
+		},
+		sendDataToApi(postUrl, postData){
+			this.$http.post(postUrl,postData)
+					.then(function(data) {
+							this.setLastZapTime();
+					}).catch(err=> {})
+		},
+		getAllParams(url){
+						// get query string from url (optional) or window
+						var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
 
-			    // split our query string into its component parts
-			    var arr = queryString.split('&');
+						// we'll store the parameters here
+						var obj = {};
 
-			    for (var i=0; i<arr.length; i++) {
-			      // separate the keys and the values
-			      var a = arr[i].split('=');
+					// if query string exists
+					if (queryString) {
 
-			      // in case params look like: list[]=thing1&list[]=thing2
-			      var paramNum = undefined;
-			      var paramName = a[0].replace(/\[\d*\]/, function(v) {
-			        paramNum = v.slice(1,-1);
-			        return '';
-			      });
+						// stuff after # is not part of query string, so get rid of it
+						queryString = queryString.split('#')[0];
 
-			      // set parameter value (use 'true' if empty)
-			      var paramValue = typeof(a[1])==='undefined' ? true : a[1];
+						// split our query string into its component parts
+						var arr = queryString.split('&');
 
-			      // (optional) keep case consistent
-			      //paramName = paramName.toLowerCase();
-			      //paramValue = paramValue.toLowerCase();
+						for (var i=0; i<arr.length; i++) {
+						// separate the keys and the values
+						var a = arr[i].split('=');
 
-			      // if parameter name already exists
-			      if (obj[paramName]) {
-			        // convert value to array (if still string)
-			        if (typeof obj[paramName] === 'string') {
-			          obj[paramName] = [obj[paramName]];
-			        }
-			        // if no array index number specified...
-			        if (typeof paramNum === 'undefined') {
-			          // put the value on the end of the array
-			          obj[paramName].push(paramValue);
-			        }
-			        // if array index number specified...
-			        else {
-			          // put the value at that index number
-			          obj[paramName][paramNum] = decodeURIComponent(paramValue);
-			        }
-			      }
-			      // if param name doesn't exist yet, set it
-			      else {
-			        obj[paramName] = decodeURIComponent(paramValue);
-			      }
-			    }
-			  }
+						// in case params look like: list[]=thing1&list[]=thing2
+						var paramNum = undefined;
+						var paramName = a[0].replace(/\[\d*\]/, function(v) {
+							paramNum = v.slice(1,-1);
+							return '';
+						});
 
-			  return obj;
-    }
+						// set parameter value (use 'true' if empty)
+						var paramValue = typeof(a[1])==='undefined' ? true : a[1];
+
+						// (optional) keep case consistent
+						//paramName = paramName.toLowerCase();
+						//paramValue = paramValue.toLowerCase();
+
+						// if parameter name already exists
+						if (obj[paramName]) {
+							// convert value to array (if still string)
+							if (typeof obj[paramName] === 'string') {
+							obj[paramName] = [obj[paramName]];
+							}
+							// if no array index number specified...
+							if (typeof paramNum === 'undefined') {
+							// put the value on the end of the array
+							obj[paramName].push(paramValue);
+							}
+							// if array index number specified...
+							else {
+							// put the value at that index number
+							obj[paramName][paramNum] = decodeURIComponent(paramValue);
+							}
+						}
+						// if param name doesn't exist yet, set it
+						else {
+							obj[paramName] = decodeURIComponent(paramValue);
+						}
+						}
+					}
+
+				return obj;
+		}
 	}
 }
 </script>

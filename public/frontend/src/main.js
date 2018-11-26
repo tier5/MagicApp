@@ -11,6 +11,16 @@ import {RotateSquare2} from 'vue-loading-spinner';
 import VueClipboards from 'vue-clipboards';
 import Vuetify from 'vuetify';
 
+
+/**
+ * External CSS and JS
+ */
+require('../node_modules/bootstrap/dist/css/bootstrap.min.css');
+require('../node_modules/bootstrap/dist/js/bootstrap.min.js');
+
+require('../node_modules/lity/dist/lity.min.css');
+require('../node_modules/lity/dist/lity.min.js');
+
 Vue.use(ToggleButton);
 Vue.use(VueResource);
 Vue.use(Vuelidate);
@@ -18,7 +28,6 @@ Vue.use(VuePaginate);
 Vue.use(RotateSquare2);
 Vue.use(VueClipboards);
 Vue.use(Vuetify)
-
 
 import config from '../config/config';
 if(process.env.NODE_ENV =='development'){

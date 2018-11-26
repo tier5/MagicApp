@@ -14,8 +14,8 @@
             <div class="modal-body">
               <slot name="body">
                 <form>
-                  <div class="row form-group" v-bind:class="{ 'form-group--error': $v.newZap.name.$error }">
-                    <div class="col-md-6">
+                  <div class="row form-group">
+                    <div class="col-md-6" v-bind:class="{ 'form-group--error': $v.newZap.name.$error }">
                       <input type="text"
                              class="form-control"
                              placeholder="Zap Name"
@@ -26,6 +26,49 @@
                         Zap Name is Required
                       </span>
                     </div>
+                    <!-- TimeOut Section Starts Here -->
+                    <div class="col-md-6">
+                      <div class="row timer-area">
+                        <div class="col-md-3"><label for="">Timeout</label></div>
+                        <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.timeout.days.$error }">
+                            <p>Day</p>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                v-model="newZap.timeout.days"
+                                @blur="$v.newZap.timeout.days.$touch">
+                            <span class="form-group__message"
+                                v-if="$v.newZap.timeout.days.$error">
+                                Invalid Days!
+                            </span>
+                        </div>
+                        <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.timeout.hours.$error }">
+                          <p>Hours</p>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                v-model="newZap.timeout.hours"
+                                @blur="$v.newZap.timeout.hours.$touch">
+                                <span class="form-group__message"
+                                    v-if="$v.newZap.timeout.hours.$error">
+                                    Invalid Hours!
+                                </span>
+                        </div>
+                        <div class="col-md-3" v-bind:class="{ 'form-group--error': $v.newZap.timeout.minutes.$error }">
+                          <p>Minutes</p>
+                          <input 
+                              type="number"
+                              class="form-control" 
+                              v-model="newZap.timeout.minutes"
+                              @blur="$v.newZap.timeout.minutes.$touch">
+                          <span class="form-group__message"
+                                v-if="$v.newZap.timeout.minutes.$error">
+                                Invalid Minutes!
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- TimeOut Section Ends Here -->
                   </div>
                   <div class="clearfix"></div>
                   <div class="row">
@@ -118,6 +161,7 @@
                       </div>
                       <div class="clearfix"></div>
                   </div>
+                  
                 </form>
               </slot>
             </div>
@@ -146,7 +190,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { required } from 'vuelidate/lib/validators'
+  import { required, minValue, maxValue  } from 'vuelidate/lib/validators'
   export default {
     data () {
       return {
@@ -167,7 +211,12 @@
         newZap:{
           id:'',
           params:[],
-          element_attributes:[]
+          element_attributes:[],
+          timeout: {
+            days:null,
+            hours:null,
+            minutes:null
+          }
         }
       }
     },
@@ -270,6 +319,29 @@
               }
             }
           }
+        },
+        timeout:{
+          days:{
+            minValue : minValue(0),
+            maxValue: maxValue(365),
+            nonFLoat:function(n){
+              return Number(n) % 1 === 0 ? true: false 
+            }
+          },
+          hours:{
+            minValue : minValue(0),
+            maxValue: maxValue(23),
+            nonFLoat:function(n){
+              return Number(n) % 1 === 0 ? true: false 
+            }
+          },
+          minutes:{
+            minValue : minValue(0),
+            maxValue: maxValue(59),
+            nonFLoat:function(n){
+              return Number(n) % 1 === 0 ? true: false 
+            }
+          }
         }
       }
     },
@@ -343,6 +415,18 @@
   }
   .form-group__message{
     color: red;
+  }
+
+  .timer-area {
+    margin-top: -20px;
+  }
+  .timer-area p {
+    text-align: center;
+    margin-bottom: 3px;
+  }
+  .timer-area label {
+    margin-top: 26px;
+    display: inline-block;
   }
 
 </style>

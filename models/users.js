@@ -41,8 +41,22 @@ const UserSchema =  new Schema({
             cookieOption: {
                 type:Boolean, default: false
             },
+            timeoutOption: {
+                type: Boolean, default: false
+            },
             pageViewCount:{
                 type: Number, default:0
+            },
+            timeout:{
+                days:{
+                    type : Number, default: 0, min:0
+                },
+                hours:{
+                    type: Number, default:0, min:0
+                },
+                minutes:{
+                    type: Number, default:0, min:0
+                }
             },
             zapierTriggerCount:{
                 type:Number, default:0
@@ -107,7 +121,8 @@ const UserSchema =  new Schema({
     }
 
 },{
-    usePushEach: true
+    usePushEach: true,
+    timestamps: true
 });
 
 /**
