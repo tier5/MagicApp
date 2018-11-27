@@ -30,6 +30,7 @@
     "nodemailer": "^4.4.2",
     "serve-favicon": "~2.4.5",
     "stripe": "^5.4.0",
+    "valid-url": "^1.0.9",
     "validator": "^9.2.0",
     "winston": "^2.4.0"
   }

@@ -37,6 +37,8 @@ var { addDomain,
       deleteDomain, 
       updateDomainStatus, blockDomainId}            = require('../controllers/domainController');
 
+const { createTutorial, getAllTutorials, getTutotialById, updateTutorials} = require('../controllers/tutorialsController');
+
 /**
  * Users Registration, Login, Forget Password and Reset Password
  */
@@ -89,6 +91,14 @@ var { addDomain,
   router.post('/hooks/users-delete', upload.single('avatar'),deleteUserFromHook);
   router.post('/hooks/users-suspend', upload.single('avatar'), suspendUserFromHook);
   router.post('/hooks/users-unsuspend', upload.single('avatar'), unsuspendUserFromHook);
+
+  /**
+   * Tutorials
+   */
+  router.post('/tutorials',isAuthorized, onlyAdminCan, createTutorial);
+  router.get('/tutorials', isAuthorized, onlyAdminCan, getAllTutorials);
+  router.get('/tutorials/:id',isAuthorized, onlyAdminCan, getTutotialById);
+  router.put('/tutorials/:id', isAuthorized, onlyAdminCan, updateTutorials);
 
 
 /**
