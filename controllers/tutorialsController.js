@@ -100,6 +100,21 @@
          return res.status(500).send({message : 'Something Went Wrong!', status : false , data: {}, error : error})
      });
  }
+/**
+ * Function to delete Tutorial
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ */
+ function deleteTutorial(req, res, next){
+    var id = req.params.id;
+    Tutorials.findByIdAndRemove(id).then(docs => {
+        if(!docs) { return res.status(404).send({message : 'Not Found!', status: false, data: {}}); }
+        return res.status(200).send({message : 'Tutorial deleted', status: false, data: docs})
+    }).catch(error => {
+        return res.status(500).send({message : 'Something Went Wrong!', status : false , data: {}, error : error})
+    })
+ }
 
 
 
@@ -108,5 +123,6 @@
     createTutorial,
     getAllTutorials,
     getTutotialById,
-    updateTutorials
+    updateTutorials,
+    deleteTutorial
  }

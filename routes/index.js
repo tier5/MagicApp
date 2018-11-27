@@ -37,7 +37,10 @@ var { addDomain,
       deleteDomain, 
       updateDomainStatus, blockDomainId}            = require('../controllers/domainController');
 
-const { createTutorial, getAllTutorials, getTutotialById, updateTutorials} = require('../controllers/tutorialsController');
+const { createTutorial, 
+        getAllTutorials, 
+        getTutotialById, 
+        updateTutorials, deleteTutorial}            = require('../controllers/tutorialsController');
 
 /**
  * Users Registration, Login, Forget Password and Reset Password
@@ -99,7 +102,7 @@ const { createTutorial, getAllTutorials, getTutotialById, updateTutorials} = req
   router.get('/tutorials', isAuthorized, onlyAdminCan, getAllTutorials);
   router.get('/tutorials/:id',isAuthorized, onlyAdminCan, getTutotialById);
   router.put('/tutorials/:id', isAuthorized, onlyAdminCan, updateTutorials);
-
+  router.delete('/tutorials/:id', isAuthorized, onlyAdminCan, deleteTutorial);
 
 /**
  * Magic scripts
