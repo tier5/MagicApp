@@ -114,8 +114,7 @@
       createTutorial(){
         this.$store.dispatch('createTutorial',this.newTutorial);
       },
-      updateTutorial(){
-        //console.log(this.newTutorial);
+      updateTutorial() {
         this.$store.dispatch('updateTutorial', this.newTutorial);
       },
       closeModal(){

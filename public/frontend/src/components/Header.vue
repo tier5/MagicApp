@@ -11,6 +11,7 @@
           <ul class="nav navbar-nav navbar-left">
             <li v-if="user.isAdmin"><a href="" @click.prevent="customRouterPush('/users')">Users</a></li>
             <li v-if="user.isAdmin"><a href="" @click.prevent="customRouterPush('/tutorials')">Tutorials</a></li>
+            <li><a href="" @click.prevent="customRouterPush('/trainings')">Training</a></li>
             <li><a href="" @click.prevent="customRouterPush('/magic')">Magic</a></li>
             <!-- <li><a href="" @click.prevent="customRouterPush('/magic-script')">Magic Script</a></li> -->
           </ul>

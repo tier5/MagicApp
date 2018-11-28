@@ -17,7 +17,8 @@
                             <th>Description</th>
                             <th>Source</th>
                             <th>Order</th>
-                            <th>Action</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,11 +29,13 @@
                             <td>{{tutorial.source}}</td>
                             <td>{{tutorial.order}}</td>
                             <td>
+                                <a href="#" @click.prevent="editTutorial(tutorial)">
+                                    <i class="fa fa-edit fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td>
                                 <a href="#" @click.prevent="deleteTutorial(tutorial._id)">
                                     <i class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
-                                </a>
-                                <a href="#" @click.prevent="editTutorial(tutorial)" style="margin-left:10px;">
-                                    <i class="fa fa-edit fa-2x" aria-hidden="true"></i>
                                 </a>
                             </td>
                         </tr>
@@ -53,7 +56,7 @@
     export default {
         data () {
             return {
-            msg: 'Welcome to Your Vue.js App'
+               
             }
         },
         computed: {
@@ -93,6 +96,7 @@
                 this.$store.commit('changeCreateAndUpdateModal', true)
             },
             editTutorial(tutorial){
+                console.log(tutorial);
                 this.$store.commit('changeEditTutorial', tutorial);
                 this.$store.commit('changeCreateAndUpdateModal', true);
             }
