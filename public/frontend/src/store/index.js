@@ -7,6 +7,7 @@ import Alert from './modules/alert';
 import Users from './modules/users';
 import Loader from './modules/loader';
 import Card from './modules/card';
+import Tutorials from './modules/tutorials';
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     Alert,
     Users,
     Loader,
-    Card
+    Card,
+    Tutorials
   }
 })

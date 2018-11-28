@@ -14,6 +14,7 @@ import Users from '../components/Users.vue';
 import ResetPassword from '../components/ResetPassword.vue';
 import Settings from '../components/Settings.vue';
 import ChangePassword from '../components/ChangePassword.vue';
+import Tutorials from '../components/tutorials/tutorials.vue'
 
 
 Vue.use(Router)
@@ -50,6 +51,11 @@ export default new Router({
           path:'change-password',
           name:'ChangePassword',
           component:ChangePassword
+        },
+        {
+          path:'tutorials',
+          name:'Tutorials',
+          component : Tutorials
         }
         // {
         //   path:'settings',

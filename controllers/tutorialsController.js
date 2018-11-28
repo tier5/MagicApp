@@ -93,8 +93,16 @@
              } else {
                 return res.status(200).send({message : 'Not Updated', status: true, data: {}});
              }
-         }).catch(updateError => {
-            return res.status(500).send({message : 'Something Went Wrong!', status : false , data: {}, error : updateError})
+         }).catch(error => {
+            if (error.code === 11000){
+                return res.status(400).send({message : 'Order Number already exist', status : false , data: {}}); 
+            }
+    
+            if (error.name === 'ValidationError') {
+                return res.status(400).send({message : 'Invalid data', status : false , data: {}}) 
+            }
+    
+            return res.status(500).send({message : 'Something Went Wrong!', status : false , data: {}, error : error})
          });
      }).catch(error=>{
          return res.status(500).send({message : 'Something Went Wrong!', status : false , data: {}, error : error})
@@ -110,7 +118,7 @@
     var id = req.params.id;
     Tutorials.findByIdAndRemove(id).then(docs => {
         if(!docs) { return res.status(404).send({message : 'Not Found!', status: false, data: {}}); }
-        return res.status(200).send({message : 'Tutorial deleted', status: false, data: docs})
+        return res.status(200).send({message : 'Tutorial deleted', status: true, data: docs})
     }).catch(error => {
         return res.status(500).send({message : 'Something Went Wrong!', status : false , data: {}, error : error})
     })
