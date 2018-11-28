@@ -99,7 +99,7 @@ const { createTutorial,
    * Tutorials
    */
   router.post('/tutorials',isAuthorized, onlyAdminCan, createTutorial);
-  router.get('/tutorials', isAuthorized, onlyAdminCan, getAllTutorials);
+  router.get('/tutorials', isAuthorized, getAllTutorials);
   router.get('/tutorials/:id',isAuthorized, onlyAdminCan, getTutotialById);
   router.put('/tutorials/:id', isAuthorized, onlyAdminCan, updateTutorials);
   router.delete('/tutorials/:id', isAuthorized, onlyAdminCan, deleteTutorial);
