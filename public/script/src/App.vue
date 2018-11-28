@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+	  
   </div>
 </template>
 
@@ -120,7 +121,7 @@ export default {
 								this.appendUrlsToAllLinksInTheDom(queryParams);
 							}
 						}).catch(err=> {
-							console.log('Error');
+							//console.log('Error');
 							//console.log(err)
 						})
 					}
@@ -133,12 +134,14 @@ export default {
 							
 							}
 						}).catch(err => {
-							console.log('Error');
-							//console.log(err)
+							//console.log('Error');
+							
 						})
 
 					}
 				}
+			}).catch(err => {
+
 			})
 		}).catch(errorResp => {
 			console.log('Error in getting ip');
@@ -253,13 +256,14 @@ export default {
 						}
 
 				} else {
-
-						if(oldhref.indexOf('?') === -1){
+						if(oldhref.indexOf('#')===-1) {
+							if(oldhref.indexOf('?') === -1){
 							var newHref = oldhref +'?'+ queryParams;
 							links[i].setAttribute('href',newHref);
-						} else {
-							var newHref = oldhref +'&'+ queryParams;
-							links[i].setAttribute('href',newHref);
+							} else {
+								var newHref = oldhref +'&'+ queryParams;
+								links[i].setAttribute('href',newHref);
+							}
 						}
 
 				}   
