@@ -96,7 +96,7 @@
                 this.$store.commit('changeCreateAndUpdateModal', true)
             },
             editTutorial(tutorial){
-                console.log(tutorial);
+                //console.log(tutorial);
                 this.$store.commit('changeEditTutorial', tutorial);
                 this.$store.commit('changeCreateAndUpdateModal', true);
             }

@@ -22,6 +22,7 @@
      } 
      let newTutorial = new Tutorials(body);
      newTutorial.save().then(docs => {
+        body._id = docs._id;
         return res.status(200).send({message : 'New Tutorial Created', status: true, data : body });
      }).catch(error => {
 
