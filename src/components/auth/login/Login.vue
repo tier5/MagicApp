@@ -17,7 +17,8 @@
                 <v-layout row wrap>
 
                     <v-flex xs12>
-                    <v-text-field label="Solo" placeholder="EMAIL" solo></v-text-field>
+                    <v-text-field label="Solo" placeholder="EMAIL" solo>
+                    </v-text-field>
                     </v-flex>
 
                     <v-flex xs12>
@@ -80,7 +81,9 @@ $inputBackgroundblue: #F9FCFF;
   font-family: 'Avenir LT Std 85 Heavy';
   font-size: 12px;
   letter-spacing: 1px;
+
 }
+
 ::-moz-placeholder { /* Firefox 19+ */
   color: pink;
 }
@@ -114,6 +117,11 @@ $inputBackgroundblue: #F9FCFF;
             }
         }
     }
+    .v-text-field.v-text-field--solo .v-input__control{
+        background-image: url('../../../assets/images/email.png') !important;
+        background-repeat: no-repeat!important;
+        background-position: 0% 0%!important;
+    }
     .theme--light.v-text-field--solo .v-input__slot{
         background-color: $inputBackgroundblue;
     }
@@ -121,6 +129,7 @@ $inputBackgroundblue: #F9FCFF;
          color: $inputBlue;
          font-size: 12px;
          font-weight: bold;
+         letter-spacing: 1px;
     }
     .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
         box-shadow: 0 7px 49px #d2d2d2;
