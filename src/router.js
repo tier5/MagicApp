@@ -36,7 +36,7 @@ export default new Router({
       component: Login,
     },
     {
-      path: '/ChangePassword',
+      path: '/changePassword',
       name: 'ChangePassword',
       component: ChangePassword,
     },
