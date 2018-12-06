@@ -136,6 +136,23 @@ body{
   font-weight: normal;
   src: local('Avenir LT Std 95 Black Oblique'), url('assets/fonts/AvenirLTStd-BlackOblique.woff') format('woff');
 }
+body{
+  font-family: 'Avenir LT Std 55 Roman';
+  position: relative;
+  .theme--light.application{
+    font-family: 'Avenir LT Std 55 Roman';
+    color: #535353;
+    background: #fff;
+  }
+}
+a{
+  text-decoration: none;
+}
+ul{
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
 
 </style>
 

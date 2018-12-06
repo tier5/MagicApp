@@ -1,0 +1,215 @@
+$orange: #ff6100;
+$lightblue: #eef6ff;
+$light_text: #a4c6ef;
+$placeholder_text: #b4cce9;
+
+// placeholder css
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $placeholder_text;
+  font-size: 16px;
+  font-weight: normal;
+  font-family: 'Avenir LT Std 35 Light';
+  letter-spacing: 0;
+}
+
+.container{
+  padding: 0;
+  .left-aside{
+    .v-card{
+      background: $lightblue;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border-radius: 0;
+      border: none;
+      min-height: 100vh;
+      position: relative;
+      .logo{
+        padding: 15px;
+      }
+      .username{
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 12px;
+        background: #ddedff;
+        padding: 15px 30px;
+        color: #535353;
+        div{
+          background: #a3c6ef;
+          display: inline-block;
+          color: #fff;
+          height: 24px;
+          width: 24px;
+          border-radius: 50%;
+          font-size: 10px;
+          position: relative;
+          vertical-align: middle;
+          margin-right: 15px;
+          text-align: center;
+          font-weight: bold;
+          span{
+            position: absolute;
+            transform: translate(-50%,-50%);
+            left: 50%;
+            top: 50%;
+          }
+        }
+      }
+      .left-menu{
+        padding: 40px 0 10px;
+        ul{
+          li{
+            display: inline-block;
+            width: 100%;
+            margin: 15px 0;
+            span{
+              display: block;
+              padding: 0 30px;
+              border-left: 3px solid $lightblue;
+              color: $light_text;
+              font-size: 12px;
+              text-transform: uppercase;
+              font-weight: bold;
+              letter-spacing: 2px;
+              cursor: pointer;
+            }
+            img{
+              float: left;
+              vertical-align: top;
+              padding: 0;
+              margin-right: 26px;
+              padding-left: 32px;
+            }
+            &:hover{
+              span{
+                border-left: 3px solid $orange;
+                color:$orange;
+              }
+              img.icon-zap{
+                content:url("../../../assets/images/icon-zap-hover.png");
+              }
+              img.icon-zaptoken{
+                content:url("../../../assets/images/icon-zaptoken-hover.png");
+              }
+              img.icon-help{
+                content:url("../../../assets/images/icon-help-hover.png");
+              }
+            }
+          }
+        }
+      }
+      .create-new-zap{
+        padding: 0;
+        img{
+          float: left;
+          vertical-align: top;
+          width: 130px;
+          height: 130px;
+          cursor: pointer;
+        }
+        h2{
+          display: block;
+          padding: 60px 0;
+          color: $orange;
+          font-size: 15px;
+          font-family: 'Avenir LT Std 45 Book';
+          font-weight: bold;
+          cursor: pointer;
+        }
+      }
+      .total-zaps{
+        padding: 16px 20px;
+        h3{
+          font-weight: normal;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          font-size: 12px;     
+        }
+        h4{
+          font-family: 'Avenir LT Std 95 Black';
+          color: #7ca8dc;
+          font-size: 50px;
+          letter-spacing: 2px;
+        }
+        .v-card__text{
+          padding: 10px 16px;
+        }
+      }
+      .left-footer{
+        ul{
+          padding-left: 32px;
+          li{
+            display: inline-block;
+            cursor: pointer;
+            vertical-align: top;
+            margin-right: 50px;
+            &:hover{
+              img.back-icon{
+                content: url("../../../assets/images/back-icon-hover.png");
+              }
+              img.user-icon{
+                content: url("../../../assets/images/user-icon-hover.png");
+              }
+              img.icon-logout{
+                content: url("../../../assets/images/icon-logout-hover.png");
+              }
+            }
+            .v-tooltip{
+              button{
+                padding: 0;
+                background: none;
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                width: auto;
+                min-width: auto;
+                height: auto;
+              } 
+            }
+          }
+        }
+      }
+    }
+  }
+  .right-aside{
+    padding: 0 20px;
+    .v-card{
+      background: #fff;
+      box-shadow: none;
+      border-radius: 0;
+      .search-bar{
+        padding-top: 0;
+        .v-input__slot:before{
+          border: none;
+        }
+        .primary--text{
+          color: $orange !important;
+          caret-color: $orange !important;
+        }
+        .v-text-field__slot{
+          input{
+            font-size: 15px;
+            font-weight: normal;
+            background: url("../../../assets/images/icon-search.png") no-repeat 0 5px;
+            padding-left: 40px;
+            color: #535353;
+          }
+        }
+      }
+      .how-it-works{
+        img{
+          vertical-align: top;
+          display: inline-block;
+          margin-right: 10px;
+        }
+        span{
+          color: #ff6100;
+          text-transform: uppercase;
+          font-size: 10px;
+          letter-spacing: 2px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

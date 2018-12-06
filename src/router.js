@@ -4,7 +4,7 @@ import Home from './views/Home.vue';
 import Demo from './components/Demo.vue';
 import Login from './components/Auth/Login/Login.vue';
 import ChangePassword from './components/Auth/ChangePassword/ChangePassword.vue';
-
+import CreateNewZap from './components/dashboard/CreateNewZap/CreateNewZap.vue';
 
 Vue.use(Router);
 
@@ -39,6 +39,11 @@ export default new Router({
       path: '/ChangePassword',
       name: 'ChangePassword',
       component: ChangePassword,
+    },
+    {
+      path: '/dashboard/createnewzap',
+      name: 'CreateNewZap',
+      component: CreateNewZap
     },
   ],
 });
