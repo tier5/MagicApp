@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout row wrap>
-      <v-flex xs3 class="left-aside">
+      <v-flex md3 sm5 hidden-xs-only class="left-aside">
         <v-card>
           <v-card class="px-0">
             <div class="logo">
@@ -63,18 +63,95 @@
           </v-card>
         </v-card>
       </v-flex>
-      <v-flex xs9 class="right-aside">
+      <v-flex md9 sm7 class="right-aside">
+        <v-layout xs12 class="hidden-sm-and-up top-bar">
+          <v-flex xs8>
+            <v-card class="logo">
+              <img src="../../../assets/images/dashboard-logo.png" class="logo" alt="Logo">
+            </v-card>
+          </v-flex>
+          <v-flex xs2>
+            <v-card class="zaps text-xs-right">
+              <img src="../../../assets/images/icon-zap-mobile.png" alt="icon">
+            </v-card>
+          </v-flex>
+          <v-flex xs2>
+            <v-card class="mobile-hamburger-menu text-xs-right"  @click.stop="drawer = !drawer">
+              <img src="../../../assets/images/hamburger-button.png" alt="icon">
+            </v-card>
+          </v-flex>
+          <v-navigation-drawer v-model="drawer" :mini-variant="mini" fixed temporary right>
+            <v-card class="left-aside left-aside-mobile">
+              <v-card>
+                <v-card-text class="username">
+                  <div class="back-btn" @click.stop="drawer = !drawer">
+                    <img src="../../../assets/images/icon-back.png" alt="icon">
+                  </div>
+                  <div class="userMobile">
+                    <div><span>A</span></div> Alexander
+                  </div>
+                </v-card-text>
+                <v-card-text class="left-menu">
+                  <ul>
+                    <li>
+                      <img src="../../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
+                      <span>my zaps</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon-zaptoken.png" alt="icon" class="icon-zaptoken">
+                      <span>zapier token</span>
+                    </li>
+                    <li>
+                      <img src="../../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                      <span>help</span>
+                    </li>
+                  </ul>
+                </v-card-text>
+                <v-card-text class="total-zaps">
+                  <v-card-text>
+                    <h3>total zaps</h3>
+                    <h4>06</h4>
+                  </v-card-text>
+                  <v-card-text>
+                    <h3>total page views</h3>
+                    <h4>15,282</h4>
+                  </v-card-text>
+                  <v-card-text>
+                    <h3>total zaps triggered</h3>
+                    <h4>12,852</h4>
+                  </v-card-text>
+                </v-card-text>
+                <v-card-text class="left-footer text-xs-right">
+                  <ul>
+                    <li><img src="../../../assets/images/back-icon.png" alt="icon" class="back-icon"></li>
+                    <li><img src="../../../assets/images/user-icon.png" alt="icon" class="user-icon"></li>
+                    <li>
+                      <v-tooltip top>
+                        <v-btn
+                          slot="activator"
+                        >
+                          <img src="../../../assets/images/icon-logout.png" alt="icon" class="icon-logout">
+                        </v-btn>
+                        <span>LOGOUT</span>
+                      </v-tooltip>
+                    </li>
+                  </ul>
+                </v-card-text>
+              </v-card>
+            </v-card>
+          </v-navigation-drawer>
+        </v-layout>
         <v-card>
           <v-card-text class="px-0">
             <v-layout row wrap>
-              <v-flex xs6>
+              <v-flex sm6 xs12>
                 <v-card-text class="search-bar">
                   <v-text-field
                     placeholder="Search your zaps"
                   ></v-text-field>
                 </v-card-text>
               </v-flex>
-              <v-flex xs6>
+              <v-flex sm6 xs12 hidden-xs-only>
                 <v-card-text class="how-it-works text-xs-right">
                   <img src="../../../assets/images/icon-video.png" alt="icon" class="icon-video">
                   <span>how it works </span>
@@ -87,7 +164,17 @@
     </v-layout>
   </v-container>
 </template>
-
+<script>
+  export default {
+    data () {
+      return {
+        drawer: null,
+        mini: false,
+        right: null
+      }
+    }
+  }
+</script>
 <style lang="scss">
   @import './CreateNewZap.scss';
 </style>

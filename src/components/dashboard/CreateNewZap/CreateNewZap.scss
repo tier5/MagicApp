@@ -2,6 +2,8 @@ $orange: #ff6100;
 $lightblue: #eef6ff;
 $light_text: #a4c6ef;
 $placeholder_text: #b4cce9;
+$username_color: #a3c6ef;
+
 
 // placeholder css
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -25,6 +27,9 @@ $placeholder_text: #b4cce9;
       position: relative;
       .logo{
         padding: 15px;
+        @media screen and (min-width: 600px) and (max-width: 1264px) {
+          padding: 10px;
+        }
       }
       .username{
         text-transform: uppercase;
@@ -34,7 +39,7 @@ $placeholder_text: #b4cce9;
         padding: 15px 30px;
         color: #535353;
         div{
-          background: #a3c6ef;
+          background: $username_color;
           display: inline-block;
           color: #fff;
           height: 24px;
@@ -105,6 +110,10 @@ $placeholder_text: #b4cce9;
           width: 130px;
           height: 130px;
           cursor: pointer;
+          @media screen and (min-width: 600px) and (max-width: 1264px) {
+            width: 90px;
+            height: 90px;
+          }
         }
         h2{
           display: block;
@@ -114,6 +123,9 @@ $placeholder_text: #b4cce9;
           font-family: 'Avenir LT Std 45 Book';
           font-weight: bold;
           cursor: pointer;
+          @media screen and (min-width: 600px) and (max-width: 1264px) {
+            padding: 35px 0;
+          }
         }
       }
       .total-zaps{
@@ -129,9 +141,15 @@ $placeholder_text: #b4cce9;
           color: #7ca8dc;
           font-size: 50px;
           letter-spacing: 2px;
+          @media screen and (min-width: 600px) and (max-width: 1264px) {
+            font-size: 40px;
+          }
         }
         .v-card__text{
           padding: 10px 16px;
+          @media screen and (min-width: 600px) and (max-width: 1264px) {
+            padding: 10px;
+          }
         }
       }
       .left-footer{
@@ -142,6 +160,9 @@ $placeholder_text: #b4cce9;
             cursor: pointer;
             vertical-align: top;
             margin-right: 50px;
+            @media screen and (min-width: 600px) and (max-width: 1264px) {
+              margin-right: 35px;
+            }
             &:hover{
               img.back-icon{
                 content: url("../../../assets/images/back-icon-hover.png");
@@ -172,18 +193,28 @@ $placeholder_text: #b4cce9;
   }
   .right-aside{
     padding: 0 20px;
+    @media screen and (max-width: 599px){
+      padding: 0;
+    }
     .v-card{
       background: #fff;
       box-shadow: none;
       border-radius: 0;
       .search-bar{
         padding-top: 0;
+        @media screen and (max-width: 599px){
+          background: #edf4fe;
+          padding: 10px 50px;
+        }
         .v-input__slot:before{
           border: none;
         }
         .primary--text{
           color: $orange !important;
           caret-color: $orange !important;
+          @media screen and (max-width: 599px){
+            color: transparent !important;
+          }
         }
         .v-text-field__slot{
           input{
@@ -192,6 +223,12 @@ $placeholder_text: #b4cce9;
             background: url("../../../assets/images/icon-search.png") no-repeat 0 5px;
             padding-left: 40px;
             color: #535353;
+            @media screen and (max-width: 599px){
+              min-height: 50px;
+              border-radius: 50px;
+              background-color: #fff;
+              background-position: 15px;
+            }
           }
         }
       }
@@ -211,5 +248,74 @@ $placeholder_text: #b4cce9;
         }
       }
     }
+    .top-bar{
+      padding: 20px 30px 0;
+      img{
+        vertical-align: bottom ;
+      }
+      .logo{
+        img{
+          @media screen and (max-width: 479px){
+            width: 150px;
+          }
+        }
+      }
+    }
+  }
+
+  .left-aside-mobile{
+    .v-card{
+      .username{
+        background: #c6d3e5;
+        text-align: center;
+        .userMobile{
+          background: none;
+          display: block;
+          height: auto;
+          width: auto;
+          border-radius: 0;
+          margin-right: 0;
+          position: relative;
+          top: 70px;
+          color: $username_color;
+          font-size: 15px;
+          font-family: 'Avenir LT Std 95 Black';
+          letter-spacing: 0;
+          div{
+            background: $username_color;
+            display: block;
+            height: 50px;
+            width: 50px;
+            font-size: 20px;
+            margin: 0 auto 10px;
+          }
+        }
+        .back-btn{
+          background: none;
+          float: right;
+          margin: 0;
+        }
+      }
+      .left-menu {
+        padding: 80px 0 10px;
+      }
+      .total-zaps{ 
+        .v-card__text {
+          padding: 0 16px;
+        }
+        h4 {
+          font-size: 36px;
+        }
+      }
+      .left-footer {
+        ul{
+          li {
+            margin-left: 50px;
+            margin-right: 0;
+          }
+        }
+      }
+    }
   }
 }
+
