@@ -1,12 +1,12 @@
- <template class="login">
-    <v-layout row justify-center>
-        <v-btn color="orangeButton" dark @click="dialog = true">login</v-btn>
+ <template>
+    <v-layout row justify-center  class="loginWrap">
+        <v-btn color="orangeButton" @click="dialog = true">login</v-btn>
         <v-dialog v-model="dialog" max-width="412">
-            <div class="heading">
+            <div class="heading leftSpace">
                 <h2>login</h2>
                 <h6>to your magic zap account</h6>
             </div>
-            <v-card>
+            <v-card class="login">
                 <img src="../../../assets/images/smalllogo.svg" aspect-ratio="2.75" class="smalllogo" alt="smalllogo">
                 <v-form>
                     <v-container>

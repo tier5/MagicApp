@@ -22,48 +22,7 @@ export default {
 
 <style lang="scss" >
 
-// colors
-$orange: #ff6100;
-$lightblue: #eef6ff;
-$lightblueShadow: #a4b9d2;
-$inputBlue: #7CA8DC;
-$inputBackgroundblue: #F9FCFF;
-$darkblue: #748eac;
-$white: #fff;
-$lightshadow: #e6e6e6;
 
-body{
-  font-family: 'Avenir LT';
-}
-// placeholder scss
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: $inputBlue !important;
-  opacity: 1;
-  font-family: 'Avenir LT Std 85 Heavy';
-  font-size: 12px;
-  letter-spacing: 2px;
-}
-::-moz-placeholder { /* Firefox 19+ */
-    color: $inputBlue !important;
-    opacity: 1;
-    font-family: 'Avenir LT Std 85 Heavy';
-    font-size: 12px;
-    letter-spacing: 2px;
-}
-:-ms-input-placeholder { /* IE 10+ */
-    color: $inputBlue !important;
-    opacity: 1;
-    font-family: 'Avenir LT Std 85 Heavy';
-    font-size: 12px;
-    letter-spacing: 2px;
-}
-:-moz-placeholder { /* Firefox 18- */
-    color: $inputBlue !important;
-    opacity: 1;
-    font-family: 'Avenir LT Std 85 Heavy';
-    font-size: 12px;
-    letter-spacing: 2px;
-}
 @font-face {
   font-family: 'Avenir LT Std 55 Roman';
   font-style: normal;
@@ -153,6 +112,15 @@ ul{
   margin: 0;
   list-style-type: none;
 }
+// colors
+$orange: #ff6100;
+$lightblue: #eef6ff;
+$lightblueShadow: #a4b9d2;
+$inputBlue: #7CA8DC;
+$inputBackgroundblue: #F9FCFF;
+$darkblue: #748eac;
+$white: #fff;
+$lightshadow: #e6e6e6;
 
 </style>
 
