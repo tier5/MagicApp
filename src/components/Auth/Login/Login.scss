@@ -120,41 +120,49 @@
 }
 
 
-.login .theme--light.v-text-field--solo .v-input__slot{
-    background-color: $inputBackgroundblue;
+.login {
+    .theme--light.v-text-field--solo .v-input__slot{
+        background-color: $inputBackgroundblue;
+    }
+    .theme--light.v-input:not(.v-input--is-disabled) input, .theme--light.v-input:not(.v-input--is-disabled) textarea{
+        color: $inputBlue;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+    .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+        box-shadow: 0 7px 49px $lightshadow;
+        border-radius: 5px;
+        margin: 0px;
+    }
+    .email.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+        background-image: url('../../../assets/images/email.png') !important;
+        background-repeat: no-repeat!important;
+        background-position: 95% 54% !important;
+    }
+    .password.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+        background-image: url('../../../assets/images/password.png') !important;
+        background-repeat: no-repeat!important;
+        background-position: 95% 60% !important;
+    }
+    .v-text-field.v-text-field--solo .v-input__control{
+        height: 63px;
+    }
+    .v-form>.container>.layout>.flex{
+        margin-bottom: 30px;
+        padding: 0px;
+    }
+    .v-text-field.v-text-field--enclosed .v-input__slot, .v-text-field.v-text-field--enclosed .v-text-field__details{
+        padding:18px;
+    }
+    .v-text-field input{
+        padding-right: 35px;
+    }
+    .v-btn:not(.v-btn--depressed):not(.v-btn--flat){
+        box-shadow: none;
+    }
 }
-.login .theme--light.v-input:not(.v-input--is-disabled) input, .theme--light.v-input:not(.v-input--is-disabled) textarea{
-    color: $inputBlue;
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-.login .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
-    box-shadow: 0 7px 49px $lightshadow;
-    border-radius: 5px;
-    margin: 0px;
-}
-.login .email.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
-    background-image: url('../../../assets/images/email.png') !important;
-    background-repeat: no-repeat!important;
-    background-position: 95% 54% !important;
-}
-.login .password.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
-    background-image: url('../../../assets/images/password.png') !important;
-    background-repeat: no-repeat!important;
-    background-position: 95% 60% !important;
-}
-.login .v-text-field.v-text-field--solo .v-input__control{
-    height: 63px;
-}
-.login .v-form>.container>.layout>.flex{
-    margin-bottom: 30px;
-    padding: 0px;
-}
-.login .v-text-field.v-text-field--enclosed .v-input__slot, .v-text-field.v-text-field--enclosed .v-text-field__details{
-    padding:18px;
-}
-.login .v-overlay:before{
+.v-overlay:before{
     content:'';
     top: 0;
     right: 0;
@@ -165,9 +173,38 @@
     cursor: pointer;
     opacity: 0.9;
 }
-.login .v-text-field input{
-    padding-right: 35px;
-}
-.login .v-btn:not(.v-btn--depressed):not(.v-btn--flat){
-    box-shadow: none;
+
+// responsive
+@media screen and (max-width: 675px) and (min-width: 320px){
+    .v-dialog {
+        .heading.leftSpace{
+            transform: none;
+            left: 0;
+            right: 0;
+            top: 47px;
+            h2{
+                font-size: 30px;
+                margin-top: 40px;
+                margin-bottom: 0px;
+            }
+        }
+        .login{
+            padding: 60px 14px;
+            .smalllogo{
+                top: 24px;
+                left: -21px;
+            }
+            .v-form {
+                .container{
+                    span{
+                        font-size: 12px;
+                    }
+                }
+                    
+            }
+        }
+    }
+    .v-overlay:before{
+        background-position: 97% 2%;
+    }
 }

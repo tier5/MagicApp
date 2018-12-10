@@ -1,6 +1,8 @@
  <template>
     <v-layout row justify-center  class="loginWrap">
+
         <v-btn color="orangeButton" @click="dialog = true">login</v-btn>
+
         <v-dialog v-model="dialog" max-width="412">
             <div class="heading leftSpace">
                 <h2>login</h2>
@@ -35,7 +37,10 @@
   export default {
     data () {
       return {
-        dialog: false
+        dialog: false,
+        show1:false,
+        email:'',
+        password:''
       }
     }
   }
