@@ -42,6 +42,7 @@
 </script>
 
 <style lang="scss">
+    @import '../../../styles/common.scss';
     @import './Login.scss';
 </style>
 
