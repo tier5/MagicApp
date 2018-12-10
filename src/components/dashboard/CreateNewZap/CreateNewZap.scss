@@ -3,6 +3,10 @@ $lightblue: #eef6ff;
 $light_text: #a4c6ef;
 $placeholder_text: #b4cce9;
 $username_color: #a3c6ef;
+$title_color: #7ca8dc;
+$body_text: #535353;
+$dark_text: #7a92af;
+$input_border: #c5d7ee;
 
 
 // placeholder css
@@ -135,10 +139,11 @@ $username_color: #a3c6ef;
           text-transform: uppercase;
           letter-spacing: 2px;
           font-size: 12px;     
+          color: $body_text;
         }
         h4{
           font-family: 'Avenir LT Std 95 Black';
-          color: #7ca8dc;
+          color: $title_color;
           font-size: 50px;
           letter-spacing: 2px;
           @media screen and (min-width: 600px) and (max-width: 1264px) {
@@ -257,6 +262,51 @@ $username_color: #a3c6ef;
         img{
           @media screen and (max-width: 479px){
             width: 150px;
+          }
+        }
+      }
+    }
+    .dashboard-body{
+      padding-top: 50px;
+      .v-card__text{
+        position: relative;
+        h2{
+          font-size: 36px;
+          font-family: 'Avenir LT Std 95 Black';
+          color: $title_color;
+        }
+        img{
+          position: absolute;
+          left: -30px;
+          top: -30px;
+        }
+        p{
+          color: $dark_text;
+          font-weight: 600;
+        }
+      }
+      .create-zap-form{
+        .v-form{
+          .v-text-field.v-input--has-state .v-input__slot:before,.v-text-field>.v-input__control>.v-input__slot:after,.v-text-field>.v-input__control>.v-input__slot:before{
+            display: none;
+          }
+          .v-text-field__slot{
+            input{
+              font-family: 'Avenir LT Std 35 Light';
+              border: 2px solid $input_border;
+              border-radius: 5px;
+              min-height: 55px;
+              padding: 15px;
+              font-size: 18px;
+            }
+          }
+          .v-select__slot{
+            font-family: 'Avenir LT Std 35 Light';
+              border: 2px solid $input_border;
+              border-radius: 5px;
+              min-height: 55px;
+              padding: 10px;
+              font-size: 18px;
           }
         }
       }

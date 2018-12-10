@@ -160,17 +160,105 @@
             </v-layout>
           </v-card-text>
         </v-card>
+        <v-layout>
+          <v-flex xs2></v-flex>
+          <v-flex xs8 class="dashboard-body">
+            <v-card-text>
+              <img src="../../../assets/images/logo.png" alt="Header Logo" class="header-logo">
+              <h2>Create a new ZAP</h2>
+              <p>Add multiple Params and Attributes as you need</p>
+            </v-card-text>
+            <v-card class="create-zap-form">
+              <v-form ref="form" v-model="valid" lazy-validation>
+                <v-flex xs12>
+                  <v-text-field
+                    v-model="name"
+                    :rules="nameRules"
+                    placeholder="Zap Name"
+                    required
+                  ></v-text-field>
+                </v-flex>
+                <v-text-field
+                  v-model="paramName"
+                  placeholder="Param Name"
+                  required
+                ></v-text-field>
+                <v-select
+                  v-model="select"
+                  :items="items"
+                  :rules="[v => !!v || 'Required']"
+                  placeholder="Select"
+                  required
+                ></v-select>
+                <v-text-field
+                  v-model="value"
+                  placeholder="Value"
+                  required
+                ></v-text-field>
+                 <v-text-field
+                  v-model="paramName2"
+                  placeholder="Param Name"
+                  required
+                ></v-text-field>
+                <v-select
+                  v-model="selectType"
+                  :items="items"
+                  :rules="[v => !!v || 'Type is required']"
+                  placeholder="Select Type"
+                  required
+                ></v-select>
+                <v-btn
+                  :disabled="!valid"
+                  @click="submit"
+                >
+                  Create my ZAP
+                </v-btn>
+              </v-form>
+            </v-card>
+          </v-flex>
+          <v-flex xs2></v-flex>
+        </v-layout>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 <script>
+  import axios from 'axios'
   export default {
     data () {
       return {
         drawer: null,
         mini: false,
-        right: null
+        right: null,
+
+        items: [
+          'Item 1',
+          'Item 2',
+          'Item 3',
+          'Item 4'
+        ],
+        valid: true,
+        name: '',
+        paramName: '',
+        value: '',
+        paramName2: '',
+        selectType: '',
+        select: '',
+        nameRules: [
+          v => !!v || 'Name is required',
+          v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+        ],
+      }
+    },
+    methods: {
+      submit () {
+        if (this.$refs.form.validate()) {
+          // Native form submission is not yet supported
+          axios.post('/api/submit', {
+            name: this.name,
+            select: this.select
+          })
+        }
       }
     }
   }
