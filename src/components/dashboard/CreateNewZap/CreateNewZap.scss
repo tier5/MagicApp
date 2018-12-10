@@ -198,6 +198,7 @@ $input_border: #c5d7ee;
   }
   .right-aside{
     padding: 0 20px;
+    background: url('../../../assets/images/dash-bg.png') no-repeat bottom right;
     @media screen and (max-width: 599px){
       padding: 0;
     }
@@ -244,7 +245,7 @@ $input_border: #c5d7ee;
           margin-right: 10px;
         }
         span{
-          color: #ff6100;
+          color: $orange;
           text-transform: uppercase;
           font-size: 10px;
           letter-spacing: 2px;
@@ -284,7 +285,14 @@ $input_border: #c5d7ee;
           color: $dark_text;
           font-weight: 600;
         }
+        &.add-zap-field{
+          height: 100%;
+          padding: 0;
+          padding-top: 25px;
+          cursor: pointer;
+        }
       }
+      
       .create-zap-form{
         .v-form{
           .v-text-field.v-input--has-state .v-input__slot:before,.v-text-field>.v-input__control>.v-input__slot:after,.v-text-field>.v-input__control>.v-input__slot:before{
@@ -307,6 +315,33 @@ $input_border: #c5d7ee;
               min-height: 55px;
               padding: 10px;
               font-size: 18px;
+          }
+          img{
+            position: relative;
+            left: 0;
+            top: 0;
+            display: block;
+            margin: auto;
+          }
+          .submit-btn{
+            color: white;
+            text-transform: none;
+            font-size: 18px;
+            background-image: linear-gradient(to right, $orange, #ff6910, #ff711c, #ff7927, #ff8030);
+            padding: 0 60px;
+            min-height: 50px;
+            border-radius: 3px;
+            transition: 0.5s;
+            &:before{
+              display: none;
+            }
+            &.v-btn--disabled{
+              opacity: 0.5;
+              color: white !important;
+            }
+            &:hover{
+              background-image: linear-gradient(to right, #ff8030, #ff7927, #ff711c, #ff6910, #ff6100);
+            }
           }
         }
       }
@@ -348,6 +383,9 @@ $input_border: #c5d7ee;
       }
       .left-menu {
         padding: 80px 0 10px;
+        ul{
+          padding: 0;
+        }
       }
       .total-zaps{ 
         .v-card__text {

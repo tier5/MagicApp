@@ -170,49 +170,96 @@
             </v-card-text>
             <v-card class="create-zap-form">
               <v-form ref="form" v-model="valid" lazy-validation>
-                <v-flex xs12>
-                  <v-text-field
-                    v-model="name"
-                    :rules="nameRules"
-                    placeholder="Zap Name"
-                    required
-                  ></v-text-field>
-                </v-flex>
-                <v-text-field
-                  v-model="paramName"
-                  placeholder="Param Name"
-                  required
-                ></v-text-field>
-                <v-select
-                  v-model="select"
-                  :items="items"
-                  :rules="[v => !!v || 'Required']"
-                  placeholder="Select"
-                  required
-                ></v-select>
-                <v-text-field
-                  v-model="value"
-                  placeholder="Value"
-                  required
-                ></v-text-field>
-                 <v-text-field
-                  v-model="paramName2"
-                  placeholder="Param Name"
-                  required
-                ></v-text-field>
-                <v-select
-                  v-model="selectType"
-                  :items="items"
-                  :rules="[v => !!v || 'Type is required']"
-                  placeholder="Select Type"
-                  required
-                ></v-select>
-                <v-btn
-                  :disabled="!valid"
-                  @click="submit"
-                >
-                  Create my ZAP
-                </v-btn>
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <v-card-text>
+                      <v-text-field
+                        v-model="name"
+                        :rules="nameRules"
+                        placeholder="Zap Name"
+                        required
+                      ></v-text-field>
+                    </v-card-text>
+                  </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                  <v-flex md4>
+                    <v-card-text>
+                      <v-text-field
+                        v-model="paramName"
+                        placeholder="Param Name"
+                        required
+                      ></v-text-field>
+                      <span>ex.email</span>
+                    </v-card-text>
+                  </v-flex>
+                  <v-flex md3>
+                    <v-card-text>
+                      <v-select
+                        v-model="select"
+                        :items="items"
+                        :rules="[v => !!v || 'Required']"
+                        placeholder="Select"
+                        required
+                      ></v-select>
+                    </v-card-text>
+                  </v-flex>
+                  <v-flex md4>
+                    <v-card-text>
+                      <v-text-field
+                        v-model="value"
+                        placeholder="Value"
+                        required
+                      ></v-text-field>
+                    </v-card-text>
+                  </v-flex>
+                  <v-flex md1>
+                    <v-card-text class="add-zap-field">
+                      <img src="../../../assets/images/Add_record_icon.png" alt="icon" class="icon-add">
+                    </v-card-text>
+                  </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                  <v-flex md6>
+                    <v-card-text>
+                      <v-text-field
+                        v-model="paramName2"
+                        placeholder="Param Name"
+                        required
+                      ></v-text-field>
+                      <span>ex.email</span>
+                    </v-card-text>
+                  </v-flex>
+                  <v-flex md5>
+                    <v-card-text>
+                      <v-select
+                        v-model="selectType"
+                        :items="items"
+                        :rules="[v => !!v || 'Type is required']"
+                        placeholder="Select Type"
+                        required
+                      ></v-select>
+                      <span>ex.name</span>
+                    </v-card-text>
+                  </v-flex>
+                  <v-flex md1>
+                    <v-card-text class="add-zap-field">
+                      <img src="../../../assets/images/Add_record_icon.png" alt="icon" class="icon-add">
+                    </v-card-text>
+                  </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                  <v-flex md12 text-xs-center>
+                    <v-btn
+                      :disabled="!valid"
+                      @click="submit"
+                      class="submit-btn"
+                    >
+                      <img src="../../../assets/images/icon-zap.png"> 
+                      <span>Create my ZAP</span>
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
               </v-form>
             </v-card>
           </v-flex>
