@@ -179,6 +179,9 @@ a{
 // responsive
 @media screen and (max-width: 675px) and (min-width: 320px){
     .v-dialog {
+        margin: 0px auto !important;
+        margin-left: 20px !important;
+        margin-right: 20px !important;
         .heading.leftSpace{
             transform: none;
             left: 0;
