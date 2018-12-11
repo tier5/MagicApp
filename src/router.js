@@ -5,6 +5,7 @@ import Demo from './components/Demo.vue';
 import Login from './components/Auth/Login/Login.vue';
 import ChangePassword from './components/Auth/ChangePassword/ChangePassword.vue';
 import CreateNewZap from './components/dashboard/CreateNewZap/CreateNewZap.vue';
+import TrialPopup from './components/Auth/TrialPopup/TrialPopup.vue';
 
 Vue.use(Router);
 
@@ -45,5 +46,11 @@ export default new Router({
       name: 'CreateNewZap',
       component: CreateNewZap
     },
+    {
+      path: '/trialPopup',
+      name: 'TrialPopup',
+      component: TrialPopup,
+    },
   ],
 });
+TrialPopup
