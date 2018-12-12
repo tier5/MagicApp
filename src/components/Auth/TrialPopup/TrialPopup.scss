@@ -1,37 +1,3 @@
-
-// placeholder scss
-.trialPopup input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: $inputBlue !important;
-    opacity: 1;
-    font-family: 'Avenir LT Std 85 Heavy';
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-.trialPopup input::-moz-placeholder { /* Firefox 19+ */
-    color: $inputBlue !important;
-    opacity: 1;
-    font-family: 'Avenir LT Std 85 Heavy';
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-.trialPopup input:-ms-input-placeholder { /* IE 10+ */
-    color: $inputBlue !important;
-    opacity: 1;
-    font-family: 'Avenir LT Std 85 Heavy';
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-.trialPopup input:-moz-placeholder { /* Firefox 18- */
-    color: $inputBlue !important;
-    opacity: 1;
-    font-family: 'Avenir LT Std 85 Heavy';
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
 .trialPopupWrap{
     .v-btn.theme--light.orangeButton{
         background-color: $orange;
@@ -40,11 +6,6 @@
     }
 }
 .v-dialog{
-    overflow-y: inherit;
-    border-radius: 20px;
-    box-shadow: 0 18px 54px $lightblueShadow;
-    border: 0px;
-    margin-left: 352px;
     .startText{
         position: absolute;
         top: 60%;
@@ -64,8 +25,14 @@
     .trialPopup{
         padding: 38px;
         border-radius: 20px;
-        position: relative;
-        min-height: 500px;
+        max-width: 412px;
+        background: #fff;
+        position: absolute;
+        transform: translate(-50%,-50%);
+        left: 70%;
+        top: 50%;
+        border-radius: 20px;
+        box-shadow: 0 18px 54px $lightblueShadow;
         .smalllogo{
             position: absolute;
             left: -57px;
@@ -137,71 +104,67 @@
         transform: translateX(4%);
     }
 }
-.v-overlay:before{
-    content:'';
-    top: 0;
-    right: 0;
-    position: absolute;
-    background:url('../../../assets/images/smallcross.png') $lightblue;
-    background-repeat: no-repeat;
-    background-position:98% 5%;
-    cursor: pointer;
-    opacity: 0.9;
-}
 a{
     text-decoration: underline;
 }
 // responsive
 @media screen and (max-width: 1904px) and (min-width: 1264px){
     .v-dialog{
-        margin-left: 422px;
         .startText{
-            left: 11%;
+            left: 15%;
         }
     }
 }   
 @media screen and (max-width: 1263px) and (min-width: 960px){
     .v-dialog{
-        margin-left: 473px;
+        .trialPopup{
+            left: 65%;
+            right: 0;
+        }
         .startText{
-            left: 3%;
+            left: 7%;
+            width: 400px;
         }
     }
 } 
 @media screen and (max-width: 959px) and (min-width: 600px){
     .v-dialog{
-        margin-left: 200px;
+        .trialPopup {
+            padding: 18px;
+            width: 55%;
+        }
         .startText{
             left: 3%;
             top: 51%;
             width: 100px;
             h2{
-                font-size: 26px;
-                line-height: 40px;
+                font-size: 24px;
+                line-height: 30px;
             }
         }
     }
 } 
 @media screen and (max-width: 599px) and (min-width: 320px){
     .v-dialog{
-        margin-left: 20px;
-        margin-right: 20px;
         .startText{
-            width: 100%;
+            width: 90%;
             text-align: center;
             top: 42%;
-            left: 0px;
+            left: 6%;
+            right: 0;
             h2{
                 font-size: 20px;
                 line-height: 25px;
             }
         }
         .trialPopup{
-            padding: 60px 14px;
-            min-height: 410px;
+            padding: 10px 14px 20px;
+            left: 50%;
+            right: 0;
+            width: 90%;
             .smalllogo{
-                top: 24px;
-                left: -21px;
+                top: 15px;
+                left: 0;
             }
             .v-form {
                 margin-top: 50px;
@@ -213,8 +176,5 @@ a{
                 }
             }
         }
-    }
-    .v-overlay:before{
-        background-position: 97% 2%;
     }
 }

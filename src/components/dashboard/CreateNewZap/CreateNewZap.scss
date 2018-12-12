@@ -1,10 +1,10 @@
 // placeholder css
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: $placeholder_text !important;
-  font-size: 16px !important;
+.right-aside ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $placeholder_text;
+  font-size: 16px;
   font-weight: normal;
-  font-family: 'Avenir LT Std 35 Light' !important;
-  letter-spacing: 0!important;
+  font-family: 'Avenir LT Std 35 Light';
+  letter-spacing: 0;
 }
 
 .container{
