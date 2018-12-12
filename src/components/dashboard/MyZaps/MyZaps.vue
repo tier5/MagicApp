@@ -166,20 +166,116 @@
             <div class="dashboard-body">
               <v-card-text class="myZaps">
                   <div class="eachZap">
-                        <div class="zapName">
-                                <h3 class="zapText">sales bridge</h3>
-                                <a href="#"><img src="../../../assets/images/icon-copy.png" alt="copy script">copy script</a>
-                                <div class="magicOption">
-                                    <span>magic option :</span>
-                                        <v-radio-group v-model="radioGroup">
-                                            <v-radio>asjdgjhagj</v-radio>
-                                        </v-radio-group>
+                        <v-layout row wrap>
+                            <v-flex md7>
+                                <h2 class="zapHeading">zap name</h2>
+                            </v-flex>
+                            <v-flex md5>
+                                <v-layout row wrap>
+                                    <v-flex md4>
+                                        <h2 class="zapHeading">page views</h2>
+                                    </v-flex>
+                                    <v-flex md4>
+                                        <h2 class="zapHeading">zaps</h2>
+                                    </v-flex>
+                                    <v-flex md4>
+                                    </v-flex>
+                                </v-layout>
+                            </v-flex>
+                        </v-layout>
+                    </div>
+                  <div class="eachZap">
+                        <v-layout row wrap>
+                            <v-flex md7>
+                                <div class="zapName">
+                                    <h3 class="zapText">sales bridge</h3>
+                                    <a href="#"><img src="../../../assets/images/icon-copy.png" alt="copy script">copy script</a>
+                                    <v-layout row wrap>
+                                        <v-flex xs4>
+                                            <div class="magicOption">
+                                                <span>magic option :</span>
+                                                <v-radio-group v-model="radios" :mandatory="false">
+                                                    <v-layout row wrap>
+                                                    <v-flex md6>
+                                                        <v-radio label="on" value="on" class="on"></v-radio>
+                                                    </v-flex>
+                                                    <v-flex md6>
+                                                        <v-radio label="off" value="off" class="off"></v-radio>
+                                                    </v-flex>
+                                                    </v-layout>
+                                                </v-radio-group>
+                                            </div>
+                                        </v-flex>
+                                        <v-flex xs4>
+                                            <div class="magicOption">
+                                                <span>append html :</span>
+                                                <v-radio-group v-model="radios" :mandatory="false">
+                                                    <v-layout row wrap>
+                                                    <v-flex md6>
+                                                        <v-radio label="on" value="on" class="on"></v-radio>
+                                                    </v-flex>
+                                                    <v-flex md6>
+                                                        <v-radio label="off" value="off" class="off"></v-radio>
+                                                    </v-flex>
+                                                    </v-layout>
+                                                </v-radio-group>
+                                            </div>
+                                        </v-flex>
+                                        <v-flex xs4>
+                                            <div class="magicOption">
+                                                <span>cookie :</span>
+                                                <v-radio-group v-model="radios" :mandatory="false">
+                                                    <v-layout row wrap>
+                                                    <v-flex md6>
+                                                        <v-radio label="on" value="on" class="on"></v-radio>
+                                                    </v-flex>
+                                                    <v-flex md6>
+                                                        <v-radio label="off" value="off" class="off"></v-radio>
+                                                    </v-flex>
+                                                    </v-layout>
+                                                </v-radio-group>
+                                            </div>
+                                        </v-flex>
+                                    </v-layout>
                                 </div>
-                        </div>
-                        <div class="zaps">
-                            <h3 class="zapText">2547</h3>
-                            <h3 class="zapText">2142</h3>
-                        </div>
+                            </v-flex>
+                            <v-flex md5>
+                                <div class="zaps">
+                                    <v-layout row wrap>
+                                        <v-flex md4>
+                                            <h3 class="zapText">2547</h3>
+                                        </v-flex>
+                                        <v-flex md4>
+                                            <h3 class="zapText">2142</h3>
+                                        </v-flex>
+                                        <v-flex md4>
+                                            <v-card height="200px">
+
+                                                <v-menu bottom left>
+                                                    <v-btn
+                                                    slot="activator"
+                                                    dark
+                                                    icon
+                                                    >
+                                                    <img src="../../../assets/images/menu.png" alt="">
+                                                    </v-btn>
+
+                                                    <v-list>
+                                                    <v-list-tile
+                                                        v-for="(item, i) in items"
+                                                        :key="i"
+                                                        @click=""
+                                                    >
+                                                        <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                                                    </v-list-tile>
+                                                    </v-list>
+                                                </v-menu>
+                                            </v-card>
+                                        </v-flex>
+                                    </v-layout>
+                                </div>
+                            </v-flex>
+                        </v-layout>
                     </div>
                 </v-card-text>
             </div>
