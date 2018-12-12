@@ -1,0 +1,28 @@
+.first-section{
+    background: url('../../assets/images/top-bg.png') no-repeat top center;
+    background-size: cover;
+    .v-toolbar{
+        background: none !important;
+        box-shadow: none !important;
+        .v-toolbar__items{
+            span{
+                display: block;
+                padding: 22px 10px;
+                img{
+                    vertical-align: top;
+                }
+                &.freetrial{
+                    background: $orange;
+                    background: -moz-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
+                    background: -webkit-gradient(left top, right top, color-stop(0%, $orange), color-stop(100%, rgba(255,169,103,1)));
+                    background: -webkit-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
+                    background: -o-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
+                    background: -ms-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
+                    background: linear-gradient(to right, $orange 0%, rgba(255,169,103,1) 100%);
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff6200', endColorstr='#ffa967', GradientType=1 );
+                    color: white;
+                }
+            }
+        }
+    }
+}

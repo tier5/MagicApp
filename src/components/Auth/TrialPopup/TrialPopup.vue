@@ -1,10 +1,8 @@
  <template>
     <v-layout row justify-center  class="trialPopupWrap">
-
         <v-btn color="orangeButton" @click="dialog = true" v-on:click="isHidden = false">get started</v-btn>
         <img src="../../../assets/images/smallcross.png" class="cross-btn" v-if="!isHidden" @click="dialog = false" v-on:click="isHidden = true">
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-
             <v-card class="auth">
                 <v-layout row wrap>
                     <v-flex xs5>

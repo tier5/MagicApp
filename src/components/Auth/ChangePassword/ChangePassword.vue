@@ -1,5 +1,4 @@
  <template>
-
     <v-layout row justify-center class="passwordWrap">
         <v-btn color="orangeButton" @click="dialog = true" v-on:click="isHidden = false">change password</v-btn>
         <img src="../../../assets/images/smallcross.png" class="cross-btn" v-if="!isHidden" @click="dialog = false" v-on:click="isHidden = true">
@@ -50,13 +49,8 @@
                     </v-flex>
                 </v-layout>
             </v-card>
-            
-
-            
         </v-dialog>
-
     </v-layout>
-
  </template> 
 
 <script>
