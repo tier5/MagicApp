@@ -63,7 +63,7 @@
           </v-card>
         </v-card>
       </v-flex>
-      <v-flex md9 sm7 class="right-aside">
+      <v-flex md9 sm7 class="right-aside myZapWrap">
         <v-layout xs12 class="hidden-sm-and-up top-bar">
           <v-flex xs8>
             <v-card class="logo">
@@ -161,142 +161,30 @@
           </v-card-text>
         </v-card>
         <v-layout>
-          <v-flex md2></v-flex>
-          <v-flex md8>
+          <v-flex md1></v-flex>
+          <v-flex md10>
             <div class="dashboard-body">
-              <v-card-text>
-                <img src="../../../assets/images/logo.png" alt="Header Logo" class="header-logo">
-                <h2>Create a new ZAP</h2>
-                <p>Add multiple Params and Attributes as you need</p>
-              </v-card-text>
-              <v-card class="create-zap-form" >
-                <v-form ref="form" v-model="valid" lazy-validation>
-                  <v-layout row wrap>
-                    <span class="progress-bar filled"><span class="dot"></span> Name</span>
-                    <v-flex xs12>
-                      <v-card-text>
-                        <v-text-field
-                          v-model="name"
-                          :rules="nameRules"
-                          placeholder="Zap Name"
-                          required
-                        ></v-text-field>
-                      </v-card-text>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout row wrap>
-                    <span class="progress-bar filled"><span class="dot"></span> Params</span>
-                    <v-flex md4 xs12>
-                      <v-card-text>
-                        <v-text-field
-                          v-model="paramName"
-                          placeholder="Param Name"
-                          required
-                        ></v-text-field>
-                        <span>ex.email</span>
-                      </v-card-text>
-                    </v-flex>
-                    <v-flex md3 xs12>
-                      <v-card-text>
-                        <v-select
-                          v-model="select"
-                          :items="items"
-                          :rules="[v => !!v || 'Required']"
-                          placeholder="Select"
-                          required
-                        ></v-select>
-                      </v-card-text>
-                    </v-flex>
-                    <v-flex md4 xs12>
-                      <v-card-text>
-                        <v-text-field
-                          v-model="value"
-                          placeholder="Value"
-                          required
-                        ></v-text-field>
-                      </v-card-text>
-                    </v-flex>
-                    <v-flex md1 xs12>
-                      <v-card-text class="add-zap-field">
-                        <img src="../../../assets/images/Add_record_icon.png" alt="icon" class="icon-add">
-                      </v-card-text>
-                    </v-flex>
-                    <v-flex md12 class="tags-section">
-                      <v-card-text>
-                        <ul>
-                          <li>
-                            <span>email : Exists</span> 
-                            <img src="../../../assets/images/cross_btn.png" alt="icon" class="icon-cross">
-                          </li>
-                          <li>
-                            <span>name : !=</span> 
-                            <img src="../../../assets/images/cross_btn.png" alt="icon" class="icon-cross">
-                          </li>
-                        </ul>
-                      </v-card-text>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout row wrap>
-                    <span class="progress-bar"><span class="dot"></span> Attributes</span>
-                    <v-flex md6 xs12>
-                      <v-card-text>
-                        <v-text-field
-                          v-model="paramName2"
-                          placeholder="Param Name"
-                          required
-                        ></v-text-field>
-                        <span>ex.email</span>
-                      </v-card-text>
-                    </v-flex>
-                    <v-flex md5 xs12>
-                      <v-card-text>
-                        <v-select
-                          v-model="selectType"
-                          :items="items"
-                          :rules="[v => !!v || 'Type is required']"
-                          placeholder="Select Type"
-                          required
-                        ></v-select>
-                        <span>ex.name</span>
-                      </v-card-text>
-                    </v-flex>
-                    <v-flex md1 xs12>
-                      <v-card-text class="add-zap-field">
-                        <img src="../../../assets/images/Add_record_icon.png" alt="icon" class="icon-add">
-                      </v-card-text>
-                    </v-flex>
-                    <v-flex md12 class="tags-section">
-                      <v-card-text>
-                        <ul>
-                          <li>
-                            <span>email - name</span> 
-                            <img src="../../../assets/images/cross_btn.png" alt="icon" class="icon-cross">
-                          </li>
-                          <li>
-                            <span>name - name</span> 
-                            <img src="../../../assets/images/cross_btn.png" alt="icon" class="icon-cross">
-                          </li>
-                        </ul>
-                      </v-card-text>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout row wrap>
-                    <v-flex md12 text-xs-center>
-                      <v-btn
-                        :disabled="!valid"
-                        @click="submit"
-                        class="submit-btn"
-                      >
-                        <img src="../../../assets/images/icon-zap-white.png"> 
-                        <span>Create my ZAP</span>
-                      </v-btn>
-                    </v-flex>
-                  </v-layout>
-                </v-form>
-              </v-card>
+              <v-card-text class="myZaps">
+                  <div class="eachZap">
+                        <div class="zapName">
+                                <h3 class="zapText">sales bridge</h3>
+                                <a href="#"><img src="../../../assets/images/icon-copy.png" alt="copy script">copy script</a>
+                                <div class="magicOption">
+                                    <span>magic option :</span>
+                                        <v-radio-group v-model="radioGroup">
+                                            <v-radio>asjdgjhagj</v-radio>
+                                        </v-radio-group>
+                                </div>
+                        </div>
+                        <div class="zaps">
+                            <h3 class="zapText">2547</h3>
+                            <h3 class="zapText">2142</h3>
+                        </div>
+                    </div>
+                </v-card-text>
             </div>
           </v-flex>
-          <v-flex md2></v-flex>
+          <v-flex md1></v-flex>
         </v-layout>
       </v-flex>
     </v-layout>

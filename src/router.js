@@ -6,11 +6,8 @@ import Login from './components/Auth/Login/Login.vue';
 import ChangePassword from './components/Auth/ChangePassword/ChangePassword.vue';
 import CreateNewZap from './components/dashboard/CreateNewZap/CreateNewZap.vue';
 import TrialPopup from './components/Auth/TrialPopup/TrialPopup.vue';
-<<<<<<< HEAD
 import ZapierToken from './components/dashboard/ZapierToken/ZapierToken.vue';
-=======
 import MyZaps from './components/dashboard/MyZaps/MyZaps.vue';
->>>>>>> myzaps page html v1.0
 
 Vue.use(Router);
 
