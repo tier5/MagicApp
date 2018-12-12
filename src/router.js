@@ -6,7 +6,11 @@ import Login from './components/Auth/Login/Login.vue';
 import ChangePassword from './components/Auth/ChangePassword/ChangePassword.vue';
 import CreateNewZap from './components/dashboard/CreateNewZap/CreateNewZap.vue';
 import TrialPopup from './components/Auth/TrialPopup/TrialPopup.vue';
+<<<<<<< HEAD
 import ZapierToken from './components/dashboard/ZapierToken/ZapierToken.vue';
+=======
+import MyZaps from './components/dashboard/MyZaps/MyZaps.vue';
+>>>>>>> myzaps page html v1.0
 
 Vue.use(Router);
 
@@ -38,7 +42,7 @@ export default new Router({
       component: Login,
     },
     {
-      path: '/changePassword',
+      path: '/changepassword',
       name: 'ChangePassword',
       component: ChangePassword,
     },
@@ -48,14 +52,19 @@ export default new Router({
       component: CreateNewZap
     },
     {
-      path: '/trialPopup',
+      path: '/trialpopup',
       name: 'TrialPopup',
       component: TrialPopup,
     },
     {
       path: '/dashboard/zapiertoken',
       name: 'ZapierToken',
-      component: ZapierToken
+      component: ZapierToken,
+    },
+    {
+      path: '/dashboard/myzaps',
+      name: 'MyZaps',
+      component: MyZaps,
     }
-  ],
+  ]
 });
