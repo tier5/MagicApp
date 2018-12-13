@@ -184,7 +184,7 @@
                                     </v-flex>
                                 </v-layout>
                             </div>
-                            <div class="eachZap">
+                            <div class="eachZap" id="zap_id1">
                                 <v-layout row wrap>
                                     <v-flex md7 sm8>
                                         <div class="zapName">
@@ -287,7 +287,7 @@
                                     </v-flex>
                                 </v-layout>
                             </div>
-                            <div class="eachZap">
+                            <div class="eachZap" id="zap_id2">
                                 <v-layout row wrap>
                                     <v-flex md7 sm8>
                                         <div class="zapName">
@@ -390,7 +390,7 @@
                                     </v-flex>
                                 </v-layout>
                             </div>
-                            <div class="eachZap">
+                            <div class="eachZap" id="zap_id3">
                                 <v-layout row wrap>
                                     <v-flex md7 sm8>
                                         <div class="zapName">

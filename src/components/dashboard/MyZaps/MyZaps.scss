@@ -11,11 +11,28 @@
                     left: 0;
                     top: 0;
                 }
-                &:hover{
-                    img.menu{
-                        content: url('../../../assets/images/orangeMenu.png');
+                #zap_id1{
+                    &:hover{
+                        img#menu1{
+                            content: url('../../../assets/images/orangeMenu.png');
+                        }
                     }
                 }
+                #zap_id2{
+                    &:hover{
+                        img#menu2{
+                            content: url('../../../assets/images/orangeMenu.png');
+                        }
+                    }
+                }
+                #zap_id3{
+                    &:hover{
+                        img#menu3{
+                            content: url('../../../assets/images/orangeMenu.png');
+                        }
+                    }
+                }
+                
             }
             .myZaps{
                 .firstZap{
