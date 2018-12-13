@@ -1,6 +1,7 @@
  <template>
     <v-layout row justify-center  class="loginWrap">
         <v-btn color="orangeButton" @click="dialog = true" v-on:click="isHidden = false">login</v-btn>
+        <!-- <Loader v-if="!isHidden" /> -->
         <img src="../../../assets/images/smallcross.png" class="cross-btn" @click="dialog = false" v-if="!isHidden" v-on:click="isHidden = true"> 
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card class="auth">
@@ -13,6 +14,8 @@
                     </v-flex>
                     <v-flex xs7>
                         <v-card-text class="login">
+                            <Success />
+                            <Error />
                             <img src="../../../assets/images/smalllogo.svg" aspect-ratio="2.75" class="smalllogo" alt="smalllogo">
                             <v-form>
                                 <v-container>
@@ -41,17 +44,29 @@
  </template> 
 
 <script>
-  export default {
-    data () {
-      return {
-        dialog: false,
-        show1:false,
-        email:'',
-        password:'',
-        isHidden: true
-      }
+
+    import Loader from '../../../components/Loader.vue';
+    import Success from '../../../components/Success.vue';
+    import Error from '../../../components/Error.vue';
+    export default {
+        data () {
+            return {
+                dialog: false,
+                show1:false,
+                email:'',
+                password:'',
+                isHidden: true
+            }
+        },
+        name: 'loader',
+        name: 'success',
+        name: 'error',
+        components: {
+            Loader,
+            Success,
+            Error
+        }
     }
-  }
 </script>
 
 <style lang="scss">
