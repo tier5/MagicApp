@@ -1,19 +1,54 @@
 .container{
     .right-aside.myZapWrap{
         background: none;
+        .v-card{
+            background-color: transparent;
+        }
         .dashboard-body{
+            .v-card__text{
+                img{
+                    left: 130px;
+                    top: -20px;
+                }
+                &:hover{
+                    img.menu{
+                        content: url('../../../assets/images/orangeMenu.png');
+                    }
+                }
+            }
             .myZaps{
-                .eachZap{
-                    padding: 30px 15px 30px 0px;
+                .firstZap{
+                    padding: 15px;
                     border-bottom:1px solid $placeholder_text;
-                    float: left;
-                    position: relative;
-                    width: 100%;
                     .zapHeading{
                         font-size: 12px;
                         text-transform: uppercase;
                         color: $darkgrey;
                         font-family: 'Avenir LT Std 45 Book';
+                    }
+                }
+                .eachZap{
+                    padding: 20px 15px;
+                    border-bottom:1px solid $placeholder_text;
+                    border-left: 1px solid  transparent;
+                    border-radius: px;
+                    float: left;
+                    position: relative;
+                    width: 100%;
+                    transition: 0.3s;
+                    &:hover{
+                        background-color: $lightBackground;
+                        border: 1px solid  $placeholder_text;
+                        border-radius: 5px;
+                        border-top: none;
+                        transition: 0.3s;
+                        h3{
+                            color: $orange;
+                            transition: 0.3s;
+                        }
+                    }
+                    .layout.wrap{
+                        height: 100px;
                     }
                     .zapName{
                         a{
@@ -60,15 +95,13 @@
                         margin-right: 26px;
                     }
                     .zaps{
+                         
+                        } 
                         h3{
                             width: 120px;
-                            margin-right: 0px;
                         }
                     }
-                    .container .right-aside .dashboard-body .v-card__text img{
-                        left: 120px !important;
-                        top: -20px;
-                    }
+                    
                 }
                 .v-input--selection-controls{
                     margin-top: 0px;
@@ -85,14 +118,56 @@
                     font-family: 'Avenir LT Std 85 Heavy';
                     text-transform: uppercase;
                 }
-                .v-menu__content{
-                    min-width: 100px;
-                    border-radius: 8px;
-                    left: 1553px;
-                }
-                
             }
         }
     }
+.v-menu__content.theme--light.menuable__content__active{
+    min-width: 100px !important;
+    top: 253px !important;
+    left: 1576px !important;
+    border-radius: 9px;
+    box-shadow: 0 5px 16px 3px $shadowGrey;
+    .v-list{
+        padding: 0px;
+        .v-list__tile{
+            height: auto;
+            display: inline-block;
+            padding: 15px;
+            a{ 
+                font-size: 12px;
+                font-family: 'Avenir LT Std 65 Medium';
+                color: $inputBlue;
+                text-transform: capitalize;
+            }
+            .v-list__tile__title{
+                margin-bottom: 5px;
+                &:last-child{
+                    margin-bottom: 0px;
+                }
+            }
+            img{
+                width: 25%;
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+        }
+    }
+} 
+.myZaps .v-btn:before{
+    left: 114px !important;
+    top: -8px !important;
+}   
+.myZaps .accent--text{
+    color: $orange !important;
+    font-size: 20px;
 }
-          
+.mdi-radiobox-blank:before{
+    color: $darkblue;
+    font-size: 20px;
+}
+.v-input--selection-controls__ripple{
+    height: 24px;
+    width:24px;
+    left: -9px;
+    top: calc(50% - 20px);
+}
