@@ -51,19 +51,20 @@
                         height: 100px;
                     }
                     .zapName{
+                        img{
+                            position: relative;
+                            top: 0;
+                            left: 0;
+                            vertical-align: text-bottom;
+                            width:16px;
+                            margin-right: 7px;
+                        }
                         a{
                             text-transform: capitalize;
                             color: $orange;
                             font-size: 13px;
                             vertical-align: middle;
-                            img{
-                                position: relative;
-                                top: 0;
-                                left: 0;
-                                vertical-align: text-bottom;
-                                width:16px;
-                                margin-right: 7px;
-                            }
+                            
                         }
                         .magicOption{
                             margin-top: 12px;
@@ -93,6 +94,9 @@
                         text-transform: capitalize;
                         display: inline-block;
                         margin-right: 26px;
+                    }
+                    .mobilezaps{
+                        display: none;
                     }
                     .zaps{
                          
@@ -170,4 +174,48 @@
     width:24px;
     left: -9px;
     top: calc(50% - 20px);
+}
+// responsive
+@media screen and (min-width: 600px) and (max-width: 959px){
+    .container .right-aside.myZapWrap .dashboard-body .v-card__text img {
+        left: 50px;
+        top: -25px;
+        width: auto;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap .zapHeading{
+        font-size: 9px;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap h3{
+        font-size: 15px;
+    }
+    .v-input--selection-controls__input{
+        margin-right: 0px;
+    }
+}
+@media screen and (min-width: 320px) and (max-width: 599px){
+    .container .right-aside.myZapWrap .dashboard-body .v-card__text img {
+        // left: 80px;
+        // top: -150px;
+        width: auto;
+    }
+    .container .right-aside.myZapWrap .dashboard-body {
+         padding: 0px;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .zapName a{
+        display: none;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap{
+        display: none;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap:hover{
+        border-top: 1px solid $placeholder_text;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .mobilezaps{
+        display: block;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .mobilezaps ul li{
+        display: inline;
+        margin-right: 30px;
+        color: $darkblue;
+    }
 }
