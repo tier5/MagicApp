@@ -260,14 +260,14 @@
                                                 <v-flex md4 sm4>
                                                     <h3 class="zapText">2142</h3>
                                                 </v-flex>
-                                                <v-flex md4 sm4>
-                                                    <v-card height="auto">
-                                                        <v-menu bottom left>
+                                                <v-flex md4 text-xs-right>
+                                                    <v-card>
+                                                        <v-menu left offset-x>
                                                             <v-btn slot="activator" dark icon>
                                                                 <img src="../../../assets/images/menu.png" alt="menu" class="menu">
                                                             </v-btn>
                                                             <v-list>
-                                                                <v-list-tile :key="1">
+                                                                <v-list-tile>
                                                                     <v-list-tile-title><a href="#">
                                                                         <img src="../../../assets/images/view.png" alt="view">view</a>
                                                                     </v-list-tile-title>
@@ -363,14 +363,14 @@
                                                 <v-flex md4 sm4>
                                                     <h3 class="zapText">2142</h3>
                                                 </v-flex>
-                                                <v-flex md4 sm4>
-                                                    <v-card height="auto">
-                                                        <v-menu bottom left>
+                                                <v-flex md4 text-xs-right>
+                                                    <v-card>
+                                                        <v-menu left offset-x>
                                                             <v-btn slot="activator" dark icon>
                                                                 <img src="../../../assets/images/menu.png" alt="menu" class="menu">
                                                             </v-btn>
                                                             <v-list>
-                                                                <v-list-tile :key="1">
+                                                                <v-list-tile>
                                                                     <v-list-tile-title><a href="#">
                                                                         <img src="../../../assets/images/view.png" alt="view">view</a>
                                                                     </v-list-tile-title>
@@ -466,14 +466,14 @@
                                                 <v-flex md4 sm4>
                                                     <h3 class="zapText">2142</h3>
                                                 </v-flex>
-                                                <v-flex md4 sm4>
-                                                    <v-card height="auto">
-                                                        <v-menu bottom left>
+                                                <v-flex md4 text-xs-right>
+                                                    <v-card>
+                                                        <v-menu left offset-x>
                                                             <v-btn slot="activator" dark icon>
                                                                 <img src="../../../assets/images/menu.png" alt="menu" class="menu">
                                                             </v-btn>
                                                             <v-list>
-                                                                <v-list-tile :key="1">
+                                                                <v-list-tile>
                                                                     <v-list-tile-title><a href="#">
                                                                         <img src="../../../assets/images/view.png" alt="view">view</a>
                                                                     </v-list-tile-title>

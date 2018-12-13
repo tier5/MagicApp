@@ -7,8 +7,9 @@
         .dashboard-body{
             .v-card__text{
                 img{
-                    left: 130px;
-                    top: -20px;
+                    position: relative;
+                    left: 0;
+                    top: 0;
                 }
                 &:hover{
                     img.menu{
@@ -74,9 +75,6 @@
                                 font-size: 10px;
                                 font-family: 'Avenir LT Std 85 Heavy';
                             }
-                            .on{
-                                
-                            }
                             .off{
                                 .theme--light.v-label{
                                     color: $darkblue;
@@ -99,11 +97,11 @@
                         display: none;
                     }
                     .zaps{
-                         
-                        } 
                         h3{
                             width: 120px;
                         }
+                    } 
+                        
                     }
                     
                 }
@@ -125,10 +123,8 @@
             }
         }
     }
-.v-menu__content.theme--light.menuable__content__active{
+.v-menu__content.theme--light{
     min-width: 100px !important;
-    top: 253px !important;
-    left: 1576px !important;
     border-radius: 9px;
     box-shadow: 0 5px 16px 3px $shadowGrey;
     .v-list{
@@ -137,6 +133,7 @@
             height: auto;
             display: inline-block;
             padding: 15px;
+            transition: none;
             a{ 
                 font-size: 12px;
                 font-family: 'Avenir LT Std 65 Medium';
