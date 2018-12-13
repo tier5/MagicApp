@@ -1,17 +1,71 @@
 .first-section{
-    background: url('../../assets/images/top-bg.png') no-repeat top center;
+    background: url(/img/top-bg.ee99ba12.png) no-repeat top center;
     background-size: cover;
+    box-shadow: none;
+    .top-bar{
+        .logo{
+            padding: 10px 15px 0;
+        }
+        .layout .flex{
+            position: relative;
+        }
+        .banner-left{
+            position: absolute;
+            transform: translate(-50%,-50%);
+            left: 50%;
+            top: 50%;
+            color: $topbar_text;
+            width: 70%;
+            .makeweb{
+                display: block;
+                text-transform: uppercase;
+                font-family: 'Avenir LT Std 95 Black';
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+            h1{
+                font-family: 'Avenir LT Std 95 Black';
+                font-size: 50px;
+            }
+            p{
+
+            }
+        }
+        .banner-right{
+            padding: 120px 0;
+            img{
+                width: 80%;
+                margin: auto;
+            }
+        }
+        
+    }
     .v-toolbar{
         background: none !important;
         box-shadow: none !important;
+        text-transform: uppercase;
+        font-family: 'Avenir LT Std 95 Black';
+        font-size: 11px;
+        letter-spacing: 1px;
         .v-toolbar__items{
+            .theme--light.v-btn{
+                color: $inputBlue;
+                font-size: 11px;
+                letter-spacing: 1px;
+            }
             span{
                 display: block;
-                padding: 22px 10px;
+                padding: 10px 15px;
+                text-align: center;
+                color: white;
+                border-radius: 40px;
+                margin: 10px;
+                line-height: 25px;
+                cursor: pointer;
                 img{
                     vertical-align: top;
                 }
-                &.freetrial{
+                &.freetrialbtn{
                     background: $orange;
                     background: -moz-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
                     background: -webkit-gradient(left top, right top, color-stop(0%, $orange), color-stop(100%, rgba(255,169,103,1)));
@@ -19,38 +73,45 @@
                     background: -o-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
                     background: -ms-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
                     background: linear-gradient(to right, $orange 0%, rgba(255,169,103,1) 100%);
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff6200', endColorstr='#ffa967', GradientType=1 );
-                    color: white;
+                }
+                &.loginbtn{
+                    background: $inputBlue;
+                    img{
+                        width: 20px;
+                        height: auto;
+                    }
                 }
             }
         }
     }
 }
 
+/* Popup CSS */
+
 // placeholder scss
 .auth input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: $inputBlue;
+    color: $inputBlue !important;
     opacity: 1;
     font-family: 'Avenir LT Std 85 Heavy';
     font-size: 12px;
     letter-spacing: 2px;
 }
 .auth input::-moz-placeholder { /* Firefox 19+ */
-    color: $inputBlue;
+    color: $inputBlue !important;
     opacity: 1;
     font-family: 'Avenir LT Std 85 Heavy';
     font-size: 12px;
     letter-spacing: 2px;
 }
 .auth input:-ms-input-placeholder { /* IE 10+ */
-    color: $inputBlue;
+    color: $inputBlue !important;
     opacity: 1;
     font-family: 'Avenir LT Std 85 Heavy';
     font-size: 12px;
     letter-spacing: 2px;
 }
 .auth input:-moz-placeholder { /* Firefox 18- */
-    color: $inputBlue;
+    color: $inputBlue !important;
     opacity: 1;
     font-family: 'Avenir LT Std 85 Heavy';
     font-size: 12px;
@@ -67,7 +128,7 @@
     background: rgba(238, 246, 255, 0.9) !important;
 }
 .v-dialog{
-    .heading.leftSpace{
+    .loginpopText{
         position: absolute;
         top:50%;
         left: -90px;
@@ -91,6 +152,24 @@
             letter-spacing: 3px;
         }
     }
+    .trialpopText{
+        position: absolute;
+        top: 60%;
+        left:20%;
+        bottom: 0;
+        transform: translateY(-50%);
+        width: 450px;   
+        h2{
+            font-family: 'Avenir LT Std 95 Black';
+            font-size: 40px;
+            color: $inputBlue;
+            margin-bottom: 18px;
+            line-height: 50px;
+            letter-spacing: 1px;
+        }
+    }
+
+    // Login popup
     .login{
         padding: 38px;
         border-radius: 20px;
@@ -151,86 +230,67 @@
                 }
             }
         }
-    }
-    .trialPopup{
-        padding: 38px;
-        border-radius: 20px;
-        max-width: 412px;
-        background: #fff;
-        position: absolute;
-        transform: translate(-50%,-50%);
-        left: 70%;
-        top: 50%;
-        border-radius: 20px;
-        box-shadow: 0 18px 54px $lightblueShadow;
-        .smalllogo{
-            position: absolute;
-            left: -57px;
-            top: 32px;
-            width: 30%;    
-            z-index: 9;
+        a{
+            text-decoration: underline;
         }
+        .theme--light.v-text-field--solo .v-input__slot{
+            background-color: $inputBackgroundblue;
+        }
+        .theme--light.v-input:not(.v-input--is-disabled) input, .theme--light.v-input:not(.v-input--is-disabled) textarea{
+            color: $inputBlue;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+            box-shadow: 0 7px 49px $lightshadow;
+            border-radius: 5px;
+            margin: 0px;
+        }
+        .email.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+            background-image: url('../../assets/images/email.png') !important;
+            background-repeat: no-repeat!important;
+            background-position: 95% 54% !important;
+        }
+        .password.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+            background-image: url('../../assets/images/password.png') !important;
+            background-repeat: no-repeat!important;
+            background-position: 95% 60% !important;
+        }
+        .v-text-field.v-text-field--solo .v-input__control{
+            height: 63px;
+        }
+        .v-form>.container>.layout>.flex{
+            margin-bottom: 30px;
+            padding: 0px;
+        }
+        .v-text-field.v-text-field--enclosed .v-input__slot, .v-text-field.v-text-field--enclosed .v-text-field__details{
+            padding:18px;
+        }
+        .v-text-field input{
+            padding-right: 35px;
+        }
+        .v-btn:not(.v-btn--depressed):not(.v-btn--flat){
+            box-shadow: none;
+        }
+    }
+
+    // Trial popup 
+    .trialPopup{
+        left: 70%;
         .v-form{
             margin-top: 90px;
-            .orangeButton{
-                border-radius: 5px;
-                color: $white;
-                letter-spacing: 2px;
-                font-family: 'Avenir LT Std 95 Black';
-                font-size: 12px;
-                height: 63px;
-                margin-bottom: 34px;
-                margin-top: 0px;
-                background-color: $orange;
-                .v-btn__content{
-                    line-height: 68px;
-                }
-            }
         }
-    }
-}
-
-
-.login {
-    .theme--light.v-text-field--solo .v-input__slot{
-        background-color: $inputBackgroundblue;
-    }
-    .theme--light.v-input:not(.v-input--is-disabled) input, .theme--light.v-input:not(.v-input--is-disabled) textarea{
-        color: $inputBlue;
-        font-size: 12px;
-        font-weight: bold;
-        letter-spacing: 1px;
-    }
-    .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
-        box-shadow: 0 7px 49px $lightshadow;
-        border-radius: 5px;
-        margin: 0px;
-    }
-    .email.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
-        background-image: url('../../assets/images/email.png') !important;
-        background-repeat: no-repeat!important;
-        background-position: 95% 54% !important;
-    }
-    .password.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
-        background-image: url('../../assets/images/password.png') !important;
-        background-repeat: no-repeat!important;
-        background-position: 95% 60% !important;
-    }
-    .v-text-field.v-text-field--solo .v-input__control{
-        height: 63px;
-    }
-    .v-form>.container>.layout>.flex{
-        margin-bottom: 30px;
-        padding: 0px;
-    }
-    .v-text-field.v-text-field--enclosed .v-input__slot, .v-text-field.v-text-field--enclosed .v-text-field__details{
-        padding:18px;
-    }
-    .v-text-field input{
-        padding-right: 35px;
-    }
-    .v-btn:not(.v-btn--depressed):not(.v-btn--flat){
-        box-shadow: none;
+        .email.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+            background-image: url('../../assets/images/email.png') !important;
+            background-repeat: no-repeat!important;
+            background-position: 95% 54% !important;
+        }
+        .name.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+            background-image: url('../../assets/images/name.png') !important;
+            background-repeat: no-repeat!important;
+            background-position: 95% 60% !important;
+        }
     }
 }
 .cross-btn{
@@ -240,13 +300,50 @@
     top: 30px;
     cursor: pointer;
 }
-a{
-    text-decoration: underline;
-}
+
 // responsive
-@media screen and (max-width: 675px) and (min-width: 320px){
+@media screen and (max-width: 1904px) and (min-width: 1264px){
+    .v-dialog{
+        .trialpopText{
+            left: 15%;
+        }
+    }
+}   
+@media screen and (max-width: 1263px) and (min-width: 960px){
+    .v-dialog{
+        .trialPopup{
+            left: 65%;
+            right: 0;
+        }
+        .trialpopText{
+            left: 7%;
+            width: 400px;
+        }
+    }
+} 
+@media screen and (max-width: 959px) and (min-width: 600px){
+    .v-dialog{
+        .login {
+            width: 65%;
+        }
+        .trialPopup {
+            padding: 18px;
+            width: 55%;
+        }
+        .trialpopText{
+            left: 3%;
+            top: 51%;
+            width: 100px;
+            h2{
+                font-size: 24px;
+                line-height: 30px;
+            }
+        }
+    }
+} 
+@media screen and (max-width: 599px) and (min-width: 320px){
     .v-dialog {
-        .heading.leftSpace{
+        .loginpopText{
             transform: none;
             left: 0;
             right: 0;
@@ -255,6 +352,17 @@ a{
                 font-size: 30px;
                 margin-top: 40px;
                 margin-bottom: 0px;
+            }
+        }
+        .trialpopText{
+            width: 90%;
+            text-align: center;
+            top: 42%;
+            left: 6%;
+            right: 0;
+            h2{
+                font-size: 20px;
+                line-height: 25px;
             }
         }
         .login{
@@ -271,9 +379,23 @@ a{
                         width: 100%;
                         text-align: center;
                     }
+                } 
+            }
+            &.trialPopup{
+                left: 50%;
+                right: 0;
+                width: 90%;
+                .v-form {
+                    margin-top: 50px;
+                    .container > .layout > .flex{
+                        margin-bottom: 20px;
+                    }
+                    .orangeButton{
+                        margin-bottom: 0;
+                    }
                 }
-                    
             }
         }
+        
     }
 }
