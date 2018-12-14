@@ -190,25 +190,24 @@
                                         <div class="zapName">
                                             <h3 class="zapText">sales bridge</h3>   
                                             <img src="../../../assets/images/icon-copy.png" alt="copy script"><a>copy script</a>
-                                               <div class="switchblock hidden-sm-and-up text-xs-right">
-                                                    <span class="cookie">Cookie: </span>
-                                                    <label class="switch">
-                                                        <input type="checkbox" checked>
-                                                        <span class="slider round">
-                                                            <span class="on">ON</span>
-                                                            <span class="off">OFF</span>
-                                                        </span>
-                                                    </label>
-                                                </div>
-
+                                            <div class="switchblock hidden-sm-and-up text-xs-right">
+                                                <span class="cookie">Cookie: </span>
+                                                <label class="switch">
+                                                    <input type="checkbox" checked>
+                                                    <span class="slider round">
+                                                        <span class="on">ON</span>
+                                                        <span class="off">OFF</span>
+                                                    </span>
+                                                </label>
+                                            </div>
                                             <v-flex visible-xs-only>
                                                 <div class="mobilezaps">
                                                     <ul>
                                                         <li>
-                                                            <img src="../../../assets/images/icon-copy.png" alt="page views">4521
+                                                            <img src="../../../assets/images/pageviews.png" alt="page views">4521
                                                         </li>
                                                         <li>
-                                                            <img src="../../../assets/images/icon-copy.png" alt="zaps">2158
+                                                            <img src="../../../assets/images/zaps.png" alt="zaps">2158
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -280,7 +279,7 @@
                                     </v-flex>
                                 </v-layout>
                             </div>
-                            <div class="eachZap" id="zap_id2">
+                            <!-- <div class="eachZap" id="zap_id2">
                                 <v-layout row wrap>
                                     <v-flex md7 sm8>
                                         <div class="zapName">
@@ -449,7 +448,7 @@
                                         </div>
                                     </v-flex>
                                 </v-layout>
-                            </div>
+                            </div> -->
                         </v-card-text>
                     </div>
                 </v-flex>

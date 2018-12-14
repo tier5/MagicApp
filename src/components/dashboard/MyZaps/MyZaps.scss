@@ -32,7 +32,6 @@
                         }
                     }
                 }
-                
             }
             .myZaps{
                 .firstZap{
@@ -64,9 +63,6 @@
                             color: $orange;
                             transition: 0.3s;
                         }
-                    }
-                    .layout.wrap{
-                        height: 100px;
                     }
                     .zapName{
                         img{
@@ -177,8 +173,6 @@
                                 }
                             }
                         }
-                        
-                        
                     }
                     h3{
                         font-size: 20px;
@@ -190,11 +184,6 @@
                     }
                     .mobilezaps{
                         display: none;
-                    }
-                    .zaps{
-                        h3{
-                            width: 120px;
-                        }
                     } 
                 }
             }
