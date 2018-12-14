@@ -190,12 +190,15 @@
                                         <div class="zapName">
                                             <h3 class="zapText">sales bridge</h3>   
                                             <img src="../../../assets/images/icon-copy.png" alt="copy script"><a>copy script</a>
-                                               <div class="switch">
-                                                    <template>
-                                                        <v-container fluid>
-                                                            <v-switch :label="`cookie : ${switch1.toString()}, ${switch2.toString()}`" v-model="switch1"></v-switch>
-                                                        </v-container>
-                                                    </template>
+                                               <div class="switchblock hidden-sm-and-up text-xs-right">
+                                                    <span class="cookie">Cookie: </span>
+                                                    <label class="switch">
+                                                        <input type="checkbox" checked>
+                                                        <span class="slider round">
+                                                            <span class="on">ON</span>
+                                                            <span class="off">OFF</span>
+                                                        </span>
+                                                    </label>
                                                 </div>
 
                                             <v-flex visible-xs-only>
@@ -460,44 +463,40 @@
     import axios from 'axios'
     export default {
         data () {
-        return {
-            drawer: null,
-            mini: false,
-            right: null,
-            items: [
-            'Item 1',
-            'Item 2',
-            'Item 3',
-            'Item 4'
-            ],
-            valid: true,
-            name: '',
-            paramName: '',
-            value: '',
-            paramName2: '',
-            selectType: '',
-            select: '',
-            radios1: '',
-            radios2: '',
-            radios3: '',
-            radios4: '',
-            radios5: '',
-            radios6: '',
-            radios7: '',
-            radios8: '',
-            radios9: '',
-            toString: '',
-            nameRules: [
-            v => !!v || 'Name is required',
-            v => (v && v.length <= 10) || 'Name must be less than 10 characters'
-            ],
-        }
-        },
-        data () {
-        return {
-            switch1: true,
-            switch2: false
-        }
+            return {
+                drawer: null,
+                mini: false,
+                right: null,
+                switch1: true,
+                switch2: false,
+                items: [
+                'Item 1',
+                'Item 2',
+                'Item 3',
+                'Item 4'
+                ],
+                valid: true,
+                name: '',
+                paramName: '',
+                value: '',
+                paramName2: '',
+                selectType: '',
+                select: '',
+                radios1: '',
+                radios2: '',
+                radios3: '',
+                radios4: '',
+                radios5: '',
+                radios6: '',
+                radios7: '',
+                radios8: '',
+                radios9: '',
+                toString: '',
+                nameRules: [
+                v => !!v || 'Name is required',
+                v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+                ],
+            }
         },
         methods: {
         submit () {
