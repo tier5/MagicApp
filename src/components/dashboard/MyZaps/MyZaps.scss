@@ -18,20 +18,6 @@
                         }
                     }
                 }
-                #zap_id2{
-                    &:hover{
-                        img#menu2{
-                            content: url('../../../assets/images/orangeMenu.png');
-                        }
-                    }
-                }
-                #zap_id3{
-                    &:hover{
-                        img#menu3{
-                            content: url('../../../assets/images/orangeMenu.png');
-                        }
-                    }
-                }
             }
             .myZaps{
                 .firstZap{
@@ -62,6 +48,17 @@
                         h3{
                             color: $orange;
                             transition: 0.3s;
+                            @media screen and (max-width: 599px){
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+                    .zaps{
+                        .v-menu__activator{
+                            button.v-btn{
+                                margin: 0;
+                                width: 0;
+                            }
                         }
                     }
                     .zapName{
@@ -233,10 +230,10 @@
         }
     }
 } 
-.myZaps .v-btn:before{
-    left: 114px !important;
-    top: -8px !important;
-}   
+// .myZaps .v-btn:before{
+//     left: 114px !important;
+//     top: -8px !important;
+// }   
 .myZaps .accent--text{
     color: $orange !important;
     font-size: 20px;
@@ -254,15 +251,14 @@
 // responsive
 @media screen and (min-width: 600px) and (max-width: 959px){
     .container .right-aside.myZapWrap .dashboard-body .v-card__text img {
-        left: 31px;
-        top: -50px;
-        width: 10%;
+        width: auto;
     }
     .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap .zapHeading{
         font-size: 9px;
     }
     .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap h3{
         font-size: 15px;
+        margin-right: 6px;
     }
     .v-input--selection-controls__input{
         margin-right: 0px;
@@ -276,19 +272,16 @@
     .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap{
         padding: 15px 5px;
     }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap h3{
-        margin-right: 6px;
-    }
     .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .zapName .magicOption span{
         font-size: 7px;
     }
 }
 @media screen and (min-width: 320px) and (max-width: 599px){
-    .container .right-aside.myZapWrap .dashboard-body .v-card__text img {
-        
-    }
     .container .right-aside.myZapWrap .dashboard-body {
-         padding: 0px;
+        padding: 0px;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap h3{
+        margin-right: 6px;
     }
     .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .zapName a{
         display: none;
