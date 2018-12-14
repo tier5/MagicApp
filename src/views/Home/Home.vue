@@ -23,7 +23,7 @@
               </v-flex>
             </v-layout>
             <v-layout row wrap>
-              <v-flex md7>
+              <v-flex md7 sm7>
                 <div class="banner-left">
                   <span class="makeweb">make your website</span>
                   <h1>a Sales Tool Again</h1>
@@ -31,7 +31,7 @@
                   <v-btn class="free-trial-btn">Start 14 Days FREE Trial</v-btn>
                 </div>
               </v-flex>
-              <v-flex md5>
+              <v-flex md5 sm5>
                 <div class="banner-right">
                   <img src="../../assets/images/video-screen.png" alt="video-screen">
                 </div>

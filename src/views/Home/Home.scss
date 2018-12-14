@@ -19,21 +19,38 @@
             top: 50%;
             color: $topbar_text;
             width: 55%;
+            @media screen and (min-width: 600px) and (max-width: 1263px) {
+                width: 85%;
+            }
             .makeweb{
                 display: block;
                 text-transform: uppercase;
                 font-family: 'Avenir LT Std 85 Heavy';
                 font-size: 15px;
                 letter-spacing: 2px;
+                @media screen and (min-width: 600px) and (max-width: 959px) {
+                    font-size: 12px;
+                }
             }
             h1{
                 font-family: 'Avenir LT Std 95 Black';
                 font-size: 60px;
+                @media screen and (min-width: 960px) and (max-width: 1263px) {
+                    font-size: 50px;
+                }
+                @media screen and (min-width: 600px) and (max-width: 959px) {
+                    font-size: 30px;
+                }
             }
             p{
                 font-size: 24px;
                 line-height: 30px;
                 margin: 30px 0;
+                @media screen and (min-width: 600px) and (max-width: 959px) {
+                    font-size: 18px;
+                    line-height: 25px;
+                    margin: 20px 0;
+                }
             }
             .free-trial-btn{
                 font-family: 'Avenir LT Std 85 Heavy';
@@ -55,6 +72,9 @@
             img{
                 width: 80%;
                 margin: auto;
+                @media screen and (min-width: 600px) and (max-width: 959px) {
+                    width: 100%;
+                }  
             }
         }
         
@@ -81,6 +101,10 @@
                 margin: 10px;
                 line-height: 25px;
                 cursor: pointer;
+                @media screen and (min-width: 960px) and (max-width: 1263px) {
+                    padding: 15px 5px;
+                    margin: 5px;
+                }
                 img{
                     vertical-align: top;
                 }
@@ -106,6 +130,25 @@
 }
 .second-section{
     box-shadow: none;
+    text-align: center;
+    padding: 200px;
+    @media screen and (min-width: 960px) and (max-width: 1263px) {
+        padding: 100px 0;
+    }
+    h2{
+        font-family: 'Avenir LT Std 95 Black';
+        color: $inputBlue;
+        font-size: 40px;
+        line-height: 1.2;
+        margin-bottom: 50px;
+    }
+}
+
+.simple-text{
+    p{
+        color: $darkblue;
+        font-size: 18px;
+    }
 }
 
 /* Popup CSS */

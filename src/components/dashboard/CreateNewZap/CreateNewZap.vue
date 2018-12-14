@@ -294,6 +294,9 @@
                   </v-layout>
                 </v-form>
               </v-card>
+              <span class="create-new-zap hidden-sm-and-up">
+                <img src="../../../assets/images/icon-createzap.png" alt="icon-createzap"/>
+              </span>
             </div>
           </v-flex>
           <v-flex md2></v-flex>

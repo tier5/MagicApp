@@ -307,7 +307,12 @@
           }
         }
       }
-      
+      .create-new-zap{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+      }
       .create-zap-form{
         padding-left: 40px;
         background: none;
