@@ -161,7 +161,7 @@
                 </v-card-text>
                 </v-card>
                 <v-layout>
-                <v-flex md1></v-flex>
+                <v-flex md1 hidden-sm-only></v-flex>
                 <v-flex md10>
                     <div class="dashboard-body">
                         <v-card-text class="myZaps">
@@ -172,10 +172,10 @@
                                     </v-flex>
                                     <v-flex md5 sm4>
                                         <v-layout row wrap>
-                                            <v-flex md4 sm5>
+                                            <v-flex md4 sm6>
                                                 <h2 class="zapHeading">page views</h2>
                                             </v-flex>
-                                            <v-flex md4 sm5>
+                                            <v-flex md4 sm6>
                                                 <h2 class="zapHeading">zaps</h2>
                                             </v-flex>
                                             <v-flex md4 sm2>
@@ -188,8 +188,16 @@
                                 <v-layout row wrap>
                                     <v-flex md7 sm8>
                                         <div class="zapName">
-                                            <h3 class="zapText">sales bridge</h3>
+                                            <h3 class="zapText">sales bridge</h3>   
                                             <img src="../../../assets/images/icon-copy.png" alt="copy script"><a>copy script</a>
+                                               <div class="switch">
+                                                    <template>
+                                                        <v-container fluid>
+                                                            <v-switch :label="`cookie : ${switch1.toString()}, ${switch2.toString()}`" v-model="switch1"></v-switch>
+                                                        </v-container>
+                                                    </template>
+                                                </div>
+
                                             <v-flex visible-xs-only>
                                                 <div class="mobilezaps">
                                                     <ul>
@@ -206,45 +214,27 @@
                                                 <v-flex xs4 sm4>
                                                     <div class="magicOption">
                                                         <span>magic option :</span>
-                                                        <v-radio-group v-model="radios1" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios1" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
                                                 <v-flex xs4 sm4>
                                                     <div class="magicOption">
                                                         <span>append html :</span>
-                                                        <v-radio-group v-model="radios2" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios2" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
                                                 <v-flex xs4 sm4 hidden-xs-only>
                                                     <div class="magicOption">
                                                         <span>cookie :</span>
-                                                        <v-radio-group v-model="radios3" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios3" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
@@ -254,10 +244,10 @@
                                     <v-flex md5 sm4 hidden-xs-only>
                                         <div class="zaps">
                                             <v-layout row wrap>
-                                                <v-flex md4 sm4>
+                                                <v-flex md4 sm6>
                                                     <h3 class="zapText">2547</h3>
                                                 </v-flex>
-                                                <v-flex md4 sm4>
+                                                <v-flex md4 sm6>
                                                     <h3 class="zapText">2142</h3>
                                                 </v-flex>
                                                 <v-flex md4 text-xs-right>
@@ -268,13 +258,13 @@
                                                             </v-btn>
                                                             <v-list>
                                                                 <v-list-tile>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/view.png" alt="view">view</a>
                                                                     </v-list-tile-title>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/edit.png" alt="edit">edit</a>
                                                                     </v-list-tile-title>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/delete.png" alt="delete">delete</a>
                                                                     </v-list-tile-title>
                                                                 </v-list-tile>
@@ -309,45 +299,27 @@
                                                 <v-flex xs4 sm4>
                                                     <div class="magicOption">
                                                         <span>magic option :</span>
-                                                        <v-radio-group v-model="radios1" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios4" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
                                                 <v-flex xs4 sm4>
                                                     <div class="magicOption">
                                                         <span>append html :</span>
-                                                        <v-radio-group v-model="radios2" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios5" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
                                                 <v-flex xs4 sm4 hidden-xs-only>
                                                     <div class="magicOption">
                                                         <span>cookie :</span>
-                                                        <v-radio-group v-model="radios3" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios6" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
@@ -357,10 +329,10 @@
                                     <v-flex md5 sm4 hidden-xs-only>
                                         <div class="zaps">
                                             <v-layout row wrap>
-                                                <v-flex md4 sm4>
+                                                <v-flex md4 sm6>
                                                     <h3 class="zapText">2547</h3>
                                                 </v-flex>
-                                                <v-flex md4 sm4>
+                                                <v-flex md4 sm6>
                                                     <h3 class="zapText">2142</h3>
                                                 </v-flex>
                                                 <v-flex md4 text-xs-right>
@@ -371,13 +343,13 @@
                                                             </v-btn>
                                                             <v-list>
                                                                 <v-list-tile>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/view.png" alt="view">view</a>
                                                                     </v-list-tile-title>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/edit.png" alt="edit">edit</a>
                                                                     </v-list-tile-title>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/delete.png" alt="delete">delete</a>
                                                                     </v-list-tile-title>
                                                                 </v-list-tile>
@@ -412,45 +384,27 @@
                                                 <v-flex xs4 sm4>
                                                     <div class="magicOption">
                                                         <span>magic option :</span>
-                                                        <v-radio-group v-model="radios1" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios7" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
                                                 <v-flex xs4 sm4>
                                                     <div class="magicOption">
                                                         <span>append html :</span>
-                                                        <v-radio-group v-model="radios2" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios8" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
                                                 <v-flex xs4 sm4 hidden-xs-only>
                                                     <div class="magicOption">
                                                         <span>cookie :</span>
-                                                        <v-radio-group v-model="radios3" :mandatory="false">
-                                                            <v-layout row wrap>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                            </v-flex>
-                                                            <v-flex md6 sm6>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-flex>
-                                                            </v-layout>
+                                                        <v-radio-group v-model="radios9" row :mandatory="false">
+                                                            <v-radio label="on" value="on" class="on"></v-radio>
+                                                            <v-radio label="off" value="off" class="off"></v-radio>
                                                         </v-radio-group>
                                                     </div>
                                                 </v-flex>
@@ -460,10 +414,10 @@
                                     <v-flex md5 sm4 hidden-xs-only>
                                         <div class="zaps">
                                             <v-layout row wrap>
-                                                <v-flex md4 sm4>
+                                                <v-flex md4 sm6>
                                                     <h3 class="zapText">2547</h3>
                                                 </v-flex>
-                                                <v-flex md4 sm4>
+                                                <v-flex md4 sm6>
                                                     <h3 class="zapText">2142</h3>
                                                 </v-flex>
                                                 <v-flex md4 text-xs-right>
@@ -474,13 +428,13 @@
                                                             </v-btn>
                                                             <v-list>
                                                                 <v-list-tile>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/view.png" alt="view">view</a>
                                                                     </v-list-tile-title>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/edit.png" alt="edit">edit</a>
                                                                     </v-list-tile-title>
-                                                                    <v-list-tile-title><a href="#">
+                                                                    <v-list-tile-title><a>
                                                                         <img src="../../../assets/images/delete.png" alt="delete">delete</a>
                                                                     </v-list-tile-title>
                                                                 </v-list-tile>
@@ -496,7 +450,7 @@
                         </v-card-text>
                     </div>
                 </v-flex>
-                <v-flex md1></v-flex>
+                <v-flex md1 hidden-sm-only ></v-flex>
                 </v-layout>
             </v-flex>
         </v-layout>
@@ -532,10 +486,17 @@
             radios7: '',
             radios8: '',
             radios9: '',
+            toString: '',
             nameRules: [
             v => !!v || 'Name is required',
             v => (v && v.length <= 10) || 'Name must be less than 10 characters'
             ],
+        }
+        },
+        data () {
+        return {
+            switch1: true,
+            switch2: false
         }
         },
         methods: {
@@ -549,6 +510,7 @@
             }
         }
         }
+        
     }
     </script>
     <style lang="scss">

@@ -9,7 +9,7 @@
                 img{
                     position: relative;
                     left: 0;
-                    top: 0;
+                    top: -6px;
                 }
                 #zap_id1{
                     &:hover{
@@ -77,6 +77,9 @@
                             width:16px;
                             margin-right: 7px;
                         }
+                        .switch{
+                            display: none;
+                        }
                         a{
                             text-transform: capitalize;
                             color: $orange;
@@ -118,28 +121,23 @@
                             width: 120px;
                         }
                     } 
-                        
-                    }
-                    
                 }
-                .v-input--selection-controls{
-                    margin-top: 0px;
-                }
-                .v-input--radio-group--column .v-radio:not(:last-child):not(:only-child){
-                    width: 20%
-                }
-                .v-radio.theme--light{
-                    width: 20%;
-                }
-                .theme--light.v-label{
-                    color: $orange;
-                    font-size: 10px;
-                    font-family: 'Avenir LT Std 85 Heavy';
-                    text-transform: uppercase;
-                }
+            }
+            .v-input--selection-controls{
+                margin-top: 0px;
+            }
+            .v-input--radio-group--column .v-radio:not(:last-child):not(:only-child){
+                width: 20%
+            }
+            .theme--light.v-label{
+                color: $orange;
+                font-size: 10px;
+                font-family: 'Avenir LT Std 85 Heavy';
+                text-transform: uppercase;
             }
         }
     }
+}
 .v-menu__content.theme--light{
     min-width: 100px !important;
     border-radius: 9px;
@@ -192,9 +190,9 @@
 // responsive
 @media screen and (min-width: 600px) and (max-width: 959px){
     .container .right-aside.myZapWrap .dashboard-body .v-card__text img {
-        left: 50px;
-        top: -25px;
-        width: auto;
+        left: 31px;
+        top: -50px;
+        width: 10%;
     }
     .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap .zapHeading{
         font-size: 9px;
@@ -205,12 +203,25 @@
     .v-input--selection-controls__input{
         margin-right: 0px;
     }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap .zapHeading{
+        font-size: 10px;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap{
+        padding: 15px 5px;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap{
+        padding: 15px 5px;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap h3{
+        margin-right: 6px;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .zapName .magicOption span{
+        font-size: 7px;
+    }
 }
 @media screen and (min-width: 320px) and (max-width: 599px){
     .container .right-aside.myZapWrap .dashboard-body .v-card__text img {
-        // left: 80px;
-        // top: -150px;
-        width: auto;
+        
     }
     .container .right-aside.myZapWrap .dashboard-body {
          padding: 0px;
@@ -231,5 +242,46 @@
         display: inline;
         margin-right: 30px;
         color: $darkblue;
+    }
+    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .zapName .switch{
+        display: block;
+        float: right;
+        .accent--text{
+            color: $inputBlue !important;
+        }
+        .theme--light.v-label{
+            color: $darkblue;
+            left: -80px !important;
+            top: 0;
+            position: absolute !important;
+        }
+        .v-input.v-input--selection-controls.v-input--switch.theme--light{
+            color: #000;
+        }
+        .v-input--switch__track {
+            border-radius: 21px;
+            height: 35px;
+            left: 5px;
+            opacity: .8;
+            position: absolute;
+            right: -21px;
+            top: calc(50% - 15px);
+            color: $grey;
+            border: 3px solid $inputBlue;
+        }
+        .theme--light.v-input--switch__thumb {
+            color: $placeholder_text;
+        }
+        .v-input--switch__thumb {
+            top: calc(50% - 16px);
+            height: 35px;
+            right: -7px;
+            width: 35px;
+        }
+        .v-input--switch .v-input--selection-controls__ripple {
+            left: 5px;
+            top: calc(50% - 16px);
+        }
+        
     }
 }
