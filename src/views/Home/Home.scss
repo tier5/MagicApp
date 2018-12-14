@@ -1,7 +1,10 @@
 .first-section{
-    background: url(/img/top-bg.ee99ba12.png) no-repeat top center;
-    background-size: cover;
+    background: url('../../assets/images/top-bg.png') no-repeat top center;
+    background-size: 100% 100%;
     box-shadow: none;
+    @media screen and (max-width: 1263px){
+        background-size: cover;
+    } 
     .top-bar{
         .logo{
             padding: 10px 15px 0;
@@ -15,20 +18,36 @@
             left: 50%;
             top: 50%;
             color: $topbar_text;
-            width: 70%;
+            width: 55%;
             .makeweb{
                 display: block;
                 text-transform: uppercase;
-                font-family: 'Avenir LT Std 95 Black';
-                font-size: 14px;
-                letter-spacing: 1px;
+                font-family: 'Avenir LT Std 85 Heavy';
+                font-size: 15px;
+                letter-spacing: 2px;
             }
             h1{
                 font-family: 'Avenir LT Std 95 Black';
-                font-size: 50px;
+                font-size: 60px;
             }
             p{
-
+                font-size: 24px;
+                line-height: 30px;
+                margin: 30px 0;
+            }
+            .free-trial-btn{
+                font-family: 'Avenir LT Std 85 Heavy';
+                font-size: 16px;
+                background: #7CA8DC;
+                text-align: center;
+                color: white;
+                border-radius: 40px;
+                cursor: pointer;
+                text-transform: none;
+                padding: 15px 50px;
+                height: 100%;
+                box-shadow: none;
+                margin: 0;
             }
         }
         .banner-right{
@@ -84,6 +103,9 @@
             }
         }
     }
+}
+.second-section{
+    box-shadow: none;
 }
 
 /* Popup CSS */

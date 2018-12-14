@@ -39,6 +39,18 @@
             </v-layout>
           </v-card-text>
         </v-card>
+        <v-card class="second-section">
+          <v-layout row wrap>
+            <v-flex md3></v-flex>
+            <v-flex md6>
+              <v-card-text class="simple-text">
+                <h2>Create a Customized Sales Experience for Your Customers</h2>
+                <p>Magic Zap is a very powerful and magical software. Magic Zap will allow you to present personalised dynamic websites to your visitors. It will also let you send follow up emails, calls, sms or chatbot messages while your visitors are on your site engaged and ready to buy. You have to have this tool if you want to compete. </p>
+              </v-card-text>
+            </v-flex>
+            <v-flex md3></v-flex>
+          </v-layout>
+        </v-card>
       </v-flex>
     </v-layout>
     <!-- POPUPs -->
