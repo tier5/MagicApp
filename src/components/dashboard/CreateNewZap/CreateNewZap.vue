@@ -281,6 +281,53 @@
                     </v-flex>
                   </v-layout>
                   <v-layout row wrap>
+                    <span class="progress-bar"><span class="dot"></span> Timeout</span>
+                    <v-flex md4 xs12>
+                      <v-card-text class="timeout-field">
+                        <v-text-field
+                          v-model="timeout1"
+                          placeholder="0"
+                          required
+                        ></v-text-field>
+                        <span>Days</span>
+                      </v-card-text>
+                    </v-flex>
+                    <v-flex md4 xs12>
+                      <v-card-text class="timeout-field">
+                        <v-text-field
+                          v-model="timeout2"
+                          placeholder="0"
+                          required
+                        ></v-text-field>
+                        <span>Hour</span>
+                      </v-card-text>
+                    </v-flex>
+                    <v-flex md4 xs12>
+                      <v-card-text class="timeout-field">
+                        <v-text-field
+                          v-model="timeout3"
+                          placeholder="0"
+                          required
+                        ></v-text-field>
+                        <span>Min</span>
+                      </v-card-text>
+                    </v-flex>
+                    <v-flex md12 class="tags-section">
+                      <v-card-text>
+                        <ul>
+                          <li>
+                            <span>email : Exists</span> 
+                            <img src="../../../assets/images/cross_btn.png" alt="icon" class="icon-cross">
+                          </li>
+                          <li>
+                            <span>name : !=</span> 
+                            <img src="../../../assets/images/cross_btn.png" alt="icon" class="icon-cross">
+                          </li>
+                        </ul>
+                      </v-card-text>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row wrap>
                     <v-flex md12 text-xs-center>
                       <v-btn
                         :disabled="!valid"
@@ -325,6 +372,9 @@
         paramName: '',
         value: '',
         paramName2: '',
+        timeout1: '',
+        timeout2: '',
+        timeout3: '',
         selectType: '',
         select: '',
         nameRules: [

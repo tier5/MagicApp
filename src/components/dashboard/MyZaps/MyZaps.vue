@@ -161,8 +161,7 @@
                     </v-card-text>
                 </v-card>
                 <v-layout>
-                    <v-flex md1 hidden-sm-only></v-flex>
-                    <v-flex md10>
+                    <v-flex md12>
                         <div class="dashboard-body">
                             <v-card-text class="myZaps">
                                 <div class="firstZap">
@@ -212,35 +211,6 @@
                                                         </ul>
                                                     </div>
                                                 </v-flex>
-                                                <v-layout row wrap>
-                                                    <v-flex xs4 sm4>
-                                                        <div class="magicOption">
-                                                            <span>magic option :</span>
-                                                            <v-radio-group v-model="radios1" row :mandatory="false">
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-radio-group>
-                                                        </div>
-                                                    </v-flex>
-                                                    <v-flex xs4 sm4>
-                                                        <div class="magicOption">
-                                                            <span>append html :</span>
-                                                            <v-radio-group v-model="radios2" row :mandatory="false">
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-radio-group>
-                                                        </div>
-                                                    </v-flex>
-                                                    <v-flex xs4 sm4 hidden-xs-only>
-                                                        <div class="magicOption">
-                                                            <span>cookie :</span>
-                                                            <v-radio-group v-model="radios3" row :mandatory="false">
-                                                                <v-radio label="on" value="on" class="on"></v-radio>
-                                                                <v-radio label="off" value="off" class="off"></v-radio>
-                                                            </v-radio-group>
-                                                        </div>
-                                                    </v-flex>
-                                                </v-layout>
                                             </div>
                                         </v-flex>
                                         <v-flex md5 sm4 hidden-xs-only>
@@ -277,12 +247,49 @@
                                                 </v-layout>
                                             </div>
                                         </v-flex>
+                                        <v-layout row wrap>
+                                            <v-flex md3 sm6 xs6>
+                                                <div class="magicOption">
+                                                    <span>magic option :</span>
+                                                    <v-radio-group v-model="radios1" row :mandatory="false">
+                                                        <v-radio label="on" value="on" class="on"></v-radio>
+                                                        <v-radio label="off" value="off" class="off"></v-radio>
+                                                    </v-radio-group>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex md3 sm6 xs6>
+                                                <div class="magicOption">
+                                                    <span>append html :</span>
+                                                    <v-radio-group v-model="radios2" row :mandatory="false">
+                                                        <v-radio label="on" value="on" class="on"></v-radio>
+                                                        <v-radio label="off" value="off" class="off"></v-radio>
+                                                    </v-radio-group>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex md3 sm6 hidden-xs-only>
+                                                <div class="magicOption">
+                                                    <span>cookie :</span>
+                                                    <v-radio-group v-model="radios3" row :mandatory="false">
+                                                        <v-radio label="on" value="on" class="on"></v-radio>
+                                                        <v-radio label="off" value="off" class="off"></v-radio>
+                                                    </v-radio-group>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex md3 sm6 hidden-xs-only>
+                                                <div class="magicOption">
+                                                    <span>timeout :</span>
+                                                    <v-radio-group v-model="radios4" row :mandatory="false">
+                                                        <v-radio label="on" value="on" class="on"></v-radio>
+                                                        <v-radio label="off" value="off" class="off"></v-radio>
+                                                    </v-radio-group>
+                                                </div>
+                                            </v-flex>
+                                        </v-layout>
                                     </v-layout>
                                 </div>
                             </v-card-text>
                         </div>
                     </v-flex>
-                    <v-flex md1 hidden-sm-only ></v-flex>
                 </v-layout>
             </v-flex>
         </v-layout>
@@ -298,7 +305,8 @@
                     value: '',
                     radios1: '',
                     radios2: '',
-                    radios3: ''
+                    radios3: '',
+                    radios4: ''
                 }
             }
             
