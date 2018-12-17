@@ -42,7 +42,7 @@ const mutations = {
       state.isAuthenticated = true;
       state.token = localStorage.getItem('token');
       state.user = JSON.parse(localStorage.getItem('user'));
-      router.push('/magic');
+      //router.push('/magic');
     } else {
       state.isAuthenticated = false;
       state.token = '';
@@ -77,6 +77,7 @@ const actions = {
           if(res.body.status) {
             // console.log(res.body.response);
             commit('userSignIn',res.body);
+            commit('changeIsLoginModalOpen', false);
             router.push('/magic');
           } else {
 

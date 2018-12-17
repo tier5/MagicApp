@@ -15,19 +15,27 @@
                   <v-toolbar>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                      <v-btn flat>Features</v-btn>
-                      <v-btn flat>Pricing</v-btn>
+                      <v-btn flat v-if="!isAuthenticated">Features</v-btn>
+                      <v-btn flat v-if="!isAuthenticated">Pricing</v-btn>
+                      <v-btn flat v-if="isAuthenticated">Dashboard</v-btn>
                       <span
                         class="freetrialbtn"
-                        @click="dialogtrial = true"
-                        v-on:click="isHidden = false"
+                        
+                       v-if="!isAuthenticated"
                       >14 day free trial</span>
                       <span
                         class="loginbtn"
                         @click="openLoginModel()"
-                        
+                        v-if="!isAuthenticated"
                       >
                         <img src="../../assets/images/user-icon-white.png" alt="user-icon"> Login
+                      </span>
+                      <span
+                        class="loginbtn"
+                        @click="signOut()"
+                        v-if="isAuthenticated"
+                      >
+                        <img src="../../assets/images/icon-logout.png" alt="user-icon"> Logout
                       </span>
                     </v-toolbar-items>
                   </v-toolbar>
@@ -87,15 +95,25 @@ export default {
   },
   computed: {
     // mix the getters into computed with object spread operator
-    ...mapGetters(["isLoginModalOpen"])
+    ...mapGetters([
+      "isLoginModalOpen",
+      "isAuthenticated",
+
+    ])
   },
   methods: {
     openLoginModel() {
       this.$store.commit("changeIsLoginModalOpen", true);
+    },
+    signOut(){
+      this.$store.commit('userSignOut');
     }
   },
   components: {
     Login
+  },
+  created(){
+    this.$store.commit('checkUserAuthentication');
   }
 };
 </script>
