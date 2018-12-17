@@ -1,7 +1,8 @@
 {
-  "name": "vue-material-app",
-  "version": "0.1.0",
+  "name": "magiczap",
+  "version": "1.0.0",
   "private": true,
+  "author": "Tier5 LLC <github@tier5.us>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -9,10 +10,15 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
+    "lodash": "^4.17.11",
     "npm": "^6.4.1",
     "register-service-worker": "^1.5.2",
     "vue": "^2.5.17",
+    "vue-clipboards": "^1.2.4",
+    "vue-paginate": "^3.6.0",
+    "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
+    "vuelidate": "^0.7.4",
     "vuetify": "^1.3.0",
     "vuex": "^3.0.1"
   },

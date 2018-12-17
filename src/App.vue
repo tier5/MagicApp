@@ -1,21 +1,32 @@
 <template>
   <div>
      <v-app>
-      <v-content>
-        <router-view/>
-      </v-content>
+       <Loader v-if="isLoading" />
+        <v-content>
+          <router-view/>
+        </v-content>
+       
     </v-app>
   </div> 
 </template>
 
 <script>
-
+import Loader from './components/Loader.vue';
+import { mapGetters } from 'vuex';
 export default {
   name: 'App',
   data () {
     return {
       data : ''
     }
+  },
+  computed:{
+    ...mapGetters([
+            'isLoading'
+    ])
+  },
+  components:{
+    Loader
   }
 };
 </script>

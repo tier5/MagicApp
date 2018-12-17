@@ -5,18 +5,25 @@
       type="success"
       transition="scale-transition"
     >
-      This is a success alert.
+      {{ successMessage }}
     </v-alert>
   </div>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
   export default {
     data () {
       return {
         successAlert: true
       }
-    }
+    },
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'successMessage'
+        ])
+    },
   }
 </script>
 

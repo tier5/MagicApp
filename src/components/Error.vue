@@ -5,18 +5,24 @@
       type="error"
       transition="scale-transition"
     >
-      This is a error alert.
+      {{errorMessage}}
     </v-alert>
   </div>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
   export default {
     data () {
       return {
         errorAlert: true
       }
-    }
+    },
+    computed: {
+        ...mapGetters([
+            'errorMessage'
+        ])
+    },
   }
 </script>
 
