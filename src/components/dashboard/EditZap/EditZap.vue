@@ -2,7 +2,7 @@
   <div>
     <v-card-text>
       <img src="../../../assets/images/logo.png" alt="Header Logo" class="header-logo">
-      <h2>Create a new ZAP</h2>
+      <h2>Edit My ZAP</h2>
       <p>Add multiple Params and Attributes as you need</p>
     </v-card-text>
     <v-card class="create-zap-form">
@@ -168,10 +168,10 @@
             
             <v-btn  
                 class="submit-btn" 
-                @click="createNewZap()" 
+                @click="updateZap()" 
                 :disabled="$v.newZap.$invalid && $v.urlParams.$invalid && $v.htmlIdentifier.$invalid">
               <img src="../../../assets/images/icon-zap-white.png">
-              <span>Create my ZAP</span>
+              <span>Edit ZAP</span>
             </v-btn>
           </v-flex>
         </v-layout>
@@ -186,6 +186,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import { required, minValue, maxValue  } from 'vuelidate/lib/validators'
 export default {
   data() {
@@ -220,13 +221,21 @@ export default {
     };
   },
   computed:{
-    isValid : function() {
-      return true
-    }
+    ...mapGetters([
+        'user',
+        'zap'
+    ])
   },
   methods: {
-    createNewZap(){
-        this.$store.dispatch('createNewZap',this.newZap);
+    updateZap(){
+        // changing the value of Exists to null
+        this.newZap.params = this.newZap.params.map(element => {
+          if (element.validationType === 'Exists'){
+              element.field_value = ''
+          }
+          return element;
+        });
+        this.$store.dispatch('updateZap',this.newZap);
     },
     addParams(){
       
@@ -335,10 +344,18 @@ export default {
           }
         },
     },
+    created:function(){
+      
+        this.newZap = this.zap;
+      
+    },
+    destroyed: function(){
+      this.$store.commit('viewZap',{});
+    }
 
 };
 </script>
 <style lang="scss">
 @import "../../../styles/common.scss";
-@import "./CreateNewZap.scss";
+@import "./EditZap.scss";
 </style>

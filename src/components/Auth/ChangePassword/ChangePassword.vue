@@ -1,7 +1,7 @@
  <template>
     <v-layout row justify-center class="passwordWrap">
-        <img src="../../../assets/images/smallcross.png" class="cross-btn" v-if="!isHidden" @click="dialog = false" v-on:click="isHidden = true">
-        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <img src="../../../assets/images/smallcross.png" class="cross-btn" v-if="isChangePasswordModalOpen" @click="closeChangePassword()">
+        <v-dialog v-model="isChangePasswordModalOpen" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card class="auth">
                 <v-layout row wrap>
                     <v-flex xs5>
@@ -20,20 +20,22 @@
                                         <v-flex xs12>
                                             <v-text-field 
                                                 label="Solo" 
-                                                v-model="password" 
-                                                :type="show1 ? 'text' : 'password'" 
+                                                v-model="user.password"
+                                                @blur="$v.user.password.$touch()"
+                                                type="text"
                                                 placeholder="NEW PASSWORD" solo>
                                             </v-text-field>
                                         </v-flex>
                                         <v-flex xs12>
                                             <v-text-field 
                                                     label="Solo" 
-                                                    v-model="confirmPassword" 
-                                                    :type="show1 ? 'text' : 'password'" 
+                                                    v-model="user.confirmPassword"
+                                                    @blur="$v.user.confirmPassword.$touch()"
+                                                    type="text" 
                                                     placeholder="CONFIRM PASSWORD" solo>
                                             </v-text-field>
                                         </v-flex>
-                                        <v-btn block class="orangeButton">
+                                        <v-btn block class="orangeButton" :disabled="$v.user.$invalid" @click="onResetPassword()">
                                             <img src="../../../assets/images/changepass.png" alt="changepassword">
                                                 change password
                                         </v-btn>
@@ -53,16 +55,53 @@
  </template> 
 
 <script>
+    import Success from '../../../components/Success.vue';
+    import Error from '../../../components/Error.vue';
+    import { required, sameAs, minLength} from 'vuelidate/lib/validators';
+    import {mapGetters} from 'vuex';
   export default {
     data () {
       return {
-        dialog: false,
-        password:'',
-        show1:false,
-        confirmPassword:'',
-        isHidden: true
+        user:{
+            password:'',
+            confirmPassword:''
+        }
       }
-    }
+    },
+    components: {
+        // Loader,
+        Success,
+        Error
+    },
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'isChangePasswordModalOpen',
+            'isError'
+        ])
+    },
+    methods:{
+        closeChangePassword(){
+            this.$store.commit('changeIsChangePasswordModalOpen', false);
+        },
+        onResetPassword(){
+            var payload = {
+                password: this.user.password
+            };
+            this.$store.dispatch('changePassord',payload)
+        }
+    },
+    validations:{
+        user:{
+            password:{
+                required,
+                minLength: minLength(6)
+            },
+            confirmPassword:{
+                sameAsPassword: sameAs('password')
+            }
+        }
+    },
   }
 </script>
 

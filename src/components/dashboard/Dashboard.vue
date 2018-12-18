@@ -10,8 +10,8 @@
               </div>
               <v-card-text class="username">
                 <div>
-                  <span>A</span>
-                </div>Alexander
+                  <span>{{user.name.charAt(0).toUpperCase()}}</span>
+                </div>{{user.name.toUpperCase()}}
               </v-card-text>
               <v-card-text class="left-menu">
                 <ul>
@@ -53,7 +53,7 @@
               </v-card-text>
               <v-card-text class="left-footer">
                 <ul>
-                  <li>
+                  <li @click="openChangePassword()">
                     <img src="../../assets/images/back-icon.png" alt="icon" class="back-icon">
                   </li>
                   <li>
@@ -61,7 +61,7 @@
                   </li>
                   <li>
                     <v-tooltip top>
-                      <v-btn slot="activator">
+                      <v-btn slot="activator" @click="logout()">
                         <img
                           src="../../assets/images/icon-logout.png"
                           alt="icon"
@@ -102,17 +102,17 @@
                     </div>
                     <div class="userMobile">
                       <div>
-                        <span>A</span>
-                      </div>Alexander
+                        <span>{{user.name.charAt(0).toUpperCase()}}</span>
+                      </div>{{user.name.toUpperCase()}}
                     </div>
                   </v-card-text>
                   <v-card-text class="left-menu">
                     <ul>
-                      <li>
+                      <li @click.prevent="changeRouterState('/magic')">
                         <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
                         <span>my zaps</span>
                       </li>
-                      <li>
+                      <li @click.prevent="changeRouterState('/magic/zapier-token')">
                         <img
                           src="../../assets/images/icon-zaptoken.png"
                           alt="icon"
@@ -150,7 +150,7 @@
                       </li>
                       <li>
                         <v-tooltip top>
-                          <v-btn slot="activator">
+                          <v-btn slot="activator" @click="logout()">
                             <img
                               src="../../assets/images/icon-logout.png"
                               alt="icon"
@@ -204,7 +204,7 @@
 <script>
 import ChangePassword from "../Auth/ChangePassword/ChangePassword.vue";
 import router from "../../router/index";
-
+import {mapGetters} from 'vuex';
 export default {
   components: {
     changepassword: ChangePassword
@@ -214,25 +214,24 @@ export default {
       drawer: null,
       mini: false,
       right: null,
-      items: ["Item 1", "Item 2", "Item 3", "Item 4"],
-      valid: true,
-      name: "",
-      paramName: "",
-      value: "",
-      paramName2: "",
-      selectType: "",
-      select: "",
-      nameRules: [
-        v => !!v || "Name is required",
-        v => (v && v.length <= 10) || "Name must be less than 10 characters"
-      ]
     };
   },
   methods:{
     changeRouterState(path){
       router.push(path)
+    },
+    logout(){
+      this.$store.commit('userSignOut');
+    },
+    openChangePassword(){
+      this.$store.commit('changeIsChangePasswordModalOpen', true);
     }
-  }
+  },
+  computed: {
+    ...mapGetters([
+        'user'
+    ])
+  },
 };
 </script>
 

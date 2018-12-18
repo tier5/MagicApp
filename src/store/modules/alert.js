@@ -1,5 +1,5 @@
 import Vue from 'vue';
-
+import router from '../../router/index'
 const state = {
   isSuccess : false,
   isError : false,
@@ -28,6 +28,9 @@ const mutations = {
       state.errorMessage = ''
     },2000)
 
+  },
+  changeRoute:(state, payload)=>{
+    router.push(payload);
   },
   successMessage:(state,payload) => state.successMessage = payload ,
   errorMessage:(state,payload) => state.errorMessage = payload

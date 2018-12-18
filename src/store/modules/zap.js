@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import router from '../../router/index';
 
 const state ={
   zapierAuth:{
@@ -67,6 +68,7 @@ const mutations = {
     state.isShowModal = false ;
   },
   viewZap:(state,payload)=>{
+
     state.zap = payload
   },
   alterViewZap:(state,payload)=>{
@@ -83,14 +85,13 @@ const actions = {
       .then(
         (res) => {
           if(res.body.status) {
+            router.push('/magic');
             if (res.body.zap){
               commit('addZap',res.body.zap);
             }
-            commit('hideModal');
-            let message = res.body.message;
+            
             commit('changeLoading',false);
-            commit('successMessage',message);
-            commit('successTrue');
+           
 
           } else {
             commit('changeLoading',false);
@@ -101,7 +102,7 @@ const actions = {
           commit('errorMessage',message);
           commit('errorTrue');
           commit('changeLoading',false);
-          console.log(err.body);
+          
         }
       )
   },
@@ -167,8 +168,7 @@ const actions = {
             commit('changeLoading',false);
             //commit('updateZap',payload);
             let message = res.body.message;
-            commit('successMessage',message);
-            commit('successTrue');
+            commit('changeRoute', '/magic');
             commit('hideModal');
           } else {
             commit('changeLoading',false);

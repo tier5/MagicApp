@@ -36,18 +36,19 @@ const mutations = {
     state.user = {};
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    router.push('/')
   },
   checkUserAuthentication: (state) => {
     if (localStorage.getItem('token') !== null && localStorage.getItem('token') !== undefined) {
       state.isAuthenticated = true;
       state.token = localStorage.getItem('token');
       state.user = JSON.parse(localStorage.getItem('user'));
-      //router.push('/magic');
+      router.push('/magic');
     } else {
       state.isAuthenticated = false;
       state.token = '';
       state.user = {};
-      //router.push('/login');
+      router.push('/');
     }
   },
   toggleForgotPasswordClicked:(state)=>{
@@ -194,13 +195,7 @@ const actions = {
           commit('changeLoading',false);
           if(res.body.status){
             commit('resetChangePasswordForm',true);
-            // swal({
-            //   position: 'center',
-            //   type: 'success',
-            //   title: 'Your password has been changed',
-            //   showConfirmButton: false,
-            //   timer: 1500
-            // })
+            commit('changeIsChangePasswordModalOpen', false);
           }
         },
         (err) => {

@@ -52,7 +52,7 @@
                 <v-flex xs4 sm4>
                   <div class="magicOption">
                     <span>magic option :</span>
-                    <v-radio-group v-model="zap.magicOption" row >
+                    <v-radio-group v-model="zap.magicOption" row @change="updateZap(zap)">
                       <v-radio label="on" :value="true" class="" v-bind:class="{ 'on': zap.magicOption }"></v-radio>
                       <v-radio label="off" :value="false" class="" v-bind:class="{ 'on': !zap.magicOption }"></v-radio>
                     </v-radio-group>
@@ -61,7 +61,7 @@
                 <v-flex xs4 sm4>
                   <div class="magicOption">
                     <span>append html :</span>
-                    <v-radio-group v-model="zap.elementOption" row>
+                    <v-radio-group v-model="zap.elementOption" row @change="updateZap(zap)">
                       <v-radio label="on" :value="true" class="" v-bind:class="{ 'on': zap.elementOption }"></v-radio>
                       <v-radio label="off" :value="false" class="" v-bind:class="{ 'on': !zap.elementOption }"></v-radio>
                     </v-radio-group>
@@ -70,7 +70,7 @@
                 <v-flex xs4 sm4 hidden-xs-only>
                   <div class="magicOption">
                     <span>cookie :</span>
-                    <v-radio-group v-model="zap.cookieOption" row>
+                    <v-radio-group v-model="zap.cookieOption" row @change="updateZap(zap)">
                       <v-radio label="on" :value="true" class="" v-bind:class="{ 'on': zap.cookieOption }"></v-radio>
                       <v-radio label="off" :value="false" class="" v-bind:class="{ 'on': !zap.cookieOption }"></v-radio>
                     </v-radio-group>
@@ -79,7 +79,7 @@
                 <v-flex xs4 sm4 hidden-xs-only>
                   <div class="magicOption">
                     <span>timeout :</span>
-                    <v-radio-group v-model="zap.timeoutOption" row >
+                    <v-radio-group v-model="zap.timeoutOption" row  @change="updateZap(zap)">
                       <v-radio label="on" :value="true" class="" v-bind:class="{ 'on': zap.timeoutOption }"></v-radio>
                       <v-radio label="off" :value="false" class="" v-bind:class="{ 'on': !zap.timeoutOption }"></v-radio>
                     </v-radio-group>
@@ -111,17 +111,17 @@
                       <v-list>
                         <v-list-tile>
                           <v-list-tile-title>
-                            <a>
+                            <a @click='ViewZap(zap)'>
                               <img src="../../../assets/images/view.png" alt="view">view
                             </a>
                           </v-list-tile-title>
                           <v-list-tile-title>
-                            <a>
+                            <a @click='EditZap(zap)'>
                               <img src="../../../assets/images/edit.png" alt="edit">edit
                             </a>
                           </v-list-tile-title>
                           <v-list-tile-title>
-                            <a>
+                            <a @click="deleteZap(zap._id)">
                               <img src="../../../assets/images/delete.png" alt="delete">delete
                             </a>
                           </v-list-tile-title>
@@ -144,20 +144,30 @@
   export default {
     data() {
       return {
-        radios3: 'on',
-        radios2: 'on',
-        radios1: 'on'
+        
       };
     },
     methods: {
-
+      deleteZap(id){
+        this.$store.dispatch('deleteZap',id);
+      },
+      ViewZap(zap){
+        this.$store.commit('viewZap',zap);
+        this.$store.commit('changeRoute', '/magic/zaps/view');
+      },
+      EditZap(zap){
+        this.$store.commit('viewZap',zap);
+        this.$store.commit('changeRoute', '/magic/zaps/edit');
+      },
+      updateZap(zap){
+        this.$store.dispatch('updateZap',zap);
+      },
     },
     computed:{
       ...mapGetters([
             'user',
             'zaps',
-            'isShowModal',
-            'viewZap'
+            'isShowModal'
       ]),
     },
     created(){

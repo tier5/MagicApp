@@ -8,7 +8,8 @@ import CreateNewZap from '../components/dashboard/CreateNewZap/CreateNewZap.vue'
 import ZapierToken from '../components/dashboard/ZapierToken/ZapierToken.vue';
 import MyZaps from '../components/dashboard/MyZaps/MyZaps.vue';
 import Dashboard from '../components/dashboard/Dashboard.vue';
-import Loader from '../components/Loader.vue';
+import ViewZap from '../components/dashboard/ViewZap/ViewZap.vue';
+import EditZap from '../components/dashboard/EditZap/EditZap.vue';
 
 Vue.use(Router);
 
@@ -41,6 +42,16 @@ export default new Router({
           path:'zaps/new',
           name: 'CreateZap',
           component: CreateNewZap
+        },
+        {
+          path:'zaps/view',
+          name: 'ViewZap',
+          component: ViewZap
+        },
+        {
+          path:'zaps/edit',
+          name: 'EditZap',
+          component: EditZap
         },
         {
           path:'zapier-token',

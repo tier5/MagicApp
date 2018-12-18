@@ -101,11 +101,11 @@
              Error
         },
         computed: {
-        // mix the getters into computed with object spread operator
-        ...mapGetters([
-            'isLoginModalOpen',
-            'isError'
-        ])
+            // mix the getters into computed with object spread operator
+            ...mapGetters([
+                'isLoginModalOpen',
+                'isError'
+            ])
         },
         methods:{
             closeModal(){
