@@ -19,14 +19,14 @@
           </v-flex>
         </v-layout>
       </div>
-      <div class="eachZap" id="zap_id1">
+      <div class="eachZap" v-for="zap in zaps" :key="zap._id">
         <v-layout row wrap>
           <v-flex md7 sm8>
             <div class="zapName">
-              <h3 class="zapText">sales bridge</h3>
+              <h3 class="zapText">{{zap.name}}</h3>
               <img src="../../../assets/images/icon-copy.png" alt="copy script">
-              <a>copy script</a>
-              <div class="switchblock hidden-sm-and-up text-xs-right">
+              <a v-clipboard="zap.scriptString">copy script</a>
+              <!-- <div class="switchblock hidden-sm-and-up text-xs-right">
                 <span class="cookie">Cookie:</span>
                 <label class="switch">
                   <input type="checkbox" checked>
@@ -35,15 +35,15 @@
                     <span class="off">OFF</span>
                   </span>
                 </label>
-              </div>
+              </div> -->
               <v-flex visible-xs-only>
                 <div class="mobilezaps">
                   <ul>
                     <li>
-                      <img src="../../../assets/images/pageviews.png" alt="page views">4521
+                      <img src="../../../assets/images/pageviews.png" alt="page views">{{zap.pageViewCount}}
                     </li>
                     <li>
-                      <img src="../../../assets/images/zaps.png" alt="zaps">2158
+                      <img src="../../../assets/images/zaps.png" alt="zaps">{{zap.zapierTriggerCount}}
                     </li>
                   </ul>
                 </div>
@@ -52,27 +52,36 @@
                 <v-flex xs4 sm4>
                   <div class="magicOption">
                     <span>magic option :</span>
-                    <v-radio-group v-model="radios1" row :mandatory="false">
-                      <v-radio label="on" value="on" class="on"></v-radio>
-                      <v-radio label="off" value="off" class="off"></v-radio>
+                    <v-radio-group v-model="zap.magicOption" row >
+                      <v-radio label="on" :value="true" class="" v-bind:class="{ 'on': zap.magicOption }"></v-radio>
+                      <v-radio label="off" :value="false" class="" v-bind:class="{ 'on': !zap.magicOption }"></v-radio>
                     </v-radio-group>
                   </div>
                 </v-flex>
                 <v-flex xs4 sm4>
                   <div class="magicOption">
                     <span>append html :</span>
-                    <v-radio-group v-model="radios2" row :mandatory="false">
-                      <v-radio label="on" value="on" class="on"></v-radio>
-                      <v-radio label="off" value="off" class="off"></v-radio>
+                    <v-radio-group v-model="zap.elementOption" row>
+                      <v-radio label="on" :value="true" class="" v-bind:class="{ 'on': zap.elementOption }"></v-radio>
+                      <v-radio label="off" :value="false" class="" v-bind:class="{ 'on': !zap.elementOption }"></v-radio>
                     </v-radio-group>
                   </div>
                 </v-flex>
                 <v-flex xs4 sm4 hidden-xs-only>
                   <div class="magicOption">
                     <span>cookie :</span>
-                    <v-radio-group v-model="radios3" row :mandatory="false">
-                      <v-radio label="on" value="on" class="on"></v-radio>
-                      <v-radio label="off" value="off" class="off"></v-radio>
+                    <v-radio-group v-model="zap.cookieOption" row>
+                      <v-radio label="on" :value="true" class="" v-bind:class="{ 'on': zap.cookieOption }"></v-radio>
+                      <v-radio label="off" :value="false" class="" v-bind:class="{ 'on': !zap.cookieOption }"></v-radio>
+                    </v-radio-group>
+                  </div>
+                </v-flex>
+                <v-flex xs4 sm4 hidden-xs-only>
+                  <div class="magicOption">
+                    <span>timeout :</span>
+                    <v-radio-group v-model="zap.timeoutOption" row >
+                      <v-radio label="on" :value="true" class="" v-bind:class="{ 'on': zap.timeoutOption }"></v-radio>
+                      <v-radio label="off" :value="false" class="" v-bind:class="{ 'on': !zap.timeoutOption }"></v-radio>
                     </v-radio-group>
                   </div>
                 </v-flex>
@@ -83,10 +92,10 @@
             <div class="zaps">
               <v-layout row wrap>
                 <v-flex md4 sm5>
-                  <h3 class="zapText">2547</h3>
+                  <h3 class="zapText">{{zap.pageViewCount}}</h3>
                 </v-flex>
                 <v-flex md4 sm5>
-                  <h3 class="zapText">2142</h3>
+                  <h3 class="zapText">{{zap.zapierTriggerCount}}</h3>
                 </v-flex>
                 <v-flex md4 sm2 text-xs-right>
                   <v-card>
@@ -129,22 +138,35 @@
     </v-card-text>
   </div>
 </template>
-    <script>
-export default {
-  data() {
-    return {
-      drawer: null,
-      mini: false,
-      right: null,
-      value: "",
-      radios1: "",
-      radios2: "",
-      radios3: ""
-    };
-  }
-};
+
+<script>
+  import { mapGetters } from 'vuex';
+  export default {
+    data() {
+      return {
+        radios3: 'on',
+        radios2: 'on',
+        radios1: 'on'
+      };
+    },
+    methods: {
+
+    },
+    computed:{
+      ...mapGetters([
+            'user',
+            'zaps',
+            'isShowModal',
+            'viewZap'
+      ]),
+    },
+    created(){
+      this.$store.dispatch('getZap',this.user);
+    }
+  };
 </script>
-    <style lang="scss">
+
+<style lang="scss">
 @import "../../../styles/common.scss";
 @import "./MyZaps.scss";
 </style>

@@ -15,11 +15,11 @@
               </v-card-text>
               <v-card-text class="left-menu">
                 <ul>
-                  <li @click.prevent="changeRouterState('/dashboard')">
+                  <li @click.prevent="changeRouterState('/magic')">
                     <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
                     <span>my zaps</span>
                   </li>
-                  <li @click.prevent="changeRouterState('/dashboard/zapier-token')">
+                  <li @click.prevent="changeRouterState('/magic/zapier-token')">
                     <img
                       src="../../assets/images/icon-zaptoken.png"
                       alt="icon"
@@ -33,7 +33,7 @@
                   </li>
                 </ul>
               </v-card-text>
-              <v-card-text class="create-new-zap" @click.prevent="changeRouterState('/dashboard/zaps/new')">
+              <v-card-text class="create-new-zap" @click.prevent="changeRouterState('/magic/zaps/new')">
                 <img src="../../assets/images/icon-createzap.png" alt="icon">
                 <h2>Create a New Zap</h2>
               </v-card-text>
@@ -204,6 +204,7 @@
 <script>
 import ChangePassword from "../Auth/ChangePassword/ChangePassword.vue";
 import router from "../../router/index";
+
 export default {
   components: {
     changepassword: ChangePassword
@@ -237,6 +238,8 @@ export default {
 
 
 <style lang='scss'>
-@import "../../styles/common.scss";
-@import "./Dashboard.scss";
+
+  @import "../../styles/common.scss";
+  @import "./Dashboard.scss";
+
 </style>

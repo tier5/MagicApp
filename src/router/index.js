@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import AuthGuard from './gaurds/auth-gaurd'; 
+import AuthGaurd from './gaurds/auth-gaurd'; 
 import Home from '../views/Home/Home.vue';
 import ChangePassword from '../components/Auth/ChangePassword/ChangePassword.vue';
 import CreateNewZap from '../components/dashboard/CreateNewZap/CreateNewZap.vue';
@@ -27,14 +27,10 @@ export default new Router({
       component: ChangePassword,
     },
     {
-      path: '/loader',
-      name:'Loader',
-      component: Loader
-    },
-    {
       path: '/magic',
       name: 'Dashboard',
       component: Dashboard,
+      beforeEnter: AuthGaurd,
       children:[
         {
           path:'',

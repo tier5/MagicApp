@@ -17,7 +17,7 @@
                     <v-toolbar-items>
                       <v-btn flat v-if="!isAuthenticated">Features</v-btn>
                       <v-btn flat v-if="!isAuthenticated">Pricing</v-btn>
-                      <v-btn flat v-if="isAuthenticated">Dashboard</v-btn>
+                      <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
                       <span
                         class="freetrialbtn"
                         
@@ -80,6 +80,7 @@
 <script>
 import Login from "../../components/Auth/Login/Login.vue";
 import { mapGetters } from "vuex";
+import router from "../../router/index"
 export default {
   data() {
     return {
@@ -107,6 +108,9 @@ export default {
     },
     signOut(){
       this.$store.commit('userSignOut');
+    },
+    customRouter(path){
+      router.push(path);
     }
   },
   components: {

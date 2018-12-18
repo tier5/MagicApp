@@ -165,9 +165,9 @@
                             font-size: 10px;
                             font-family: 'Avenir LT Std 85 Heavy';
                         }
-                        .off{
+                        .on{
                             .theme--light.v-label{
-                                color: $darkblue;
+                                color: $orange;
                                 
                             }
                         }
@@ -193,7 +193,7 @@
                 width: 20%
             }
             .theme--light.v-label{
-                color: $orange;
+                color: $darkblue;
                 font-size: 10px;
                 font-family: 'Avenir LT Std 85 Heavy';
                 text-transform: uppercase;
