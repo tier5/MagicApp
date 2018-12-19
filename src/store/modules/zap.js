@@ -10,8 +10,8 @@ const state ={
   zaps:[],
   viewZap:false,
   zap : {},
-  zapStats:{}
-
+  zapStats:{},
+  searchZap : ''
 }
 
 const getters = {
@@ -26,7 +26,8 @@ const getters = {
   },
   viewZap:state => state.viewZap,
   zap:state => state.zap,
-  zapStats: state => state.zapStats
+  zapStats: state => state.zapStats,
+  searchZap: state => state.searchZap
 };
 
 const mutations = {
@@ -78,6 +79,9 @@ const mutations = {
   },
   getZapStats: (state, payload)=>{
     state.zapStats = payload
+  },
+  setSearchZap: (state, payload)=>{
+    state.searchZap = payload
   }
 
 }

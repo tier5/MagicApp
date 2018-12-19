@@ -15,11 +15,12 @@
               </v-card-text>
               <v-card-text class="left-menu">
                 <ul>
-                  <li @click.prevent="changeRouterState('/magic')" class="active">
+                    
+                  <li @click.prevent="changeRouterState('/magic')" :class="{'active' : this.$route.path == '/magic'}">
                     <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
                     <span>my zaps</span>
                   </li>
-                  <li @click.prevent="changeRouterState('/magic/zapier-token')">
+                  <li @click.prevent="changeRouterState('/magic/zapier-token')" :class="{'active' : this.$route.path == '/magic/zapier-token'}">
                     <img
                       src="../../assets/images/icon-zaptoken.png"
                       alt="icon"
@@ -118,11 +119,11 @@
                   </v-card-text>
                   <v-card-text class="left-menu">
                     <ul>
-                      <li @click.prevent="changeRouterState('/magic')">
+                      <li @click.prevent="changeRouterState('/magic')" :class="{'active' : this.$route.path == '/magic'}">
                         <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
                         <span>my zaps</span>
                       </li>
-                      <li @click.prevent="changeRouterState('/magic/zapier-token')">
+                      <li @click.prevent="changeRouterState('/magic/zapier-token')" :class="{'active' : this.$route.path == '/magic/zapier-token'}">
                         <img
                           src="../../assets/images/icon-zaptoken.png"
                           alt="icon"
@@ -139,15 +140,17 @@
                   <v-card-text class="total-zaps">
                     <v-card-text>
                       <h3>total zaps</h3>
-                      <h4>{{zapStats.totalZaps}}</h4>
+                      <h4>{{totalZaps}}</h4>
                     </v-card-text>
                     <v-card-text>
                       <h3>total page views</h3>
-                      <h4>15,282</h4>
+                      <h4>{{totalPageViews}}</h4>
                     </v-card-text>
                     <v-card-text>
                       <h3>total zaps triggered</h3>
-                      <h4>12,852</h4>
+                      <h4>
+                        {{totalZapsTriggered}}
+                      </h4>
                     </v-card-text>
                   </v-card-text>
                   <v-card-text class="left-footer text-xs-right">
@@ -181,7 +184,7 @@
               <v-layout row wrap>
                 <v-flex sm6 xs12>
                   <v-card-text class="search-bar">
-                    <v-text-field placeholder="Search your zaps"></v-text-field>
+                    <v-text-field placeholder="Search your zaps"  v-model="search" :change="changeSearchZap()"></v-text-field>
                   </v-card-text>
                 </v-flex>
                 <v-flex sm6 xs12 hidden-xs-only>
@@ -224,6 +227,7 @@ export default {
       drawer: null,
       mini: false,
       right: null,
+      search : ''
     };
   },
   methods:{
@@ -234,13 +238,18 @@ export default {
       this.$store.commit('userSignOut');
     },
     openChangePassword(){
+      
       this.$store.commit('changeIsChangePasswordModalOpen', true);
+    },
+    changeSearchZap(){
+      this.$store.commit('setSearchZap', this.search);
     }
   },
   computed: {
     ...mapGetters([
         'user',
-        'zapStats'
+        'zapStats',
+        'searchZap'
     ]),
     totalPageViews: function(){
       if (this.zapStats && this.zapStats.totalPageViews){
