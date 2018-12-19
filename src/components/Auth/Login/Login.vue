@@ -14,7 +14,10 @@
                         </v-flex>
                         <v-flex xs7>
                             <v-card-text class="login">
-                                <Error v-if="isError"/>
+                                <v-menu transition="scale-transition" origin="center center">
+                                    <Error v-if="isError"/>
+                                </v-menu>
+                                
                                 <img src="../../../assets/images/smalllogo.svg" aspect-ratio="2.75" class="smalllogo" alt="smalllogo">
                                 <v-form>
                                     <v-container>

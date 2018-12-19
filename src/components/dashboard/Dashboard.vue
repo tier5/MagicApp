@@ -40,15 +40,15 @@
               <v-card-text class="total-zaps">
                 <v-card-text>
                   <h3>total zaps</h3>
-                  <h4>06</h4>
+                  <h4>{{totalZaps}}</h4>
                 </v-card-text>
                 <v-card-text>
                   <h3>total page views</h3>
-                  <h4>15,282</h4>
+                  <h4>{{totalPageViews}}</h4>
                 </v-card-text>
                 <v-card-text>
                   <h3>total zaps triggered</h3>
-                  <h4>12,852</h4>
+                  <h4>{{totalZapsTriggered}}</h4>
                 </v-card-text>
               </v-card-text>
               <v-card-text class="left-footer">
@@ -139,7 +139,7 @@
                   <v-card-text class="total-zaps">
                     <v-card-text>
                       <h3>total zaps</h3>
-                      <h4>06</h4>
+                      <h4>{{zapStats.totalZaps}}</h4>
                     </v-card-text>
                     <v-card-text>
                       <h3>total page views</h3>
@@ -239,9 +239,31 @@ export default {
   },
   computed: {
     ...mapGetters([
-        'user'
-    ])
+        'user',
+        'zapStats'
+    ]),
+    totalPageViews: function(){
+      if (this.zapStats && this.zapStats.totalPageViews){
+        return this.zapStats.totalPageViews
+      }
+      return 0
+    },
+    totalZaps: function(){
+      if (this.zapStats && this.zapStats.totalZaps){
+        return this.zapStats.totalZaps
+      }
+      return 0
+    },
+    totalZapsTriggered: function(){
+      if (this.zapStats && this.zapStats.totalZapsTriggered){
+        return this.zapStats.totalZapsTriggered
+      }
+      return 0
+    }
   },
+  created(){
+    this.$store.dispatch('getZapStats',{});
+  }
 };
 </script>
 

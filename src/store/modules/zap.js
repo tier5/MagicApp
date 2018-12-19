@@ -9,7 +9,8 @@ const state ={
   isShowModal: false,
   zaps:[],
   viewZap:false,
-  zap : {}
+  zap : {},
+  zapStats:{}
 
 }
 
@@ -24,7 +25,8 @@ const getters = {
     return state.isShowModal
   },
   viewZap:state => state.viewZap,
-  zap:state => state.zap
+  zap:state => state.zap,
+  zapStats: state => state.zapStats
 };
 
 const mutations = {
@@ -73,6 +75,9 @@ const mutations = {
   },
   alterViewZap:(state,payload)=>{
     state.viewZap = payload
+  },
+  getZapStats: (state, payload)=>{
+    state.zapStats = payload
   }
 
 }
@@ -182,7 +187,28 @@ const actions = {
           console.log(err.body);
         }
       )
-  }
+  },
+  getZapStats:({commit},payload)=>{
+    commit('changeLoading',true);
+    Vue.http.get('zaps/stats', payload)
+      .then(
+        (res) => {
+          commit('changeLoading',false);
+          if(res.body.status) {
+            if(res.body.data){
+              commit('getZapStats',res.body.data)
+
+            }
+          } else {
+
+          }
+        },
+        (err) => {
+          commit('changeLoading',false);
+          //console.log(err.body.message);
+        }
+      )
+  },
 }
 
 
