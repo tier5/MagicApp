@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="createNewZap">
     <v-card-text>
       <img src="../../../assets/images/logo.png" alt="Header Logo" class="header-logo">
       <h2>Create a new ZAP</h2>

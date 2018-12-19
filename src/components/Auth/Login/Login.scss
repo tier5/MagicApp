@@ -38,8 +38,19 @@
 .auth{
     background: $lightblue !important;
 }
+.validation-error-message{
+    color: red !important;
+    display: block;
+    font-size: 12px !important;
+    margin-top: 5px !important;
+    font-family: 'Avenir LT Std 55 Roman' !important;
+}
+.form-error-box{
+    .v-input__slot{
+        box-shadow: 0 2px 5px red !important;
+    }
+}
 .v-dialog{
-    opacity: 0.9;
     .heading.leftSpace{
         position: absolute;
         top:50%;
@@ -105,7 +116,7 @@
                     }
                 }
             }
-            .orangeButton{
+            .orangeButton,.orangeButton--text{
                 border-radius: 5px;
                 color: $white;
                 letter-spacing: 2px;
@@ -123,6 +134,15 @@
                     width: 6%;
                 }
             }
+            .orangeButton--text{
+                opacity: 0.5;
+            }
+            .theme--light.v-btn.v-btn--disabled:not(.v-btn--icon):not(.v-btn--flat):not(.v-btn--outline){
+                background-color: $orange !important;
+            }
+            .theme--light.v-btn.v-btn--disabled{
+                color: white !important;
+            }
         }
     }
 }
@@ -137,6 +157,7 @@
         font-size: 12px;
         font-weight: bold;
         letter-spacing: 1px;
+        caret-color: $topbar_text;
     }
     .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
         box-shadow: 0 7px 49px $lightshadow;

@@ -27,6 +27,9 @@
                     text-transform: uppercase;
                     color: $darkgrey;
                     font-family: 'Avenir LT Std 45 Book';
+                    @media screen and (max-width: 1259px){
+                        font-size: 10px;
+                    }
                 }
             }
             .eachZap{
@@ -44,6 +47,7 @@
                     border-radius: 5px;
                     border-top: none;
                     transition: 0.3s;
+                    cursor: pointer;
                     h3{
                         color: $orange;
                         transition: 0.3s;
@@ -53,6 +57,9 @@
                     }
                 }
                 .zaps{
+                    @media screen and (max-width: 959px){
+                        text-align: center;
+                    }
                     .v-menu__activator{
                         button.v-btn{
                             margin: 0;
@@ -173,6 +180,14 @@
                         }
                     }
                 }
+                .magicOption{
+                    margin-top: 10px;
+                    span{
+                        text-transform: uppercase;
+                        font-size: 9px;
+                        font-family: 'Avenir LT Std 85 Heavy';
+                    }
+                }
                 h3{
                     font-size: 20px;
                     font-family: 'Avenir LT Std 65 Medium';
@@ -180,9 +195,21 @@
                     text-transform: capitalize;
                     display: inline-block;
                     margin-right: 26px;
+                    @media screen and (max-width: 959px){
+                        font-size: 16px;
+                    }
                 }
                 .mobilezaps{
-                    display: none;
+                    ul{
+                        li{
+                            display: inline-block;
+                            margin-right: 20px;
+                            color: $placeholder_text;
+                            img{
+                                width: auto;
+                            }
+                        }
+                    }
                 } 
             }
             }
@@ -199,6 +226,9 @@
                 text-transform: uppercase;
             }
         }
+    }
+    .v-input--selection-controls:not(.v-input--hide-details) .v-input__slot{
+        margin-bottom: 0;
     }
 .v-menu__content.theme--light{
     min-width: 100px !important;

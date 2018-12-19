@@ -30,11 +30,11 @@
                                                 </v-text-field>
                                                 <span class="validation-error-message"
                                                         v-if="!$v.user.email.required && $v.user.email.$error">
-                                                        Required!
+                                                        This field is Required!
                                                 </span>
                                                 <span class="validation-error-message"
                                                     v-if="!$v.user.email.email && $v.user.email.$error">
-                                                    Must be an Email
+                                                    Must be an Email!
                                                 </span>
                                             </v-flex>
 
@@ -51,11 +51,11 @@
                                                 </v-text-field>
                                                 <span class="validation-error-message"
                                                     v-if="!$v.user.password.required && $v.user.password.$error">
-                                                    Required!
+                                                    This field is Required!
                                                 </span>
                                             </v-flex>
                                             <a href="#" class="forgotpass">forgot password?</a>
-                                            <v-btn block color="orangeButton" dark 
+                                            <v-btn block color="orangeButton" 
                                                 :disabled="$v.user.$invalid"
                                                 @click="onLogin">
                                                 <img src="../../../assets/images/lock.png" alt="login">login

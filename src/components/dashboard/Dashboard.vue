@@ -15,7 +15,7 @@
               </v-card-text>
               <v-card-text class="left-menu">
                 <ul>
-                  <li @click.prevent="changeRouterState('/magic')">
+                  <li @click.prevent="changeRouterState('/magic')" class="active">
                     <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
                     <span>my zaps</span>
                   </li>
@@ -53,11 +53,21 @@
               </v-card-text>
               <v-card-text class="left-footer">
                 <ul>
-                  <li @click="openChangePassword()">
-                    <img src="../../assets/images/back-icon.png" alt="icon" class="back-icon">
+                  <li>
+                    <v-tooltip top>
+                      <v-btn slot="activator" @click="openChangePassword()">
+                        <img src="../../assets/images/back-icon.png" alt="icon" class="back-icon">
+                      </v-btn>
+                      <span>CHANGE PASSWORD</span>
+                    </v-tooltip>
                   </li>
                   <li>
-                    <img src="../../assets/images/user-icon.png" alt="icon" class="user-icon">
+                    <v-tooltip top>
+                      <v-btn slot="activator" @click="logout()">
+                        <img src="../../assets/images/user-icon.png" alt="icon" class="user-icon">
+                      </v-btn>
+                      <span>MY PROFILE</span>
+                    </v-tooltip>
                   </li>
                   <li>
                     <v-tooltip top>
@@ -184,13 +194,13 @@
             </v-card-text>
           </v-card>
           <v-layout>
-            <v-flex md2></v-flex>
-            <v-flex md8>
+            <v-flex md1></v-flex>
+            <v-flex md10>
               <div class="dashboard-body">
                 <router-view/>
               </div>
             </v-flex>
-            <v-flex md2></v-flex>
+            <v-flex md1></v-flex>
           </v-layout>
         </v-flex>
       </v-layout>

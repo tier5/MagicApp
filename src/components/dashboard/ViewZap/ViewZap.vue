@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="viewZap">
     <v-card-text>
       <img src="../../../assets/images/logo.png" alt="Header Logo" class="header-logo">
       <h2>My ZAP</h2>
-      <p>Add multiple Params and Attributes as you need</p>
+      <p>Take a look on the zap you have created</p>
     </v-card-text>
     <v-card class="create-zap-form">
 
@@ -14,7 +14,7 @@
             <span class="dot"></span> Name
           </span>
           <v-flex xs12>
-            <v-card-text>
+            <v-card-text class="name">
               {{zap.name}}
             </v-card-text>
           </v-flex>
@@ -60,35 +60,36 @@
           <span class="progress-bar">
             <span class="dot filled" ></span> Timeout
           </span>
-          <v-flex md4 xs12>
-            <v-card-text class="timeout-field">
-              {{zap.timeout.days}}
-              <span>Days</span>
-            </v-card-text>
-          </v-flex>
-          <v-flex md4 xs12>
-            <v-card-text class="timeout-field">
-              {{zap.timeout.hours}}
-              <span>Hour</span>
-            </v-card-text>
-          </v-flex>
-          <v-flex md4 xs12>
-            <v-card-text class="timeout-field">
-              {{zap.timeout.minutes}}
-              <span>Min</span>
+          <v-flex xs12>
+            <v-card-text>
+              <ul>
+                <li>
+                  <span>{{zap.timeout.days}}
+                  Days</span>
+                </li>
+                <li>
+                  <span>{{zap.timeout.hours}}
+                  Hour</span>
+                </li>
+                <li>
+                  <span>{{zap.timeout.minutes}}
+                  Min</span>
+                </li>
+
+              </ul>
             </v-card-text>
           </v-flex>
         </v-layout>
         <!-- Timeout Section Ends -->
         <v-layout row wrap>
-          <v-flex md12 text-xs-center>
+          <v-flex md12>
             
             <v-btn  
                 class="submit-btn" 
                 @click="customRoute('/magic')" 
                 >
-              <img src="../../../assets/images/icon-zap-white.png">
-              <span>My Zaps</span>
+              <img src="../../../assets/images/icon-back-orange.png" alt="icon-back">
+              <span>Return to My Zaps</span>
             </v-btn>
           </v-flex>
         </v-layout>
