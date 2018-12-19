@@ -199,11 +199,34 @@ function updateCounter(userToken,zapId,counterName){
     });
 }
 
+function getUserZapsStats(req, res, next){
+    let token = req.headers.authorization || req.body.token || req.headers.token;
+    Users.aggregate({
+        $match : {
+            accessToken : token,
+        }
+    },{
+        $project : {
+            totalZaps : { $size : "$zaps"},
+            totalPageViews : {$sum : "$zaps.pageViewCount"},
+            totalZapsTriggered: {$sum : "$zaps.totalZapsTriggered"}
+        }
+    }).then(data => {
+        if (!data.length){
+            return res.status(400).send({ message: 'Bad Request', status : false, data: {}})
+        }
+
+        return res.status(200).send({message : 'ok', status: true, data : data[0]})
+    }).catch(error=>{
+        return res.status(200).send({message : 'Server Internal Error', status: false, data : {}})
+    })
+}
 module.exports = {
     getZaps,
     createZap,
     deleteZap,
     findZap,
     updateZap,
-    updateCounter
+    updateCounter,
+    getUserZapsStats
 }

@@ -6,7 +6,11 @@ var express = require('express');
 var router = express.Router();
 
 // import all controllers for the routes
-var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
+var { createZap,
+      getZaps,
+      deleteZap,
+      updateZap, 
+      getUserZapsStats}                             = require('../controllers/zapController');
 var {saveScriptData, getElementAttribute}           = require('../controllers/scriptController');
 var {usersZaps,getScriptZaps,subscribtionZaps}      = require('../controllers/zapierController');
 var { isAuthorized ,
@@ -54,10 +58,11 @@ const { createTutorial,
 /**
  * Create, read, update and delete Zaps
  */
-  router.post('/zaps',isUserSubscribed,createZap)
-  router.get('/zaps',isUserSubscribed,getZaps);
-  router.delete('/zaps/:id',isUserSubscribed,deleteZap);
-  router.put('/zaps/:id',isUserSubscribed,updateZap);
+  router.post('/zaps',isAuthorized,isUserSubscribed,createZap)
+  router.get('/zaps',isAuthorized, isUserSubscribed,getZaps);
+  router.delete('/zaps/:id',isAuthorized, isUserSubscribed,deleteZap);
+  router.put('/zaps/:id',isAuthorized, isUserSubscribed,updateZap);
+  router.get('/zaps/stats', isAuthorized, isUserSubscribed, getUserZapsStats);
 
 // Saves script's data to database
   router.post('/script-data',saveScriptData);
