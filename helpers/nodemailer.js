@@ -39,6 +39,7 @@ function sendForgetPasswordMail(email,token,callback){
         };
         // send mail with defined transport object
         transporter.sendMail(mailOptions, (error, info) => {
+            console.log(error)
             callback(err,info);
         });
     });

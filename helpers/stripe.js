@@ -4,8 +4,18 @@
  *  API REFERENCE : https://stripe.com/docs/api
  */
 
-var stripeKey = process.env.STRIPE_KEY;
-var stripe = require("stripe")(stripeKey);
+var stripeKey                   = process.env.STRIPE_KEY;
+var stripe                      = require("stripe")(stripeKey);
+const  WEBHOOK_SECRET           = process.env.WEBHOOK_SECRET
+
+
+if (!stripeKey){
+    throw new Error('Stripe key is missing in config')
+}
+
+if (!WEBHOOK_SECRET){
+    throw new Error('Missing webhook secret');
+}
 
 /**
  * Function for creating customer in stripe
@@ -13,16 +23,16 @@ var stripe = require("stripe")(stripeKey);
  * @param {string} cardToken payment card token
  * @returns Promise
  */
-function createCustomer(email, cardToken){
+function createCustomer(email, cardToken) {
     var user = {
-        description : 'Customer for amagiczap application',
-        email : email,
+        description: 'Customer for amagiczap application',
+        email: email,
         source: cardToken
     };
-    return new Promise((resolve,reject)=>{
-        stripe.customers.create(user, function(err, customer) {
+    return new Promise((resolve, reject) => {
+        stripe.customers.create(user, function (err, customer) {
             // asynchronously called
-            if(!err){
+            if (!err) {
                 resolve(customer);
                 //console.log(customer)
             } else {
@@ -38,12 +48,12 @@ function createCustomer(email, cardToken){
  * @param nill
  * @returns Promise
  */
-function getAllPlans(){
-    return new Promise ((resolve,reject)=>{
+function getAllPlans() {
+    return new Promise((resolve, reject) => {
         stripe.plans.list(
-            { },
-            function(err, plans) {
-            // asynchronously called
+            {},
+            function (err, plans) {
+                // asynchronously called
                 if (!err) {
                     resolve(plans)
                     //console.log(plans)
@@ -62,16 +72,17 @@ function getAllPlans(){
  * @param {string} planId
  * @returns Promise
  */
-function createSubscription(customerId,planId){
-    return new Promise ((resolve,reject)=>{
+function createSubscription(customerId, planId, trail) {
+    return new Promise((resolve, reject) => {
         stripe.subscriptions.create({
             customer: customerId,
+            trial_from_plan: trail,
             items: [
-            {
-                plan: planId,
-            },
+                {
+                    plan: planId,
+                },
             ]
-        }, function(err, subscription) {
+        }, function (err, subscription) {
             if (!err) {
                 resolve(subscription)
                 //console.log(subscription);
@@ -91,14 +102,14 @@ function createSubscription(customerId,planId){
  * @param {string} currency
  * @returns Promise
  */
-function createCharge(cardToken,customerId,amount,currency){
+function createCharge(cardToken, customerId, amount, currency) {
 
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         stripe.charges.create({
             amount: amount,
             currency: currency,
             customer: customerId
-        }, function(err, charge) {
+        }, function (err, charge) {
             // asynchronously called
             if (!err) {
                 resolve(charge)
@@ -116,17 +127,17 @@ function createCharge(cardToken,customerId,amount,currency){
  * @returns Promise
  */
 function deleteCustomer(customerId) {
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         stripe.customers.del(
-        customerId,
-        function(err, confirmation) {
-            // asynchronously called
-            if(!err){
-            resolve(confirmation)
-            } else {
-            reject(err)
+            customerId,
+            function (err, confirmation) {
+                // asynchronously called
+                if (!err) {
+                    resolve(confirmation)
+                } else {
+                    reject(err)
+                }
             }
-        }
         );
     })
 }
@@ -135,18 +146,18 @@ function deleteCustomer(customerId) {
  * @param {string} customerId
  * @returns Promise
  */
-function retrieveCustomer (customerId){
-    return new Promise((resolve,reject)=>{
+function retrieveCustomer(customerId) {
+    return new Promise((resolve, reject) => {
         stripe.customers.retrieve(
-        customerId,
-        function(err, confirmation) {
-            // asynchronously called
-            if(!err){
-            resolve(confirmation)
-            } else {
-            reject(err)
+            customerId,
+            function (err, confirmation) {
+                // asynchronously called
+                if (!err) {
+                    resolve(confirmation)
+                } else {
+                    reject(err)
+                }
             }
-        }
         );
     })
 }
@@ -155,20 +166,20 @@ function retrieveCustomer (customerId){
  * @param {string} customerId 
  * @param {string} cardToken 
  */
-function createCard (customerId, cardToken){
-    return new Promise((resolve,reject)=>{
+function createCard(customerId, cardToken) {
+    return new Promise((resolve, reject) => {
         stripe.customers.createSource(
             customerId,
             { source: cardToken },
-            function(err, card) {
-              // asynchronously called
-              if(!err){
-                resolve(card)
+            function (err, card) {
+                // asynchronously called
+                if (!err) {
+                    resolve(card)
                 } else {
-                reject(err)
+                    reject(err)
                 }
             }
-          );
+        );
     })
 }
 /**
@@ -176,23 +187,46 @@ function createCard (customerId, cardToken){
  * @param {string} subscriptionId 
  * @param {string} planId 
  */
-function updateSubscription(subscriptionId,planId){
-    return new Promise((resolve,reject)=>{
-        stripe.subscriptions.retrieve(subscriptionId,function(err,subscription){
-            if (!err){
-                stripe.subscriptions.update(subscriptionId, {
-                    items: [{
-                      id: subscription.items.data[0].id,
-                      plan: planId,
-                    }]
-                  },function(err,sub){
-                    // asynchronously called
-                    if(!err){
-                        resolve(sub)
-                        } else {
-                        reject(err)
-                        }
-                  });
+function updateSubscription(subscriptionId, planId) {
+
+    
+
+    return new Promise((resolve, reject) => {
+
+        let afterChecking = function(subscription){
+            stripe.subscriptions.update(subscriptionId, {
+                items: [{
+                    id: subscription.items.data[0].id,
+                    plan: planId,
+                }]
+            }, function (err, sub) {
+                // asynchronously called
+                if (!err) {
+                    resolve(sub)
+                } else {
+                    reject(err)
+                }
+            });
+        }
+
+        stripe.subscriptions.retrieve(subscriptionId, function (err, subscription) {
+            //console.log(subscription);
+            if (!err) {
+                if (subscription.status === 'trialing'){
+                    stripe.subscriptions.update(subscriptionId, {
+                        trial_end: 'now',
+                      }).then(done => {
+
+                        afterChecking(subscription)
+
+                      }).catch(error=> {
+                          reject(error);
+                      })
+                } else {
+
+                    afterChecking(subscription)
+                }
+                
             } else {
                 reject(err)
             }
@@ -204,10 +238,10 @@ function updateSubscription(subscriptionId,planId){
  * Function to retrive Subscriptions
  * @param {Object} subscriptionId 
  */
-function retriveSubscription(subscriptionId){
-    return new Promise((resolve,reject)=>{
-        stripe.subscriptions.retrieve(subscriptionId,function(err,subscription){
-            if(!err){
+function retriveSubscription(subscriptionId) {
+    return new Promise((resolve, reject) => {
+        stripe.subscriptions.retrieve(subscriptionId, function (err, subscription) {
+            if (!err) {
                 resolve(subscription);
             } else {
                 reject(err);
@@ -223,16 +257,16 @@ function retriveSubscription(subscriptionId){
  * @param {String} cardId
  * @returns Promise 
  */
-function retriveCustomerCard(customerId){
-    return new Promise ((resolve,reject)=>{
-        stripe.customers.listCards(customerId, function(err, cards) {
+function retriveCustomerCard(customerId) {
+    return new Promise((resolve, reject) => {
+        stripe.customers.listCards(customerId, function (err, cards) {
             // asynchronously called
-            if (!err){
+            if (!err) {
                 resolve(cards);
             } else {
                 reject(err);
             };
-          });
+        });
     });
 };
 /**
@@ -241,12 +275,12 @@ function retriveCustomerCard(customerId){
  * @param {String} cardToken 
  * @returns PROMISE 
  */
-function createSource(customerId,cardToken){
-    return new Promise((resolve,reject)=>{
-        stripe.customers.createSource(customerId,{
-            source:cardToken
-        },function(err,source){
-            if (!err){
+function createSource(customerId, cardToken) {
+    return new Promise((resolve, reject) => {
+        stripe.customers.createSource(customerId, {
+            source: cardToken
+        }, function (err, source) {
+            if (!err) {
                 resolve(source);
             } else {
                 reject(err);
@@ -261,17 +295,17 @@ function createSource(customerId,cardToken){
  * @param {String} cardToken 
  * @returns PROMISE 
  */
-function defaultSource(customerId,cardId){
-    return new Promise((resolve,reject)=>{
+function defaultSource(customerId, cardId) {
+    return new Promise((resolve, reject) => {
         stripe.customers.update(customerId, {
-            default_source: cardId  
-          },function(err,data){
-            if (!err){
+            default_source: cardId
+        }, function (err, data) {
+            if (!err) {
                 resolve(data);
-            } else { 
+            } else {
                 reject(err);
             }
-          });
+        });
     });
 };
 
@@ -282,32 +316,90 @@ function defaultSource(customerId,cardId){
  * @returns PROMISE 
  */
 
-function deleteCard (customerId,cardId){
-    return new Promise((resolve,reject)=>{
-        stripe.customers.deleteCard(customerId,cardId,function(err,confirmation){
-            if (!err){
+function deleteCard(customerId, cardId) {
+    return new Promise((resolve, reject) => {
+        stripe.customers.deleteCard(customerId, cardId, function (err, confirmation) {
+            if (!err) {
                 resolve(confirmation);
-            } else { 
+            } else {
                 reject(err);
             }
-          });
+        });
     })
 };
 /**
  * Function to create card token 
  * 
  */
-function demoCardToken (){
+function demoCardToken() {
     return stripe.tokens.create({
         card: {
-          "number": '4242424242424242',
-          "exp_month": 12,
-          "exp_year": 2019,
-          "cvc": '123'
+            "number": '4242424242424242',
+            "exp_month": 12,
+            "exp_year": 2019,
+            "cvc": '123'
         }
-      });
+    });
 };
+/**
+ * Function to pre Auth the user card  
+ * @param {number} amount 
+ * @param {string} currency 
+ * @param {string} customerId 
+ */
+function preAuthCharge(amount, currency, customerId) {
+    return new Promise((resolve, reject) => {
+        stripe.charges.create({
+            amount: amount,
+            currency: currency,
+            customer: customerId,
+            capture: false
+        }, function (err, charge) {
+            
+            if (err) {
+                return reject(err)
+            } else {
+                return resolve(charge)
+            }
+        })
+    })
+}
 
+/**
+ * Function to retrive Card
+ * @param {string} custometId
+ * @param {string} cardId
+ */
+  function retrieveCard(customerId,cardId){
+    return new Promise((resolve, reject)=>{
+        stripe.customers.retrieveCard(
+            customerId,
+            cardId,
+            function(err, card) {
+              // asynchronously called
+                if (err) {
+                    return reject(err)
+                } else {
+                    return resolve(card)
+                }
+            }
+          );
+    })
+  }
+
+ function checkStripeSignature(reqBody, reqSignature){
+
+    return stripe.webhooks.constructEvent(reqBody, reqSignature, WEBHOOK_SECRET);
+}
+
+/**
+ * Function to finzalize an unpaid invoices
+ * @param {string} id 
+ */
+function finalizeInvoice(id){
+    
+    return stripe.invoices.pay(id)
+}
 module.exports = {
     createCustomer,
     getAllPlans,
@@ -322,5 +414,9 @@ module.exports = {
     createSource,
     defaultSource,
     deleteCard,
-    demoCardToken
+    demoCardToken,
+    preAuthCharge,
+    retrieveCard,
+    checkStripeSignature,
+    finalizeInvoice
 }

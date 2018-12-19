@@ -70,12 +70,12 @@ export default new Router({
         // }
       ]
     },
-    // {
-    //   path: '/register',
-    //   name: 'Register',
-    //   beforeEnter:NotAuthGaurd,
-    //   component: Register
-    // },
+    {
+      path: '/register',
+      name: 'Register',
+      beforeEnter:NotAuthGaurd,
+      component: Register
+    },
     {
       path: '/login',
       name: 'Login',

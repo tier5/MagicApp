@@ -2,10 +2,12 @@
  * Name: scriptController.js
  * Purpose : Script Controller controls everything from script
  */
-var ZapData = require('../models/zaps');
-var {findZap, updateCounter} = require('./zapController');
-var validation = require('../helpers/validations');
-var {sendDataToZapier} = require('./zapierController');
+var ZapData                                                 = require('../models/zaps');
+var {findZap, updateCounter}                                = require('./zapController');
+var validation                                              = require('../helpers/validations');
+var {sendDataToZapier}                                      = require('./zapierController');
+var {checkCounterAllowed, updateCurrentAutomationCount}     = require('./userSubscriptionHistoryController');
+var User                                                    = require('../models/users');
 
 /**
  * Function to save script data 
@@ -20,6 +22,7 @@ function saveScriptData(req,res,next){
     var zapParams;
     var userZap;
     var token = '';
+    var historyId = null;
     findZap(body.zapId)
         .then((data)=> {
             var zap = data.zap;
@@ -28,7 +31,16 @@ function saveScriptData(req,res,next){
             zapParams = zap.params;
             // update the page view counter
             updateCounter(token, zap._id, 'pageViewCounter');
-            return validation.isAllParamsExists(zapParams,scriptParams);
+            // check user has priviledge to do the automation
+            return checkCounterAllowed(data.currentSubscriptionId,data.isHookedUser);
+        })
+        .then(isAllowed => {
+            historyId = isAllowed.data._id
+            return User.updateOne({ accessToken : token}, { $set : { currentSubscriptionId : historyId}}, {upsert: false});
+
+            
+        }).then(updated => {
+            return  validation.isAllParamsExists(zapParams,scriptParams);
         })
         .then(()=>{
             return validation.isAllValidationPassed(zapParams,scriptParams);
@@ -64,10 +76,11 @@ function saveScriptData(req,res,next){
                 // send data to zapier if hook url is present
                 if (userZap.hooks_url){
                     sendDataToZapier(userZap.hooks_url, dataForZapier).then(done=>{
-                        console.log('ok');
+                        //console.log('ok');
                         updateCounter(token, userZap._id, 'zapierTriggerCount');
+                        updateCurrentAutomationCount(historyId)
                     }).catch(error=>{
-                        console.log('error');
+                        console.log('error', error);
                     })
                 }
                 
@@ -76,7 +89,7 @@ function saveScriptData(req,res,next){
         })
         .catch((err)=>{
             console.log(err);
-            return res.status(400).send({message:'Something went wrong!',err:err,status:false})
+            return res.status(400).send({message:err.message ,status:false})
         });
 }
 

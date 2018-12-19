@@ -6,42 +6,56 @@ var express = require('express');
 var router = express.Router();
 
 // import all controllers for the routes
-var {createZap,getZaps,deleteZap,updateZap}         = require('../controllers/zapController');
-var {saveScriptData, getElementAttribute}           = require('../controllers/scriptController');
-var {usersZaps,getScriptZaps,subscribtionZaps}      = require('../controllers/zapierController');
+var { createUser,
+      getAllUsers,
+      updateUser, 
+      updateProfile, 
+      cancelMembership,
+  getUserCurrentSubscription}    = require('../controllers/usersController');
+var { createZap,
+      getZaps,
+      deleteZap,
+      updateZap, 
+      getUserZapsStats}                               = require('../controllers/zapController');
+var { saveScriptData, getElementAttribute}            = require('../controllers/scriptController');
+var { usersZaps,getScriptZaps,subscribtionZaps}       = require('../controllers/zapierController');
 var { isAuthorized ,
       isUserExists,
       isUserSubscribed,
       onlyAdminCan,
-      upload}                                       = require('./middleware');
+      upload}                                         = require('./middleware');
 var { getAllPlansCtrl,
       updateUserSubscribtion,
       retriveUsersCard,
       addNewCardToUser,
-      deleteUserCard, usersDefaultCard}             = require('../controllers/stripeController');
+      deleteUserCard, payUnpaidInvoices, 
+      getUserDefaultCardInfo,
+      stripeWebhookEventListener}                    = require('../controllers/stripeController');
 var { userLogin,
       userRegister,
       userForgetPassword,
       userResetPassword,
-      userUpdatePassword}                           = require('../controllers/authController');
-var {createUser,getAllUsers, updateUser}            = require('../controllers/usersController');
+      userUpdatePassword, 
+      getUserPrimaryData, 
+      checkEmailExists, userLogout}                   = require('../controllers/authController');
 
 var { createUserFromHook,
       deleteUserFromHook,
       suspendUserFromHook,
-      unsuspendUserFromHook }                       = require('../controllers/hooksController');
+      unsuspendUserFromHook }                         = require('../controllers/hooksController');
 
 var { addDomain, 
       getAllDomain, 
       updateDomain, 
       deleteDomain, 
-      updateDomainStatus, blockDomainId}            = require('../controllers/domainController');
+      updateDomainStatus, blockDomainId}              = require('../controllers/domainController');
 
 const { createTutorial, 
         getAllTutorials, 
         getTutotialById, 
-        updateTutorials, deleteTutorial}            = require('../controllers/tutorialsController');
+        updateTutorials, deleteTutorial}              = require('../controllers/tutorialsController');
 
+const {overAllStats}                                  = require('../controllers/statisticsController');
 /**
  * Users Registration, Login, Forget Password and Reset Password
  */
@@ -50,6 +64,8 @@ const { createTutorial,
   router.post('/forget-password',userForgetPassword);
   router.post('/reset-password/:token',userResetPassword);
   router.put('/change-password',userUpdatePassword);
+  router.post('/register/validate-email', checkEmailExists);
+  router.post('/logout',isAuthorized, userLogout);
 
 /**
  * Create, read, update and delete Zaps
@@ -58,11 +74,16 @@ const { createTutorial,
   router.get('/zaps',isUserSubscribed,getZaps);
   router.delete('/zaps/:id',isUserSubscribed,deleteZap);
   router.put('/zaps/:id',isUserSubscribed,updateZap);
+  router.get('/zaps/stats',isUserSubscribed, getUserZapsStats);
 
 // Saves script's data to database
   router.post('/script-data',saveScriptData);
   router.get('/script-data/:id',getElementAttribute);
 
+  /**
+   * Profile 
+   */
+  router.put('/profile', isAuthorized, updateProfile)
 /**
  * Zapier Authenicate and send data to zapier
  */
@@ -75,17 +96,19 @@ const { createTutorial,
  */
   router.get('/users',isAuthorized,onlyAdminCan,getAllUsers);
   router.put('/users/:id', isAuthorized,onlyAdminCan,updateUser);
-  router.post('/users',isAuthorized,onlyAdminCan,createUser)
+  router.post('/users',isAuthorized,onlyAdminCan,createUser);
+  router.get('/users/basic', isAuthorized,getUserPrimaryData);
+  router.get('/users/subscriptions', isAuthorized, getUserCurrentSubscription);
 
 /**
  * Stripe
  */
-  router.get('/plans',getAllPlansCtrl);
-  router.put('/subscriptions',updateUserSubscribtion);
-  router.get('/cards',retriveUsersCard);
-  router.post('/cards',addNewCardToUser);
-  router.delete('/cards/:cardId',deleteUserCard);
-  router.put('/cards/:cardId',usersDefaultCard);
+  router.put('/subscriptions',isAuthorized,updateUserSubscribtion);
+  router.get('/cards',isAuthorized, getUserDefaultCardInfo);
+  router.post('/cards',isAuthorized,addNewCardToUser);
+  router.delete('/cancel-membership', isAuthorized, cancelMembership);
+  router.post('/stripe/webhook/events', stripeWebhookEventListener);
+  router.put('/stripe/invoices/pay',isAuthorized, payUnpaidInvoices)
 
 /**
  * WebHooks
@@ -99,7 +122,7 @@ const { createTutorial,
    * Tutorials
    */
   router.post('/tutorials',isAuthorized, onlyAdminCan, createTutorial);
-  router.get('/tutorials', isAuthorized, getAllTutorials);
+  router.get('/tutorials',getAllTutorials);
   router.get('/tutorials/:id',isAuthorized, onlyAdminCan, getTutotialById);
   router.put('/tutorials/:id', isAuthorized, onlyAdminCan, updateTutorials);
   router.delete('/tutorials/:id', isAuthorized, onlyAdminCan, deleteTutorial);
@@ -112,16 +135,21 @@ const { createTutorial,
   router.put('/domains/:domainId',updateDomain);
   router.delete('/domains/:domainId', deleteDomain);
   router.get('/domains-status/:domainId', updateDomainStatus);
+
+/**
+ * Statictics 
+ */
+  router.get('/stats', overAllStats);
 /**
  * block-script
  */
   
-  router.get('/block-iframe/:domainId', blockDomainId);
+  //router.get('/block-iframe/:domainId', blockDomainId);
   
   // @todo make use for this route currently not in use
   router.post('/users/:api_key/users_script_zap/:zapId/unsubscribe',(req,res)=>{
     return res.status(200).send({message : 'Ok'})
-  })
+  });
 
 
 module.exports = router;

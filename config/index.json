@@ -5,6 +5,7 @@
         "DB_PASS":"root",
         "DB_HOST":"localhost",
         "JWT_SECRET":"qwertyuiopasdfghjklzxcvbnm",
-        "STRIPE_KEY": "sk_test_un7R5V4zG4n3bmwoYNbK8ME6"
+        "STRIPE_KEY": "sk_test_un7R5V4zG4n3bmwoYNbK8ME6",
+        "WEBHOOK_SECRET": "whsec_kKKlNhViHlVbPwNFt1qyyJHJQ3NRWf66"
     }
 }

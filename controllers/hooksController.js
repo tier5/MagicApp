@@ -3,30 +3,35 @@
  * @description It is a controller file for a webhook into the magic app
  */
 
-const uuid = require('uuid/v4');
-var {demoCardToken, createCustomer, createSubscription, deleteCustomer} = require('../helpers/stripe');
-var Users = require('../models/users');
-var Zaps = require('../models/zaps');
-var _ = require('lodash');
-var {createAccessToken} = require('../helpers/jwt');
+const Users                                 = require('../models/users');
+const _                                     = require('lodash');
+const Plans                                 = require('../config/plans.config');
+const moment                                = require('moment');
+const { deleteCustomer }                    = require('../helpers/stripe');
+const { createAccessToken }                 = require('../helpers/jwt');
+const { userWarehousing, removeUser}        = require('./usersController');
+const { createUserSubscriptionHistory,
+        removeUserHistory, 
+        getUserSubscriptionHistoryById}     = require('./userSubscriptionHistoryController');
+const { emitTotalDataStatistics }           = require('../helpers/socket');
+var {resetZapsOptionsValue}                 = require('./zapController');
+
  /**
   * Function to create a user from a hook
   */
  function createUserFromHook(req,res){
-     console.log("req.body", req.body);
     var token = req.body.token ;
     let testTokenNumber  =  '1234511';
     var email = req.body.email;
-    if(!token || token != testTokenNumber){
+    if(!token || token !== testTokenNumber){
         return res.status(200).send({http_code : 200, status :false , message : 'Token mismatch!'})
     };
     if (!email){ return res.status(200).send({message : 'email is required!' , status : false})}
     Users.findOne({email:req.body.email}).then((user)=>{
-        //console.log(user)
         if(user) {
-            res.status(200).send({message: 'User Already exists!', status : false, http_code: 200 })
+            updateHookedUser(req, res, user);
         } else {
-            createUser(req,res);
+            createNewHookedUser(req,res);
         }
     }).catch(err => {
         res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
@@ -34,47 +39,156 @@ var {createAccessToken} = require('../helpers/jwt');
     
  };
 
- function createUser(req,res){
-    var token = req.body.token ;
-    let test  =  '1234511';
-    var email = req.body.email;
-    var newUser = {
-        email: email,
-        name :'test',
-        password : '123456',
-        userType:'paid',
-        stripe: {
-            customer: {},
-            subscription :{}
-        }
-    };
-    demoCardToken()
-        .then(token => {
-            //console.log(token);
-            return createCustomer(email, token.id);
-            //res.send(token);
-        }).then(customer => {
-            //console.log(customer);
-            var planId = '565276330301511';
-            newUser.stripe.customer.id = customer.id;
-            return createSubscription(customer.id,planId);
 
-        }).then(subscription => {
-            //console.log(subscription);
-            newUser.stripe.subscription.id = subscription.id;
-            newUser.accessToken = createAccessToken(email);
-            var user = new Users(newUser);
-            return user.save()
-        }).then(user => {
-            //console.log(user);
-            return res.status(200).send({http_code : 200, status :true , message : 'User Created'})
-        }).catch(err => {
-            //console.log(err);
-            res.status(200).send({message : 'Something went wrong', status:false ,http_code:200, error : err})
-        })
+
+ async function createNewHookedUser(req,res){
+    try {
+        let email = req.body.email;
+        let plan  = req.body.plan ? req.body.plan.trim().toUpperCase() : 'STARTER';
+
+        
+        let affiliateId = req.body.aid || null;
+        let name = req.body.name ? req.body.name.trim() : 'Hello'
+        let accessToken = createAccessToken(email);
+        
+        let now = moment().unix();
+        let nextMonthDate = function(){
+            if (plan === 'STARTER'){
+                return moment().add(14, 'days').unix();
+            } else {
+               return moment().add(30, 'days').unix();
+            }
+        }
+        let findPlan = Plans.filter(o =>  o.planName == plan);
+        let planId = findPlan[0].stripePlanId
+        let planName = findPlan[0].planName;
+
+        let newCustomerHistory = {
+            startDate:  now,
+            endDate:    nextMonthDate(),
+            email:      email,
+            planId:     planId,
+            planName:   planName,
+            order:      1,
+            isTrial: false
+        }
+
+        if (plan === 'STARTER'){
+            newCustomerHistory.isTrial = true
+        }
+
+
+        if(planName === 'PROFESSIONAL'){
+            newCustomerHistory.maxAutomationCount = 10**10**10
+        }
+        
+        if(planName === 'STANDARD') {
+            newCustomerHistory.maxAutomationCount = 10000
+        }
+
+        let createNewHistory = await createUserSubscriptionHistory(newCustomerHistory);
+
+        let newUser = {
+            email: email,
+            name: name,
+            password: '123456',
+            userType: 'paid',
+            isSubscribed: true,
+            affiliateId: affiliateId,
+            accessToken: accessToken,
+            currentSubscriptionId: createNewHistory._id,
+            isHookedUser: true,
+            stripe: {
+                customer: {
+                    id : null
+                },
+                subscription :{
+                    id : null
+                },
+                plan: {
+                    id : planId
+                },
+                cards:[],
+                invoices:[]
+            }
+        };
+        if (plan === 'STARTER'){
+            newUser.subscriptionStatus = 'trialing'
+        }
+        let newUserCreated = await Users.create(newUser);
+        emitTotalDataStatistics()
+        return res.status(200).send({http_code : 200, status :true , message : 'User Created'})
+    } catch (error) {
+        res.status(200).send({message : error.message, status:false , http_code:200})
+    }
  };
 
- function deleteUserFromHook(req,res){
+ async function updateHookedUser(req, res, user){
+    try {
+        let plan = req.body.plan ? req.body.plan.toUpperCase() : null;
+        let totalPlans = ['STARTER', 'STANDARD', 'PROFESSIONAL']
+        let name = req.body.name;
+        let email = req.body.email;
+        let changePlan = false
+        if (plan.length && totalPlans.includes(plan)){
+            changePlan = true
+        }
+
+        let history = await getUserSubscriptionHistoryById(user.currentSubscriptionId);
+        if (changePlan){
+            if (history.planName !== plan){
+                changePlan = true
+            } else {
+                changePlan = false
+            }
+        }
+        let newSubscriptionHistory = null;
+        if (changePlan){
+            let nextMonthDate = function(){
+                
+                return moment().add(30, 'days').unix();
+                
+            }
+            let findPlan = Plans.filter(o =>  o.planName == plan);
+            let planId = findPlan[0].stripePlanId
+            let planName = findPlan[0].planName;
+            let now = moment().unix();
+
+            let newCustomerHistory = {
+                startDate:  now,
+                endDate:    nextMonthDate(),
+                email:      email,
+                planId:     planId,
+                planName:   planName,
+                order:      history.order + 1,
+                isTrial:    false
+            }
+
+            if (planName === 'STANDARD'){
+                newCustomerHistory.maxAutomationCount = 10000;
+            }
+            if (planName === 'PROFESSIONAL'){
+                newCustomerHistory.maxAutomationCount = 10**10**10;
+            }
+            newSubscriptionHistory = await createUserSubscriptionHistory(newCustomerHistory);
+        }
+        if (newSubscriptionHistory){
+            user.currentSubscriptionId = newSubscriptionHistory._id;
+            user.subscriptionStatus = 'active'
+            user.isSubscribed = true
+            user.stripe.plan.id = newSubscriptionHistory.planId
+        }
+        user.name = name
+        let update = await user.save();
+        resetZapsOptionsValue(user.accessToken);
+        return res.status(200).send({message : 'User updated', http_code: 200, status: true});
+        
+    } catch (error) {
+        return res.status(200).send({ message : 'Server Internal Error', http_code:500, status: false, error : error.message})
+    }
+ }
+
+ async function deleteUserFromHook(req,res){
     var token = req.body.token ;
     let testTokenNumber  =  '1234511';
     var email = req.body.email;
@@ -84,43 +198,31 @@ var {createAccessToken} = require('../helpers/jwt');
     };
     // checking email
     if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
-    
-    Users.findOne({email:req.body.email}).then((user)=>{
-        if(!user) {
-            return res.status(200).send({message: 'User not exists!', status : false, http_code: 200 })
-        } else {
-            if (user.zaps.length) {
-                user.zaps.forEach( zap => {
-                    Zaps.remove({zapId : zap._id}).then(deleted=>{
-                        console.log('deleted');
-                    }).catch(error=>{
-                        console.log('not deleted')
-                    })
-                })
-            }
-            let customerId = user.stripe.customer.id;
-            if (user.userType == 'paid' && customerId){
-                
-                deleteCustomer(customerId).then(confirmation=> {
-                    if (confirmation.deleted){
-                        Users.remove({email : user.email}).then(docs => {
-                            return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
-                        }) 
-                    }
-                }).catch(err => {
-                    return res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
-                })
-            } else {
-                
-                Users.remove({email : user.email}).then(docs => {
-                    return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
-                })
-            }
+
+    try {
+
+        let user = await Users.findOne({email : email });
+
+        if (!user) {
+            return res.status(200).send({message: 'User not exists!', status : false, http_code: 200 });
         }
-    }).catch(err => {
-    
+        let backUpUser = await userWarehousing(email);
+        // remove customer from stripe if exists or else remove the user
+        
+        let customerId = user.stripe.customer.id;
+
+        if (user.userType == 'paid' && customerId){
+            let stripeDeleteCustomer = await deleteCustomer(customerId);
+        }
+        let removeThisUser = await removeUser(email);
+        let removeHistory = await removeUserHistory(email);
+        emitTotalDataStatistics()
+        return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
+
+    } catch (error) {
+        console.log(error);
         return res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
-    })
+    }
  }
 
  function suspendUserFromHook(req, res) {
@@ -139,7 +241,7 @@ var {createAccessToken} = require('../helpers/jwt');
     },
     {
         $set :{
-            email : email + "_suspend"
+            isActive : false,
         }
     }).then(updated =>{
         if (!updated) { return res.status(200).send({status : false , message : 'Account not found!'})}
@@ -159,13 +261,13 @@ var {createAccessToken} = require('../helpers/jwt');
     };
     // checking email
     if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
-    let ckeckSuspendedEmail = email + '_suspend';
+
     Users.findOneAndUpdate({
-        email : ckeckSuspendedEmail
+        email : email
     },
     {
         $set :{
-            email : email
+            isActive: true,
         }
     }).then(updated =>{
         if (!updated) { return res.status(200).send({ status : false , message : 'Account not found!'})}
