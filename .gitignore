@@ -71,3 +71,6 @@ public/script/node_modules
 .idea
 # env variables 
 .env
+
+# Frontend 
+public/MagicApp
