@@ -7,12 +7,14 @@ import VueClipboards from 'vue-clipboards';
 import App from './App.vue';
 import router from './router/index';
 import store from './store/index';
+import VueAnimate from 'vue-animate-scroll';
 import './registerServiceWorker';
 
 Vue.config.productionTip = true;
 Vue.use(VueResource);
 Vue.use(Vuelidate);
 Vue.use(VueClipboards);
+Vue.use(VueAnimate);
 
 if (process.env.NODE_ENV ==='development') {
   Vue.backend_url = process.env.VUE_APP_DEV_API_ENDPOINT;

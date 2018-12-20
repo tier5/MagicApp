@@ -2,16 +2,16 @@
   <div>
     <v-card-text class="key-section">
       <h2>Zapier Api Key</h2>
-      <span v-clipboard="token">
-        <img src="../../../assets/images/icon-copy.png" alt="icon" class="icon-copy">Copy
-      </span>
+      <div v-clipboard="token" class="copyscript">
+        <v-btn slot="activator" class="hidden-sm-and-down">Copy</v-btn>
+      </div>
       <h4>{{token}}</h4>
     </v-card-text>
     <v-card-text class="key-section">
       <h2>Zapier Invitation Link</h2>
-      <span v-clipboard="inviteLink">
-        <img src="../../../assets/images/icon-copy.png" alt="icon" class="icon-copy">Copy
-      </span>
+      <div v-clipboard="token" class="copyscript">
+        <v-btn slot="activator" class="hidden-sm-and-down">Copy</v-btn>
+      </div>
       <h4>{{inviteLink}}</h4>
     </v-card-text>
     <span class="create-new-zap-mobile hidden-sm-and-up">

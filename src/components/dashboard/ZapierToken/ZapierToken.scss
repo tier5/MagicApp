@@ -22,18 +22,31 @@
           color: $lightblueShadow;
           margin-top: 20px;
         }
-        span{
-          border: 2px solid #b4cce9;
-          border-radius: 40px;
-          padding: 10px 16px;
-          text-transform: uppercase;
-          letter-spacing: 1px;
+        .copyscript{
           display: inline-block;
-          cursor: pointer;
-          margin-left: 30px;
-          @media screen and (max-width: 959px){
-            margin-left: 0;
+          margin-left: 20px;
+          margin-top: 5px;
+          .v-btn{
+            border: 2px solid #b4cce9;
+            border-radius: 40px;
+            padding: 5px 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            cursor: pointer;
+            margin-left: 30px;
+            background: url('../../../assets/images/icon-copy.png') no-repeat 10px;
+            background-size: 16px;
+            box-shadow: none;
+            margin: 0;
+            padding-left: 35px;
+            color: $lightblueShadow;
+            font-size: 12px;
+            @media screen and (max-width: 959px){
+              margin-left: 0;
+            }
           }
+          
           img{
             position: relative;
             left: 0;

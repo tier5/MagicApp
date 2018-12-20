@@ -2,9 +2,13 @@
     background: url('../../assets/images/top-bg.png') no-repeat top center;
     background-size: 100% 100%;
     box-shadow: none;
-    @media screen and (max-width: 1263px){
+    min-height: 100vh;
+    @media screen and (max-width: 1259px){
         background-size: cover;
     } 
+    @media screen and (max-width: 959px) {
+        min-height: auto;
+    }
     .top-bar{
         .logo{
             padding: 10px 15px 0;
@@ -19,8 +23,13 @@
             top: 50%;
             color: $topbar_text;
             width: 55%;
-            @media screen and (min-width: 600px) and (max-width: 1263px) {
+            @media screen and (min-width: 600px) and (max-width: 1259px) {
                 width: 85%;
+            }
+            @media screen and (max-width: 599px) {
+                position: relative;
+                width: 100%;
+                padding: 70px 20px;
             }
             .makeweb{
                 display: block;
@@ -35,10 +44,10 @@
             h1{
                 font-family: 'Avenir LT Std 95 Black';
                 font-size: 60px;
-                @media screen and (min-width: 960px) and (max-width: 1263px) {
+                @media screen and (min-width: 960px) and (max-width: 1259px) {
                     font-size: 50px;
                 }
-                @media screen and (min-width: 600px) and (max-width: 959px) {
+                @media screen and (max-width: 959px) {
                     font-size: 30px;
                 }
             }
@@ -46,8 +55,8 @@
                 font-size: 24px;
                 line-height: 30px;
                 margin: 30px 0;
-                @media screen and (min-width: 600px) and (max-width: 959px) {
-                    font-size: 18px;
+                @media screen and (max-width: 959px) {
+                    font-size: 16px;
                     line-height: 25px;
                     margin: 20px 0;
                 }
@@ -65,6 +74,9 @@
                 height: 100%;
                 box-shadow: none;
                 margin: 0;
+                @media screen and (max-width: 959px) {
+                    padding: 10px 30px;
+                }
             }
         }
         .banner-right{
@@ -72,10 +84,13 @@
             img{
                 width: 80%;
                 margin: auto;
-                @media screen and (min-width: 600px) and (max-width: 959px) {
+                @media screen and (max-width: 959px) {
                     width: 100%;
                 }  
             }
+            @media screen and (max-width: 959px) {
+                padding: 0;
+            }  
         }
         
     }
@@ -101,7 +116,7 @@
                 margin: 10px;
                 line-height: 25px;
                 cursor: pointer;
-                @media screen and (min-width: 960px) and (max-width: 1263px) {
+                @media screen and (min-width: 960px) and (max-width: 1259px) {
                     padding: 15px 5px;
                     margin: 5px;
                 }
@@ -128,12 +143,18 @@
         }
     }
 }
+
 .second-section{
     box-shadow: none;
     text-align: center;
-    padding: 200px;
-    @media screen and (min-width: 960px) and (max-width: 1263px) {
+    padding: 200px 200px 0;
+    margin-top: 100px; 
+    @media screen and (min-width: 960px) and (max-width: 1259px) {
         padding: 100px 0;
+    }
+    @media screen and (max-width: 959px) {
+        min-height: auto;
+        padding: 70px 0 0;
     }
     h2{
         font-family: 'Avenir LT Std 95 Black';
@@ -141,6 +162,10 @@
         font-size: 40px;
         line-height: 1.2;
         margin-bottom: 50px;
+        @media screen and (max-width: 959px) {
+            font-size: 27px;
+            margin-bottom: 30px;
+        }
     }
 }
 
@@ -148,8 +173,105 @@
     p{
         color: $darkblue;
         font-size: 18px;
+        @media screen and (max-width: 959px) {
+            font-size: 16px;
+        }
     }
 }
+
+.animate {
+    transition-delay: .5s;
+    transition-duration: .50s;
+    transition-timing-function: ease-in;
+}
+   
+.slide-up {
+    transform: translateY(0px);
+}
+
+.slide-up.animate-active {
+    transform: translateY(-100px);  
+}
+
+.slide-left {
+    transform: translateX(-200px);
+}
+
+.slide-left.animate-active {
+    transform: translateX(0px);  
+}
+
+.third-section{
+    background: url('../../assets/images/hiw-bg.png') no-repeat top left;
+    box-shadow: none;
+    padding: 0 0 100px;
+    position: relative;
+    margin-top: 100px;
+    @media screen and (max-width: 959px) {
+        margin-top: 0;
+    }
+    .block-head{
+        span{
+            font-family: 'Avenir LT Std 85 Heavy';
+            color: #7CA8DC;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-left: 270px;
+            @media screen and (max-width: 959px) {
+                padding: 0 20px;
+                margin: 0;
+                position: relative;
+                z-index: 9;
+                background: #fff;
+            }
+        }
+        &:after{
+            content: '';
+            border-top: 2px solid #ccc;
+            min-width: 250px;
+            position: absolute;
+            left: 0;
+            top: 10px;
+            @media screen and (max-width: 959px) {
+                min-width: 100%;
+            }
+        }
+        @media screen and (max-width: 959px) {
+            text-align: center;
+        }
+    }
+    .three-blocks{
+        padding: 150px 200px 0;
+        @media screen and (min-width: 960px) and (max-width: 1259px) {
+            padding: 100px 100px 0;
+        }
+        @media screen and (max-width: 959px) {
+            padding: 50px 0;
+        }
+    }
+    .hwt-block{
+        text-align: center;
+        padding: 0 50px;
+        @media screen and (min-width: 960px) and (max-width: 1259px) {
+            padding: 0;
+        }
+        @media screen and (max-width: 959px) {
+            padding: 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #deedff;
+        }
+        h3{
+            font-family: 'Avenir LT Std 95 Black';
+            color: $inputBlue;
+            font-size: 24px;
+            line-height: 1.2;
+            margin-bottom: 50px;
+        }
+    }
+}
+
+
 
 /* Popup CSS */
 
@@ -374,7 +496,7 @@
         }
     }
 }   
-@media screen and (max-width: 1263px) and (min-width: 960px){
+@media screen and (max-width: 1259px) and (min-width: 960px){
     .v-dialog{
         .trialPopup{
             left: 65%;

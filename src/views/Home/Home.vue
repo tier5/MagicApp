@@ -6,12 +6,12 @@
           <v-card class="first-section">
             <v-card-text class="top-bar">
               <v-layout row wrap>
-                <v-flex md6>
+                <v-flex md6 sm12>
                   <div class="logo">
                     <img src="../../assets/images/dashboard-logo.png" class="logo" alt="Logo">
                   </div>
                 </v-flex>
-                <v-flex md6>
+                <v-flex md6 hidden-sm-and-down>
                   <v-toolbar>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
@@ -41,6 +41,39 @@
                   </v-toolbar>
                 </v-flex>
               </v-layout>
+              <v-layout class="hidden-md-and-up top-bar right">
+                <v-card class="mobile-hamburger-menu" @click.stop="drawer = !drawer">
+                  <img src="../../assets/images/hamburger-button.png" alt="icon">
+                </v-card>
+                <v-navigation-drawer v-model="drawer" :mini-variant="mini" fixed temporary right>
+                  <v-card class="left-aside left-aside-mobile">
+                    <v-card>
+                      <v-card-text class="username">
+                        <div class="back-btn" @click.stop="drawer = !drawer">
+                          <img src="../../assets/images/icon-back.png" alt="icon" />
+                        </div>
+                        <div class="userMobile">
+                          <div>
+                            <span>home</span>
+                          </div>
+                        </div>
+                      </v-card-text>
+                      <v-card-text class="left-menu">
+                        <ul>
+                          <li>
+                            <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
+                            <span>my zaps</span>
+                          </li>
+                          <li>
+                            <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                            <span>help</span>
+                          </li>
+                        </ul>
+                      </v-card-text>
+                    </v-card>
+                  </v-card>
+                </v-navigation-drawer>
+              </v-layout>
               <v-layout row wrap>
                 <v-flex md7 sm7>
                   <div class="banner-left">
@@ -58,7 +91,7 @@
               </v-layout>
             </v-card-text>
           </v-card>
-          <v-card class="second-section">
+          <v-card class="second-section"  v-animate.repeat.fade="'slide-up'">
             <v-layout row wrap>
               <v-flex md3></v-flex>
               <v-flex md6>
@@ -68,6 +101,44 @@
                 </v-card-text>
               </v-flex>
               <v-flex md3></v-flex>
+            </v-layout>
+          </v-card>
+          <v-card class="third-section">
+            <v-layout row wrap>
+              <v-flex md12>
+                <div class="block-head">
+                  <span>how it works</span>
+                </div>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap class="three-blocks">
+              <v-flex md4>
+                <div class="hwt-block">
+                  <img src="../../assets/images/hiw_icon1.png" alt="hiw_icon">
+                  <v-card-text class="simple-text">
+                    <h3>Create Personalized &amp; Pre-Populated Forms</h3>
+                    <p>Increase your sales and conversions by removing the hassle of inputting redundant information. Magic Zap can personalize your landing page and populate the forms automatically.</p>
+                  </v-card-text>
+                </div>
+              </v-flex>
+              <v-flex md4>
+                <div class="hwt-block">
+                  <img src="../../assets/images/hiw_icon2.png" alt="hiw_icon">
+                  <v-card-text class="simple-text">
+                    <h3>Track Website Views and Traffic</h3>
+                    <p>Get the data and analytics that you need. Don't let sales fall through the cracks! Create a way that different platforms to communicate with each other so that you can convert your traffic. </p>
+                  </v-card-text>
+                </div>
+              </v-flex>
+              <v-flex md4>
+                <div class="hwt-block">
+                  <img src="../../assets/images/hiw_icon3.png" alt="hiw_icon">
+                  <v-card-text class="simple-text">
+                    <h3>Trigger Zapier Automation On Specific Website Activity</h3>
+                    <p>Track your users as they progress through your sales funnel. Magic Zap allows your website to seamlessly communicate with other apps and softwares. Follow up with visitors while they are on your site!</p>
+                  </v-card-text>
+                </div>
+              </v-flex>
             </v-layout>
           </v-card>
         </v-flex>
@@ -91,7 +162,9 @@ export default {
       password: "",
       isHidden: true,
       name: "",
-      email: ""
+      email: "",
+      drawer: null,
+      mini: false
     };
   },
   computed: {

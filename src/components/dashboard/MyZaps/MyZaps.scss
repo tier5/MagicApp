@@ -48,6 +48,9 @@
                     border-top: none;
                     transition: 0.3s;
                     cursor: pointer;
+                    box-shadow: 0 0 30px 0 #ddd;
+                    -webkit-box-shadow: 0 0 30px 0 #ddd;
+                    -moz-box-shadow: 0 0 30px 0 #ddd;
                     h3{
                         color: $orange;
                         transition: 0.3s;
@@ -156,11 +159,16 @@
                             transform: translateX(26px);
                         }
                     }
-                    a{
+                    .v-btn{
                         text-transform: capitalize;
                         color: $orange;
                         font-size: 13px;
                         vertical-align: middle;
+                        background: url('../../../assets/images/icon-copy.png') no-repeat 10px;
+                        background-size: 16px;
+                        box-shadow: none;
+                        margin: 0;
+                        padding-left: 35px;
                         
                     }
                     .magicOption{
@@ -226,9 +234,9 @@
             }
         }
     }
-    .v-input--selection-controls:not(.v-input--hide-details) .v-input__slot{
-        margin-bottom: 0;
-    }
+.v-input--selection-controls:not(.v-input--hide-details) .v-input__slot{
+    margin-bottom: 0;
+}
 .v-menu__content.theme--light{
     min-width: 100px !important;
     border-radius: 9px;
@@ -260,10 +268,6 @@
         }
     }
 } 
-// .myZaps .v-btn:before{
-//     left: 114px !important;
-//     top: -8px !important;
-// }   
 .myZaps .accent--text{
     color: $orange !important;
     font-size: 20px;
