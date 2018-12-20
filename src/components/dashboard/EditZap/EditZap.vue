@@ -10,17 +10,17 @@
       <v-form>
         <!-- Name Starts -->
         <v-layout row wrap>
-          <span class="progress-bar filled">
+          <span class="progress-bar" v-bind:class="{'filled' : newZap.name.length}">
             <span class="dot"></span> Name
           </span>
-          <v-flex xs12>
+          <v-flex xs12 v-bind:class="{ 'form-error-box': $v.newZap.name.$error }">
             <v-card-text>
               <v-text-field 
                   placeholder="Zap Name"
                   v-model="newZap.name"
                   @blur="$v.newZap.name.$touch">
               </v-text-field>
-              <span class="validation_error_message"
+              <span class="validation-error-message"
                   v-if="!$v.newZap.name.required && $v.newZap.name.$error">
                         Zap Name is Required
               </span>
@@ -31,10 +31,10 @@
 
         <!-- Params Section Starts -->
         <v-layout row wrap>
-          <span class="progress-bar filled">
+          <span class="progress-bar" v-bind:class="{'filled' : newZap.params.length}">
             <span class="dot"></span> Params
           </span>
-          <v-flex md4 xs12>
+          <v-flex md4 xs12 v-bind:class="{ 'form-error-box': $v.urlParams.field_name.$error }">
             <v-card-text>
               <v-text-field 
                   v-model="urlParams.field_name" 
@@ -43,6 +43,22 @@
                   >
               </v-text-field>
               <span>ex.email</span>
+              <span class="validation-error-message"
+                  v-if="!$v.urlParams.field_name.required && $v.urlParams.field_name.$error">
+                        Param Name is Required!
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.urlParams.field_name.noSpace && $v.urlParams.field_name.$error">
+                        No Space is allowed!
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.urlParams.field_name.noUpperCase && $v.urlParams.field_name.$error">
+                        Uppercase are not allowed!
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.urlParams.field_name.noIdField && $v.urlParams.field_name.$error">
+                        id param are not allowed!
+              </span>
             </v-card-text>
           </v-flex>
           <v-flex md3 xs12>
@@ -84,10 +100,10 @@
 
         <!-- Attributes Section -->
         <v-layout row wrap>
-          <span class="progress-bar">
+          <span class="progress-bar" v-bind:class="{'filled' : newZap.element_attributes.length}">
             <span class="dot"></span> Attributes
           </span>
-          <v-flex md6 xs12>
+          <v-flex md6 xs12 v-bind:class="{ 'form-error-box': $v.htmlIdentifier.attribute_name.$error }">
             <v-card-text>
               <v-text-field 
                 v-model="htmlIdentifier.attribute_name" 
@@ -95,9 +111,17 @@
                 @blur="$v.htmlIdentifier.attribute_name.$touch">
               </v-text-field>
               <span>ex.email</span>
+              <span class="validation-error-message"
+                  v-if="!$v.htmlIdentifier.attribute_name.required && $v.htmlIdentifier.attribute_name.$error">
+                  Param Name is Required!
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.htmlIdentifier.attribute_name.noIdField && $v.htmlIdentifier.attribute_name.$error">
+                  Id Name is not allowed!
+              </span>
             </v-card-text>
           </v-flex>
-          <v-flex md5 xs12>
+          <v-flex md5 xs12 v-bind:class="{ 'form-error-box': $v.htmlIdentifier.attribute_type.$error }">
             <v-card-text>
               <v-select
                 v-model="htmlIdentifier.attribute_type"
@@ -106,6 +130,10 @@
                 @blur="$v.htmlIdentifier.attribute_name.$touch">
               </v-select>
               <span>ex.name</span>
+              <span class="validation-error-message"
+                  v-if="!$v.htmlIdentifier.attribute_type.required && $v.htmlIdentifier.attribute_type.$error">
+                  Param Name is Required!
+              </span>
             </v-card-text>
           </v-flex>
           <v-flex md1 xs12>
@@ -128,10 +156,10 @@
 
         <!-- Timeout Section -->
         <v-layout row wrap>
-          <span class="progress-bar">
+          <span class="progress-bar" v-bind:class="{'filled' : timeoutProgess}">
             <span class="dot filled" ></span> Timeout
           </span>
-          <v-flex md4 xs12>
+          <v-flex md4 xs12 v-bind:class="{'form-error-box': $v.newZap.timeout.days.$error }">
             <v-card-text class="timeout-field">
               <v-text-field 
                 v-model="newZap.timeout.days" 
@@ -139,9 +167,25 @@
                 @blur="$v.newZap.timeout.days.$touch">
               </v-text-field>
               <span>Days</span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.days.minValue && $v.newZap.timeout.days.$error">
+                  Minimum value is 0
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.days.maxValue && $v.newZap.timeout.days.$error">
+                  Maximum value is 365
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.days.nonFLoat && $v.newZap.timeout.days.$error">
+                  Must be a whole number
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.days.numeric && $v.newZap.timeout.days.$error">
+                  Must be a number
+              </span>
             </v-card-text>
           </v-flex>
-          <v-flex md4 xs12>
+          <v-flex md4 xs12 v-bind:class="{'form-error-box': $v.newZap.timeout.hours.$error }">
             <v-card-text class="timeout-field">
               <v-text-field 
                 v-model="newZap.timeout.hours"
@@ -149,9 +193,25 @@
                 @blur="$v.newZap.timeout.hours.$touch">
               </v-text-field>
               <span>Hour</span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.hours.minValue && $v.newZap.timeout.hours.$error">
+                  Minimum value is 0
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.hours.maxValue && $v.newZap.timeout.hours.$error">
+                  Maximum value is 23
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.hours.nonFLoat && $v.newZap.timeout.hours.$error">
+                  Must be a whole number
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.hours.numeric && $v.newZap.timeout.hours.$error">
+                  Must be a number
+              </span>
             </v-card-text>
           </v-flex>
-          <v-flex md4 xs12>
+          <v-flex md4 xs12 v-bind:class="{'form-error-box': $v.newZap.timeout.minutes.$error }">
             <v-card-text class="timeout-field">
               <v-text-field 
                 v-model="newZap.timeout.minutes"
@@ -159,6 +219,22 @@
               @blur="$v.newZap.timeout.minutes.$touch">
               </v-text-field>
               <span>Min</span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.minutes.minValue && $v.newZap.timeout.minutes.$error">
+                  Minimum value is 0
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.minutes.maxValue && $v.newZap.timeout.minutes.$error">
+                  Maximum value is 59
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.minutes.nonFLoat && $v.newZap.timeout.minutes.$error">
+                  Must be a whole number
+              </span>
+              <span class="validation-error-message"
+                  v-if="!$v.newZap.timeout.minutes.numeric && $v.newZap.timeout.minutes.$error">
+                  Must be a number
+              </span>
             </v-card-text>
           </v-flex>
         </v-layout>
@@ -187,7 +263,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { required, minValue, maxValue  } from 'vuelidate/lib/validators'
+import { required, minValue, maxValue, numeric } from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
@@ -224,7 +300,14 @@ export default {
     ...mapGetters([
         'user',
         'zap'
-    ])
+    ]),
+    timeoutProgess : function(){
+      if ( (this.newZap.timeout.days || this.newZap.timeout.minutes || this.newZap.timeout.hours) && !this.$v.newZap.timeout.$invalid ){
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     updateZap(){
@@ -276,21 +359,24 @@ export default {
             maxValue: maxValue(365),
             nonFLoat:function(n){
               return Number(n) % 1 === 0 ? true: false 
-            }
+            },
+            numeric
           },
           hours:{
             minValue : minValue(0),
             maxValue: maxValue(23),
             nonFLoat:function(n){
               return Number(n) % 1 === 0 ? true: false 
-            }
+            },
+            numeric
           },
           minutes:{
             minValue : minValue(0),
             maxValue: maxValue(59),
             nonFLoat:function(n){
               return Number(n) % 1 === 0 ? true: false 
-            }
+            },
+            numeric
           }
         }
       },

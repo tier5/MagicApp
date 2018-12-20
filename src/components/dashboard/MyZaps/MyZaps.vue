@@ -19,23 +19,13 @@
           </v-flex>
         </v-layout>
       </div>
-      <div class="eachZap" v-for="zap in zaps" :key="zap._id">
+      <div class="eachZap" v-for="zap in filteredZaps" :key="zap._id">
         <v-layout row wrap>
           <v-flex md7 sm8>
             <div class="zapName">
               <h3 class="zapText">{{zap.name}}</h3>
               <img v-clipboard="zap.scriptString"  src="../../../assets/images/icon-copy.png" alt="copy script">
               <a v-clipboard="zap.scriptString" class="hidden-sm-and-down">copy script</a>
-              <!-- <div class="switchblock hidden-sm-and-up text-xs-right">
-                <span class="cookie">Cookie:</span>
-                <label class="switch">
-                  <input type="checkbox" checked>
-                  <span class="slider round">
-                    <span class="on">ON</span>
-                    <span class="off">OFF</span>
-                  </span>
-                </label>
-              </div> -->
               <v-flex hidden-sm-and-up>
                 <div class="mobilezaps">
                   <ul>
@@ -168,8 +158,15 @@
       ...mapGetters([
             'user',
             'zaps',
-            'isShowModal'
+            'isShowModal',
+            'searchZap'
       ]),
+      filteredZaps : function(){
+        var vm = this;
+          return this.zaps.filter(obj =>{
+            return obj.name.toLowerCase().includes(vm.searchZap.toLowerCase())
+          })
+      }
     },
     created(){
       this.$store.dispatch('getZap',this.user);

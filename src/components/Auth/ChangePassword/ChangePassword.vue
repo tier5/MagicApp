@@ -17,23 +17,33 @@
                             <v-form>
                                 <v-container>
                                     <v-layout row wrap>
-                                        <v-flex xs12>
-                                            <v-text-field 
-                                                label="Solo" 
+                                        <v-flex xs12 v-bind:class="{ 'form-error-box': $v.user.password.$error }">
+                                            <v-text-field
                                                 v-model="user.password"
                                                 @blur="$v.user.password.$touch()"
                                                 type="text"
                                                 placeholder="NEW PASSWORD" solo>
                                             </v-text-field>
+                                            <span class="validation-error-message"
+                                                        v-if="!$v.user.password.required && $v.user.password.$error">
+                                                        This field is Required!
+                                            </span>
+                                            <span class="validation-error-message"
+                                                        v-if="!$v.user.password.minLength && $v.user.password.$error">
+                                                        Minimum size should be 6
+                                            </span>
                                         </v-flex>
-                                        <v-flex xs12>
-                                            <v-text-field 
-                                                    label="Solo" 
+                                        <v-flex xs12 v-bind:class="{ 'form-error-box': $v.user.confirmPassword.$error }">
+                                            <v-text-field
                                                     v-model="user.confirmPassword"
                                                     @blur="$v.user.confirmPassword.$touch()"
                                                     type="text" 
                                                     placeholder="CONFIRM PASSWORD" solo>
                                             </v-text-field>
+                                            <span class="validation-error-message"
+                                                        v-if="!$v.user.confirmPassword.sameAsPassword && $v.user.confirmPassword.$error">
+                                                        Password didn't match
+                                            </span>
                                         </v-flex>
                                         <v-btn block class="orangeButton" :disabled="$v.user.$invalid" @click="onResetPassword()">
                                             <img src="../../../assets/images/changepass.png" alt="changepassword">
@@ -101,7 +111,7 @@
                 sameAsPassword: sameAs('password')
             }
         }
-    },
+    }
   }
 </script>
 
