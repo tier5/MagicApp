@@ -5207,6 +5207,11 @@ joi@^13.0.0:
     isemail "3.x.x"
     topo "3.x.x"
 
+jquery@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+  integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
+
 js-base64@^2.1.8:
   version "2.4.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.9.tgz#748911fb04f48a60c4771b375cac45a80df11c03"
@@ -5474,6 +5479,11 @@ libnpx@^10.2.0:
     which "^1.3.0"
     y18n "^4.0.0"
     yargs "^11.0.0"
+
+lity@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/lity/-/lity-2.3.1.tgz#dd9a8498eac133a645fc3169689c9bbaccd31074"
+  integrity sha512-1zkU2grtI9jvxS/efNsdXxD4Uqno2OBpQiYCgGnaxHZpMXYcBoQ0eRpUqt0zbBzGlFyH4gSuJLPfStJgfC6fvw==
 
 load-json-file@^1.0.0:
   version "1.1.0"

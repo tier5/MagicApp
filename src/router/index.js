@@ -60,7 +60,7 @@ export default new Router({
           component: ZapierToken
         },
         {
-          path:'howitworks',
+          path:'training',
           name: 'HowItWorks',
           component: HowItWorks
         }

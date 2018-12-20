@@ -10,6 +10,10 @@ import store from './store/index';
 import VueAnimate from 'vue-animate-scroll';
 import './registerServiceWorker';
 
+import '../node_modules/jquery/dist/jquery';
+import '../node_modules/lity/dist/lity.min.css';
+import '../node_modules/lity/dist/lity.min.js';
+
 Vue.config.productionTip = true;
 Vue.use(VueResource);
 Vue.use(Vuelidate);
