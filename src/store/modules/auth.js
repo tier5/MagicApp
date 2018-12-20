@@ -87,7 +87,6 @@ const actions = {
         (err) => {
           commit('changeLoading',false);
           var message = err.body.message;
-          console.log(message);
           commit('errorMessage',message);
           commit('errorTrue');
         }
