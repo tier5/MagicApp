@@ -4,8 +4,8 @@
       <h2>Magic Zap Training Videos</h2>
       <p>Well here we are in action. Watch our training videos for your hand on experience. </p>
     </v-card-text>
-    <v-card class="training-video">
-      <v-layout row wrap>
+    <v-card>
+      <v-layout row wrap class="training-video">
         <v-flex md6>
           <img src="../../../assets/images/no-thumbnail.jpg" alt="image" class="image">
         </v-flex>
@@ -15,15 +15,97 @@
                 Magic Zap - Follow Up Loops - Why I created Magic Zap
             </h3>
             <div class="header-bottom">
-              <span>by <color>Magic Zap</color></span>
+              <span>by <span>Magic Zap</span></span>
               <span><img src="../../../assets/images/view.png" alt="icon-view" /> 654789</span>
             </div>
             <p>Here is why I actually created Magic Zap and the real magic of the software.</p>
           </v-card-text>
         </v-flex>
       </v-layout>
+      <div class="bottom-section">
+        <v-layout row wrap>
+          <v-flex md3 sm6>
+            <img src="../../../assets/images/no-thumbnail.jpg" alt="image" class="image">
+            <v-card-text class="right-text-block">
+              <h3>
+                  Magic Zap - Follow Up Loops - Why I created Magic Zap 
+              </h3>
+              <div class="header-bottom">
+                <span class="left">by <span>Magic Zap</span></span>
+                <span class="right"><img src="../../../assets/images/view.png" alt="icon-view" /> 654789</span>
+              </div>
+              <p>Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.</p>
+            </v-card-text>
+          </v-flex>
+          <v-flex md3 sm6>
+            <img src="../../../assets/images/no-thumbnail.jpg" alt="image" class="image">
+            <v-card-text class="right-text-block">
+              <h3>
+                  Magic Zap - Follow Up Loops - Why I created Magic Zap
+              </h3>
+              <div class="header-bottom">
+                <span class="left">by <span>Magic Zap</span></span>
+                <span class="right"><img src="../../../assets/images/view.png" alt="icon-view" /> 654789</span>
+              </div>
+              <p>Here is why I actually created Magic Zap and the real magic of the software.</p>
+            </v-card-text>
+          </v-flex>
+          <v-flex md3 sm6>
+            <img src="../../../assets/images/no-thumbnail.jpg" alt="image" class="image">
+            <v-card-text class="right-text-block">
+              <h3>
+                  Magic Zap - Follow Up Loops - Why I created Magic Zap
+              </h3>
+              <div class="header-bottom">
+                <span class="left">by <span>Magic Zap</span></span>
+                <span class="right"><img src="../../../assets/images/view.png" alt="icon-view" /> 654789</span>
+              </div>
+              <p>Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.Here is why I actually created Magic Zap and the real magic of the software.</p>
+            </v-card-text>
+          </v-flex>
+          <v-flex md3 sm6>
+            <img src="../../../assets/images/no-thumbnail.jpg" alt="image" class="image">
+            <v-card-text class="right-text-block">
+              <h3>
+                  Magic Zap - Follow Up Loops - Why I created Magic Zap
+              </h3>
+              <div class="header-bottom">
+                <span class="left">by <span>Magic Zap</span></span>
+                <span class="right"><img src="../../../assets/images/view.png" alt="icon-view" /> 654789</span>
+              </div>
+              <p>Here is why I actually created Magic Zap and the real magic of the software.</p>
+            </v-card-text>
+          </v-flex>
+          <v-flex md3 sm6>
+            <img src="../../../assets/images/no-thumbnail.jpg" alt="image" class="image">
+            <v-card-text class="right-text-block">
+              <h3>
+                  Magic Zap - Follow Up Loops - Why I created Magic Zap
+              </h3>
+              <div class="header-bottom">
+                <span class="left">by <span>Magic Zap</span></span>
+                <span class="right"><img src="../../../assets/images/view.png" alt="icon-view" /> 654789</span>
+              </div>
+              <p>Here is why I actually created Magic Zap and the real magic of the software.</p>
+            </v-card-text>
+          </v-flex>
+          <v-flex md3 sm6>
+            <img src="../../../assets/images/no-thumbnail.jpg" alt="image" class="image">
+            <v-card-text class="right-text-block">
+              <h3>
+                  Magic Zap - Follow Up Loops - Why I created Magic Zap
+              </h3>
+              <div class="header-bottom">
+                <span class="left">by <span>Magic Zap</span></span>
+                <span class="right"><img src="../../../assets/images/view.png" alt="icon-view" /> 654789</span>
+              </div>
+              <p>Here is why I actually created Magic Zap and the real magic of the software.</p>
+            </v-card-text>
+          </v-flex>
+        </v-layout>
+      </div>
     </v-card>
-    <span class="create-new-zap hidden-sm-and-up">
+    <span class="create-new-zap-mobile hidden-sm-and-up">
       <img src="../../../assets/images/icon-createzap.png" alt="icon-createzap">
     </span>
   </div>
