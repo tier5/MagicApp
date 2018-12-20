@@ -206,10 +206,22 @@ function getUserZapsStats(req, res, next){
             accessToken : token,
         }
     },{
-        $project : {
-            totalZaps : { $size : "$zaps"},
+        $project : { zaps : 1 , totalZaps : {$size : "$zaps"}}
+    },{
+        $unwind : '$zaps'
+    },{
+        $group : {
+            _id: { totalZaps : "$totalZaps"},
+            
             totalPageViews : {$sum : "$zaps.pageViewCount"},
-            totalZapsTriggered: {$sum : "$zaps.totalZapsTriggered"}
+            totalZapsTriggered: {$sum : "$zaps.zapierTriggerCount"},
+        }
+    },{
+        $project : {
+            totalZaps : "$_id.totalZaps",
+            totalPageViews: 1,
+            totalZapsTriggered: 1,
+            _id : 0
         }
     }).then(data => {
         if (!data.length){
