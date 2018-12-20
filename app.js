@@ -34,7 +34,7 @@ var appRoutes = require('./routes/index');
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, '/public/frontend/dist')));
+  app.use(express.static(path.join(__dirname, '/public/MagicApp/dist')));
   app.use(cors())
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers","*")
@@ -46,7 +46,7 @@ var appRoutes = require('./routes/index');
 
 // send all get request to frontend to handle  
   app.get('*',function(req,res){
-    res.sendFile(path.join(__dirname + '/public/frontend/dist/index.html'))
+    res.sendFile(path.join(__dirname + '/public/MagicApp/dist/index.html'))
   });
 
 // catch 404 and forward to error handler
