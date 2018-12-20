@@ -192,7 +192,7 @@
         padding: 0;
       }
       .v-card{
-        background: #fff;
+        //background: #fff;
         box-shadow: none;
         border-radius: 0;
         .search-bar{
@@ -217,7 +217,7 @@
               font-weight: normal;
               background: url("../../assets/images/icon-search.png") no-repeat 0 5px;
               padding-left: 40px;
-              color: #535353;
+              color: $body_text;
               @media screen and (max-width: 599px){
                 min-height: 50px;
                 border-radius: 50px;
@@ -325,6 +325,7 @@
                 min-height: 55px;
                 padding: 15px;
                 font-size: 18px;
+                caret-color: $orange !important;
               }
             }
             .v-select__slot{
@@ -479,6 +480,14 @@
             }
           }
         }
+      }
+    }
+
+    .primary--text{
+      color: $orange !important;
+      caret-color: $orange !important;
+      @media screen and (max-width: 599px){
+        color: transparent !important;
       }
     }
   

@@ -10,6 +10,7 @@ import MyZaps from '../components/dashboard/MyZaps/MyZaps.vue';
 import Dashboard from '../components/dashboard/Dashboard.vue';
 import ViewZap from '../components/dashboard/ViewZap/ViewZap.vue';
 import EditZap from '../components/dashboard/EditZap/EditZap.vue';
+import HowItWorks from '../components/dashboard/HowItWorks/HowItWorks.vue';
 
 Vue.use(Router);
 
@@ -57,6 +58,11 @@ export default new Router({
           path:'zapier-token',
           name:'ZapierToken',
           component: ZapierToken
+        },
+        {
+          path:'howitworks',
+          name: 'HowItWorks',
+          component: HowItWorks
         }
       ]
     }

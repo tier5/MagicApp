@@ -188,7 +188,7 @@
                   </v-card-text>
                 </v-flex>
                 <v-flex sm6 xs12 hidden-xs-only>
-                  <v-card-text class="how-it-works text-xs-right">
+                  <v-card-text class="how-it-works text-xs-right" @click.prevent="changeRouterState('/magic/howitworks')">
                     <img src="../../assets/images/icon-video.png" alt="icon" class="icon-video">
                     <span class="hidden-sm-only">how it works</span>
                   </v-card-text>

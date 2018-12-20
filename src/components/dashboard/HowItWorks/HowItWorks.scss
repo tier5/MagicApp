@@ -1,0 +1,74 @@
+.container{
+  .right-aside{
+    .dashboard-body{
+      .HowItWorks{
+        @media screen and (max-width: 599px) {
+          padding: 0 20px;
+        }
+        h2{
+          font-size: 20px;
+        }
+        .top-bar-text {
+          p{
+            color: $darkgrey;
+            margin: 10px 0;
+          }
+        }
+        .image{
+          display: block;
+          margin: auto;
+          border-radius: 10px;
+          max-width: 100%;
+        }
+        .right-text-block{
+          padding: 0 50px;
+          @media screen and (min-width: 960px) and (max-width: 1264px) {
+            padding: 0 10px;
+          }
+          @media screen and (max-width: 959px) {
+            padding: 0;
+          }
+          h3{
+            font-size: 30px;
+            font-family: 'Avenir LT Std 95 Black';
+            line-height: 40px;
+            @media screen and (max-width: 959px) {
+              margin-top: 20px;
+            }
+          }
+          p{
+            color: $body_text;
+            font-family: 'Avenir LT Std 55 Roman';
+            font-weight: normal;
+          }
+          .header-bottom{
+            background: url('../../../assets/images/line-video-title.png') no-repeat bottom left;
+            margin: 10px 0 30px;
+            span{
+              display: inline-block;
+              margin: 10px 30px 30px 0;
+              color: $darkgrey;
+              line-height: 16px;
+              color{
+                color: $dark_text;
+              }
+              img{
+                position: relative;
+                left: 0;
+                top: 0;
+                display: block;
+                max-width: 100%;
+                float: left;
+                vertical-align: bottom;
+                margin-right: 10px;
+                filter: grayscale(100%);
+                width: auto;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
