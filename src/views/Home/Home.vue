@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-layout row wrap>
         <v-flex md12>
-          <v-card class="first-section">
+          <v-card class="section first-section">
             <v-card-text class="top-bar">
               <v-layout row wrap>
                 <v-flex md6 sm12>
@@ -18,11 +18,7 @@
                       <v-btn flat v-if="!isAuthenticated">Features</v-btn>
                       <v-btn flat v-if="!isAuthenticated">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
-                      <span
-                        class="freetrialbtn"
-                        
-                       v-if="!isAuthenticated"
-                      >14 day free trial</span>
+                      <span class="freetrialbtn"  v-if="!isAuthenticated">14 day free trial</span>
                       <span
                         class="loginbtn"
                         @click="openLoginModel()"
@@ -53,20 +49,43 @@
                           <img src="../../assets/images/icon-back.png" alt="icon" />
                         </div>
                         <div class="userMobile">
-                          <div>
-                            <span>home</span>
+                          <div v-if="!isAuthenticated">
+                            <img src="../../assets/images/logo.svg" alt="icon" />
                           </div>
+                          <div v-if="isAuthenticated">
+                            <span>S</span>
+                          </div>
+                          <span class="username-text">User name</span>
                         </div>
                       </v-card-text>
                       <v-card-text class="left-menu">
                         <ul>
-                          <li>
+                          <li v-if="!isAuthenticated">
                             <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
-                            <span>my zaps</span>
+                            <span>Features</span>
                           </li>
-                          <li>
+                          <li v-if="!isAuthenticated">
                             <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                            <span>help</span>
+                            <span>Pricing</span>
+                          </li>
+                          <li v-if="!isAuthenticated">
+                            <span class="freetrialbtn">14 day free trial</span>
+                          </li>
+                          <li v-if="!isAuthenticated">
+                            <span class="loginbtn" @click="openLoginModel()">
+                              <img src="../../assets/images/user-icon-white.png" alt="user-icon"> Login
+                            </span>
+                          </li>
+                          <li v-if="isAuthenticated">
+                            <span class="loginbtn" @click="customRouter('/magic')">
+                              <img src="../../assets/images/user-icon-white.png" alt="user-icon"> Dashboard
+                            </span>
+                          </li>
+                          <li v-if="isAuthenticated">
+                            <span @click="signOut()" v-if="isAuthenticated">
+                              <img src="../../assets/images/icon-logout.png" alt="user-icon"> 
+                              <span>Logout</span>
+                            </span>
                           </li>
                         </ul>
                       </v-card-text>
@@ -91,7 +110,7 @@
               </v-layout>
             </v-card-text>
           </v-card>
-          <v-card class="second-section"  v-animate.repeat.fade="'slide-up'">
+          <v-card class="section second-section"  v-animate.repeat.fade="'slide-up'">
             <v-layout row wrap>
               <v-flex md3></v-flex>
               <v-flex md6>
@@ -103,7 +122,7 @@
               <v-flex md3></v-flex>
             </v-layout>
           </v-card>
-          <v-card class="third-section">
+          <v-card class="section third-section">
             <v-layout row wrap>
               <v-flex md12>
                 <div class="block-head">
@@ -138,6 +157,107 @@
                     <p>Track your users as they progress through your sales funnel. Magic Zap allows your website to seamlessly communicate with other apps and softwares. Follow up with visitors while they are on your site!</p>
                   </v-card-text>
                 </div>
+              </v-flex>
+            </v-layout>
+          </v-card>
+          <v-card class="section fourth-section">
+            <v-layout row wrap>
+              <v-flex md12>
+                <div class="block-head">
+                  <span>A Few Of MAGIC ZAP's</span>
+                </div>
+                <h2>Features You'll Love</h2>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap>
+              <v-flex md6>
+                <v-layout row wrap>
+                  <v-flex md6>
+                    <v-layout row wrap>
+                      <v-flex md2 sm12>
+                        <img src="../../assets/images/feature-icon1.png" alt="feature_icon">
+                      </v-flex>
+                      <v-flex md10 sm12>
+                        <div class="simple-text">
+                          <h3>Dynamic Website Content</h3>
+                          <p>Allows you to customise and display dynamic content that's relevant to your visitors. </p>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex md6>
+                    <v-layout row wrap>
+                      <v-flex md2 sm12>
+                        <img src="../../assets/images/feature-icon4.png" alt="feature_icon">
+                      </v-flex>
+                      <v-flex md10 sm12>
+                        <div class="simple-text">
+                          <h3>Pre-Populate Website Forms</h3>
+                          <p>Get users to give you more information by pre-populating your website forms with the data that you've already collected from your leads. </p>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+                <v-layout  row wrap>
+                  <v-flex md6>
+                    <v-layout row wrap>
+                      <v-flex md2 sm12>
+                        <img src="../../assets/images/feature-icon2.png" alt="feature_icon">
+                      </v-flex>
+                      <v-flex md10 sm12>
+                        <div class="simple-text">
+                          <h3>Track Website Activity</h3>
+                          <p>Know who is on your website and when. Know what your website visitors are doing.</p>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex md6>
+                    <v-layout row wrap>
+                      <v-flex md2 sm12>
+                        <img src="../../assets/images/feature-icon5.png" alt="feature_icon">
+                      </v-flex>
+                      <v-flex md10 sm12>
+                        <div class="simple-text">
+                          <h3>Trigger Automations</h3>
+                          <p>Trigger custom Zapier automatons when specific traffic lands on your site. This let's you easy follow up or reach out to your leads while they're hot, and ready to buy on your site. </p>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                  <v-flex md6>
+                    <v-layout row wrap>
+                      <v-flex md2 sm12>
+                        <img src="../../assets/images/feature-icon3.png" alt="feature_icon">
+                      </v-flex>
+                      <v-flex md10 sm12>
+                        <div class="simple-text">
+                          <h3>Magic Option</h3>
+                          <p>Pass data to each new page that your visitor visits. You can turn this on or off. </p>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex md6>
+                    <v-layout row wrap>
+                      <v-flex md2 sm12>
+                        <img src="../../assets/images/feature-icon6.png" alt="feature_icon">
+                      </v-flex>
+                      <v-flex md10 sm12>
+                        <div class="simple-text">
+                          <h3>Cookies</h3>
+                          <p>We'll store all your data in a site wide cookie so next time yours visit your site Magic Zap will work. You can also turn this feature on or off.</p>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <v-flex md6  sm12 class="app-screen">
+                <img src="../../assets/images/app-screen-view.png" alt="app-screen">
               </v-flex>
             </v-layout>
           </v-card>

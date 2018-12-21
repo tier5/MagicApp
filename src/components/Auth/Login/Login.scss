@@ -47,7 +47,9 @@
 }
 .form-error-box{
     .v-input__slot{
-        box-shadow: 0 2px 5px red !important;
+        box-shadow:0 0 10px $lightred !important;
+        -webkit-box-shadow:0 0 10px $lightred !important;
+        -moz-box-shadow:0 0 10px $lightred !important;
     }
 }
 .v-dialog{

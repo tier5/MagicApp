@@ -275,6 +275,12 @@
     left: -9px;
     top: calc(50% - 20px);
 }
+body{
+    .primary--text{
+        color: $orange !important;
+        caret-color: $orange !important;
+    }
+}
 // responsive
 @media screen and (min-width: 600px) and (max-width: 959px){
     .container .right-aside.myZapWrap .dashboard-body .v-card__text img {

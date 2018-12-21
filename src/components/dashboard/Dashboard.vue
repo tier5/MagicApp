@@ -11,11 +11,11 @@
               <v-card-text class="username">
                 <div>
                   <span>{{user.name.charAt(0).toUpperCase()}}</span>
-                </div>{{user.name.toUpperCase()}}
+                </div>
+                <span class="username-text">{{user.name.toUpperCase()}}</span>
               </v-card-text>
               <v-card-text class="left-menu">
                 <ul>
-                    
                   <li @click.prevent="changeRouterState('/magic')" :class="{'active' : this.$route.path == '/magic'}">
                     <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
                     <span>my zaps</span>
@@ -114,7 +114,8 @@
                     <div class="userMobile">
                       <div>
                         <span>{{user.name.charAt(0).toUpperCase()}}</span>
-                      </div>{{user.name.toUpperCase()}}
+                      </div>
+                        <span class="username-text">{{user.name.toUpperCase()}}</span>
                     </div>
                   </v-card-text>
                   <v-card-text class="left-menu">

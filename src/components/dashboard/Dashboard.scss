@@ -204,13 +204,6 @@
           .v-input__slot:before{
             border: none;
           }
-          .primary--text{
-            color: $orange !important;
-            caret-color: $orange !important;
-            @media screen and (max-width: 599px){
-              color: transparent !important;
-            }
-          }
           .v-text-field__slot{
             input{
               font-size: 15px;
@@ -271,7 +264,9 @@
             font-family: 'Avenir LT Std 95 Black';
             color: $inputBlue;
             @media screen and (max-width: 959px){
-              font-size: 30px;
+              font-size: 25px;
+              margin-left: 50px;
+              margin-bottom: 20px;
             }
           }
           img{
@@ -316,6 +311,19 @@
             }
             .v-input__slot{
               margin: 0;
+            }
+            .v-input{
+              input:focus{
+                transition: 0.5s;
+                box-shadow:0 0 10px $light_text !important;
+                -webkit-box-shadow:0 0 10px $light_text !important;
+                -moz-box-shadow:0 0 10px $light_text !important;
+              }
+              &.v-select{
+                input:focus{
+                  box-shadow: none !important;
+                }
+              }
             }
             .v-text-field__slot{
               input{
@@ -483,11 +491,10 @@
       }
     }
 
-    .primary--text{
-      color: $orange !important;
-      caret-color: $orange !important;
-      @media screen and (max-width: 599px){
-        color: transparent !important;
+    body{
+      .primary--text{
+        color: $orange !important;
+        caret-color: $orange !important;
       }
     }
   
@@ -505,17 +512,23 @@
             margin-right: 0;
             position: relative;
             top: 70px;
-            color: $username_color;
-            font-size: 15px;
-            font-family: 'Avenir LT Std 95 Black';
-            letter-spacing: 0;
+            .username-text{
+              color: $inputBlue;
+              font-size: 15px;
+              font-family: 'Avenir LT Std 95 Black';
+              letter-spacing: 0;
+              position: relative;
+              left: 0;
+              top: 0;
+            }
             div{
-              background: $username_color;
+              background: $light_text;
               display: block;
               height: 50px;
               width: 50px;
               font-size: 20px;
               margin: 0 auto 10px;
+              
             }
           }
           .back-btn{

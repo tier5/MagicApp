@@ -1,8 +1,62 @@
+.animate {
+    transition-delay: .5s;
+    transition-duration: .50s;
+    transition-timing-function: ease-in;
+}
+   
+.slide-up {
+    transform: translateY(0px);
+}
+
+.slide-up.animate-active {
+    transform: translateY(-100px);  
+}
+
+.slide-left {
+    transform: translateX(-200px);
+}
+
+.slide-left.animate-active {
+    transform: translateX(0px);  
+}
+
+.simple-text{
+    p{
+        color: $darkblue;
+        font-size: 18px;
+        @media screen and (max-width: 959px) {
+            font-size: 16px;
+        }
+    }
+}
+
+.section{
+    box-shadow: none;
+    position: relative;
+    margin-top: 100px;
+    @media screen and (max-width: 1259px) {
+        margin-top: 0;
+    }
+    h2{
+        font-family: 'Avenir LT Std 95 Black';
+        color: $inputBlue;
+        font-size: 40px;
+        line-height: 1.2;
+        margin-bottom: 50px;
+        @media screen and (max-width: 959px) {
+            font-size: 27px;
+            margin-bottom: 30px;
+        }
+    }
+    img{
+        max-width: 100%;
+    }
+}
 .first-section{
     background: url('../../assets/images/top-bg.png') no-repeat top center;
     background-size: 100% 100%;
-    box-shadow: none;
     min-height: 100vh;
+    margin: 0;
     @media screen and (max-width: 1259px){
         background-size: cover;
     } 
@@ -92,6 +146,13 @@
                 padding: 0;
             }  
         }
+        .mobile-hamburger-menu {
+            background: none;
+            box-shadow: none;
+            position: absolute;
+            top: 45px;
+            right: 20px;
+        }
         
     }
     .v-toolbar{
@@ -144,76 +205,73 @@
     }
 }
 
+
+.container {
+    .left-aside{
+        &.left-aside-mobile{
+            .v-card{
+                .left-menu{
+                    ul{
+                        li{
+                            display: block;
+                            padding: 10px 15px;
+                            span{
+                                &.freetrialbtn{
+                                    padding: 10px 15px;
+                                    text-align: center;
+                                    color: white;
+                                    border-radius: 40px;
+                                    line-height: 25px;
+                                    background: $orange;
+                                    background: -moz-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
+                                    background: -webkit-gradient(left top, right top, color-stop(0%, $orange), color-stop(100%, rgba(255,169,103,1)));
+                                    background: -webkit-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
+                                    background: -o-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
+                                    background: -ms-linear-gradient(left, $orange 0%, rgba(255,169,103,1) 100%);
+                                    background: linear-gradient(to right, $orange 0%, rgba(255,169,103,1) 100%);
+                                }
+                                &.loginbtn{
+                                    background: $inputBlue;
+                                    padding: 10px 15px;
+                                    text-align: center;
+                                    color: white;
+                                    border-radius: 40px;
+                                    line-height: 25px;
+                                    img{
+                                        width: 20px;
+                                        height: auto;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } 
+}  
+
 .second-section{
-    box-shadow: none;
     text-align: center;
     padding: 200px 200px 0;
-    margin-top: 100px; 
     @media screen and (min-width: 960px) and (max-width: 1259px) {
         padding: 100px 0;
     }
     @media screen and (max-width: 959px) {
         min-height: auto;
         padding: 70px 0 0;
+        margin-top: 100px; 
     }
-    h2{
-        font-family: 'Avenir LT Std 95 Black';
-        color: $inputBlue;
-        font-size: 40px;
-        line-height: 1.2;
-        margin-bottom: 50px;
-        @media screen and (max-width: 959px) {
-            font-size: 27px;
-            margin-bottom: 30px;
-        }
-    }
-}
-
-.simple-text{
-    p{
-        color: $darkblue;
-        font-size: 18px;
-        @media screen and (max-width: 959px) {
-            font-size: 16px;
-        }
-    }
-}
-
-.animate {
-    transition-delay: .5s;
-    transition-duration: .50s;
-    transition-timing-function: ease-in;
-}
-   
-.slide-up {
-    transform: translateY(0px);
-}
-
-.slide-up.animate-active {
-    transform: translateY(-100px);  
-}
-
-.slide-left {
-    transform: translateX(-200px);
-}
-
-.slide-left.animate-active {
-    transform: translateX(0px);  
+    
 }
 
 .third-section{
     background: url('../../assets/images/hiw-bg.png') no-repeat top left;
-    box-shadow: none;
     padding: 0 0 100px;
-    position: relative;
-    margin-top: 100px;
-    @media screen and (max-width: 959px) {
-        margin-top: 0;
-    }
     .block-head{
         span{
             font-family: 'Avenir LT Std 85 Heavy';
-            color: #7CA8DC;
+            color: $inputBlue;
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -222,13 +280,13 @@
                 padding: 0 20px;
                 margin: 0;
                 position: relative;
-                z-index: 9;
-                background: #fff;
+                z-index: 1;
+                background: $white;
             }
         }
         &:after{
             content: '';
-            border-top: 2px solid #ccc;
+            border-top: 2px solid $grey;
             min-width: 250px;
             position: absolute;
             left: 0;
@@ -270,6 +328,86 @@
         }
     }
 }
+
+.fourth-section{
+    padding: 0 0 0 200px;
+    background: url('../../assets/images/orange_bg.png') no-repeat center right;
+    @media screen and (min-width:600px) and (max-width: 1259px) {
+        padding: 0 50px;
+    }
+    @media screen and (max-width: 959px) { 
+        text-align: center;
+    }
+    @media screen and (max-width: 959px) { 
+        text-align: center;
+    }
+    @media screen and (max-width: 600px) {
+        padding: 0 20px;
+    }
+    .block-head{
+        position: relative;
+        margin-bottom: 20px;
+        span{
+            font-family: 'Avenir LT Std 85 Heavy';
+            color: $orange;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-left: 60px;
+            @media screen and (max-width: 959px) {
+                padding: 0 20px;
+                margin: 0;
+                position: relative;
+                z-index: 9;
+                background: white;
+            }
+        }
+        &:after{
+            content: '';
+            border-top: 2px solid $inputBlue;
+            min-width: 30px;
+            position: absolute;
+            left: 0;
+            top: 10px;
+            @media screen and (max-width: 959px) {
+                min-width: 100%;
+            }
+        }
+        @media screen and (max-width: 959px) {
+            text-align: center;
+        }
+    }
+    .simple-text{
+        margin-bottom: 50px;
+        font-family: 'Avenir LT Std 65 Medium';
+        h3{
+            color: $inputBlue;
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+        p{
+            color: $darkblue;
+            font-size: 15px;
+            @media screen and (max-width: 959px) {
+                font-size: 16px;
+            }
+        }
+    }
+    .app-screen{
+        img{
+            float: right;
+            @media screen and (max-width: 959px) { 
+                float: none;
+                margin: auto;
+                display: block;
+            }
+        }
+    }
+}
+
+
+
 
 
 
