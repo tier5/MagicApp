@@ -25,6 +25,7 @@
             <div class="zapName">
               <h3 class="zapText">{{zap.name}}</h3>
               <v-btn slot="activator" v-clipboard="zap.scriptString" class="hidden-sm-and-down">copy script</v-btn>
+              <img src="../../../assets/images/icon-copy.png" v-clipboard="zap.scriptString" alt="copy script" class="hidden-md-and-up">
               <v-flex hidden-sm-and-up>
                 <div class="mobilezaps">
                   <ul>
