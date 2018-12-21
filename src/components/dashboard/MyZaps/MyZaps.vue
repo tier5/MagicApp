@@ -63,20 +63,22 @@
                       </v-btn>
                       <v-list>
                         <v-list-tile>
-                          <v-list-tile-title>
-                            <a @click='ViewZap(zap)'>
-                              <img src="../../../assets/images/view.png" alt="view">view
-                            </a>
+                          <v-list-tile-title @click='ViewZap(zap)'>
+                            <img src="../../../assets/images/view.png" alt="view">view
                           </v-list-tile-title>
-                          <v-list-tile-title>
-                            <a @click='EditZap(zap)'>
-                              <img src="../../../assets/images/edit.png" alt="edit">edit
-                            </a>
+                        </v-list-tile>
+                      </v-list>
+                      <v-list>
+                        <v-list-tile>
+                          <v-list-tile-title @click='EditZap(zap)'>
+                            <img src="../../../assets/images/edit.png" alt="edit">edit
                           </v-list-tile-title>
-                          <v-list-tile-title>
-                            <a @click="deleteZap(zap._id)">
-                              <img src="../../../assets/images/delete.png" alt="delete">delete
-                            </a>
+                        </v-list-tile>
+                      </v-list>
+                      <v-list>
+                        <v-list-tile>
+                          <v-list-tile-title @click="deleteZap(zap._id)">
+                            <img src="../../../assets/images/delete.png" alt="delete">delete
                           </v-list-tile-title>
                         </v-list-tile>
                       </v-list>

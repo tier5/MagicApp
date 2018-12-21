@@ -243,21 +243,15 @@
     .v-list{
         padding: 0px;
         .v-list__tile{
-            height: auto;
-            display: inline-block;
-            padding: 15px;
-            transition: none;
-            a{ 
-                font-size: 12px;
-                font-family: 'Avenir LT Std 65 Medium';
-                color: $inputBlue;
-                text-transform: capitalize;
-            }
-            .v-list__tile__title{
-                margin-bottom: 5px;
-                &:last-child{
-                    margin-bottom: 0px;
-                }
+            height: 34px;
+            padding: 0 20px;
+            font-size: 12px;
+            font-family: 'Avenir LT Std 65 Medium';
+            color: $inputBlue;
+            text-transform: capitalize;
+            cursor: pointer;
+            &:hover{
+                background: $lightBackground;
             }
             img{
                 width: 25%;
