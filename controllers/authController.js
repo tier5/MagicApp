@@ -135,7 +135,8 @@ function userForgetPassword(req,res){
     Users
         .findOne({email})
         .select({email:1})
-        .then(user =>{
+        .then(user => {
+            if(!user) { return res.status(500).send({message: 'Email not exists!', status: false}); } 
             var resetToken = jwt.sign({ email: user.email },"amagiczap.com" , { expiresIn: 60 * 60 });
             sendForgetPasswordMail(email,resetToken,function(err,info){
                 if (!err){
@@ -146,6 +147,7 @@ function userForgetPassword(req,res){
             })
         })
         .catch(err=>{
+            console.log(err);
             res.status(500).send({message: 'Something went wrong!', status: false});
         })
 }
