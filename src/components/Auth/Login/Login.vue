@@ -16,7 +16,7 @@
                             <v-card-text class="login">
                                 <Error v-if="isError"/>
                                 <img src="../../../assets/images/smalllogo.svg" aspect-ratio="2.75" class="smalllogo" alt="smalllogo">
-                                <v-form>
+                                <v-form @submit.prevent="onLogin">
                                     <v-container>
                                         <v-layout row wrap>
                                             <v-flex xs12 
@@ -54,10 +54,11 @@
                                                     This field is Required!
                                                 </span>
                                             </v-flex>
-                                            <a href="#" class="forgotpass">forgot password?</a>
+                                            <a class="forgotpass" @click="openForgetPassword()">forgot password?</a>
                                             <v-btn block color="orangeButton" 
                                                 :disabled="$v.user.$invalid"
-                                                @click="onLogin">
+                                                type='submit'
+                                                >
                                                 <img src="../../../assets/images/lock.png" alt="login">login
                                             </v-btn>
                                             <span>Don't have an account?<a href="#"> sign up now!</a></span>
@@ -114,6 +115,10 @@
             onLogin () {
                 this.$store.dispatch('userSignIn', this.user)
             },
+            openForgetPassword(){
+                this.$store.commit('changeForgetPassword', true);
+                this.closeModal();
+            }
         },
         validations:{
             user:{

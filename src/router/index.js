@@ -11,6 +11,7 @@ import Dashboard from '../components/dashboard/Dashboard.vue';
 import ViewZap from '../components/dashboard/ViewZap/ViewZap.vue';
 import EditZap from '../components/dashboard/EditZap/EditZap.vue';
 import HowItWorks from '../components/dashboard/HowItWorks/HowItWorks.vue';
+import ResetPassword from '../components/Auth/ResetPassword/ResetPassword.vue';
 
 Vue.use(Router);
 
@@ -24,9 +25,9 @@ export default new Router({
       component: Home,
     },
     {
-      path: '/changepassword',
-      name: 'ChangePassword',
-      component: ChangePassword,
+      path: '/reset-password/:token',
+      name: 'ResetPassword',
+      component: ResetPassword,
     },
     {
       path: '/magic',

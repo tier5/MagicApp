@@ -145,7 +145,7 @@ const actions = {
             var message = res.body.message 
             commit('successMessage',message);
             commit('successTrue');
-            commit('changeForgetPassword',false);
+            setTimeout(function(){ commit('changeForgetPassword',false); }, 2000);
           }
         },  
         (err) => {
@@ -164,17 +164,10 @@ const actions = {
           commit('changeLoading',false);
           if(res.body.status){
             var message = res.body.message 
-            // commit('successMessage',message);
-            // commit('successTrue');
-            // swal({
-            //   position: 'center',
-            //   type: 'success',
-            //   title: 'Your password has been changed',
-            //   showConfirmButton: false,
-            //   timer: 1500
-            // })
+            commit('successMessage',message);
+            commit('successTrue');
             setTimeout(()=>{
-              router.push('/login');
+              router.push('/');
             },1500)
           }
         },

@@ -264,25 +264,21 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <Login ></Login>
+    <!-- Child Components Modals -->
+    <Login></Login>
+    <ForgetPassword />
+    <!-- End of Child Components -->
   </div>
 </template>
 
 <script>
 import Login from "../../components/Auth/Login/Login.vue";
+import ForgetPassword from "../../components/Auth/ForgetPassword/ForgetPassword.vue";
 import { mapGetters } from "vuex";
 import router from "../../router/index"
 export default {
   data() {
     return {
-      dialoglogin: false,
-      dialogtrial: false,
-      show1: false,
-      email: "",
-      password: "",
-      isHidden: true,
-      name: "",
-      email: "",
       drawer: null,
       mini: false
     };
@@ -307,7 +303,8 @@ export default {
     }
   },
   components: {
-    Login
+    Login,
+    ForgetPassword
   },
   created(){
     this.$store.commit('checkUserAuthentication');
