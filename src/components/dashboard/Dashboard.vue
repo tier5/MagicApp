@@ -219,6 +219,7 @@
 import ChangePassword from "../Auth/ChangePassword/ChangePassword.vue";
 import router from "../../router/index";
 import {mapGetters} from 'vuex';
+import io from 'socket.io-client';
 export default {
   components: {
     changepassword: ChangePassword
@@ -228,7 +229,9 @@ export default {
       drawer: null,
       mini: false,
       right: null,
-      search : ''
+      search : '',
+      socket_url: process.env.VUE_APP_SOCKET_ENDPOINT,
+      socket : io(process.env.VUE_APP_SOCKET_ENDPOINT)
     };
   },
   methods:{
@@ -273,6 +276,14 @@ export default {
   },
   created(){
     this.$store.dispatch('getZapStats',{});
+  },
+  mounted(){
+    
+    this.socket.emit('join', { user : this.user.email});
+    this.socket.on('refresh-stats',(data)=> {
+      this.$store.dispatch('getZapStats',{});
+      this.$store.dispatch('getZap',this.user);
+    })
   }
 };
 </script>
