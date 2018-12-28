@@ -6,6 +6,8 @@
 var Users = require('../models/users');
 var _ = require('lodash');
 var mongoose = require('mongoose');
+var {sendRefreshStats} = require('../helpers/socket');
+var {getUserFromToken } = require('./usersController');
 
 /**
  * function to get all zaps
@@ -49,6 +51,7 @@ function createZap(req,res,next){
                     var zap = zaps.find((el)=>{
                         return el.name == body.name
                     })
+                    sendRefreshStats(data)
                     return res.status(200).send({message:'Zap created !',zap:zap,status:true});
                 })
                 .catch(err=>{
@@ -82,6 +85,9 @@ function deleteZap (req,res,next){
         .update(conditions,update,options)
         .then(result=>{
             if (result.n==1){
+                getUserFromToken(token).then(data => {
+                    sendRefreshStats(data)
+                })
                 return res.status(200).send({message: 'Zap Deleted', status :true})
             }
         })
@@ -193,9 +199,12 @@ function updateCounter(userToken,zapId,counterName){
 
         }
     }
-
-    Users.update(conditions, update, options).then(updated=>{
-        console.log(updated);
+    Users.update(conditions, update, options).then(updated => {
+        
+        getUserFromToken(userToken).then(data => {
+            
+            sendRefreshStats(data);
+        })
     });
 }
 

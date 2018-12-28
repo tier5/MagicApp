@@ -110,9 +110,22 @@ function updateUser(req,res,next){
         })
 }
 
+function getUserFromToken(token){
+    return new Promise((resolve, reject)=>{
+        Users.findOne({ accessToken : token}).then(data=>{
+            if (data){
+                return resolve(data);        
+            } else {
+                return reject('Not Found!');
+            }
+    
+        })
+    }) 
+}
 
  module.exports ={
     createUser,
     getAllUsers,
-    updateUser
+    updateUser,
+    getUserFromToken
  }

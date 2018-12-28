@@ -9,6 +9,8 @@ var debug = require('debug')('server:server');
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
+var socketIO = require('socket.io');
+var {socketHelperFunction} = require('../helpers/socket');
 /**
  * Get port from environment and store in Express.
  */
@@ -90,3 +92,11 @@ function onListening() {
   debug('Listening on ' + bind);
   console.log(`App is running on port : ${port}`);
 }
+
+/**
+ * Implementing Socket.IO 
+ * Instance of socket
+ */
+var IO = socketIO(server);
+
+socketHelperFunction(IO);
