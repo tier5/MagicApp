@@ -21,7 +21,6 @@
             }  
             .firstZap{
                 padding: 15px;
-                border-bottom:1px solid $placeholder_text;
                 .zapHeading{
                     font-size: 12px;
                     text-transform: uppercase;
@@ -34,20 +33,17 @@
             }
             .eachZap{
                 padding: 20px 15px;
-                border-bottom:1px solid $placeholder_text;
-                border-left: 1px solid  transparent;
-                border-radius: px;
+                border: 1px solid transparent;
+                border-top:1px solid $placeholder_text;
                 float: left;
                 position: relative;
                 width: 100%;
                 transition: 0.3s;
+                cursor: pointer;
                 &:hover{
                     background-color: $lightBackground;
-                    border: 1px solid  $placeholder_text;
-                    border-radius: 5px;
-                    border-top: none;
-                    transition: 0.3s;
-                    cursor: pointer;
+                    border: 1px solid $placeholder_text;
+                    border-bottom: 1px solid transparent;
                     box-shadow: 0 0 30px 0 #ddd;
                     -webkit-box-shadow: 0 0 30px 0 #ddd;
                     -moz-box-shadow: 0 0 30px 0 #ddd;
@@ -58,6 +54,11 @@
                             margin-right: 10px;
                         }
                     }
+                }
+                &:last-child{
+                    &:hover{
+                        border-bottom: 1px solid $placeholder_text;
+                    }   
                 }
                 .zaps{
                     @media screen and (max-width: 959px){

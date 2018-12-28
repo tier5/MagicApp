@@ -22,7 +22,7 @@
 
 .simple-text{
     p{
-        color: $darkblue;
+        color: $dark_blue;
         font-size: 18px;
         @media screen and (max-width: 959px) {
             font-size: 16px;
@@ -387,7 +387,7 @@
             margin-bottom: 10px;
         }
         p{
-            color: $darkblue;
+            color: $dark_blue;
             font-size: 15px;
             @media screen and (max-width: 959px) {
                 font-size: 16px;
@@ -406,6 +406,156 @@
     }
 }
 
+.fifth-section{
+    background: url('../../assets/images/client-bg.png') no-repeat top left;
+    padding: 240px 100px 120px;
+    margin: 0;
+    .client-image{
+        background: url('../../assets/images/bg-dots.png') no-repeat 50% 100%;
+        padding: 0 0 45px;
+    }
+    h2{
+        background: url('../../assets/images/arrow-light.png') no-repeat 80%;
+        color: $dark_head;
+        max-width: 400px;
+        font-size: 45px;
+        @media screen and (max-width: 959px) {
+            max-width: 100%;
+        }
+    }
+    .simple-text{
+        max-width: 600px;
+        @media screen and (max-width: 959px) {
+            max-width: 100%;
+        }
+        .image{
+            width: 60px;
+            height: 60px;
+            img{
+                border-radius: 50%;
+            }
+        }
+    }
+}
+
+.sixth-section{
+    background: url('../../assets/images/plan-bg.png') no-repeat top right;
+    padding: 200px 300px 200px;
+    .block-head{
+        display:inline-block;
+        max-width: 400px;
+        span{
+            font-family: 'Avenir LT Std 85 Heavy';
+            color: $darkblue;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+        }
+        h2{
+            color: $dark_head;
+            font-size: 45px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            span{
+                font-family: 'Avenir LT Std 95 Black';
+                font-size: 40px;
+                line-height: 1.2;
+                color: $orange;
+                letter-spacing: 0;
+                text-transform: none;
+                display: inline-block;
+            }
+        }
+        h3{
+            font-family: 'Avenir LT Std 95 Black';
+            font-weight: normal;
+            color: $light_text;
+            font-size: 20px;
+        }
+    }
+    .plan{
+        padding: 100px 10px 0;
+        cursor: pointer;
+        transform: translateY(0);
+        transition: 0.5s;
+        &:hover{
+            transform: translateY(-20px);
+        }
+        .head{
+            color: white;
+            text-transform: uppercase;
+            background: rgb(187,211,237);
+            background: -moz-linear-gradient(left, rgba(187,211,237,1) 0%, rgba(178,213,255,1) 100%);
+            background: -webkit-linear-gradient(left, rgba(187,211,237,1) 0%,rgba(178,213,255,1) 100%);
+            background: linear-gradient(to right, rgba(187,211,237,1) 0%,rgba(178,213,255,1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bbd3ed', endColorstr='#b2d5ff',GradientType=1 );
+            height: 150px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            position: relative;
+            h4{
+                font-family: 'Avenir LT Std 95 Black';
+                font-size: 60px;
+                position: absolute;
+                right: 30px;
+                top: 50%;
+                transform: translate(0,-50%);
+                span{
+                    font-size: 26px;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+            .type{
+                font-family: 'Avenir LT Std 85 Heavy';
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-size: 12px;
+                -webkit-transform: rotate(-90deg);
+                transform: rotate(-90deg);
+                display: inline-block;
+                position: absolute;
+                left: -20px;
+                top: 45%;
+                width: 100px;
+                text-align: center;
+            }
+        }
+        &.highlighted{
+            padding-top: 0;
+            .head{
+                background: rgb(255,144,77);
+                background: -moz-linear-gradient(left, rgba(255,144,77,1) 0%, rgba(255,97,0,1) 100%);
+                background: -webkit-linear-gradient(left, rgba(255,144,77,1) 0%,rgba(255,97,0,1) 100%);
+                background: linear-gradient(to right, rgba(255,144,77,1) 0%,rgba(255,97,0,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff904d', endColorstr='#ff6100',GradientType=1 );
+            }
+        }
+        .body{
+            color: $darkblue;
+            box-shadow: 0 0 100px 0 $input_border;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            background: white;
+            text-align: center;
+            padding: 50px 0;
+            ul{
+                li{
+                    font-family: 'Avenir LT Std 65 Medium';
+                    color: $dark_text;
+                    font-size: 16px;
+                    padding: 14px 0;
+                    text-transform: capitalize;
+                    &.disabled{
+                        opacity: 0.5;
+                    }
+                }
+            }
+        }
+    }
+    
+}
 
 
 

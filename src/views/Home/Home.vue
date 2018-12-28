@@ -261,6 +261,97 @@
               </v-flex>
             </v-layout>
           </v-card>
+          <v-card class="section fifth-section">
+            <v-layout row wrap>
+              <v-flex md5>
+                <v-card-text class="client-image">
+                  <img src="../../assets/images/client.png" alt="client">
+                </v-card-text>
+              </v-flex>
+              <v-flex md7>
+                <v-card-text class="simple-text">
+                  <h2>We are loved by 10k+ clients worldwide</h2>
+                  <v-layout row wrap>
+                    <v-flex md2 sm2>
+                      <div class="image">
+                        <img src="../../assets/images/client.png" alt="client">
+                      </div>
+                    </v-flex>
+                    <v-flex md10 sm10>
+                      <p>Perfect tool for all online marketers to stay ahead of competetion. It's easy to use and makes the use of zapier much more natural. Give it a try.</p>
+                    </v-flex>
+                  </v-layout>
+                </v-card-text>
+              </v-flex>
+            </v-layout>
+          </v-card>
+          <v-card class="section sixth-section">
+            <v-layout row wrap>
+              <v-flex md12 text-xs-right>
+                <div class="block-head">
+                  <span>select a plan to</span>
+                  <h2>Optimize your marketing in the next <span>5 minutes</span></h2>
+                  <h3>* Billed monthly, no set up fee.</h3>
+                </div>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap>
+              <v-flex md4>
+                <v-card-text>
+                  <div class="plan">
+                    <div class="head">
+                      <span class="type">Starter</span>
+                      <h4><span>$</span> 27</h4>
+                    </div>
+                    <div class="body">
+                      <ul>
+                        <li>10 magic zaps</li>
+                        <li>1,000 Monthly Automations</li>
+                        <li class="disabled">No Magic Option</li>
+                        <li class="disabled">No Cookies</li>
+                      </ul>
+                    </div>
+                  </div>
+                </v-card-text>
+              </v-flex>
+              <v-flex md4>
+                <v-card-text>
+                  <div class="plan highlighted">
+                    <div class="head">
+                      <span class="type">Standard</span>
+                      <h4><span>$</span> 47</h4>
+                    </div>
+                    <div class="body">
+                      <ul>
+                        <li>50 magic zaps</li>
+                        <li>1,000 Monthly Automations</li>
+                        <li>Magic Option</li>
+                        <li class="disabled">No Cookies</li>
+                      </ul>
+                    </div>
+                  </div>
+                </v-card-text>
+              </v-flex>
+              <v-flex md4>
+                <v-card-text>
+                  <div class="plan">
+                    <div class="head">
+                      <span class="type">professional</span>
+                      <h4><span>$</span> 97</h4>
+                    </div>
+                    <div class="body">
+                      <ul>
+                        <li>Unlimited magic zaps</li>
+                        <li>Unlimited Monthly Automations</li>
+                        <li>No Magic Option</li>
+                        <li>Cookies</li>
+                      </ul>
+                    </div>
+                  </div>
+                </v-card-text>
+              </v-flex>
+            </v-layout>
+          </v-card>
         </v-flex>
       </v-layout>
     </v-container>
