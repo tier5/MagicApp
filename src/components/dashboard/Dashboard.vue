@@ -32,6 +32,10 @@
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>help</span>
                   </li>
+                  <li @click.prevent="changeRouterState('/magic/training/view')">
+                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                    <span>Training Video</span>
+                  </li>
                 </ul>
               </v-card-text>
               <v-card-text class="create-new-zap" @click.prevent="changeRouterState('/magic/zaps/new')">

@@ -3,7 +3,7 @@ import Router from 'vue-router';
 
 import AuthGaurd from './gaurds/auth-gaurd'; 
 import Home from '../views/Home/Home.vue';
-import ChangePassword from '../components/Auth/ChangePassword/ChangePassword.vue';
+
 import CreateNewZap from '../components/dashboard/CreateNewZap/CreateNewZap.vue';
 import ZapierToken from '../components/dashboard/ZapierToken/ZapierToken.vue';
 import MyZaps from '../components/dashboard/MyZaps/MyZaps.vue';
@@ -12,6 +12,11 @@ import ViewZap from '../components/dashboard/ViewZap/ViewZap.vue';
 import EditZap from '../components/dashboard/EditZap/EditZap.vue';
 import HowItWorks from '../components/dashboard/HowItWorks/HowItWorks.vue';
 import ResetPassword from '../components/Auth/ResetPassword/ResetPassword.vue';
+import ViewTrainingVidoes from '../components/dashboard/TrainingVideo/ViewTrainingVideos.vue';
+import CreateTrainingVideo from '../components/dashboard/TrainingVideo/CreateTrainingVideo.vue';
+import EditTrainingVideo from '../components/dashboard/TrainingVideo/EditTrainingVideo.vue';
+import Users from '../components/dashboard/Users/Users.vue';
+import CreateUser from '../components/dashboard/Users/CreateUser.vue';
 
 Vue.use(Router);
 
@@ -64,6 +69,31 @@ export default new Router({
           path:'training',
           name: 'HowItWorks',
           component: HowItWorks
+        },
+        {
+          path:'training/view',
+          name: 'ViewTrainingVideos',
+          component: ViewTrainingVidoes
+        },
+        {
+          path:'training/create',
+          name: 'CreateTrainingVideos',
+          component: CreateTrainingVideo
+        },
+        {
+          path:'training/edit',
+          name: 'EditTrainingVideos',
+          component: EditTrainingVideo
+        },
+        {
+          path:'users',
+          name: 'Users',
+          component: Users
+        },
+        {
+          path:'users/create',
+          name: 'CreateUser',
+          component: CreateUser
         }
       ]
     }
