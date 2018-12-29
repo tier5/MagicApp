@@ -251,6 +251,8 @@
       }
       .dashboard-body{
         padding: 50px 0 100px;
+        display: inline-block;
+        width: 100%;
         @media screen and (max-width: 959px){
           padding: 0;
         }
@@ -562,9 +564,9 @@
       }
     }
     .create-new-zap-mobile{
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      z-index: 9999;
+      // position: fixed;
+      // bottom: 0;
+      // right: 0;
+      // z-index: 1;
     }
   }

@@ -138,6 +138,10 @@
                       </li>
                     </ul>
                   </v-card-text>
+                   <v-card-text class="create-new-zap" @click.prevent="changeRouterState('/magic/zaps/new')">
+                    <img src="../../assets/images/icon-createzap.png" alt="icon">
+                    <h2>Create a New Zap</h2>
+                  </v-card-text>
                   <v-card-text class="total-zaps">
                     <v-card-text>
                       <h3>total zaps</h3>
@@ -202,9 +206,9 @@
             <v-flex md10>
               <div class="dashboard-body">
                 <router-view/>
-                <span class="create-new-zap-mobile hidden-sm-and-up" @click.prevent="changeRouterState('/magic/zaps/new')">
+                <!-- <span class="create-new-zap-mobile hidden-sm-and-up" @click.prevent="changeRouterState('/magic/zaps/new')">
                   <img src="../../assets/images/icon-createzap.png" alt="icon-createzap">
-                </span>
+                </span> -->
               </div>
             </v-flex>
             <v-flex md1></v-flex>

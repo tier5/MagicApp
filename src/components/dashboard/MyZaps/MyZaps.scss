@@ -6,6 +6,8 @@
         }
         .dashboard-body{
             .v-card__text.myZaps{
+                max-height: 700px;
+                overflow-y: auto;
                 img{
                     position: relative;
                     left: 0;
@@ -21,6 +23,7 @@
             }  
             .firstZap{
                 padding: 15px;
+                border-bottom: 1px solid $placeholder_text;
                 .zapHeading{
                     font-size: 12px;
                     text-transform: uppercase;
@@ -28,13 +31,14 @@
                     font-family: 'Avenir LT Std 45 Book';
                     @media screen and (max-width: 1259px){
                         font-size: 10px;
+                        margin: 0;
                     }
                 }
             }
             .eachZap{
                 padding: 20px 15px;
                 border: 1px solid transparent;
-                border-top:1px solid $placeholder_text;
+                border-bottom: 1px solid $placeholder_text;
                 float: left;
                 position: relative;
                 width: 100%;
@@ -43,7 +47,7 @@
                 &:hover{
                     background-color: $lightBackground;
                     border: 1px solid $placeholder_text;
-                    border-bottom: 1px solid transparent;
+                    border-top: 1px solid transparent;
                     box-shadow: 0 0 30px 0 #ddd;
                     -webkit-box-shadow: 0 0 30px 0 #ddd;
                     -moz-box-shadow: 0 0 30px 0 #ddd;
@@ -203,8 +207,10 @@
                     text-transform: capitalize;
                     display: inline-block;
                     margin-right: 26px;
+                    min-width: 100px;
                     @media screen and (max-width: 959px){
                         font-size: 16px;
+                        min-width: auto;
                     }
                 }
                 .mobilezaps{
