@@ -36,6 +36,7 @@
     margin-top: 100px;
     @media screen and (max-width: 1259px) {
         margin-top: 0;
+        background-size: contain !important;
     }
     h2{
         font-family: 'Avenir LT Std 95 Black';
@@ -43,6 +44,10 @@
         font-size: 40px;
         line-height: 1.2;
         margin-bottom: 50px;
+        @media screen and (min-width: 600px) and (max-width: 959px) {
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
         @media screen and (max-width: 959px) {
             font-size: 27px;
             margin-bottom: 30px;
@@ -58,7 +63,7 @@
     min-height: 100vh;
     margin: 0;
     @media screen and (max-width: 1259px){
-        background-size: cover;
+        background-size: cover !important;
     } 
     @media screen and (max-width: 959px) {
         min-height: auto;
@@ -142,9 +147,12 @@
                     width: 100%;
                 }  
             }
-            @media screen and (max-width: 959px) {
+            @media screen and (min-width: 600px) and (max-width: 959px) {
+                padding: 50px 0;
+            } 
+            @media screen and (max-width: 599px) {
                 padding: 0;
-            }  
+            } 
         }
         .mobile-hamburger-menu {
             background: none;
@@ -257,9 +265,14 @@
     @media screen and (min-width: 960px) and (max-width: 1259px) {
         padding: 100px 0;
     }
-    @media screen and (max-width: 959px) {
+    @media screen and (min-width: 600px) and (max-width: 959px) {
         min-height: auto;
-        padding: 70px 0 0;
+        padding: 50px;
+        margin-top: 100px; 
+    }
+    @media screen and (max-width: 599px) {
+        min-height: auto;
+        padding: 50px 0 0;
         margin-top: 100px; 
     }
     
@@ -268,6 +281,9 @@
 .third-section{
     background: url('../../assets/images/hiw-bg.png') no-repeat top left;
     padding: 0 0 100px;
+    @media screen and (max-width: 959px) {
+        padding: 0;
+    }
     .block-head{
         span{
             font-family: 'Avenir LT Std 85 Heavy';
@@ -410,9 +426,21 @@
     background: url('../../assets/images/client-bg.png') no-repeat top left;
     padding: 240px 100px 120px;
     margin: 0;
+    @media screen and (min-width: 600px) and (max-width: 1259px) {
+        padding: 50px;
+    }
+    @media screen and (max-width: 599px) {
+        padding: 20px;
+    }
     .client-image{
         background: url('../../assets/images/bg-dots.png') no-repeat 50% 100%;
         padding: 0 0 45px;
+        img{
+            display: block;
+            @media screen and (max-width: 959px) {
+                margin: auto;
+            }
+        }
     }
     h2{
         background: url('../../assets/images/arrow-light.png') no-repeat 80%;
@@ -421,6 +449,9 @@
         font-size: 45px;
         @media screen and (max-width: 959px) {
             max-width: 100%;
+            background-size: contain;
+            font-size: 32px;
+            text-align: center;
         }
     }
     .simple-text{
@@ -431,6 +462,12 @@
         .image{
             width: 60px;
             height: 60px;
+            display: block;
+            margin: auto;
+            @media screen and (max-width: 959px) {
+                width: 50px;
+                height: 50px;
+            }
             img{
                 border-radius: 50%;
             }
@@ -440,7 +477,14 @@
 
 .sixth-section{
     background: url('../../assets/images/plan-bg.png') no-repeat top right;
-    padding: 200px 300px 200px;
+    padding: 200px 200px 50px;
+    margin-top: 0;
+    @media screen and (min-width: 600px) and (max-width: 1259px) {
+        padding: 50px;
+    }
+    @media screen and (max-width: 599px) {
+        padding: 20px;
+    }
     .block-head{
         display:inline-block;
         max-width: 400px;
@@ -457,6 +501,9 @@
             font-size: 45px;
             letter-spacing: 1px;
             margin-bottom: 20px;
+            @media screen and (max-width: 959px) {
+                font-size: 32px;
+            }
             span{
                 font-family: 'Avenir LT Std 95 Black';
                 font-size: 40px;
@@ -479,6 +526,8 @@
         cursor: pointer;
         transform: translateY(0);
         transition: 0.5s;
+        max-width: 400px;
+        margin: auto;
         &:hover{
             transform: translateY(-20px);
         }
@@ -532,6 +581,10 @@
                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff904d', endColorstr='#ff6100',GradientType=1 );
             }
         }
+        @media screen and (max-width: 959px) {
+            padding: 0;
+            max-width: 500px;
+        }
         .body{
             color: $darkblue;
             box-shadow: 0 0 100px 0 $input_border;
@@ -539,7 +592,7 @@
             border-bottom-right-radius: 10px;
             background: white;
             text-align: center;
-            padding: 50px 0;
+            padding: 50px 10px;
             ul{
                 li{
                     font-family: 'Avenir LT Std 65 Medium';
@@ -557,7 +610,65 @@
     
 }
 
-
+.frontend-footer.theme--light{
+    min-height: 800px;
+    background: url('../../assets/images/footer-bg.png') no-repeat bottom left;
+    margin-top: 0;
+    position: relative;
+    @media screen and (max-width: 1259px) {
+        min-height: 600px;
+    }
+    .footer-top{
+        position: absolute;
+        top: 30%;
+        min-height: 300px;
+        left: 0;
+        right: 0;
+        img{
+            position: absolute;
+            transform: translate(-50%,0);
+            bottom: 0;
+            left: 50%;
+        }
+    }
+    .footer-bottom{
+        position: absolute;
+        bottom: 10%;
+        left: 0;
+        right: 0;
+        span{
+            font-family: 'Avenir LT Std 85 Heavy';
+            color: $dark_blue;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        h5{
+            font-family: 'Avenir LT Std 95 Black';
+            font-weight: normal;
+            color: $dark_blue;
+            font-size: 20px;
+        }
+    }
+    .v-btn.free-trial-btn{
+        font-family: 'Avenir LT Std 85 Heavy';
+        font-size: 16px;
+        background: #7CA8DC;
+        text-align: center;
+        color: white;
+        border-radius: 40px;
+        cursor: pointer;
+        text-transform: none;
+        padding: 15px 50px;
+        height: 100%;
+        box-shadow: none;
+        margin: 0;
+        z-index: 9;
+        @media screen and (max-width: 959px) {
+            padding: 10px 30px;
+        }
+    }
+}
 
 
 

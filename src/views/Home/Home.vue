@@ -272,12 +272,12 @@
                 <v-card-text class="simple-text">
                   <h2>We are loved by 10k+ clients worldwide</h2>
                   <v-layout row wrap>
-                    <v-flex md2 sm2>
+                    <v-flex md2 sm2 xs3>
                       <div class="image">
                         <img src="../../assets/images/client.png" alt="client">
                       </div>
                     </v-flex>
-                    <v-flex md10 sm10>
+                    <v-flex md10 sm10 xs9>
                       <p>Perfect tool for all online marketers to stay ahead of competetion. It's easy to use and makes the use of zapier much more natural. Give it a try.</p>
                     </v-flex>
                   </v-layout>
@@ -296,7 +296,7 @@
               </v-flex>
             </v-layout>
             <v-layout row wrap>
-              <v-flex md4>
+              <v-flex md4 xs12>
                 <v-card-text>
                   <div class="plan">
                     <div class="head">
@@ -314,7 +314,7 @@
                   </div>
                 </v-card-text>
               </v-flex>
-              <v-flex md4>
+              <v-flex md4 xs12>
                 <v-card-text>
                   <div class="plan highlighted">
                     <div class="head">
@@ -332,7 +332,7 @@
                   </div>
                 </v-card-text>
               </v-flex>
-              <v-flex md4>
+              <v-flex md4 xs12>
                 <v-card-text>
                   <div class="plan">
                     <div class="head">
@@ -347,6 +347,22 @@
                         <li>Cookies</li>
                       </ul>
                     </div>
+                  </div>
+                </v-card-text>
+              </v-flex>
+            </v-layout>
+          </v-card>
+          <v-card class="section frontend-footer">
+            <v-layout row wrap>
+              <v-flex md12>
+                <v-card-text class='text-xs-center'>
+                  <div class="footer-top">
+                    <v-btn class="free-trial-btn">Start 14 Days FREE Trial</v-btn>
+                    <img src="../../assets/images/footer-logo.png" alt="footer-logo">
+                  </div>
+                  <div class="footer-bottom">
+                    <span>A marketing effort by</span>
+                    <h5>Jon Vaughn Affiliates</h5>
                   </div>
                 </v-card-text>
               </v-flex>
