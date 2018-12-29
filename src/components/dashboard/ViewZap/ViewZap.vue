@@ -77,7 +77,6 @@
                   <span>{{zap.timeout.minutes ? zap.timeout.minutes: 0}}
                   Min</span>
                 </li>
-
               </ul>
             </v-card-text>
           </v-flex>
@@ -98,11 +97,6 @@
       </v-form>
 
     </v-card>
-
-    <span class="create-new-zap-mobile hidden-sm-and-up">
-      <img src="../../../assets/images/icon-createzap.png" alt="icon-createzap">
-    </span>
-
   </div>
 </template>
 <script>

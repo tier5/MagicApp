@@ -62,14 +62,14 @@
                       <span>CHANGE PASSWORD</span>
                     </v-tooltip>
                   </li>
-                  <li>
+                  <!-- <li>
                     <v-tooltip top>
                       <v-btn slot="activator" @click="logout()">
                         <img src="../../assets/images/user-icon.png" alt="icon" class="user-icon">
                       </v-btn>
                       <span>MY PROFILE</span>
                     </v-tooltip>
-                  </li>
+                  </li> -->
                   <li>
                     <v-tooltip top>
                       <v-btn slot="activator" @click="logout()">
@@ -156,12 +156,12 @@
                   </v-card-text>
                   <v-card-text class="left-footer text-xs-right">
                     <ul>
-                      <li>
+                      <li @click="openChangePassword()">
                         <img src="../../assets/images/back-icon.png" alt="icon" class="back-icon">
                       </li>
-                      <li>
+                      <!-- <li>
                         <img src="../../assets/images/user-icon.png" alt="icon" class="user-icon">
-                      </li>
+                      </li> -->
                       <li>
                         <v-tooltip top>
                           <v-btn slot="activator" @click="logout()">
@@ -202,6 +202,9 @@
             <v-flex md10>
               <div class="dashboard-body">
                 <router-view/>
+                <span class="create-new-zap-mobile hidden-sm-and-up" @click.prevent="changeRouterState('/magic/zaps/new')">
+                  <img src="../../assets/images/icon-createzap.png" alt="icon-createzap">
+                </span>
               </div>
             </v-flex>
             <v-flex md1></v-flex>

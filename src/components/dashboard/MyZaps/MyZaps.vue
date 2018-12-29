@@ -129,9 +129,6 @@
         </v-layout>
       </div>
     </v-card-text>
-    <span class="create-new-zap-mobile hidden-sm-and-up">
-      <img src="../../../assets/images/icon-createzap.png" alt="icon-createzap">
-    </span>
   </div>
 </template>
 
