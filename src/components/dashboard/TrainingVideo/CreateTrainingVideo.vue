@@ -1,6 +1,11 @@
 <template>
   <div>
-      Create Training Video List Page
+    <v-card-text class="tutorial">
+      <div class="firstZap hidden-xs-only">
+        <v-layout row wrap>
+        </v-layout>
+      </div>
+    </v-card-text>
   </div>
 </template>
 
@@ -30,5 +35,5 @@
 
 <style lang="scss">
 @import "../../../styles/common.scss";
-//@import "./ViewTrainingVideos.scss";
+@import "./CreateTrainingVideo.scss";
 </style>

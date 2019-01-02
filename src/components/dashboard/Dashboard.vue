@@ -34,7 +34,7 @@
                   </li>
                   <li @click.prevent="changeRouterState('/magic/training/view')">
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                    <span>Training Video</span>
+                    <span>Tutorials</span>
                   </li>
                 </ul>
               </v-card-text>
@@ -139,6 +139,10 @@
                       <li>
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                         <span>help</span>
+                      </li>
+                      <li @click.prevent="changeRouterState('/magic/training/view')">
+                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                        <span>Tutorials</span>
                       </li>
                     </ul>
                   </v-card-text>

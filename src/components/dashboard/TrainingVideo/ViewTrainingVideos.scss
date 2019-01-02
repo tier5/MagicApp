@@ -1,336 +1,79 @@
 .container{
-    padding: 0;
     .right-aside{
-        .v-card{
-            background-color: transparent;
-        }
         .dashboard-body{
-            .v-card__text.myZaps{
-                img{
-                    position: relative;
-                    left: 0;
-                    top: -6px;
-                }
-                #zap_id1{
-                    &:hover{
-                        img#menu1{
-                            content: url('../../../assets/images/orangeMenu.png');
-                        }
-                    }
-                }
-            }
-            .firstZap{
-                padding: 15px;
-                border-bottom:1px solid $placeholder_text;
-                .zapHeading{
-                    font-size: 12px;
-                    text-transform: uppercase;
-                    color: $darkgrey;
-                    font-family: 'Avenir LT Std 45 Book';
-                    @media screen and (max-width: 1259px){
-                        font-size: 10px;
-                    }
-                }
-            }
-            .eachZap{
-                padding: 20px 15px;
-                border-bottom:1px solid $placeholder_text;
-                border-left: 1px solid  transparent;
-                border-radius: px;
-                float: left;
-                position: relative;
-                width: 100%;
-                transition: 0.3s;
-                &:hover{
-                    background-color: $lightBackground;
-                    border: 1px solid  $placeholder_text;
-                    border-radius: 5px;
-                    border-top: none;
-                    transition: 0.3s;
-                    cursor: pointer;
-                    box-shadow: 0 0 30px 0 #ddd;
-                    -webkit-box-shadow: 0 0 30px 0 #ddd;
-                    -moz-box-shadow: 0 0 30px 0 #ddd;
-                    h3{
-                        color: $orange;
-                        transition: 0.3s;
-                        @media screen and (max-width: 599px){
-                            margin-right: 10px;
-                        }
-                    }
-                }
-                .zaps{
-                    @media screen and (max-width: 959px){
-                        text-align: center;
-                    }
-                    .v-menu__activator{
-                        button.v-btn{
-                            margin: 0;
-                        }
-                    }
-                    .v-card{
-                        background: none;
-                    }
-                }
-                .zapName{
+            .tutorial{
+                .v-card__text {
                     img{
-                        position: relative;
-                        top: 0;
                         left: 0;
-                        vertical-align: text-bottom;
-                        width:16px;
-                        margin-right: 7px;
+                        top: 0;
+                        @media screen and (max-width: 959px){
+                            left: 15px;
+                        }
                     }
-                    .switchblock{
-                        float: right;
-                        text-transform: uppercase;
-                        vertical-align: top;
-                        font-size: 11px;
-                        span{
-                            font-family: 'Avenir LT Std 85 Heavy';
-                            color: white;
-                            &.cookie{
-                                font-size: 9px;
-                                color: $light_text;
-                                display: inline-block;
-                                margin-right: 10px;
-                            }
-                            &.on{
-                                float: left;
-                            }
-                            &.off{
-                                float: right;
-                                color: $light_text;
-                            }
+                }
+                .addtutorial{
+                    display: block;
+                    width: 100%;
+                }
+                .submit-btn{
+                    float: right;
+                    color: white;
+                    text-transform: none;
+                    font-size: 14px;
+                    background-image: linear-gradient(to right, $orange, #ff6910, #ff711c, #ff7927, #ff8030);
+                    padding: 0 10px;
+                    min-height: auto;
+                    border-radius: 3px;
+                    transition: 0.5s;
+                    margin: 0;
+                    @media screen and (max-width: 599px){
+                      padding: 0 20px;
+                    }
+                    img{
+                      margin-right: 10px; 
+                    }
+                    &:before{
+                      display: none;
+                    }
+                    &.v-btn--disabled{
+                      opacity: 0.5;
+                      color: white !important;
+                    }
+                    &:hover{
+                      background-image: linear-gradient(to right, #ff8030, #ff7927, #ff711c, #ff6910, #ff6100);
+                    }
+                }
+                .hide-nav{
+                    display: none;
+                }
+                .tutorial-list-table{
+                    display: inline-block;
+                    width: 100%;
+                    margin-top: 10px;
+                    .v-toolbar__content{
+                        padding: 0;
+                        .v-dialog__container{
+                            width: 100%;
                         }
-                        .switch{
-                            display: inline-block;
-                            position: relative;
-                            width: 60px;
-                            height: 34px;
-                            vertical-align: middle;
-                            input { 
-                                opacity: 0;
-                                width: 0;
-                                height: 0;
+                    }
+                    .theme--light.v-table{
+                        thead {
+                            background: $lightblue;
+                            tr:first-child{
+                                border-top:1px solid rgba(0,0,0,.12);
                             }
-                        }
-                        .slider {
-                            position: absolute;
-                            cursor: pointer;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            bottom: 0;
-                            background-color: $lightbg;
-                            border: 2px solid $light_text;
-                            -webkit-transition: .4s;
-                            transition: .4s;
-                            &:before {
-                                position: absolute;
-                                content: "";
-                                height: 32px;
-                                width: 32px;
-                                left: 0;
-                                bottom: 0;
-                                background-color: $light_text;
-                                -webkit-transition: .4s;
-                                transition: .4s;
-                            }
-                            &.round {
-                                border-radius: 34px;
-                                padding: 10px 5px;
-                                &:before {
-                                    border-radius: 50%;
+                        } 
+                        tbody{
+                            tr{
+                                td{
+                                    color: $body_text;
                                 }
                             }
                         }
-                        input:checked + .slider {
-                            background-color: $inputBlue;
-                            border: 2px solid $inputBlue;
-                        }
-                        input:focus + .slider {
-                            box-shadow: 0 0 1px $inputBlue;
-                            border: 2px solid $inputBlue;
-                        }
-                        input:checked + .slider:before {
-                            -webkit-transform: translateX(26px);
-                            -ms-transform: translateX(26px);
-                            transform: translateX(26px);
-                        }
-                    }
-                    .v-btn{
-                        text-transform: capitalize;
-                        color: $orange;
-                        font-size: 13px;
-                        vertical-align: middle;
-                        background: url('../../../assets/images/icon-copy.png') no-repeat 10px;
-                        background-size: 16px;
-                        box-shadow: none;
-                        margin: 0;
-                        padding-left: 35px;
-                        
-                    }
-                    .magicOption{
-                        margin-top: 12px;
-                        span{
-                            color: $darkblue;
-                            text-transform: uppercase;
-                            font-size: 10px;
-                            font-family: 'Avenir LT Std 85 Heavy';
-                        }
-                        .on{
-                            .theme--light.v-label{
-                                color: $orange;
-                                
-                            }
-                        }
-                    }
+                    } 
                 }
-                .magicOption{
-                    margin-top: 10px;
-                    span{
-                        text-transform: uppercase;
-                        font-size: 9px;
-                        font-family: 'Avenir LT Std 85 Heavy';
-                    }
-                }
-                h3{
-                    font-size: 20px;
-                    font-family: 'Avenir LT Std 65 Medium';
-                    color: $inputBlue;
-                    text-transform: capitalize;
-                    display: inline-block;
-                    margin-right: 26px;
-                    @media screen and (max-width: 959px){
-                        font-size: 16px;
-                    }
-                }
-                .mobilezaps{
-                    ul{
-                        li{
-                            display: inline-block;
-                            margin-right: 20px;
-                            color: $placeholder_text;
-                            img{
-                                width: auto;
-                            }
-                        }
-                    }
-                } 
             }
-            }
-            .v-input--selection-controls{
-                margin-top: 0px;
-            }
-            .v-input--radio-group--column .v-radio:not(:last-child):not(:only-child){
-                width: 20%
-            }
-            .theme--light.v-label{
-                color: $darkblue;
-                font-size: 10px;
-                font-family: 'Avenir LT Std 85 Heavy';
-                text-transform: uppercase;
-            }
+            
         }
-    }
-.v-input--selection-controls:not(.v-input--hide-details) .v-input__slot{
-    margin-bottom: 0;
-}
-.v-menu__content.theme--light{
-    border-radius: 9px;
-    box-shadow: 0 5px 16px 3px $shadowGrey;
-    .v-list{
-        padding: 0px;
-        .v-list__tile{
-            height: 34px;
-            padding: 0 20px;
-            font-size: 12px;
-            font-family: 'Avenir LT Std 65 Medium';
-            color: $inputBlue;
-            text-transform: capitalize;
-            cursor: pointer;
-            &:hover{
-                background: $lightBackground;
-            }
-            img{
-                width: 25%;
-                margin-right: 10px;
-                vertical-align: middle;
-            }
-        }
-    }
-} 
-.myZaps .accent--text{
-    color: $orange !important;
-    font-size: 20px;
-}
-.mdi-radiobox-blank:before{
-    color: $darkblue;
-    font-size: 20px;
-}
-.v-input--selection-controls__ripple{
-    height: 24px;
-    width:24px;
-    left: -9px;
-    top: calc(50% - 20px);
-}
-body{
-    .primary--text{
-        color: $orange !important;
-        caret-color: $orange !important;
-    }
-}
-// responsive
-@media screen and (min-width: 600px) and (max-width: 959px){
-    .container .right-aside.myZapWrap .dashboard-body .v-card__text img {
-        width: auto;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap .zapHeading{
-        font-size: 9px;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap h3{
-        font-size: 15px;
-        margin-right: 6px;
-    }
-    .v-input--selection-controls__input{
-        margin-right: 0px;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap .zapHeading{
-        font-size: 10px;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap{
-        padding: 15px 5px;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap{
-        padding: 15px 5px;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .zapName .magicOption span{
-        font-size: 7px;
-    }
-}
-@media screen and (min-width: 320px) and (max-width: 599px){
-    .container .right-aside.myZapWrap .dashboard-body {
-        padding: 0px;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap h3{
-        margin-right: 6px;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .zapName a{
-        display: none;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .firstZap{
-        display: none;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap:hover{
-        border-top: 1px solid $placeholder_text;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .mobilezaps{
-        display: block;
-    }
-    .container .right-aside.myZapWrap .dashboard-body .myZaps .eachZap .mobilezaps ul li{
-        display: inline;
-        margin-right: 30px;
-        color: $darkblue;
     }
 }
