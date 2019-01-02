@@ -3,7 +3,7 @@
     <v-card-text>
       <h2>Tutorial Video</h2>
       <p>Check out the list of all the Tutorial Videos</p>
-      <img src="../../../assets/images/icon-video.png" alt="Video Icon" class="header-logo">
+      <img src="../../../assets/images/icon-video-big.png" alt="Video Icon" class="header-logo">
     </v-card-text>
     <v-card-text>
       <v-layout>
@@ -17,27 +17,32 @@
                   <v-card>
                     <v-card-text>
                       <v-container grid-list-md>
-                        <v-layout wrap>
-                          <v-flex xs12>
-                            <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
-                          </v-flex>
-                          <v-flex xs12>
-                            <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
-                          </v-flex>
-                          <v-flex xs12>
-                            <v-text-field v-model="editedItem.source" label="Source"></v-text-field>
-                          </v-flex>
-                          <v-flex xs12>
-                            <v-text-field v-model="editedItem.order" label="Order"></v-text-field>
-                          </v-flex>
-                        </v-layout>
+                        <v-card-text>
+                          <v-layout wrap>
+                            <v-flex xs12 text-xs-center class="popup-head">
+                              <h3>Add Tutorial</h3>
+                            </v-flex>
+                            <v-flex xs12>
+                              <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12>
+                              <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12>
+                              <v-text-field v-model="editedItem.source" label="Source"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12>
+                              <v-text-field v-model="editedItem.order" label="Order"></v-text-field>
+                            </v-flex>
+                          </v-layout>
+                        </v-card-text>
                       </v-container>
                     </v-card-text>
 
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                      <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+                      <v-btn color="blue darken-1" flat @click="save">Add</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -122,11 +127,11 @@
       ],
       editedIndex: -1,
       editedItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
+        id: '',
+        title: 0,
+        description: 0,
+        source: 0,
+        order: 0
       },
       defaultItem: {
         id: '',

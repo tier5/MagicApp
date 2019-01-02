@@ -4,10 +4,12 @@
             .tutorial{
                 .v-card__text {
                     img{
-                        left: 0;
-                        top: 0;
+                        left: -50px;
+                        top: 15px;
                         @media screen and (max-width: 959px){
                             left: 15px;
+                            width: 35px;
+                            top: 0;
                         }
                     }
                 }
@@ -26,6 +28,7 @@
                     border-radius: 3px;
                     transition: 0.5s;
                     margin: 0;
+                    font-family: 'Avenir LT Std 95 Black';
                     @media screen and (max-width: 599px){
                       padding: 0 20px;
                     }
@@ -62,6 +65,12 @@
                             tr:first-child{
                                 border-top:1px solid rgba(0,0,0,.12);
                             }
+                            th{
+                                font-size: 14px;
+                                font-family: 'Avenir LT Std 95 Black';
+                                font-weight: normal;
+                                color: $body_text;
+                            }
                         } 
                         tbody{
                             tr{
@@ -73,7 +82,15 @@
                     } 
                 }
             }
-            
         }
+    }
+}
+.popup-head{
+    color: $body_text;
+    h3{
+        color: $inputBlue;
+        text-transform: capitalize;
+        margin: 10px 0;
+        font-family: 'Avenir LT Std 95 Black';
     }
 }

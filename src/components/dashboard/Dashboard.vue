@@ -32,7 +32,11 @@
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>help</span>
                   </li>
-                  <li @click.prevent="changeRouterState('/magic/training/view')">
+                  <li @click.prevent="changeRouterState('/magic/users')" :class="{'active' : this.$route.path == '/magic/users'}">
+                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                    <span>Users</span>
+                  </li>
+                  <li @click.prevent="changeRouterState('/magic/training/view')" :class="{'active' : this.$route.path == '/magic/training/view'}">
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>Tutorials</span>
                   </li>
@@ -140,7 +144,11 @@
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                         <span>help</span>
                       </li>
-                      <li @click.prevent="changeRouterState('/magic/training/view')">
+                      <li @click.prevent="changeRouterState('/magic/users')" :class="{'active' : this.$route.path == '/magic/users'}">
+                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                        <span>Users</span>
+                      </li>
+                      <li @click.prevent="changeRouterState('/magic/training/view')" :class="{'active' : this.$route.path == '/magic/training/view'}">
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                         <span>Tutorials</span>
                       </li>
