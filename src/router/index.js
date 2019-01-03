@@ -13,8 +13,6 @@ import EditZap from '../components/dashboard/EditZap/EditZap.vue';
 import HowItWorks from '../components/dashboard/HowItWorks/HowItWorks.vue';
 import ResetPassword from '../components/Auth/ResetPassword/ResetPassword.vue';
 import ViewTrainingVidoes from '../components/dashboard/TrainingVideo/ViewTrainingVideos.vue';
-import CreateTrainingVideo from '../components/dashboard/TrainingVideo/CreateTrainingVideo.vue';
-import EditTrainingVideo from '../components/dashboard/TrainingVideo/EditTrainingVideo.vue';
 import Users from '../components/dashboard/Users/Users.vue';
 import CreateUser from '../components/dashboard/Users/CreateUser.vue';
 
@@ -71,19 +69,9 @@ export default new Router({
           component: HowItWorks
         },
         {
-          path:'training/view',
+          path:'settings/tutorials',
           name: 'ViewTrainingVideos',
           component: ViewTrainingVidoes
-        },
-        {
-          path:'training/create',
-          name: 'CreateTrainingVideos',
-          component: CreateTrainingVideo
-        },
-        {
-          path:'training/edit',
-          name: 'EditTrainingVideos',
-          component: EditTrainingVideo
         },
         {
           path:'users',

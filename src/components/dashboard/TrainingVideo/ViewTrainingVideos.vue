@@ -12,27 +12,85 @@
               <v-btn slot="activator" class="submit-btn" @click="addItem()">+ Add Tutorial</v-btn>
             </div>
             <div class="tutorial-list-table">
+              <!-- Create/Edit Tutorial Starts -->
               <v-toolbar class="hide-nav">
-                <v-dialog v-model="dialog" max-width="800px">
+                
+                <v-dialog v-model="createAndUpdateModal" max-width="800px">
+                  
                   <v-card>
                     <v-card-text>
                       <v-container grid-list-md>
                         <v-card-text>
                           <v-layout wrap>
+
                             <v-flex xs12 text-xs-center class="popup-head">
-                              <h3>Add Tutorial</h3>
+                              <h3>
+                                <span v-if="!newTutorial._id">Add</span>
+                                <span v-if="newTutorial._id">Edit</span> 
+                                Tutorial
+                              </h3>
+                            </v-flex>
+                            <v-flex xs12 text-xs-center>
+                              <Error v-if="isError"/>
+                              <Success v-if="isSuccess"/>
                             </v-flex>
                             <v-flex xs12>
-                              <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+
+                              <v-text-field 
+                                v-model="newTutorial.title" 
+                                label="Title"
+                                @blur="$v.newTutorial.title.$touch">
+                              </v-text-field>
+
+                              <span class="validation-error-message"
+                                v-if="!$v.newTutorial.title.required && $v.newTutorial.title.$error">
+                                Title is required!
+                              </span>
+
                             </v-flex>
+
                             <v-flex xs12>
-                              <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
+
+                              <v-text-field 
+                                v-model="newTutorial.description"
+                                label="Description"
+                                @blur="$v.newTutorial.description.$touch">
+                              </v-text-field>
+
+                              <span class="validation-error-message"
+                                v-if="!$v.newTutorial.description.required && $v.newTutorial.description.$error">
+                                Description is required!
+                              </span>
+
                             </v-flex>
+
                             <v-flex xs12>
-                              <v-text-field v-model="editedItem.source" label="Source"></v-text-field>
+
+                              <v-text-field 
+                                v-model="newTutorial.source"
+                                label="Source"
+                                @blur="$v.newTutorial.source.$touch">
+                              </v-text-field>
+
+                              <span class="validation-error-message"
+                                v-if="!$v.newTutorial.source.required && $v.newTutorial.source.$error">
+                                Source is required!
+                              </span>
+
                             </v-flex>
+
                             <v-flex xs12>
-                              <v-text-field v-model="editedItem.order" label="Order"></v-text-field>
+
+                              <v-text-field 
+                                v-model="newTutorial.order"
+                                label="Order"
+                                @blur="$v.newTutorial.order.$touch">
+                              </v-text-field>
+                              <span class="validation-error-message"
+                                v-if="!$v.newTutorial.order.required && $v.newTutorial.order.$error">
+                                Order is required!
+                              </span>
+
                             </v-flex>
                           </v-layout>
                         </v-card-text>
@@ -42,18 +100,22 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                      <v-btn color="blue darken-1" flat @click="save">Add</v-btn>
+                      <v-btn color="blue darken-1" flat @click="save" v-if="!newTutorial._id" :disabled="$v.newTutorial.$invalid">Add</v-btn>
+                      <v-btn color="blue darken-1" flat @click="update()" v-if="newTutorial._id" :disabled="$v.newTutorial.$invalid">Edit</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
               </v-toolbar>
+              <!-- Create/Edit Tutorial Ends -->
+
+              <!-- View Tutorial Starts -->
               <v-data-table
                 :headers="headers"
-                :items="tutorial_data"
+                :items="tutorials"
                 class="elevation-1"
               >
                 <template slot="items" slot-scope="props">
-                  <td>{{ props.item.id }}</td>
+                  <td>{{ props.item._id }}</td>
                   <td>{{ props.item.title }}</td>
                   <td>{{ props.item.description }}</td>
                   <td>{{ props.item.source }}</td>
@@ -62,19 +124,20 @@
                     <v-icon
                       small
                       class="mr-2"
-                      @click="editItem(props.item)"
+                      @click.prevent="editItem(props.item)"
                     >
                       edit
                     </v-icon>
                     <v-icon
                       small
-                      @click="deleteItem(props.item)"
+                      @click="deleteItem(props.item._id)"
                     >
                       delete
                     </v-icon>
                   </td>
                 </template>
               </v-data-table>
+              <!-- View Tutorials Ends -->
             </div>
         </v-flex>
       </v-layout>
@@ -84,116 +147,94 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { required } from 'vuelidate/lib/validators';
+  import Success from '../../../components/Success.vue';
+  import Error from '../../../components/Error.vue';
+
   export default {
     data: () => ({
       dialog: false,
       headers: [
-        { text: '#', value: 'id'},
+        { text: '#', value: 'id', sortable : false},
         { text: 'Title', value: 'title', sortable: false },
         { text: 'Description', value: 'description', sortable: false },
         { text: 'Source', value: 'source', sortable: false },
         { text: 'Order', value: 'order' },
         { text: 'Actions', value: 'actions', sortable: false}
       ],
-      tutorial_data : [
-        {
-          id: '1',
-          title: 'Magic Zap Intro Video',
-          description: 'An intro into Magic Zap. A brief overview of Magic Zap',
-          source: 'https://www.youtube.com/watch?v=BTg_gYwHWTI&list=PLgwAAY-aCn6cfDgjvho9gHCwf0atLW0MZ',
-          order: 0
-        },
-        {
-          id: '2',
-          title: 'Creating Your First Zap',
-          description: 'This video will teach you how you can create you first zap',
-          source: 'https://youtu.be/JV7bEiu0sVc',
-          order: 1
-        },
-        {
-          id: '3',
-          title: 'Magic Zap - Installing the magic zap script',
-          description: 'How to install the magic zap script on your website',
-          source: 'https://www.youtube.com/watch?v=G3pj9W8pkZs&list=PLgwAAY-aCn6cfDgjvho9gHCwf0atLW0MZ&index=3',
-          order: 2
-        },
-        {
-          id: '4',
-          title: 'What are URL Parameters',
-          description: 'You will need to understand a little about URL parameters to understand how Magic Zap works. This video will teach you about that.',
-          source: 'https://youtu.be/y77UO-Ei7x0',
-          order: 3
-        }
-      ],
-      editedIndex: -1,
-      editedItem: {
-        id: '',
-        title: 0,
-        description: 0,
-        source: 0,
-        order: 0
-      },
-      defaultItem: {
-        id: '',
-        title: 0,
-        description: 0,
-        source: 0,
-        order: 0
+      newTutorial:{
+        title : '',
+        description : '',
+        source:'',
+        order: null
       }
     }),
     methods: {
 
-      deleteItem (item) {
-        const index = this.tutorial_data.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.tutorial_data.splice(index, 1)
+      deleteItem (id) {
+        
+        confirm('Are you sure you want to delete this item?') && this.$store.dispatch('deleteTutorial',id);
       },
 
       close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
+        this.newTutorial = {
+          title: '',
+          description: '',
+          source:'',
+          order:null
+        };
+        this.$v.newTutorial.$reset();
+        this.$store.commit('changeCreateAndUpdateModal', false);
       },
 
       editItem (item) {
-        this.editedIndex = this.tutorial_data.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.newTutorial = item;
+        this.addItem();
       },
 
       addItem () {
-        this.dialog = true
+        this.$store.commit('changeCreateAndUpdateModal', true);
       },
 
       save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.tutorial_data[this.editedIndex], this.editedItem)
-        } else {
-          this.tutorial_data.push(this.editedItem)
-        }
-        this.close()
+        this.$store.dispatch('createTutorial',this.newTutorial);
+      },
+
+      update(){
+        this.$store.dispatch('updateTutorial', this.newTutorial);
       }
     },
 
     watch: {
-      dialog (val) {
-        val || this.close()
-      }
+      
     },
-    
+
     computed:{
       ...mapGetters([
             'user',
-            'tutorials'
-      ]),
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      }
-      
+            'tutorials',
+            'isError',
+            'isSuccess',
+            'createAndUpdateModal'
+      ])
     },
+
     created(){
       this.$store.dispatch('getTutorials',{});
+    },
+
+    validations:{
+      newTutorial: {
+        title: {required},
+        description : {required},
+        source: {required},
+        order:{required}
+      }
+    },
+
+    components:{
+      Success,
+      Error
     }
   }
 </script>

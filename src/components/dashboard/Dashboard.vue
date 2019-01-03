@@ -28,7 +28,7 @@
                     >
                     <span>zapier token</span>
                   </li>
-                  <li>
+                  <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>help</span>
                   </li>
@@ -36,9 +36,9 @@
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>Users</span>
                   </li>
-                  <li @click.prevent="changeRouterState('/magic/training/view')" :class="{'active' : this.$route.path == '/magic/training/view'}">
+                  <li @click.prevent="changeRouterState('/magic/settings/tutorials')" :class="{'active' : this.$route.path == '/magic/settings/tutorials'}">
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                    <span>Tutorials</span>
+                    <span>Tutorial Video Settings</span>
                   </li>
                 </ul>
               </v-card-text>

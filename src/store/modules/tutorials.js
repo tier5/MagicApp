@@ -75,7 +75,9 @@ const actions = {
         .then(
           (res) => {
             if(res.body.status) {
-              commit('changeCreateAndUpdateModal', false);
+              setTimeout(()=>{
+                commit('changeCreateAndUpdateModal', false);
+              }, 1500)
               if (res.body.data){
                 commit('addTutorials',res.body.data);
               }
@@ -128,7 +130,9 @@ const actions = {
             if(res.body.status) {
               commit('changeLoading',false);
               commit('updateTutorial', payload);
-              commit('changeCreateAndUpdateModal', false);
+              setTimeout(()=>{
+                commit('changeCreateAndUpdateModal', false);
+              }, 1500)
               let message = res.body.message;
               commit('successMessage',message);
               commit('successTrue');
