@@ -11,18 +11,18 @@ const {createAccessToken} = require('../helpers/jwt');
   * @param {object} req 
   * @param {object} res 
   */
- function createUser(req,res){
+ function createUser(req,res){ 
     var body = req.body;
-    body.newUser.userType = 'free' ;// free user is created by admin and can access the system without any payment
-    body.newUser.accessToken = createAccessToken(body.email);
-    var user = new Users(body.newUser);
+    body.userType = 'free' ;// free user is created by admin and can access the system without any payment
+    body.accessToken = createAccessToken(body.email);
+    var user = new Users(body);
     user.save()
         .then(docs=>{
             var data = _.pick(docs, ['_id', 'userType','isActive','email', 'name']);
             res.status(200).send({status: true, message: 'users created', data :data });
         })
         .catch(err=>{
-            console.log('usersController.js line 25',err);
+            
             for (var prop in err.errors){
                 var errorMessage = err.errors[prop].message;
                 break ;

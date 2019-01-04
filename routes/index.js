@@ -10,41 +10,44 @@ var { createZap,
       getZaps,
       deleteZap,
       updateZap, 
-      getUserZapsStats}                             = require('../controllers/zapController');
-var {saveScriptData, getElementAttribute}           = require('../controllers/scriptController');
-var {usersZaps,getScriptZaps,subscribtionZaps}      = require('../controllers/zapierController');
+      getUserZapsStats}                               = require('../controllers/zapController');
+var { saveScriptData, getElementAttribute}            = require('../controllers/scriptController');
+var { usersZaps,getScriptZaps,subscribtionZaps}       = require('../controllers/zapierController');
 var { isAuthorized ,
       isUserExists,
       isUserSubscribed,
       onlyAdminCan,
-      upload}                                       = require('./middleware');
+      upload}                                         = require('./middleware');
 var { getAllPlansCtrl,
       updateUserSubscribtion,
       retriveUsersCard,
       addNewCardToUser,
-      deleteUserCard, usersDefaultCard}             = require('../controllers/stripeController');
+      deleteUserCard, usersDefaultCard}               = require('../controllers/stripeController');
 var { userLogin,
       userRegister,
       userForgetPassword,
       userResetPassword,
-      userUpdatePassword}                           = require('../controllers/authController');
-var {createUser,getAllUsers, updateUser}            = require('../controllers/usersController');
+      userUpdatePassword, 
+      getUserPrimaryData }                            = require('../controllers/authController');
+var { createUser,
+      getAllUsers,
+      updateUser}                                     = require('../controllers/usersController');
 
 var { createUserFromHook,
       deleteUserFromHook,
       suspendUserFromHook,
-      unsuspendUserFromHook }                       = require('../controllers/hooksController');
+      unsuspendUserFromHook }                         = require('../controllers/hooksController');
 
 var { addDomain, 
       getAllDomain, 
       updateDomain, 
       deleteDomain, 
-      updateDomainStatus, blockDomainId}            = require('../controllers/domainController');
+      updateDomainStatus, blockDomainId}              = require('../controllers/domainController');
 
 const { createTutorial, 
         getAllTutorials, 
         getTutotialById, 
-        updateTutorials, deleteTutorial}            = require('../controllers/tutorialsController');
+        updateTutorials, deleteTutorial}              = require('../controllers/tutorialsController');
 
 /**
  * Users Registration, Login, Forget Password and Reset Password
@@ -80,7 +83,8 @@ const { createTutorial,
  */
   router.get('/users',isAuthorized,onlyAdminCan,getAllUsers);
   router.put('/users/:id', isAuthorized,onlyAdminCan,updateUser);
-  router.post('/users',isAuthorized,onlyAdminCan,createUser)
+  router.post('/users',isAuthorized,onlyAdminCan,createUser);
+  router.get('/users/basic', isAuthorized,getUserPrimaryData)
 
 /**
  * Stripe

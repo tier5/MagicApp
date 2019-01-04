@@ -211,10 +211,46 @@ function userUpdatePassword(req,res){
             return res.status(500).send({message:'Something went wrong',status:false});
         })
 }
+
+async function getUserPrimaryData(req, res, next){
+    var token = req.headers.authorization
+    var user = await Users.findOne({accessToken : token}).select({ email:1, isActive:1,isAdmin:1,userType:1, accessToken: 1, name:1, isSubscribed: 1});
+    if (!user){
+        return res.status(404).send({message:'Not Found',status:false});
+    }
+    var sendUserData ={
+        email       :   user.email,
+        name        :   user.name,
+        isAdmin     :   user.isAdmin,
+        isActive    :   user.isActive,
+        userType    :   user.userType
+    }
+    if (user.userType == 'free') {
+
+        sendUserData.isSubscribed = true ;
+
+    } else {
+
+        var subscribtion = await retriveSubscription(user.stripe.subscription.id);
+        
+        if (subscribtion.status == 'active'){
+
+            sendUserData.isSubscribed = true;
+
+        } else {
+
+            sendUserData.isSubscribed = false;
+
+        }
+    }
+    return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
+}
+
 module.exports = {
     userRegister,
     userLogin,
     userForgetPassword,
     userResetPassword,
     userUpdatePassword,
+    getUserPrimaryData
 }
