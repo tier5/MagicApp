@@ -14,7 +14,6 @@ import HowItWorks from '../components/dashboard/HowItWorks/HowItWorks.vue';
 import ResetPassword from '../components/Auth/ResetPassword/ResetPassword.vue';
 import ViewTrainingVidoes from '../components/dashboard/TrainingVideo/ViewTrainingVideos.vue';
 import Users from '../components/dashboard/Users/Users.vue';
-import CreateUser from '../components/dashboard/Users/CreateUser.vue';
 
 Vue.use(Router);
 
@@ -77,11 +76,6 @@ export default new Router({
           path:'users',
           name: 'Users',
           component: Users
-        },
-        {
-          path:'users/create',
-          name: 'CreateUser',
-          component: CreateUser
         }
       ]
     }

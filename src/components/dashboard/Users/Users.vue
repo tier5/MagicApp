@@ -13,7 +13,7 @@
             </div>
             <div class="tutorial-list-table">
               <v-toolbar class="hide-nav">
-                <v-dialog v-model="dialog" max-width="800px">
+                <v-dialog v-model="openCreateUsersModel" max-width="800px">
                   <v-card>
                     <v-card-text>
                       <v-container grid-list-md>
@@ -22,17 +22,65 @@
                             <v-flex xs12 text-xs-center class="popup-head">
                               <h3>Add User</h3>
                             </v-flex>
-                            <v-flex xs12>
-                              <v-text-field label="Name"></v-text-field>
+                            <v-flex xs12 text-xs-center>
+                              <Error v-if="isError"/>
+                              <Success v-if="isSuccess"/>
                             </v-flex>
                             <v-flex xs12>
-                              <v-text-field label="Email"></v-text-field>
+                              <v-text-field 
+                                label="Name"
+                                v-model="newUser.name"
+                                @blur="$v.newUser.name.$touch"
+                                >
+                              </v-text-field>
+                              <span class="validation-error-message"
+                                v-if="!$v.newUser.name.required && $v.newUser.name.$error">
+                                Required!
+                              </span>
                             </v-flex>
+
                             <v-flex xs12>
-                              <v-text-field :type="'password'" label="Password"></v-text-field>
+                              <v-text-field 
+                                label="Email"
+                                type='email'
+                                v-model="newUser.email" 
+                                @blur="$v.newUser.email.$touch">
+                              </v-text-field>
+                              <span class="validation-error-message"
+                                v-if="!$v.newUser.email.required && $v.newUser.email.$error">
+                                Should be an email type!
+                              </span>
                             </v-flex>
+
                             <v-flex xs12>
-                              <v-text-field :type="'password'" label="Confirm Password"></v-text-field>
+                              <v-text-field 
+                                :type="'password'" 
+                                label="Password"
+                                v-model="newUser.password" 
+                                @blur="$v.newUser.password.$touch">
+                              </v-text-field>
+                              <span class="validation-error-message"
+                                v-if="!$v.newUser.password.required && $v.newUser.password.$error">
+                                Required!
+                              </span>
+                              <span class="validation-error-message"
+                                v-if="!$v.newUser.password.minLength && $v.newUser.password.$error">
+                                Minimum length should be 6!
+                              </span>
+                            </v-flex>
+
+                            <v-flex xs12>
+                              <v-text-field 
+                                :type="'password'"
+                                label="Confirm Password"
+                                v-model="newUser.confirmPassword" 
+                                @blur="$v.newUser.confirmPassword.$touch">
+                              </v-text-field>
+                              <span class="validation-error-message"
+                                v-if="!$v.newUser.confirmPassword.sameAsPassword && $v.newUser.confirmPassword.$error">
+                                Password didn't match!
+                              </span>
+
                             </v-flex>
                           </v-layout>
                         </v-card-text>
@@ -42,24 +90,30 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                      <v-btn color="blue darken-1" flat @click="save">Create User</v-btn>
+                      <v-btn color="blue darken-1" flat @click="save" :disabled="$v.newUser.$invalid">Create User</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
               </v-toolbar>
               <v-data-table
                 :headers="headers"
-                :items="user_data"
+                :items="USERS"
                 class="elevation-1"
               >
                 <template slot="items" slot-scope="props">
-                  <td>{{ props.item.id }}</td>
+                  <td>{{ props.item._id }}</td>
                   <td>{{ props.item.name }}</td>
-                  <td>{{ props.item.email }}</td>
+                  <td>{{ props.item.email}}</td>
                   <td>
                     <label class="switch">
-                      <input type="checkbox" checked v-if= "props.item.status === 1">
-                      <input type="checkbox" v-if= "props.item.status === 0">
+                      <input type="checkbox" 
+                        checked 
+                        v-if= "props.item.isActive === true" 
+                        @change="updateUser(props.item)" v-model="props.item.isActive">
+                      <input 
+                        type="checkbox" 
+                        v-if= "props.item.isActive === false" 
+                        @change="updateUser(props.item)" v-model="props.item.isActive">
                       <span class="slider round"></span>
                     </label>
                   </td>
@@ -74,86 +128,91 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { required,sameAs, minLength, email} from 'vuelidate/lib/validators';
+  import Success from '../../../components/Success.vue';
+  import Error from '../../../components/Error.vue';
   export default {
     data: () => ({
-      dialog: false,
       headers: [
-        { text: '#', value: 'id'},
-        { text: 'Name', value: 'name', sortable: false },
-        { text: 'Email', value: 'email', sortable: false },
+        { text: '#', value: 'id', sortable: false},
+        { text: 'Name', value: 'name', sortable: true },
+        { text: 'Email', value: 'email', sortable: true },
         { text: 'Status', value: 'status', sortable: false }
       ],
-      user_data : [
-        {
-          id: '1',
-          name: 'bluebox',
-          email: 'bluebox51@gmx.com',
-          status: 1
-        },
-        {
-          id: '2',
-          name: 'charlotte',
-          email: 'charlotte@gmail.com',
-          status: 0
-        },
-        {
-          id: '3',
-          name: 'cheripkr',
-          email: 'cheripkr2@gmail.com',
-          status: 0
-        },
-        {
-          id: '4',
-          name: 'tony',
-          email: 'bluebox51@besthusbandintheworld.com',
-          status: 1
-        }
-      ],
-      defaultItem: {
-        id: '',
-        name: 0,
-        email: 0,
-        status: 0
+      newUser:{
+        name: '',
+        email:'',
+        password:'',
+        confirmPassword:''
       }
     }),
     methods: {
 
       close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
+        this.$store.commit('changeOpenCreateUsersModel', false);
+        this.newUser = {
+          name : '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        }
+        this.$v.newUser.$reset();
       },
 
       addItem () {
-        this.dialog = true
+        this.$store.commit('changeOpenCreateUsersModel', true);
       },
 
       save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.tutorial_data[this.editedIndex], this.editedItem)
-        } else {
-          this.tutorial_data.push(this.editedItem)
-        }
-        this.close()
-      }
+        this.$store.dispatch('createNewUser',this.newUser);
+      },
+      updateUser(data){
+        
+        this.$store.dispatch('updateUsers',data);
+      },
     },
 
     watch: {
-      dialog (val) {
-        val || this.close()
+      openCreateUsersModel : function(val){
+        if(!val){
+          this.close();
+        }
       }
     },
     computed:{
       ...mapGetters([
             'user',
-            'USERS'
+            'USERS',
+            'isError',
+            'isSuccess',
+            'openCreateUsersModel'
       ]),
       
     },
+    validations:{
+      newUser:{
+        email: {
+            required,
+            email
+        },
+        name : {
+            required
+        },
+        password:{
+          required,
+          minLength: minLength(6)
+        },
+        confirmPassword:{
+          sameAsPassword: sameAs('password')
+        }
+      }
+    },
     created(){
-      //this.$store.dispatch('getTutorials',{});
+      this.$store.dispatch('getUsers');
+    },
+    components:{
+      Success,
+      Error
     }
   };
 </script>

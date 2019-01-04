@@ -10,7 +10,7 @@
               </div>
               <v-card-text class="username">
                 <div>
-                  <span>{{user.name.charAt(0).toUpperCase()}}</span>
+                  <span>{{ this.user.name.charAt(0).toUpperCase() || 'Y'}}</span>
                 </div>
                 <span class="username-text">{{user.name.toUpperCase()}}</span>
               </v-card-text>
@@ -32,14 +32,22 @@
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>help</span>
                   </li>
-                  <li @click.prevent="changeRouterState('/magic/users')" :class="{'active' : this.$route.path == '/magic/users'}">
+                  <span v-if="this.user.isAdmin">
+                    <li 
+                    @click.prevent="changeRouterState('/magic/users')" 
+                    :class="{'active' : this.$route.path == '/magic/users'}"
+                    >
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>Users</span>
                   </li>
-                  <li @click.prevent="changeRouterState('/magic/settings/tutorials')" :class="{'active' : this.$route.path == '/magic/settings/tutorials'}">
+                  <li 
+                    @click.prevent="changeRouterState('/magic/settings/tutorials')" 
+                    :class="{'active' : this.$route.path == '/magic/settings/tutorials'}"
+                    >
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>Tutorial Video Settings</span>
                   </li>
+                  </span>
                 </ul>
               </v-card-text>
               <v-card-text class="create-new-zap" @click.prevent="changeRouterState('/magic/zaps/new')">
@@ -221,10 +229,11 @@
             <v-flex md1></v-flex>
             <v-flex md10>
               <div class="dashboard-body">
+                
                 <router-view/>
-                <!-- <span class="create-new-zap-mobile hidden-sm-and-up" @click.prevent="changeRouterState('/magic/zaps/new')">
-                  <img src="../../assets/images/icon-createzap.png" alt="icon-createzap">
-                </span> -->
+                <!-- <div class="text-color">
+                  Your account has been de-activated by Admin! Please contact the admin for further
+                </div> -->
               </div>
             </v-flex>
             <v-flex md1></v-flex>
@@ -299,9 +308,12 @@ export default {
   },
   created(){
     this.$store.dispatch('getZapStats',{});
+    if(!this.user.name){
+      this.logout();
+    }
   },
   mounted(){
-    
+    this.$store.dispatch('getUserPrimaryData', {});
     this.socket.emit('join', { user : this.user.email});
     this.socket.on('refresh-stats',(data)=> {
       this.$store.dispatch('getZapStats',{});

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import router from '../../router';
-//import swal from 'sweetalert2';
 
 const state = {
   isAuthenticated: false,
@@ -115,7 +114,7 @@ const actions = {
   },
   userSignOut:({commit})=>{
     commit('userSignOut');
-    router.push('/login');
+    //router.push('/login');
   },
   getPlans:({commit})=>{
     commit('changeLoading',true);
@@ -195,6 +194,21 @@ const actions = {
           var message = err.body.message; 
           commit('errorMessage',message);
           commit('errorTrue');
+        }
+      )
+  },
+  getUserPrimaryData: ({commit}, payload)=>{
+    Vue.http.get('users/basic',payload)
+      .then(
+        (res)=>{
+          if(res.body.status){
+            commit('userSignIn',res.body);
+          } else{
+            commit('userSignOut');
+          }
+        },
+        (err)=>{
+          commit('userSignOut');
         }
       )
   }

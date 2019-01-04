@@ -104,7 +104,9 @@ const mutations = {
                 commit('successMessage',message);
                 commit('successTrue');
                 commit('addUser',res.body.data);
-                commit('changeOpenCreateUsersModel', false);
+                setTimeout(()=>{
+                  commit('changeOpenCreateUsersModel', false);
+                }, 1500)
                 
               } else {
                 commit('changeLoading',false);

@@ -206,7 +206,9 @@
     },
 
     watch: {
-      
+      createAndUpdateModal : function(val){
+        val === false && this.close()
+      }
     },
 
     computed:{
