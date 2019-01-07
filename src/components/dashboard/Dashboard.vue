@@ -198,6 +198,20 @@
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                         <span>help</span>
                       </li>
+                      <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
+                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                        <span>help</span>
+                      </li>
+                      <span v-if="this.user.isAdmin">
+                        <li @click.prevent="changeRouterState('/magic/users')" :class="{'active' : this.$route.path == '/magic/users'}">
+                          <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                          <span>Users</span>
+                        </li>
+                        <li @click.prevent="changeRouterState('/magic/training/view')" :class="{'active' : this.$route.path == '/magic/training/view'}">
+                          <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                          <span>Tutorial Video Settings</span>
+                        </li>
+                      </span>
                     </ul>
                   </v-card-text>
                    <v-card-text class="create-new-zap" @click.prevent="changeRouterState('/magic/zaps/new')">
@@ -255,7 +269,7 @@
                   </v-card-text>
                 </v-flex>
                 <v-flex sm6 xs12 hidden-xs-only>
-                  <v-card-text class="how-it-works text-xs-right" @click.prevent="changeRouterState('/magic/training')">
+                  <v-card-text class="how-it-works text-xs-right" @click.prevent="changeRouterState('/magic/settings/tutorials')">
                     <img src="../../assets/images/icon-video.png" alt="icon" class="icon-video">
                     <span class="hidden-sm-only">how it works</span>
                   </v-card-text>
