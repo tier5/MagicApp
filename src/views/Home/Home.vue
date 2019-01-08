@@ -18,7 +18,7 @@
                       <v-btn flat v-if="!isAuthenticated">Features</v-btn>
                       <v-btn flat v-if="!isAuthenticated">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
-                      <span class="freetrialbtn"  v-if="!isAuthenticated">14 day free trial</span>
+                      <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/signup')">14 day free trial</span>
                       <span
                         class="loginbtn"
                         @click="openLoginModel()"

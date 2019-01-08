@@ -11,6 +11,8 @@ import Dashboard from '../components/dashboard/Dashboard.vue';
 import ViewZap from '../components/dashboard/ViewZap/ViewZap.vue';
 import EditZap from '../components/dashboard/EditZap/EditZap.vue';
 import HowItWorks from '../components/dashboard/HowItWorks/HowItWorks.vue';
+import SignUp from '../components/Auth/SignUp/SignUp.vue';
+import SignUpPayment from '../components/Auth/SignUpPayment/SignUpPayment.vue';
 import ResetPassword from '../components/Auth/ResetPassword/ResetPassword.vue';
 import ViewTrainingVidoes from '../components/dashboard/TrainingVideo/ViewTrainingVideos.vue';
 import Users from '../components/dashboard/Users/Users.vue';
@@ -30,6 +32,16 @@ export default new Router({
       path: '/reset-password/:token',
       name: 'ResetPassword',
       component: ResetPassword,
+    },
+    {
+      path: '/signup',
+      name: 'SignUp',
+      component: SignUp,
+    },
+    {
+      path: '/signup-payment',
+      name: 'SignUpPayment',
+      component: SignUpPayment,
     },
     {
       path: '/magic',

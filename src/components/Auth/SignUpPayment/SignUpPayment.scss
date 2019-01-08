@@ -1,0 +1,116 @@
+.container{
+    .signup.payment{
+        .middle{
+            position: relative;
+            background: $darkblue;
+            .v-card__text{
+                padding: 105px 70px;
+                @media screen and (min-width: 960px) and (max-width: 1259px){
+                    padding: 20px;
+                }
+                @media screen and (max-width: 959px){
+                    position: relative;
+                    transform: none;
+                    left: 0;
+                    top: 0;
+                    padding: 30px;
+                } 
+                h1{
+                    color: $skincolor;
+                    font-weight: normal;
+                    font-size: 22px;
+                    font-family: 'Avenir LT Std 65 Medium';
+                    margin-bottom: 20px;
+                }
+                ul{
+                    li{
+                        font-family: 'Avenir LT Std 65 Medium';
+                        color: white;
+                        span{
+                            padding: 0 0 15px;
+                            vertical-align: top;
+                            font-size: 14px;
+                            display: inline-block;
+                            width: 80%;
+                        }
+                        i{
+                            color: inherit;
+                            margin-right: 20px;
+                            font-size: 16px;
+                            float: left;
+                        }
+                    }
+                }
+            }
+        }
+        .left-side{
+            .v-card__text{
+                padding: 105px 70px 0 0;
+                transform: none;
+                position: relative;
+                left: 0;
+                top: 0;
+            }
+            p{
+                span{
+                    color: black;
+                }
+            }
+            .form-top{
+                padding-left: 100px;
+            }
+            .trial{
+                background: $darkblue;
+                padding: 40px 20px 40px 100px;
+                margin: 50px 0;
+                color: white;
+                .trial-left{
+                    display: inline-block;
+                }
+                h2{
+                    font-family: 'Avenir LT Std 95 Black';
+                    font-size: 16px;
+                }
+                h3{
+                    font-family: 'Avenir LT Std 85 Heavy';
+                    color: white;
+                    font-size: 12px;
+                }
+                span{
+                    font-family: 'Avenir LT Std 85 Heavy';
+                    color: $placeholder_text;
+                    font-size: 12px;
+                }
+                i{
+                    color: inherit;
+                    float: left;
+                    border: 1px solid white;
+                    border-radius: 50%;
+                    font-size: 16px;
+                    padding: 2px;
+                    margin-right: 20px;
+                }
+            }
+            .v-form {
+                padding-left: 100px;
+                .v-card__text{
+                    padding: 10px;
+                } 
+                .orangeButton{
+                    h5{
+                        font-size: 22px;
+                        text-transform: none;
+                        letter-spacing: 0;
+                        text-align: center;
+                        display: block;
+                    }
+                    
+                    span{
+                        display: block;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
