@@ -13,9 +13,12 @@ import EditZap from '../components/dashboard/EditZap/EditZap.vue';
 import HowItWorks from '../components/dashboard/HowItWorks/HowItWorks.vue';
 import SignUp from '../components/Auth/SignUp/SignUp.vue';
 import SignUpPayment from '../components/Auth/SignUpPayment/SignUpPayment.vue';
+import SignUpPaymentConfirmation from '../components/Auth/SignUpPaymentConfirmation/SignUpPaymentConfirmation.vue';
+import SignUpPaymentFailure from '../components/Auth/SignUpPaymentFailure/SignUpPaymentFailure.vue';
 import ResetPassword from '../components/Auth/ResetPassword/ResetPassword.vue';
 import ViewTrainingVidoes from '../components/dashboard/TrainingVideo/ViewTrainingVideos.vue';
 import Users from '../components/dashboard/Users/Users.vue';
+import PaymentInfo from '../components/dashboard/PaymentInfo/PaymentInfo.vue';
 
 Vue.use(Router);
 
@@ -42,6 +45,16 @@ export default new Router({
       path: '/signup-payment',
       name: 'SignUpPayment',
       component: SignUpPayment,
+    },
+    {
+      path: '/signup-payment-confirmation',
+      name: 'SignUpPaymentConfirmation',
+      component: SignUpPaymentConfirmation,
+    },
+    {
+      path: '/signup-payment-failure',
+      name: 'SignUpPaymentFailure',
+      component: SignUpPaymentFailure,
     },
     {
       path: '/magic',
@@ -88,6 +101,11 @@ export default new Router({
           path:'users',
           name: 'Users',
           component: Users
+        },
+        {
+          path:'payment-info',
+          name: 'PaymentInfo',
+          component: PaymentInfo
         }
       ]
     }

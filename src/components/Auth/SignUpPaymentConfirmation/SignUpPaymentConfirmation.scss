@@ -1,0 +1,27 @@
+.container{
+    .signup.signupconfirmation {
+        .left-side{
+            background: white url('../../../assets/images/footer-logo.png') no-repeat left bottom;
+            @media screen and (max-width: 959px){
+                background: white;
+            }
+            .form-top{
+                margin-bottom: 100px;
+            }
+            h1{
+                font-family: 'Avenir LT Std 65 Medium';
+                color: $darkblue;
+                font-size: 24px;
+                margin: 20px 0;
+                span{
+                    color: black;
+                }
+            }
+        }
+        .right-side{
+            background: url('../../../assets/images/signupconf.png') no-repeat top center;
+            min-height: 100vh;
+            background-size: cover; 
+        }
+    }
+}

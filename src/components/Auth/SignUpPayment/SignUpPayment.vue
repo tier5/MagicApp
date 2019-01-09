@@ -2,12 +2,7 @@
   <div>
     <v-container fluid>
         <v-layout row wrap class="signup auth payment">
-            <v-flex md4 hidden-md-and-up class="left-side-mobile">
-                <v-card>
-                    <img src="../../../assets/images/signup-payment.png" alt="banner"/>
-                </v-card>
-            </v-flex>
-            <v-flex md4 class="left-side">
+            <v-flex lg4 md12 class="left-side">
                 <v-card-text>
                     <div class="form-top">
                         <img src="../../../assets/images/dashboard-logo.png" alt="Header Logo" class="header-logo">
@@ -15,14 +10,14 @@
                     </div>
                     <div class="trial">
                         <v-layout row wrap>
-                            <v-flex md9>
+                            <v-flex md9 xs8>
                                 <v-icon>mdi-check</v-icon>
                                 <div class="trial-left">
                                     <h2>Magic Zap Starter</h2>
                                     <span>14 Days FREE Trial</span>
                                 </div>
                             </v-flex>
-                            <v-flex md3>
+                            <v-flex md3 xs4>
                                 <h2>$27/mo</h2>
                                 <h3>after trial period</h3>
                             </v-flex>
@@ -35,44 +30,46 @@
                             </v-flex>
                             <v-layout row wrap>
                                 <v-flex xs8>
-                                    <v-card-text>
+                                    <div>
                                         <label for="ccn">Credit Card Number:</label>
                                         <v-text-field 
                                             label="Solo"  
                                             placeholder="CARD NUMBER" 
                                             class="payment_details" solo>
                                         </v-text-field>
-                                    </v-card-text>
+                                    </div>
                                 </v-flex>
                                 <v-flex xs4>
-                                    <v-card-text>
+                                    <div>
                                         <label for="cvv">CVV Code:</label>
                                         <v-text-field 
                                             label="Solo"  
                                             placeholder="CVV" 
                                             class="payment_details" solo>
                                         </v-text-field>
-                                    </v-card-text>
+                                    </div>
                                 </v-flex>
                             </v-layout>
                             <v-layout row wrap>
                                 <v-flex xs6>
-                                    <v-card-text>
+                                    <div>
                                         <label for="expmonth">Expiry Month:</label>
                                         <v-select
                                         :items="items"
+                                        placeholder="01"
                                         solo
                                         ></v-select>
-                                    </v-card-text>
+                                    </div>
                                 </v-flex>
                                 <v-flex xs6>
-                                    <v-card-text>
+                                    <div>
                                         <label for="expyear">Expiry Year:</label>
                                         <v-select
-                                        :items="items"
+                                        :items="itemsyear"
+                                        placeholder="2019"
                                         solo
                                         ></v-select>
-                                    </v-card-text>
+                                    </div>
                                 </v-flex>
                             </v-layout>
                             <v-layout row wrap>
@@ -85,11 +82,16 @@
                                     </v-btn>
                                 </v-flex>
                             </v-layout>
+                            <v-layout row wrap>
+                                <v-flex xs12 text-xs-center class="creditCardImage">
+                                    <img src="../../../assets/images/credit-only.png" alt="Credit Card"/>
+                                </v-flex>
+                            </v-layout>
                         </v-container>
                     </v-form>
                 </v-card-text>
             </v-flex>
-            <v-flex md4 class="middle">
+            <v-flex lg4 md6 sm6 class="middle">
                 <v-card-text>
                     <h1>Here's What You'll Get:</h1>
                     <ul>
@@ -106,13 +108,23 @@
                         <li><v-icon>mdi-check</v-icon><span>Magic Option - Pass data to each new page that your visitor visits. You can turn this on or off.</span></li>
                         <li><v-icon>mdi-check</v-icon><span>Cookies - We'll store all your data in a site wide cookie so next time yours visit your site Magic Zap will work. You can also turn this feature on or off.</span></li>
                     </ul>
+                    <ul class="ssl" >
+                        <li>
+                            <img src="../../../assets/images/moneyback.png" alt="SSL" >
+                            <span>Money Back Guarantee</span>
+                        </li>
+                        <li>
+                            <img src="../../../assets/images/privacy.png" alt="SSL" >
+                            <span>Privacy Guaranteed</span>
+                        </li>
+                        <li>
+                            <img src="../../../assets/images/secure.png" alt="SSL" >
+                            <span>100% Secure Information</span>
+                        </li>
+                    </ul>
                 </v-card-text>
             </v-flex>
-            <v-flex md4 hidden-sm-and-down class="right-side">
-                <v-card>
-                    <img src="../../../assets/images/signup-payment.png" alt="banner"/>
-                </v-card>
-            </v-flex>
+            <v-flex lg4 md6 sm6 class="right-side"></v-flex>
         </v-layout>
     </v-container>
    
@@ -132,7 +144,8 @@
             email:'',
             password:''
         },
-        items: ['01', '02', '03', '04']
+        items: ['01', '02', '03', '04'],
+        itemsyear: ['2019', '2020', '2021', '2022']
       };
     }
   };

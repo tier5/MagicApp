@@ -1,0 +1,25 @@
+.container{
+    .signup.signupfailure {
+        .left-side{
+            background: white url('../../../assets/images/footer-logo.png') no-repeat left bottom;
+            @media screen and (max-width: 959px){
+                background: white;
+            }
+            .form-top{
+                margin-bottom: 100px;
+            }
+            h1{
+                font-family: 'Avenir LT Std 65 Medium';
+                color: red;
+                font-size: 24px;
+                margin: 20px 0;
+                a{
+                    color: $orange;
+                }
+            }
+        }
+        .right-side{
+            background-image: url('../../../assets/images/signupconf.png');
+        }
+    }
+}

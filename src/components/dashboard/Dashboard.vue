@@ -2,12 +2,23 @@
   <div>
     <v-container fluid>
       <v-layout row wrap>
-        <v-flex md3 sm5 hidden-xs-only class="left-aside">
+        <v-flex md4 sm5 hidden-xs-only class="left-aside">
           <v-card>
             <v-card class="px-0">
-              <div class="logo">
-                <img src="../../assets/images/dashboard-logo.png" class="logo" alt="Logo">
-              </div>
+              <v-layout row wrap>
+                <v-flex md12 lg6>
+                  <div class="logo">
+                    <img src="../../assets/images/dashboard-logo.png" class="logo" alt="Logo">
+                  </div>
+                </v-flex>
+                <v-flex md12 lg6>
+                  <div class="upgrade-box">
+                    <v-btn class="upgrade-button">
+                      <span>Upgrade Membership</span>
+                    </v-btn>
+                  </div>
+                </v-flex>
+              </v-layout>
               <v-card-text class="username">
                 <div>
                   <span>{{ this.user.name.charAt(0).toUpperCase() || 'Y'}}</span>
@@ -28,26 +39,34 @@
                     >
                     <span>zapier token</span>
                   </li>
-                  <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
-                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                    <span>help</span>
+                  <li @click.prevent="changeRouterState('/magic/payment-info')" :class="{'active' : this.$route.path == '/magic/payment-info'}">
+                    <img
+                      src="../../assets/images/icon-payment-info.png"
+                      alt="icon"
+                      class="icon-payment-info"
+                    >
+                    <span>payment information</span>
                   </li>
                   <span v-if="this.user.isAdmin">
                     <li 
                     @click.prevent="changeRouterState('/magic/users')" 
                     :class="{'active' : this.$route.path == '/magic/users'}"
                     >
-                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                    <span>Users</span>
-                  </li>
-                  <li 
-                    @click.prevent="changeRouterState('/magic/settings/tutorials')" 
-                    :class="{'active' : this.$route.path == '/magic/settings/tutorials'}"
-                    >
-                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                    <span>Tutorial Video Settings</span>
-                  </li>
+                      <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                      <span>Users</span>
+                    </li>
+                    <li 
+                      @click.prevent="changeRouterState('/magic/settings/tutorials')" 
+                      :class="{'active' : this.$route.path == '/magic/settings/tutorials'}"
+                      >
+                      <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                      <span>Tutorial Video Settings</span>
+                    </li>
                   </span>
+                  <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
+                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                    <span>help</span>
+                  </li>
                 </ul>
               </v-card-text>
               <v-card-text class="create-new-zap" @click.prevent="changeRouterState('/magic/zaps/new')">
@@ -103,7 +122,7 @@
             </v-card>
           </v-card>
         </v-flex>
-        <v-flex md9 sm7 class="right-aside">
+        <v-flex md8 sm7 class="right-aside">
           <v-layout xs12 class="hidden-sm-and-up top-bar">
             <v-flex xs8>
               <v-card class="logo">
@@ -134,6 +153,11 @@
                         <span class="username-text">{{user.name.toUpperCase()}}</span>
                     </div>
                   </v-card-text>
+                  <v-card-text class="upgrade-box">
+                    <v-btn class="upgrade-button">
+                      <span>Upgrade Membership</span>
+                    </v-btn>
+                  </v-card-text>
                   <v-card-text class="left-menu">
                     <ul>
                       <li @click.prevent="changeRouterState('/magic')" :class="{'active' : this.$route.path == '/magic'}">
@@ -148,17 +172,28 @@
                         >
                         <span>zapier token</span>
                       </li>
-                      <li>
-                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                        <span>help</span>
+                      <li @click.prevent="changeRouterState('/magic/payment-info')" :class="{'active' : this.$route.path == '/magic/payment-info'}">
+                        <img
+                          src="../../assets/images/icon-payment-info.png"
+                          alt="icon"
+                          class="icon-payment-info"
+                        >
+                        <span>payment information</span>
                       </li>
                       <li @click.prevent="changeRouterState('/magic/users')" :class="{'active' : this.$route.path == '/magic/users'}">
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                         <span>Users</span>
                       </li>
-                      <li @click.prevent="changeRouterState('/magic/training/view')" :class="{'active' : this.$route.path == '/magic/training/view'}">
+                      <li 
+                        @click.prevent="changeRouterState('/magic/settings/tutorials')" 
+                        :class="{'active' : this.$route.path == '/magic/settings/tutorials'}"
+                        >
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                        <span>Tutorials</span>
+                        <span>Tutorial Video Settings</span>
+                      </li>
+                      <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
+                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                        <span>help</span>
                       </li>
                     </ul>
                   </v-card-text>

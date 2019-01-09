@@ -20,10 +20,49 @@
         position: relative;
         .logo{
           padding: 15px;
-          @media screen and (min-width: 600px) and (max-width: 1264px) {
+          @media screen and (min-width: 600px) and (max-width: 1263px) {
             padding: 10px;
           }
+          img{
+            max-width: 100%;
+            display: block;
+            @media screen and (max-width: 1263px){
+              margin: auto;
+            }
+          }
         }
+        .upgrade-box{
+          padding: 20px 0;
+          display: inline-block;
+          width: 100%;
+          font-family: 'Avenir LT Std 85 Heavy';
+          .upgrade-button{
+            color: white;
+            text-transform: none;
+            font-size: 12px;
+            padding: 0 12px;
+            min-height: 36px;
+            border-radius: 20px;
+            transition: 0.5s;
+            float: right;
+            background: #ff8030;
+            background: -moz-linear-gradient(top, #ff8030 0%, #ff6100 100%);
+            background: -webkit-linear-gradient(top, #ff8030 0%,#ff6100 100%);
+            background: linear-gradient(to bottom, #ff8030 0%,#ff6100 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff8030', endColorstr='#ff6100',GradientType=0 );
+            @media screen and (max-width: 599px){
+              padding: 0 10px;
+            }
+            @media screen and (max-width: 1263px){
+              float: none;
+            }
+          }
+          @media screen and (max-width: 1263px){
+            text-align: center;
+            padding-top: 0;
+          }
+        }
+        
         .username{
           text-transform: uppercase;
           letter-spacing: 2px;
@@ -74,8 +113,8 @@
                 float: left;
                 vertical-align: top;
                 padding: 0;
-                margin-right: 26px;
-                padding-left: 32px;
+                margin-right: 10px;
+                padding-left: 20px;
               }
               &:hover, &.active{
                 span{
@@ -90,6 +129,9 @@
                 }
                 img.icon-help{
                   content:url("../../assets/images/icon-help-hover.png");
+                }
+                img.icon-payment-info{
+                  content:url("../../assets/images/icon-payment-info-hover.png");
                 }
               }
             }
@@ -539,8 +581,13 @@
             margin: 0;
           }
         }
+        .upgrade-box{
+          .upgrade-button{
+            margin-top: 70px;
+          }
+        }
         .left-menu {
-          padding: 80px 0 10px;
+          padding: 0 0 10px;
           ul{
             padding: 0;
           }

@@ -20,7 +20,7 @@
                 transform: translate(-50%,-50%);
                 left: 50%;
                 top: 50%;
-                @media screen and (min-width: 960px) and (max-width: 1259px){
+                @media screen and (min-width: 960px) and (max-width: 1263px){
                     padding: 20px;
                 }
                 @media screen and (max-width: 959px){
@@ -33,6 +33,9 @@
             }
         }
         .right-side{
+            background: url('../../../assets/images/signup.png') no-repeat top center;
+            min-height: 100vh;
+            background-size: cover; 
             img{
                 width: 100%;
                 min-height: 100vh;
@@ -84,14 +87,9 @@
                 color: $white;
                 letter-spacing: 2px;
                 font-family: 'Avenir LT Std 95 Black';
-                font-size: 11px;
                 height: 63px;
-                margin-bottom: 34px;
-                margin-top: 0px;
+                margin: 20px 0;
                 background-color: $orange;
-                .v-btn__content{
-                    line-height: 62px;
-                }
                 img{
                     margin-right: 11px;
                     width: 6%;
@@ -112,8 +110,7 @@
         }
         .theme--light.v-input:not(.v-input--is-disabled) input, .theme--light.v-input:not(.v-input--is-disabled) textarea{
             color: $inputBlue;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 14px;
             letter-spacing: 1px;
             caret-color: $topbar_text;
         }
@@ -138,17 +135,10 @@
             background-position: 95% 60% !important;
         }
         .v-text-field.v-text-field--solo .v-input__control{
-            height: 63px;
-        }
-        .v-form>.container>.layout>.flex{
-            margin-bottom: 30px;
-            padding: 0px;
+            height: 75px;
         }
         .v-text-field.v-text-field--enclosed .v-input__slot, .v-text-field.v-text-field--enclosed .v-text-field__details{
             padding:18px;
-        }
-        .v-text-field input{
-            padding-right: 35px;
         }
         .v-btn:not(.v-btn--depressed):not(.v-btn--flat){
             box-shadow: none;

@@ -5,7 +5,7 @@
             background: $darkblue;
             .v-card__text{
                 padding: 105px 70px;
-                @media screen and (min-width: 960px) and (max-width: 1259px){
+                @media screen and (min-width: 960px) and (max-width: 1263px){
                     padding: 20px;
                 }
                 @media screen and (max-width: 959px){
@@ -41,15 +41,50 @@
                         }
                     }
                 }
+                ul.ssl{
+                    font-family: 'Avenir LT Std 65 Medium';
+                    color: white;
+                    li{
+                        display: inline-block;
+                        width: 100px;
+                        text-align: center;
+                        line-height: 16px;
+                    }
+                    img{
+                        margin: 0 auto 20px;
+                        max-width: 50px;
+                    }
+                    span{
+                        font-size: 12px;
+                    }
+                }
             }
         }
         .left-side{
             .v-card__text{
-                padding: 105px 70px 0 0;
+                padding: 105px 40px 0 0;
                 transform: none;
                 position: relative;
                 left: 0;
                 top: 0;
+                text-transform: capitalize;
+                font-family: 'Avenir LT Std 95 Black';
+                @media screen and (max-width: 599px){
+                    padding: 20px;
+                }
+                h4{
+                    font-size: 20px;
+                    color: $darkblue;
+                    margin-bottom: 20px;
+                }
+                label{
+                    font-family: 'Avenir LT Std 65 Medium';
+                    font-size: 14px;
+                    color: $darkgrey;
+                    display: block;
+                    margin-bottom: 10px;
+
+                }
             }
             p{
                 span{
@@ -57,13 +92,19 @@
                 }
             }
             .form-top{
-                padding-left: 100px;
+                padding-left: 80px;
+                @media screen and (max-width: 599px){
+                    padding-left: 0;
+                }
             }
             .trial{
                 background: $darkblue;
-                padding: 40px 20px 40px 100px;
-                margin: 50px 0;
+                padding: 40px 20px 40px 80px;
+                margin: 40px 0 24px;
                 color: white;
+                @media screen and (max-width: 599px){
+                    padding: 10px;
+                }
                 .trial-left{
                     display: inline-block;
                 }
@@ -89,28 +130,62 @@
                     font-size: 16px;
                     padding: 2px;
                     margin-right: 20px;
+                    @media screen and (max-width: 599px){
+                        font-size: 10px;
+                        margin-right: 5px;
+                    }
                 }
             }
             .v-form {
-                padding-left: 100px;
+                padding-left: 64px;
+                margin-top: 0;
+                @media screen and (max-width: 599px){
+                    padding-left: 0;
+                }
                 .v-card__text{
                     padding: 10px;
                 } 
+                .theme--light.v-select .v-select__selections {
+                    color: $inputBlue;
+                }
                 .orangeButton{
                     h5{
-                        font-size: 22px;
+                        font-size: 20px;
                         text-transform: none;
                         letter-spacing: 0;
                         text-align: center;
                         display: block;
+                        @media screen and (max-width: 599px){
+                            font-size: 16px;
+                        }
                     }
                     
                     span{
                         display: block;
                         width: 100%;
+                        text-transform: capitalize;
+                        letter-spacing: 0;
+                        color: $skincolor;
+                        font-family: 'Avenir LT Std 65 Medium';
+                        @media screen and (max-width: 599px){
+                            font-size: 12px;
+                        }
+                    }
+                    .v-btn__content{
+                        display: block;
+                        line-height: 20px;
                     }
                 }
+                .creditCardImage{
+                    margin: auto;
+                    max-width: 220px;
+                }
             }
+        }
+        .right-side{
+            background: url('../../../assets/images/signup-payment.png') no-repeat top center;
+            min-height: 100vh;
+            background-size: cover; 
         }
     }
 }

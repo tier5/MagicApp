@@ -58,11 +58,7 @@
                     </v-form>
                 </v-card-text>
             </v-flex>
-            <v-flex md9 hidden-sm-and-down class="right-side">
-                <v-card>
-                    <img src="../../../assets/images/signup.png" alt="banner"/>
-                </v-card>
-            </v-flex>
+            <v-flex md9 hidden-sm-and-down class="right-side"></v-flex>
         </v-layout>
     </v-container>
    
