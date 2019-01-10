@@ -187,8 +187,8 @@ async function removeUser(email){
             let usersZapsIds = user.zaps.map(o => o._id);
     
             let removeZapsData = await ScriptData.remove({ zapId : { $in : usersZapsIds}});
-            let removeUser = await Users.remove({ email : email });
-
+            let removeTheUser = await Users.remove({ email : email });
+            return resolve({status: true, message : 'Deleted'});
        } catch (error) {
             return reject({ status : false, error : error.message})
        }

@@ -84,10 +84,10 @@ const {userWarehousing, removeUser} = require('./usersController');
     };
     // checking email
     if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
-    
+
     try {
 
-        let user = Users.findOne({email : email });
+        let user = await Users.findOne({email : email });
 
         if (!user) {
             return res.status(200).send({message: 'User not exists!', status : false, http_code: 200 });
@@ -100,11 +100,12 @@ const {userWarehousing, removeUser} = require('./usersController');
         if (user.userType == 'paid' && customerId){
             let stripeDeleteCustomer = await deleteCustomer(customerId);
         }
-        let removeUser = await removeUser(email);
+        let removeThisUser = await removeUser(email);
 
         return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
 
     } catch (error) {
+        console.log(error);
         return res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
     }
  }
