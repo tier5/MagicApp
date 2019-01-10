@@ -19,6 +19,9 @@ import ResetPassword from '../components/Auth/ResetPassword/ResetPassword.vue';
 import ViewTrainingVidoes from '../components/dashboard/TrainingVideo/ViewTrainingVideos.vue';
 import Users from '../components/dashboard/Users/Users.vue';
 import PaymentInfo from '../components/dashboard/PaymentInfo/PaymentInfo.vue';
+import UpgradeMembership from '../components/dashboard/UpgradeMembership/UpgradeMembership.vue';
+import LockedAccount from '../components/dashboard/LockedAccount/LockedAccount.vue';
+
 
 Vue.use(Router);
 
@@ -106,6 +109,16 @@ export default new Router({
           path:'payment-info',
           name: 'PaymentInfo',
           component: PaymentInfo
+        },
+        {
+          path:'upgrade-membership',
+          name: 'UpgradeMembership',
+          component: UpgradeMembership
+        },
+        {
+          path:'locked-account',
+          name: 'LockedAccount',
+          component: LockedAccount
         }
       ]
     }

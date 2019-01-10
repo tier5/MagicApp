@@ -20,6 +20,12 @@
                         }
                     }
                 }
+                .accent--text{
+                    color: $orange !important;
+                }
+                .mdi-radiobox-blank:before{
+                    color: $darkblue;
+                }
             }  
             .firstZap{
                 padding: 15px;
@@ -268,20 +274,7 @@
         }
     }
 } 
-.myZaps .accent--text{
-    color: $orange !important;
-    font-size: 20px;
-}
-.mdi-radiobox-blank:before{
-    color: $darkblue;
-    font-size: 20px;
-}
-.v-input--selection-controls__ripple{
-    height: 24px;
-    width:24px;
-    left: -9px;
-    top: calc(50% - 20px);
-}
+
 body{
     .primary--text{
         color: $orange !important;

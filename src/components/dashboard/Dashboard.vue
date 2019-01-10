@@ -2,7 +2,7 @@
   <div>
     <v-container fluid>
       <v-layout row wrap>
-        <v-flex md4 sm5 hidden-xs-only class="left-aside">
+        <v-flex lg3 md4 sm5 hidden-xs-only class="left-aside">
           <v-card>
             <v-card class="px-0">
               <v-layout row wrap>
@@ -13,7 +13,7 @@
                 </v-flex>
                 <v-flex md12 lg6>
                   <div class="upgrade-box">
-                    <v-btn class="upgrade-button">
+                    <v-btn class="upgrade-button" @click.prevent="changeRouterState('/magic/upgrade-membership')">
                       <span>Upgrade Membership</span>
                     </v-btn>
                   </div>
@@ -52,14 +52,14 @@
                     @click.prevent="changeRouterState('/magic/users')" 
                     :class="{'active' : this.$route.path == '/magic/users'}"
                     >
-                      <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                      <img src="../../assets/images/users.png" alt="icon" class="icon-users">
                       <span>Users</span>
                     </li>
                     <li 
                       @click.prevent="changeRouterState('/magic/settings/tutorials')" 
                       :class="{'active' : this.$route.path == '/magic/settings/tutorials'}"
                       >
-                      <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                      <img src="../../assets/images/icon-tutorial.png" alt="icon" class="icon-tutorial">
                       <span>Tutorial Video Settings</span>
                     </li>
                   </span>
@@ -122,7 +122,7 @@
             </v-card>
           </v-card>
         </v-flex>
-        <v-flex md8 sm7 class="right-aside">
+        <v-flex lg9 md8 sm7 class="right-aside">
           <v-layout xs12 class="hidden-sm-and-up top-bar">
             <v-flex xs8>
               <v-card class="logo">
@@ -180,15 +180,18 @@
                         >
                         <span>payment information</span>
                       </li>
-                      <li @click.prevent="changeRouterState('/magic/users')" :class="{'active' : this.$route.path == '/magic/users'}">
-                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                      <li 
+                      @click.prevent="changeRouterState('/magic/users')" 
+                      :class="{'active' : this.$route.path == '/magic/users'}"
+                      >
+                        <img src="../../assets/images/users.png" alt="icon" class="icon-users">
                         <span>Users</span>
                       </li>
                       <li 
                         @click.prevent="changeRouterState('/magic/settings/tutorials')" 
                         :class="{'active' : this.$route.path == '/magic/settings/tutorials'}"
                         >
-                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                        <img src="../../assets/images/icon-tutorial.png" alt="icon" class="icon-tutorial">
                         <span>Tutorial Video Settings</span>
                       </li>
                       <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">

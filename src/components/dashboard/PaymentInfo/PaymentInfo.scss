@@ -1,0 +1,132 @@
+.container{
+    .right-aside {
+        .dashboard-body{
+            .paymentinfo{
+                min-height: 500px;
+                .center-block{
+                    position: absolute;
+                    transform: translate(-50%,-50%);
+                    left: 50%;
+                    top: 50%;
+                    color: $dark_text;
+                    width: 60%;
+                    @media screen and (max-width: 1263px){
+                        position: relative;
+                        transform: none;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                    }
+                    h1{
+                        text-align: center;
+                        font-size: 25px;
+                        text-transform: capitalize;
+                        font-family: 'Avenir LT Std 65 Medium';
+                    }
+                    p{
+                        text-align: center;
+                        font-family: 'Avenir LT Std 65 Medium'; 
+                        margin: 5px 0 70px;
+                    }
+                    .eachblock{
+                        border: 1px solid $grey;
+                        border-radius: 5px;
+                        padding: 20px 10px;
+                        margin: 20px 0;
+                        height: 100px;
+                        opacity: 0.5;
+                        background: #eee;
+                        @media screen and (max-width: 959px){
+                            height: auto;
+                        }
+                        &.checked{
+                            opacity: 1;
+                            background: none;
+                        }
+                        h2{
+                            color: $dark_text;
+                            font-family: 'Avenir LT Std 65 Medium';
+                            font-size: 18px;
+                            letter-spacing: 1px;
+                            margin: 5px 0 0;
+                            @media screen and (max-width: 959px){
+                                display: inline-block;
+                                margin-top: 0;
+                                font-size: 12px;
+                            }
+                        }
+                        span{
+                            color: $body_text;
+                            text-transform: uppercase;
+                            font-size: 10px;
+                            letter-spacing: 1px;
+                            line-height: 20px;
+                            @media screen and (max-width: 959px){
+                                float: left;
+                                width: 95px;
+                            }
+                        }
+                        label{
+                            text-transform: uppercase;
+                            color: $orange;
+                            font-size: 10px;
+                            display: block;
+                            margin-top: 5px;
+                        }
+                        .v-input--selection-controls{
+                            .v-input__control{
+                                width: 100%;
+                                text-align: center;
+                                .v-radio{
+                                    margin: auto;
+                                    @media screen and (max-width: 959px){
+                                        display: block;
+                                    }
+                                    .accent--text{
+                                        color: $orange !important;
+                                        span{
+                                            @media screen and (max-width: 959px){
+                                                width: 100%;
+                                            } 
+                                        }
+                                    }
+                                    .mdi-radiobox-blank:before{
+                                        color: $darkblue;
+                                    }
+                                }
+                            }
+                            .v-input--selection-controls__input{
+                                margin: 0;
+                            }
+                        } 
+                    }
+                    .submit-btn{
+                        font-family: 'Avenir LT Std 95 Black';
+                        background-image: linear-gradient(to right, $orange, #ff6910, #ff711c, #ff7927, #ff8030);
+                        padding: 0 60px;
+                        min-height: 50px;
+                        border-radius: 3px;
+                        transition: 0.5s;
+                        margin: 50px auto;
+                        display: block;
+                        span{
+                            color: white;
+                            font-size: 12px;
+                            letter-spacing: 2px;
+                        }
+                        @media screen and (max-width: 599px){
+                          padding: 0 20px;
+                        }
+                        &.v-btn--disabled{
+                          opacity: 0.5;
+                          color: white !important;
+                        }
+                        &:hover{
+                          background-image: linear-gradient(to right, #ff8030, #ff7927, #ff711c, #ff6910, #ff6100);
+                        }
+                    }
+                }
+            }
+        }
+    } 
+}

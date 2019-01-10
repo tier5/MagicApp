@@ -343,7 +343,7 @@
                       <ul>
                         <li>Unlimited magic zaps</li>
                         <li>Unlimited Monthly Automations</li>
-                        <li>No Magic Option</li>
+                        <li>Magic Option</li>
                         <li>Cookies</li>
                       </ul>
                     </div>
