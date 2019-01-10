@@ -9,6 +9,7 @@ var Users = require('../models/users');
 var Zaps = require('../models/zaps');
 var _ = require('lodash');
 var {createAccessToken} = require('../helpers/jwt');
+const {userWarehousing, removeUser} = require('./usersController');
  /**
   * Function to create a user from a hook
   */
@@ -73,7 +74,7 @@ var {createAccessToken} = require('../helpers/jwt');
         })
  };
 
- function deleteUserFromHook(req,res){
+ async function deleteUserFromHook(req,res){
     var token = req.body.token ;
     let testTokenNumber  =  '1234511';
     var email = req.body.email;
@@ -84,42 +85,28 @@ var {createAccessToken} = require('../helpers/jwt');
     // checking email
     if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
     
-    Users.findOne({email:req.body.email}).then((user)=>{
-        if(!user) {
-            return res.status(200).send({message: 'User not exists!', status : false, http_code: 200 })
-        } else {
-            if (user.zaps.length) {
-                user.zaps.forEach( zap => {
-                    Zaps.remove({zapId : zap._id}).then(deleted=>{
-                        console.log('deleted');
-                    }).catch(error=>{
-                        console.log('not deleted')
-                    })
-                })
-            }
-            let customerId = user.stripe.customer.id;
-            if (user.userType == 'paid' && customerId){
-                
-                deleteCustomer(customerId).then(confirmation=> {
-                    if (confirmation.deleted){
-                        Users.remove({email : user.email}).then(docs => {
-                            return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
-                        }) 
-                    }
-                }).catch(err => {
-                    return res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
-                })
-            } else {
-                
-                Users.remove({email : user.email}).then(docs => {
-                    return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
-                })
-            }
+    try {
+
+        let user = Users.findOne({email : email });
+
+        if (!user) {
+            return res.status(200).send({message: 'User not exists!', status : false, http_code: 200 });
         }
-    }).catch(err => {
-    
+        let backUpUser = await userWarehousing(email);
+        // remove customer from stripe if exists or else remove the user
+        
+        let customerId = user.stripe.customer.id;
+
+        if (user.userType == 'paid' && customerId){
+            let stripeDeleteCustomer = await deleteCustomer(customerId);
+        }
+        let removeUser = await removeUser(email);
+
+        return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
+
+    } catch (error) {
         return res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
-    })
+    }
  }
 
  function suspendUserFromHook(req, res) {

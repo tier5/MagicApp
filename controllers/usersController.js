@@ -5,6 +5,8 @@
 const Users = require('../models/users');
 const _ = require('lodash');
 const {createAccessToken} = require('../helpers/jwt');
+const ScriptData = require('../models/zaps');
+const WareHouse = require('../models/warehouse');
  
  /**
   * Function to create a user 
@@ -123,9 +125,83 @@ function getUserFromToken(token){
     }) 
 }
 
+async function userWarehousing(email){
+    
+    return new Promise(async (resolve, reject)=>{
+        try {
+            let newWarehouse  = {
+                email : email,
+                usersCollectionData: {},
+                scriptData: []
+            }
+            
+            let UserData = await Users.findOne({ email : email });
+
+            if (!UserData){
+                return reject({ status : false, error : 'User Not Found!'})
+            }
+    
+            if (UserData){
+                newWarehouse.usersCollectionData = UserData;
+            }
+    
+            let ZapIDs = UserData.zaps.map(zap =>{
+                return zap._id
+            });
+    
+            let AllZapsData = [];
+    
+            if (ZapIDs.length){
+    
+                AllZapsData = await ScriptData.find({ zapId : { $in : ZapIDs}});
+            }
+    
+            if(AllZapsData.length){
+                newWarehouse.scriptData = AllZapsData;
+            }
+    
+            let newWH = WareHouse.create(newWarehouse);
+            
+            return resolve({ status : true, message : 'User back up done'});
+            
+            
+        } catch (error) {
+
+            return reject({ status : false, error : error.message})
+            
+        }
+    })
+    
+}
+
+async function removeUser(email){
+    return new Promise(async (resolve, reject) => {
+
+       try {
+            let user = await Users.findOne({email: email});
+
+            if (!user){
+                return reject({ status : false, error :'User not found!'});
+            }
+    
+            let usersZapsIds = user.zaps.map(o => o._id);
+    
+            let removeZapsData = await ScriptData.remove({ zapId : { $in : usersZapsIds}});
+            let removeUser = await Users.remove({ email : email });
+
+       } catch (error) {
+            return reject({ status : false, error : error.message})
+       }
+       
+    })
+}
+
+
  module.exports ={
     createUser,
     getAllUsers,
     updateUser,
-    getUserFromToken
+    getUserFromToken,
+    userWarehousing,
+    removeUser
  }

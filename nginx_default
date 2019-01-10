@@ -1,0 +1,41 @@
+upstream webshop_domain_be {
+        server ip_instance:3000;
+}
+server{
+    listen 443 ssl ;
+   # ssl on ;
+    server_name stage.amagiczap.com;
+    location / {
+        proxy_pass http://ip_instance:3000;
+        proxy_http_version 1.1;
+       # proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+       # proxy_redirect off;
+
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+     }
+     # return 301 https://$server_name$request_uri;
+     # Strict Transport Security
+    # add_header Strict-Transport-Security max-age=2592000;
+     #rewrite ^/.*$ https://$host$request_uri? permanent;
+      ssl_session_cache shared:SSL:5m;
+      ssl_session_timeout 1h;
+      add_header Strict-Transport-Security “max-age=15768000” always;
+}
+
+
+server{
+    if ($host = domain) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    listen [::]:80 default_server;
+    server_name domain;
+    return 404; # managed by Certbot
+
+
+}
