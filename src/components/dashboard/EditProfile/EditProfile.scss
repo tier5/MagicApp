@@ -1,0 +1,103 @@
+.container{
+    .right-aside {
+        .dashboard-body{
+            .paymentinfo.editprofile{
+                // placeholder scss
+                input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                    color: $inputBlue !important;
+                    opacity: 1;
+                    font-family: 'Avenir LT Std 85 Heavy';
+                    font-size: 12px;
+                    letter-spacing: 2px;
+                }
+                input::-moz-placeholder { /* Firefox 19+ */
+                    color: $inputBlue !important;
+                    opacity: 1;
+                    font-family: 'Avenir LT Std 85 Heavy';
+                    font-size: 12px;
+                    letter-spacing: 2px;
+                }
+                input:-ms-input-placeholder { /* IE 10+ */
+                    color: $inputBlue !important;
+                    opacity: 1;
+                    font-family: 'Avenir LT Std 85 Heavy';
+                    font-size: 12px;
+                    letter-spacing: 2px;
+                }
+                input:-moz-placeholder { /* Firefox 18- */
+                    color: $inputBlue !important;
+                    opacity: 1;
+                    font-family: 'Avenir LT Std 85 Heavy';
+                    font-size: 12px;
+                    letter-spacing: 2px;
+                }
+                .center-block{
+                    width: 50%;
+                    @media screen and (max-width: 1263px){
+                        width: 100%;
+                    }
+                    .v-form{
+                        margin-top: 50px;
+                        .orangeButton,.orangeButton--text{
+                            display: inline-block;
+                            width: 100%;
+                            border-radius: 5px;
+                            color: $white;
+                            letter-spacing: 2px;
+                            font-family: 'Avenir LT Std 95 Black';
+                            height: 63px;
+                            margin: 20px 0;
+                            background-color: $orange;
+                        }
+                        .orangeButton--text{
+                            opacity: 0.5;
+                        }
+                        .theme--light.v-btn.v-btn--disabled:not(.v-btn--icon):not(.v-btn--flat):not(.v-btn--outline){
+                            background-color: $orange !important;
+                        }
+                        .theme--light.v-btn.v-btn--disabled{
+                            color: white !important;
+                        }
+                    }
+                    .theme--light.v-input:not(.v-input--is-disabled) input{
+                        font-family: 'Avenir LT Std 65 Medium';
+                        color: $inputBlue;
+                        letter-spacing: 1px;
+                        caret-color: $topbar_text;
+                        text-transform: uppercase;
+                        font-size: 14px;
+                    }
+                    .theme--light.v-input--is-disabled input{
+                        font-family: 'Avenir LT Std 65 Medium';
+                        color: $inputBlue;
+                        letter-spacing: 1px;
+                        opacity: 0.5;
+                        text-transform: uppercase;
+                        font-size: 14px;
+                    }
+                    .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+                        box-shadow: 0 7px 49px $lightshadow;
+                        border-radius: 5px;
+                    }
+                    .name.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+                        background-image: url('../../../assets/images/user-icon.png') !important;
+                        background-repeat: no-repeat!important;
+                        background-position: 95% 54% !important;
+                    }
+                    .email.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) .v-input__slot{
+                        background-image: url('../../../assets/images/email.png') !important;
+                        background-repeat: no-repeat!important;
+                        background-position: 95% 54% !important;
+                    }
+                    .v-text-field.v-text-field--solo .v-input__control{
+                        height: 75px;
+                    }
+                    .v-text-field.v-text-field--enclosed .v-input__slot, .v-text-field.v-text-field--enclosed .v-text-field__details{
+                        padding:18px;
+                    }
+                    
+                }
+            }
+        }
+    } 
+}

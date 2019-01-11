@@ -81,7 +81,7 @@
         <v-card-text>
           <v-layout row wrap class="cancel-membership">
             <v-flex md12>
-              <a href="#">Click here</a> to cancel my Magiczap membership.
+              <a @click.prevent="changeRouterState('/magic/cancel-membership')">Click here</a> to cancel my Magiczap membership.
             </v-flex>
           </v-layout>
         </v-card-text>
@@ -92,11 +92,17 @@
 
 <script>
   import { mapGetters } from 'vuex';
+import router from "../../../router/index";
   export default {
     data() {
       return {
       };
-    }
+    },
+    methods:{
+      changeRouterState(path){
+        router.push(path)
+      }
+    },
   };
 </script>
 

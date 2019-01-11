@@ -92,7 +92,7 @@
           }
         }
         .left-menu{
-          padding: 40px 0 10px;
+          padding: 20px 0 10px;
           ul{
             li{
               display: inline-block;
@@ -177,12 +177,15 @@
             letter-spacing: 2px;
             font-size: 12px;     
             color: $body_text;
+            line-height: 20px;
+            margin-bottom: 20px;
           }
           h4{
             font-family: 'Avenir LT Std 95 Black';
             color: $inputBlue;
             font-size: 50px;
             letter-spacing: 2px;
+            line-height: 20px;
             @media screen and (min-width: 600px) and (max-width: 1264px) {
               font-size: 40px;
             }

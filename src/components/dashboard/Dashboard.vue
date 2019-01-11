@@ -97,14 +97,14 @@
                       <span>CHANGE PASSWORD</span>
                     </v-tooltip>
                   </li>
-                  <!-- <li>
+                  <li>
                     <v-tooltip top>
-                      <v-btn slot="activator" @click="logout()">
+                      <v-btn slot="activator" @click.prevent="changeRouterState('/magic/edit-profile')">
                         <img src="../../assets/images/user-icon.png" alt="icon" class="user-icon">
                       </v-btn>
-                      <span>MY PROFILE</span>
+                      <span>EDIT PROFILE</span>
                     </v-tooltip>
-                  </li> -->
+                  </li>
                   <li>
                     <v-tooltip top>
                       <v-btn slot="activator" @click="logout()">

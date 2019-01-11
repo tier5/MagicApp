@@ -40,21 +40,33 @@
             <h2>03/22</h2>
           </v-flex>
         </v-layout>
-        <v-btn class="submit-btn">
+        <v-btn class="submit-btn"  @click="openAddNewCardModal()">
           <span>add a new card</span>
         </v-btn>
       </div>
     </v-card-text>
+    <!-- AddNewCard Component Model -->
+    <addnewcard></addnewcard>
+    <!-- AddNewCard Component Model -->
   </div>
 </template>
 
 <script>
+  import AddNewCard from "../../Auth/AddNewCard/AddNewCard.vue";
   import { mapGetters } from 'vuex';
   export default {
+    components: {
+      addnewcard: AddNewCard
+    },
     data() {
       return {
         radioGroup: 1
       };
+    },
+    methods:{
+      openAddNewCardModal(){
+        this.$store.commit('changeIsAddNewCardModalOpen', true);
+      }
     }
   };
 </script>

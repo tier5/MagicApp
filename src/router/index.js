@@ -21,7 +21,9 @@ import Users from '../components/dashboard/Users/Users.vue';
 import PaymentInfo from '../components/dashboard/PaymentInfo/PaymentInfo.vue';
 import UpgradeMembership from '../components/dashboard/UpgradeMembership/UpgradeMembership.vue';
 import LockedAccount from '../components/dashboard/LockedAccount/LockedAccount.vue';
-
+import CancelMembershipConfirmation from '../components/dashboard/CancelMembershipConfirmation/CancelMembershipConfirmation.vue';
+import CancelMembership from '../components/dashboard/CancelMembership/CancelMembership.vue';
+import EditProfile from '../components/dashboard/EditProfile/EditProfile.vue';
 
 Vue.use(Router);
 
@@ -119,6 +121,21 @@ export default new Router({
           path:'locked-account',
           name: 'LockedAccount',
           component: LockedAccount
+        },
+        {
+          path:'cancel-membership-conf',
+          name: 'CancelMembershipConfirmation',
+          component: CancelMembershipConfirmation
+        },
+        {
+          path:'cancel-membership',
+          name: 'CancelMembership',
+          component: CancelMembership
+        },
+        {
+          path:'edit-profile',
+          name: 'EditProfile',
+          component: EditProfile
         }
       ]
     }
