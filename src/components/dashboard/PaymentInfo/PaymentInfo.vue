@@ -65,7 +65,7 @@
     },
     methods:{
       openAddNewCardModal(){
-        this.$store.commit('changeIsAddNewCardModalOpen', true);
+        this.$store.commit('changeIsAddNewCardOpen', true);
       }
     }
   };

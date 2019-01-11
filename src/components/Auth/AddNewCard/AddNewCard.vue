@@ -1,7 +1,7 @@
  <template>
     <v-layout row justify-center class="passwordWrap">
-        <img src="../../../assets/images/smallcross.png" class="cross-btn" v-if="isAddNewCardModalOpen" @click="closeAddNewCard()">
-        <v-dialog v-model="isAddNewCardModalOpen" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <img src="../../../assets/images/smallcross.png" class="cross-btn" v-if="isAddNewCardOpen" @click="closeAddNewCard()">
+        <v-dialog v-model="isAddNewCardOpen" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card class="auth">
                 <v-layout row wrap>
                     <v-flex xs5>
@@ -49,12 +49,12 @@
     computed: {
         // mix the getters into computed with object spread operator
         ...mapGetters([
-            'isAddNewCardModalOpen'
+            'isAddNewCardOpen'
         ])
     },
     methods:{
         closeAddNewCard(){
-            this.$store.commit('changeIsAddNewCardModalOpen', false);
+            this.$store.commit('changeIsAddNewCardOpen', false);
         },
     }
   }
