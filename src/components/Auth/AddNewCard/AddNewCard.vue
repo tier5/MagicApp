@@ -6,17 +6,72 @@
                 <v-layout row wrap>
                     <v-flex xs5>
                         <div class="heading">
-                            <h2>Add a New Card Information</h2>
+                            <h2>Add a New Card</h2>
                             <h6>to your magic zap account</h6>
                         </div>
                     </v-flex>
                     <v-flex xs7>
                         <!-- Add a New Card Section Start Here -->
-                        <v-card-text class="changePassword">
+                        <v-card-text class="changePassword addnewcard">
                             <v-form>
                                 <v-container>
+                                    <v-card-text>
+                                        <h4>credit card information</h4>
+                                    </v-card-text>
                                     <v-layout row wrap>
-                                        
+                                        <v-flex xs8>
+                                            <v-card-text>
+                                                <label for="ccn">Credit Card Number:</label>
+                                                <v-text-field 
+                                                    label="Solo"  
+                                                    placeholder="CARD NUMBER" 
+                                                    class="payment_details" solo>
+                                                </v-text-field>
+                                            </v-card-text>
+                                        </v-flex>
+                                        <v-flex xs4>
+                                            <v-card-text>
+                                                <label for="cvv">CVV Code:</label>
+                                                <v-text-field 
+                                                    label="Solo"  
+                                                    placeholder="CVV" 
+                                                    class="payment_details" solo>
+                                                </v-text-field>
+                                            </v-card-text>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs6>
+                                            <v-card-text>
+                                                <label for="expmonth">Expiry Month:</label>
+                                                <v-select
+                                                :items="items"
+                                                placeholder="01"
+                                                solo
+                                                ></v-select>
+                                            </v-card-text>
+                                        </v-flex>
+                                        <v-flex xs6>
+                                            <v-card-text>
+                                                <label for="expyear">Expiry Year:</label>
+                                                <v-select
+                                                :items="itemsyear"
+                                                placeholder="2019"
+                                                solo
+                                                ></v-select>
+                                            </v-card-text>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout row wrap>
+                                        <v-flex xs12>
+                                            <v-card-text>
+                                                <v-btn block color="orangeButton" 
+                                                    type='submit'
+                                                    >
+                                                    <span>Save This card</span>
+                                                </v-btn>
+                                            </v-card-text>
+                                        </v-flex>
                                     </v-layout>
                                 </v-container>
                             </v-form>
@@ -40,10 +95,16 @@
   export default {
     data () {
       return {
+        name: '',
+        email:'',
+        password:'',
         user:{
-            password:'',
-            confirmPassword:''
-        }
+            name: '',
+            email:'',
+            password:''
+        },
+        items: ['01', '02', '03', '04'],
+        itemsyear: ['2019', '2020', '2021', '2022']
       }
     },
     computed: {
