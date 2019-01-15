@@ -28,7 +28,7 @@ var { userLogin,
       userForgetPassword,
       userResetPassword,
       userUpdatePassword, 
-      getUserPrimaryData }                            = require('../controllers/authController');
+      getUserPrimaryData, checkEmailExists}          = require('../controllers/authController');
 var { createUser,
       getAllUsers,
       updateUser}                                     = require('../controllers/usersController');
@@ -57,6 +57,7 @@ const { createTutorial,
   router.post('/forget-password',userForgetPassword);
   router.post('/reset-password/:token',userResetPassword);
   router.put('/change-password',userUpdatePassword);
+  router.post('/register/validate-email', checkEmailExists);
 
 /**
  * Create, read, update and delete Zaps

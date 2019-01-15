@@ -22,7 +22,7 @@ function userRegister(req,res,next){
     body.userType = 'paid'  // always have to pay to use the application
     body.stripe= {};
     body.stripe.plan = {
-        id : body.plan.id
+        id : 'plan_ELXlaXBXY1MRSS'
     };
     body.stripe.cards=[];
     // creating an object to store card details
@@ -246,11 +246,26 @@ async function getUserPrimaryData(req, res, next){
     return res.status(200).send({status:true,message:"success", token:user.accessToken , user:sendUserData})
 }
 
+async function checkEmailExists(req,res){
+    let email = req.body.email;
+    try {
+        let isFound = await Users.findOne({email : email});
+        if (isFound){
+            return res.status(400).send({status : false, message: 'Email Exists', data:{ email : email}})
+        } else {
+            return res.status(200).send({status : true, message : 'Email does not exists', data: { email : email}})
+        }
+    } catch (error) {
+            return res.status(500).send({status : false, message : 'Something Went Wrong'});
+    }
+}
+
 module.exports = {
     userRegister,
     userLogin,
     userForgetPassword,
     userResetPassword,
     userUpdatePassword,
-    getUserPrimaryData
+    getUserPrimaryData,
+    checkEmailExists
 }

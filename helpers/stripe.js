@@ -66,6 +66,7 @@ function createSubscription(customerId,planId){
     return new Promise ((resolve,reject)=>{
         stripe.subscriptions.create({
             customer: customerId,
+            trial_from_plan: true,
             items: [
             {
                 plan: planId,
