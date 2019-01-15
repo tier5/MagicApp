@@ -31,4 +31,13 @@ MongoClient.connect(url, function(err, client) {
       client.close();
   });
 
+  collection.updateMany({'isSubscribed': null },{$set:{ 'isSubscribed': true}},function(err, result) {
+    if (!err){
+      console.log("Updated all the documents with isSubscribed field");
+    } else {
+      console.log(err)
+    }
+    client.close();
+});
+
 });
