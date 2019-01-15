@@ -96,6 +96,12 @@ const UserSchema =  new Schema({
         // free or paid
         type: String, required : true
     },
+    isHookedUser: {
+        type: Boolean, required: true, default: false
+    },
+    isSubscribed: {
+        type: Boolean, required: true, default: false
+    },
     stripe:{
         subscription : {
             id : {

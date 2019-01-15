@@ -1,6 +1,6 @@
 /**
  * Name : warehouse.js
- * Purpose : It's a collection for the user who is either deactivaing their account and delecting the account by hooks and all thier data.
+ * Purpose : It's a collection for the user who is either deactivating their account and delecting the account by hooks and all thier data.
  */
 
 const mongoose = require('mongoose');

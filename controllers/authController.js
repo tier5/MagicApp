@@ -85,7 +85,7 @@ async function userLogin(req,res,next){
         if(!user){return res.status(400).send({message:'User not exists',status: false})}
         var decoded = await bcrypt.compare(password, user.password);
         if (decoded) {
-            var sendUserData ={
+            var sendUserData = {
                 email       :   user.email,
                 name        :   user.name,
                 isAdmin     :   user.isAdmin,
