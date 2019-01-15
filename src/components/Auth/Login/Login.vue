@@ -61,7 +61,7 @@
                                                 >
                                                 <img src="../../../assets/images/lock.png" alt="login">login
                                             </v-btn>
-                                            <span>Don't have an account?<a href="#"> sign up now!</a></span>
+                                            <span>Don't have an account?<a href="/register"> sign up now!</a></span>
                                         </v-layout>
                                     </v-container>
                                 </v-form>

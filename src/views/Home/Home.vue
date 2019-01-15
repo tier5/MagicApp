@@ -18,7 +18,7 @@
                       <v-btn flat v-if="!isAuthenticated">Features</v-btn>
                       <v-btn flat v-if="!isAuthenticated">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
-                      <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/signup')">14 day free trial</span>
+                      <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/register')">14 day free trial</span>
                       <span
                         class="loginbtn"
                         @click="openLoginModel()"
@@ -49,13 +49,13 @@
                           <img src="../../assets/images/icon-back.png" alt="icon" />
                         </div>
                         <div class="userMobile">
-                          <div v-if="!isAuthenticated">
+                          <div v-if="isAuthenticated">
                             <img src="../../assets/images/logo.svg" alt="icon" />
                           </div>
                           <div v-if="isAuthenticated">
                             <span>S</span>
                           </div>
-                          <span class="username-text">User name</span>
+                          <span class="username-text" v-if="isAuthenticated">User name</span>
                         </div>
                       </v-card-text>
                       <v-card-text class="left-menu">
@@ -68,7 +68,7 @@
                             <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                             <span>Pricing</span>
                           </li>
-                          <li v-if="!isAuthenticated">
+                          <li v-if="!isAuthenticated" @click="customRouter('/register')">
                             <span class="freetrialbtn">14 day free trial</span>
                           </li>
                           <li v-if="!isAuthenticated">
@@ -357,7 +357,7 @@
               <v-flex md12>
                 <v-card-text class='text-xs-center'>
                   <div class="footer-top">
-                    <v-btn class="free-trial-btn">Start 14 Days FREE Trial</v-btn>
+                    <v-btn class="free-trial-btn" @click="customRouter('/register')">Start 14 Days FREE Trial</v-btn>
                     <img src="../../assets/images/footer-logo.png" alt="footer-logo">
                   </div>
                   <div class="footer-bottom">

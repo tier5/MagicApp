@@ -42,12 +42,12 @@ export default new Router({
       component: ResetPassword,
     },
     {
-      path: '/signup',
+      path: '/register',
       name: 'SignUp',
       component: SignUp,
     },
     {
-      path: '/signup-payment',
+      path: '/register-payment',
       name: 'SignUpPayment',
       component: SignUpPayment,
     },

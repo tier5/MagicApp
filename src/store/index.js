@@ -11,6 +11,7 @@ import Loader from './modules/loader';
 import Tutorials from './modules/tutorials';
 
 import HomePage from './modules/home';
+import Register from './modules/register';
 
 Vue.use(Vuex)
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     Users,
     Loader,
     Tutorials,
-    HomePage
+    HomePage,
+    Register
   }
 })

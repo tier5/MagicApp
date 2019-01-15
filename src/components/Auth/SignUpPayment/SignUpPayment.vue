@@ -23,7 +23,7 @@
                             </v-flex>
                         </v-layout>
                     </div>
-                    <v-form>
+                    <v-form @submit.prevent="register()">
                         <v-container>
                             <v-flex>
                                 <h4>credit card information</h4>
@@ -32,36 +32,54 @@
                                 <v-flex xs8>
                                     <div>
                                         <label for="ccn">Credit Card Number:</label>
-                                        <v-text-field 
+                                        <!-- <v-text-field 
                                             label="Solo"  
                                             placeholder="CARD NUMBER" 
                                             class="payment_details" solo>
-                                        </v-text-field>
+                                        </v-text-field> -->
+                                        <card-number class='stripe-element card-number'
+                                            ref='cardNumber'
+                                            :stripe='stripe'
+                                            :options='options'
+                                            @change='number = $event.complete'
+                                            />
                                     </div>
                                 </v-flex>
                                 <v-flex xs4>
                                     <div>
                                         <label for="cvv">CVV Code:</label>
-                                        <v-text-field 
+                                        <!-- <v-text-field 
                                             label="Solo"  
                                             placeholder="CVV" 
                                             class="payment_details" solo>
-                                        </v-text-field>
+                                        </v-text-field> -->
+                                        <card-cvc class='stripe-element card-cvc payment_details'
+                                            ref='cardCvc'
+                                            :stripe='stripe'
+                                            :options='options'
+                                            @change='cvc = $event.complete'
+                                            />
                                     </div>
                                 </v-flex>
                             </v-layout>
                             <v-layout row wrap>
                                 <v-flex xs6>
                                     <div>
-                                        <label for="expmonth">Expiry Month:</label>
-                                        <v-select
-                                        :items="items"
-                                        placeholder="01"
-                                        solo
-                                        ></v-select>
+                                        <label for="expmonth">Expiry:</label>
+                                        <!-- <v-select
+                                            :items="items"
+                                            placeholder="01"
+                                            solo
+                                        ></v-select> -->
+                                        <card-expiry class='stripe-element card-expiry'
+                                            ref='cardExpiry'
+                                            :stripe='stripe'
+                                            :options='options'
+                                            @change='expiry = $event.complete'
+                                            />
                                     </div>
                                 </v-flex>
-                                <v-flex xs6>
+                                <!-- <v-flex xs6>
                                     <div>
                                         <label for="expyear">Expiry Year:</label>
                                         <v-select
@@ -70,12 +88,14 @@
                                         solo
                                         ></v-select>
                                     </div>
-                                </v-flex>
+                                </v-flex> -->
                             </v-layout>
                             <v-layout row wrap>
-                                <v-flex xs12>
+                                <v-flex xs12 >
                                     <v-btn block color="orangeButton" 
                                         type='submit'
+                                        :disabled='!complete'
+                                        
                                         >
                                         <h5>Start my 14 day FREE trial</h5>
                                         <span>You Pay Nothing Today</span>
@@ -133,20 +153,68 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import { CardNumber, CardExpiry, CardCvc, createToken } from 'vue-stripe-elements-plus';
+  import Error from '../../../components/Error.vue';
   export default {
     data() {
       return {
-        name: '',
-        email:'',
-        password:'',
-        user:{
-            name: '',
-            email:'',
-            password:''
-        },
         items: ['01', '02', '03', '04'],
-        itemsyear: ['2019', '2020', '2021', '2022']
+        itemsyear: ['2019', '2020', '2021', '2022'],
+        complete: false,
+        number: false,
+        expiry: false,
+        cvc: false,
+        options:{},
+        stripe: 'pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
       };
+    },
+    computed: {
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'isError',
+            'registerUser'
+        ])
+    },
+    methods:{
+        update(){
+            this.complete = this.number && this.expiry && this.cvc 
+             if (this.number) {
+                if (!this.cvc) {
+                    this.$refs.cardCvc.focus()
+                } else if (!this.expiry) {
+                    this.$refs.cardExpiry.focus()
+                }
+            } else if (this.expiry) {
+                if (!this.cvc) {
+                    this.$refs.cardCvc.focus()
+                } else if (!this.number) {
+                    this.$refs.cardNumber.focus()
+                }
+            }
+        },
+        register(){
+            this.complete = false
+            let createNewUser ={}
+            createToken().then(data => {
+                createNewUser = this.registerUser;
+                createNewUser.cardToken = data.token.id;
+                createNewUser.card = data.token.card 
+             this.$store.dispatch('userSignUp', createNewUser);
+          }).catch((err)=> {
+            console.log(err);
+          })
+        }
+    },
+    components: { CardNumber, CardExpiry, CardCvc },
+    created(){
+        if(!this.registerUser.name){
+            this.$store.commit('changeRoute', '/register');
+        }
+    },
+    watch: {
+        number () { this.update() },
+        expiry () { this.update() },
+        cvc () { this.update() }
     }
   };
 </script>

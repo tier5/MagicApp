@@ -181,6 +181,28 @@
                     max-width: 220px;
                 }
             }
+            .card-number {
+                box-shadow: 0 7px 49px #e6e6e6;
+                border-radius: 5px;
+                background-color: #F9FCFF;
+                padding: 18px;
+            }
+            .card-cvc {
+                box-shadow: 0 7px 49px #e6e6e6;
+                border-radius: 5px;
+                background-color: #F9FCFF;
+                padding: 18px;
+            }
+            .card-expiry{
+                box-shadow: 0 7px 49px #e6e6e6;
+                border-radius: 5px;
+                background-color: #F9FCFF;
+                padding: 18px;
+            }
+            .credit-card-inputs.complete {
+                border: 2px solid green;
+            }
+            
         }
         .right-side{
             background: url('../../../assets/images/signup-payment.png') no-repeat top center;
