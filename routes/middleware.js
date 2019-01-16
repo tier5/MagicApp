@@ -60,10 +60,11 @@ function isUserSubscribed(req,res,next){
             if(data.userType == 'paid'){
                 return retriveSubscription(data.stripe.subscription.id)
                     .then(data=>{
-                        if (data.status =='active'){
+                        // active if the subscribtion is active and trialing if the user is in trail period
+                        if (data.status =='active' || data.status =='trialing'){
                             next()
                         } else {
-                            res.status(401).send({message : 'Your subscription is get over due to payment issue'})
+                            res.status(401).send({message : 'Your subscription is over due to payment issue'})
                         }
                     }).catch(err=> console.error('middleware.js line 60',err))
             } else {

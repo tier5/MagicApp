@@ -234,12 +234,12 @@ function getUserZapsStats(req, res, next){
         }
     }).then(data => {
         if (!data.length){
-            return res.status(400).send({ message: 'Bad Request', status : false, data: {}})
+            return res.status(200).send({ message: 'No data found', status : false, data: {}})
         }
 
         return res.status(200).send({message : 'ok', status: true, data : data[0]})
     }).catch(error=>{
-        return res.status(200).send({message : 'Server Internal Error', status: false, data : {}})
+        return res.status(500).send({message : 'Server Internal Error', status: false, data : {}, error: error.message})
     })
 }
 module.exports = {

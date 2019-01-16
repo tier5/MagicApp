@@ -30,42 +30,42 @@ var appRoutes = require('./routes/index');
 /** 
  * Middleware
  */
-  app.use(logger('dev'));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, '/public/MagicApp/dist')));
-  app.use(cors())
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Headers","*")
-    next();
-  })
-  app.use('/api',appRoutes);
-  app.use(helmet());
-  app.disable('x-powered-by');
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, '/public/MagicApp/dist')));
+app.use(cors())
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Headers", "*")
+  next();
+})
+app.use('/api', appRoutes);
+app.use(helmet());
+app.disable('x-powered-by');
 
 // send all get request to frontend to handle  
-  app.get('*',function(req,res){
-    res.sendFile(path.join(__dirname + '/public/MagicApp/dist/index.html'))
-  });
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname + '/public/MagicApp/dist/index.html'))
+});
 
 // catch 404 and forward to error handler
-  app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    err.message = 'Not Found'
-    next(err);
-  });
+app.use(function (req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  err.message = 'Not Found'
+  next(err);
+});
 //error handler
-  app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = process.env.NODE_ENV === 'development' ? err : {};
-    // render the error page
-    res.status(err.status || 500);
-    console.log('app.js line no 66',err)
-    res.status(500).send({message:'Server Internal Error', status: false});
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = process.env.NODE_ENV === 'development' ? err : {};
+  // render the error page
+  res.status(err.status || 500);
+  console.log('app.js line no 66', err)
+  res.status(500).send({ message: 'Server Internal Error', status: false });
 
-  });
+});
 
 module.exports = app;
