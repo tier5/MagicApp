@@ -137,7 +137,6 @@
             this.$store.commit("changeIsLoginModalOpen", true);
         },
         checkSignUp(){
-            console.log(this.user);
             this.$store.dispatch('validateEmail', this.user);
         }
     },

@@ -24,6 +24,7 @@
                         </v-layout>
                     </div>
                     <v-form @submit.prevent="register()">
+                        <Error v-if="isError"/>
                         <v-container>
                             <v-flex>
                                 <h4>credit card information</h4>
@@ -32,11 +33,6 @@
                                 <v-flex xs8>
                                     <div>
                                         <label for="ccn">Credit Card Number:</label>
-                                        <!-- <v-text-field 
-                                            label="Solo"  
-                                            placeholder="CARD NUMBER" 
-                                            class="payment_details" solo>
-                                        </v-text-field> -->
                                         <card-number class='stripe-element card-number'
                                             ref='cardNumber'
                                             :stripe='stripe'
@@ -48,11 +44,6 @@
                                 <v-flex xs4>
                                     <div>
                                         <label for="cvv">CVV Code:</label>
-                                        <!-- <v-text-field 
-                                            label="Solo"  
-                                            placeholder="CVV" 
-                                            class="payment_details" solo>
-                                        </v-text-field> -->
                                         <card-cvc class='stripe-element card-cvc payment_details'
                                             ref='cardCvc'
                                             :stripe='stripe'
@@ -66,11 +57,6 @@
                                 <v-flex xs6>
                                     <div>
                                         <label for="expmonth">Expiry:</label>
-                                        <!-- <v-select
-                                            :items="items"
-                                            placeholder="01"
-                                            solo
-                                        ></v-select> -->
                                         <card-expiry class='stripe-element card-expiry'
                                             ref='cardExpiry'
                                             :stripe='stripe'
@@ -79,16 +65,7 @@
                                             />
                                     </div>
                                 </v-flex>
-                                <!-- <v-flex xs6>
-                                    <div>
-                                        <label for="expyear">Expiry Year:</label>
-                                        <v-select
-                                        :items="itemsyear"
-                                        placeholder="2019"
-                                        solo
-                                        ></v-select>
-                                    </div>
-                                </v-flex> -->
+
                             </v-layout>
                             <v-layout row wrap>
                                 <v-flex xs12 >
@@ -165,7 +142,7 @@
         expiry: false,
         cvc: false,
         options:{},
-        stripe: 'pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
+        stripe: process.env.VUE_APP_STRIPE_KEY
       };
     },
     computed: {
@@ -196,6 +173,7 @@
             this.complete = false
             let createNewUser ={}
             createToken().then(data => {
+                this.complete = true
                 createNewUser = this.registerUser;
                 createNewUser.cardToken = data.token.id;
                 createNewUser.card = data.token.card 
@@ -205,7 +183,7 @@
           })
         }
     },
-    components: { CardNumber, CardExpiry, CardCvc },
+    components: { CardNumber, CardExpiry, CardCvc, Error },
     created(){
         if(!this.registerUser.name){
             this.$store.commit('changeRoute', '/register');
