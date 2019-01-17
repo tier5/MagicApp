@@ -40,5 +40,23 @@
         .v-form>.container>.layout>.flex{
             padding: 0;
         }
+        .card-number {
+            box-shadow: 0 7px 49px #e6e6e6;
+            border-radius: 5px;
+            background-color: #F9FCFF;
+            padding: 18px;
+        }
+        .card-cvc {
+            box-shadow: 0 7px 49px #e6e6e6;
+            border-radius: 5px;
+            background-color: #F9FCFF;
+            padding: 18px;
+        }
+        .card-expiry{
+            box-shadow: 0 7px 49px #e6e6e6;
+            border-radius: 5px;
+            background-color: #F9FCFF;
+            padding: 18px;
+        }
     }
 }

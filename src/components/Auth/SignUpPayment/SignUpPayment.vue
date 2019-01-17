@@ -135,8 +135,6 @@
   export default {
     data() {
       return {
-        items: ['01', '02', '03', '04'],
-        itemsyear: ['2019', '2020', '2021', '2022'],
         complete: false,
         number: false,
         expiry: false,
@@ -177,7 +175,7 @@
                 createNewUser = this.registerUser;
                 createNewUser.cardToken = data.token.id;
                 createNewUser.card = data.token.card 
-             this.$store.dispatch('userSignUp', createNewUser);
+                this.$store.dispatch('userSignUp', createNewUser);
           }).catch((err)=> {
             console.log(err);
           })

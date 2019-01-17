@@ -13,6 +13,8 @@ import Tutorials from './modules/tutorials';
 import HomePage from './modules/home';
 import Register from './modules/register';
 
+import Payments from './modules/payments';
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -28,6 +30,7 @@ export default new Vuex.Store({
     Loader,
     Tutorials,
     HomePage,
-    Register
+    Register,
+    Payments
   }
 })

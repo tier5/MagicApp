@@ -9,7 +9,6 @@ const state = {
   plans:[],
   cardToken:'',
   resetChangePasswordForm: false,
-  isAddNewCardOpen: false,
 };
 
 const getters = {
@@ -19,8 +18,7 @@ const getters = {
   plans: state => state.plans,
   cardToken: state => state.cardToken,
   forgetPassword : state => state.forgetPassword,
-  resetChangePasswordForm : state => state.resetChangePasswordForm,
-  isAddNewCardOpen: state => state.isAddNewCardOpen
+  resetChangePasswordForm : state => state.resetChangePasswordForm
 };
 
 const mutations = {
@@ -66,9 +64,6 @@ const mutations = {
   },
   resetChangePasswordForm: (state, payload) => {
     state.resetChangePasswordForm = payload
-  },
-  changeIsAddNewCardOpen: (state, payload)=>{
-    state.isAddNewCardOpen = payload;
   }
 };
 

@@ -4,49 +4,31 @@
       <div class="center-block">
         <h1>My payment information</h1>
         <p>You have attached below card informations with your account</p>
-        <v-layout row wrap class="eachblock checked"> 
-          <v-flex md3 xs12>
-            <v-radio-group v-model="radioGroup">
+        <v-layout row wrap class="eachblock checked" v-if="cards.length"> 
+          <!-- <v-flex md3 xs12>
+            <v-radio-group v-model="card.defaultCard">
               <v-radio
-                :value="1"
+                :value="true"
               ></v-radio>
               <label>Default</label>
             </v-radio-group>
-          </v-flex>
+          </v-flex> -->
           <v-flex md6 xs12>
             <span>Card number</span>
-            <h2>XXX XXXX XXXX 1234</h2>
+            <h2>XXX XXXX XXXX {{cards[0].last4}}</h2>
           </v-flex>
           <v-flex md3 xs12>
             <span>Expiry (MM/YY)</span>
-            <h2>03/22</h2>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap class="eachblock"> 
-          <v-flex md3 xs12>
-            <v-radio-group v-model="radioGroup">
-              <v-radio
-                :value="2"
-                checked=true
-              ></v-radio>
-            </v-radio-group>
-          </v-flex>
-          <v-flex md6 xs12>
-            <span>Card number</span>
-            <h2>XXX XXXX XXXX 5678</h2>
-          </v-flex>
-          <v-flex md3 xs12>
-            <span>Expiry (MM/YY)</span>
-            <h2>03/22</h2>
+            <h2>{{cards[0].exp_month}}/{{cards[0].exp_year}}</h2>
           </v-flex>
         </v-layout>
         <v-btn class="submit-btn"  @click="openAddNewCardModal()">
-          <span>add a new card</span>
+          <span>Update Card</span>
         </v-btn>
       </div>
     </v-card-text>
     <!-- AddNewCard Component Model -->
-    <addnewcard></addnewcard>
+      <addnewcard></addnewcard>
     <!-- AddNewCard Component Model -->
   </div>
 </template>
@@ -54,19 +36,29 @@
 <script>
   import AddNewCard from "../../Auth/AddNewCard/AddNewCard.vue";
   import { mapGetters } from 'vuex';
+
   export default {
     components: {
       addnewcard: AddNewCard
     },
     data() {
       return {
-        radioGroup: 1
+        radioGroup: 1,
+        
       };
+    },
+    computed:{
+      ...mapGetters([
+            'cards'
+      ])
     },
     methods:{
       openAddNewCardModal(){
         this.$store.commit('changeIsAddNewCardOpen', true);
       }
+    },
+    created(){
+      this.$store.dispatch('getUserCards',{});
     }
   };
 </script>
