@@ -322,7 +322,7 @@ function preAuthCharge(amount, currency, customerId) {
             customer: customerId,
             capture: false
         }, function (err, charge) {
-            console.log(charge);
+            
             if (err) {
                 return reject(err)
             } else {
@@ -331,6 +331,28 @@ function preAuthCharge(amount, currency, customerId) {
         })
     })
 }
+
+/**
+ * Function to retrive Card
+ * @param {string} custometId
+ * @param {string} cardId
+ */
+  function retrieveCard(customerId,cardId){
+    return new Promise((resolve, reject)=>{
+        stripe.customers.retrieveCard(
+            customerId,
+            cardId,
+            function(err, card) {
+              // asynchronously called
+                if (err) {
+                    return reject(err)
+                } else {
+                    return resolve(card)
+                }
+            }
+          );
+    })
+  }
 
 module.exports = {
     createCustomer,
@@ -347,5 +369,6 @@ module.exports = {
     defaultSource,
     deleteCard,
     demoCardToken,
-    preAuthCharge
+    preAuthCharge,
+    retrieveCard
 }

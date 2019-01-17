@@ -14,7 +14,8 @@ var {
         createSource,
         defaultSource,
         deleteCard,
-        retrieveCustomer}   = require('../helpers/stripe');
+        retrieveCustomer, 
+        retrieveCard}       = require('../helpers/stripe');
 
 
 // addDate method to date object 
@@ -60,7 +61,6 @@ function getAllPlansCtrl (req,res,next){
                     user.stripe.card = {
                         id : req.body.card.id
                     }
-                    //return createSubscription(user.stripe.customer.id,req.body.plan.id)
                     return updateSubscription(user.stripe.subscription.id,req.body.plan.id)
                 })
                 .then(sub => {
@@ -142,19 +142,27 @@ function getAllPlansCtrl (req,res,next){
  function addNewCardToUser(req,res){
     var token = req.headers.authorization;
     var cardToken = req.body.cardToken;
-    var customerId =''
+    var customerId, thisUser, cardId;
     Users
         .findOne({accessToken: token})
         .select({stripe:1})
         .then(user=>{
             customerId = user.stripe.customer.id;
+            thisUser = user;
             return createSource(customerId,cardToken);
         })
         .then(card=>{
-            var cardId = card.id
+            cardId = card.id
             return defaultSource(customerId,cardId)
         })
-        .then(confirm=>{
+        .then(confirm=> {
+            thisUser.stripe.cards.forEach(card=>{
+                card.isDefault = false
+            });
+            thisUser.stripe.cards.push({ id : cardId, isDefault: true});
+            return thisUser.save()
+        })
+        .then(done=>{
             res.status(200).send({message: 'Card Added',status : true})
         })
         .catch(err=>{
@@ -191,7 +199,8 @@ function getAllPlansCtrl (req,res,next){
 
  /**
   * Function to change user's default card
-  * 
+  * @param {object} request
+  * @param {object} response
   */
  function usersDefaultCard(req,res){
     var cardId = req.params.cardId;
@@ -213,7 +222,31 @@ function getAllPlansCtrl (req,res,next){
         })
  }
 
+async function getUserDefaultCardInfo(req, res){
+    try {
+        let token = req.headers.authorization;
 
+        let thisUser = await Users.findOne({ accessToken : token}).select({ stripe : 1});
+
+        if(!thisUser){
+            return res.status(404).send({message : 'User not found', status: false, data:[] });
+        } 
+
+        let customerId = thisUser.stripe.customer ? thisUser.stripe.customer.id : null;
+        if(!customerId){
+            return res.status(400).send({message : 'Customer not found', status : false, data:[] });
+        }
+        let getCustomerInfo = await retrieveCustomer(customerId);
+
+        let defaultCard = getCustomerInfo.default_source;
+        let card = await retrieveCard(customerId, defaultCard);
+        let cards = [];
+        cards.push(card);
+        return res.status(200).send({ message : 'ok', status : true, data: cards});
+    } catch (error) {
+        return res.status(500).send({ message : error.message, status : false, data:[] });
+    }
+}
 
 
 
@@ -223,5 +256,6 @@ module.exports = {
     retriveUsersCard,
     addNewCardToUser,
     deleteUserCard,
-    usersDefaultCard
+    usersDefaultCard,
+    getUserDefaultCardInfo
 }

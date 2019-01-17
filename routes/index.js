@@ -22,7 +22,8 @@ var { getAllPlansCtrl,
       updateUserSubscribtion,
       retriveUsersCard,
       addNewCardToUser,
-      deleteUserCard, usersDefaultCard}               = require('../controllers/stripeController');
+      deleteUserCard, usersDefaultCard, 
+      getUserDefaultCardInfo}                         = require('../controllers/stripeController');
 var { userLogin,
       userRegister,
       userForgetPassword,
@@ -92,7 +93,7 @@ const { createTutorial,
  */
   router.get('/plans',getAllPlansCtrl);
   router.put('/subscriptions',updateUserSubscribtion);
-  router.get('/cards',retriveUsersCard);
+  router.get('/cards',getUserDefaultCardInfo);
   router.post('/cards',addNewCardToUser);
   router.delete('/cards/:cardId',deleteUserCard);
   router.put('/cards/:cardId',usersDefaultCard);
