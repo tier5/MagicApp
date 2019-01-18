@@ -32,7 +32,7 @@ var { userLogin,
       getUserPrimaryData, checkEmailExists}          = require('../controllers/authController');
 var { createUser,
       getAllUsers,
-      updateUser}                                     = require('../controllers/usersController');
+      updateUser,updateProfile}                      = require('../controllers/usersController');
 
 var { createUserFromHook,
       deleteUserFromHook,
@@ -73,6 +73,10 @@ const { createTutorial,
   router.post('/script-data',saveScriptData);
   router.get('/script-data/:id',getElementAttribute);
 
+  /**
+   * Profile 
+   */
+  router.put('/profile', updateProfile)
 /**
  * Zapier Authenicate and send data to zapier
  */

@@ -196,6 +196,28 @@ async function removeUser(email){
     })
 }
 
+async function updateProfile(req, res){
+    let token = req.headers.authorization;
+    let {name} = req.body
+
+    try {
+        let thisUser = await Users.findOne({accessToken : token}).select({ name : 1});
+        if (!thisUser){
+            return res.status(400).send({ message: 'Bad Request', status: false})
+        }
+        let conditions = { accessToken: token }
+        ,   update = { $set: { name : name}}
+        ,   options = { multi: false };
+
+        let updatedUser = await Users.updateOne(conditions, update, options);
+        return res.status(200).send({message : 'Updated', status: true, data: req.body});
+
+    } catch (error) {
+        return res.status(500).send({message: 'Server Internal Error', status: false, error: error.message})
+    }
+    
+}
+
 
  module.exports ={
     createUser,
@@ -203,5 +225,6 @@ async function removeUser(email){
     updateUser,
     getUserFromToken,
     userWarehousing,
-    removeUser
+    removeUser,
+    updateProfile
  }
