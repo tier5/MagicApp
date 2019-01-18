@@ -64,6 +64,10 @@ const mutations = {
   },
   resetChangePasswordForm: (state, payload) => {
     state.resetChangePasswordForm = payload
+  },
+  updateProfile : (state, payload)=> {
+    state.user.name = payload.name
+    localStorage.setItem('user', JSON.stringify(state.user));
   }
 };
 
@@ -209,6 +213,26 @@ const actions = {
         },
         (err)=>{
           commit('userSignOut');
+        }
+      )
+  },
+  updateProfile:({commit}, payload)=>{
+    commit('changeLoading',true);
+    Vue.http.put('profile', payload)
+      .then(
+        (res) => {
+          commit('changeLoading',false);
+          if(res.body.status) {
+            commit('updateProfile', payload);
+          } else {
+
+          }
+        },
+        (err) => {
+          commit('changeLoading',false);
+          var message = err.body.message;
+          commit('errorMessage',message);
+          commit('errorTrue');
         }
       )
   }
