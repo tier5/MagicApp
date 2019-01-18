@@ -7,6 +7,7 @@ const _ = require('lodash');
 const {createAccessToken} = require('../helpers/jwt');
 const ScriptData = require('../models/zaps');
 const WareHouse = require('../models/warehouse');
+const {deleteCustomer} = require('../helpers/stripe');
  
  /**
   * Function to create a user 
@@ -112,6 +113,10 @@ function updateUser(req,res,next){
         })
 }
 
+/**
+ * Function to get User record from token
+ * @param {string} token 
+ */
 function getUserFromToken(token){
     return new Promise((resolve, reject)=>{
         Users.findOne({ accessToken : token}).then(data=>{
@@ -125,6 +130,10 @@ function getUserFromToken(token){
     }) 
 }
 
+/**
+ * Function user data warehousing
+ * @param {string} email 
+ */
 async function userWarehousing(email){
     
     return new Promise(async (resolve, reject)=>{
@@ -173,7 +182,10 @@ async function userWarehousing(email){
     })
     
 }
-
+/**
+ * Function to delete user from the database
+ * @param {string} email 
+ */
 async function removeUser(email){
     return new Promise(async (resolve, reject) => {
 
@@ -196,6 +208,10 @@ async function removeUser(email){
     })
 }
 
+/**
+ * Function to update profile 
+ * 
+ */
 async function updateProfile(req, res){
     let token = req.headers.authorization;
     let {name} = req.body
@@ -218,6 +234,24 @@ async function updateProfile(req, res){
     
 }
 
+async function cancelMembership(req, res){
+    try {
+        let thisUser = await Users.findOne({ accessToken : req.headers.authorization}).select({ stripe: 1 , email: 1 , name: 1});
+        if(!thisUser){
+            return res.status(400).send({message: 'Bad request', status: false});
+        }
+        let customerId = thisUser.stripe.customer ? thisUser.stripe.customer.id : null;
+        if (!customerId){
+            return res.status(400).send({message: 'Bad request', status: false});
+        }
+        let deleteCustomerFromStripe = await deleteCustomer(customerId);
+        let deleteUserFromDB = await removeUser(thisUser.email);
+        return res.status(200).send({message: 'Deleted', status: true , data: { name : thisUser.name}});
+
+    } catch (error) {
+        return res.status(400).send({message: error.message, status: false});
+    }
+}
 
  module.exports ={
     createUser,
@@ -226,5 +260,6 @@ async function updateProfile(req, res){
     getUserFromToken,
     userWarehousing,
     removeUser,
-    updateProfile
+    updateProfile,
+    cancelMembership
  }

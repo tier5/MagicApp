@@ -32,7 +32,7 @@ var { userLogin,
       getUserPrimaryData, checkEmailExists}          = require('../controllers/authController');
 var { createUser,
       getAllUsers,
-      updateUser,updateProfile}                      = require('../controllers/usersController');
+      updateUser,updateProfile, cancelMembership}    = require('../controllers/usersController');
 
 var { createUserFromHook,
       deleteUserFromHook,
@@ -101,6 +101,7 @@ const { createTutorial,
   router.post('/cards',addNewCardToUser);
   router.delete('/cards/:cardId',deleteUserCard);
   router.put('/cards/:cardId',usersDefaultCard);
+  router.delete('/cancel-membership', cancelMembership)
 
 /**
  * WebHooks
