@@ -123,14 +123,14 @@ export default new Router({
           component: LockedAccount
         },
         {
-          path:'cancel-membership-conf',
-          name: 'CancelMembershipConfirmation',
-          component: CancelMembershipConfirmation
-        },
-        {
           path:'cancel-membership',
           name: 'CancelMembership',
           component: CancelMembership
+        },
+        {
+          path:'cancel-confirm',
+          name: 'CancelMembershipConfirmation',
+          component: CancelMembershipConfirmation
         },
         {
           path:'edit-profile',

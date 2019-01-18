@@ -3,11 +3,13 @@ import Vue from 'vue';
 const state = {
   cards:[],
   isAddNewCardOpen: false,
+  cancelMemberName: ''
 
 }
 const getters = {
     cards: state=> state.cards,
-    isAddNewCardOpen : state => state.isAddNewCardOpen
+    isAddNewCardOpen : state => state.isAddNewCardOpen,
+    cancelMemberName : state => state.cancelMemberName
 }
 
 const mutations = {
@@ -16,6 +18,9 @@ const mutations = {
     },
     changeIsAddNewCardOpen:(state, payload)=>{
         state.isAddNewCardOpen = payload
+    },
+    changeCancelMemberName:(state, payload)=>{
+        state.cancelMemberName = payload
     }
 }
 const actions = {
@@ -65,6 +70,30 @@ const actions = {
                 }
             )
     },
+    cancelMembership:({commit}, payload)=>{
+        commit('changeLoading',true);
+        Vue.http.delete('cancel-membership',payload)
+        .then(
+          (res) => {
+            commit('changeLoading',false);
+            if(res.body.status) {
+                commit('changeRoute', '/magic/cancel-confirm');
+                commit('changeCancelMemberName', res.body.data.name);
+                setTimeout(()=>{
+                    commit('userSignOut');
+                },6000)
+            }
+          },
+          (err) => {
+            //console.log(err.body.message);
+            let message = err.body.message
+        
+            commit('errorMessage',message);
+            commit('errorTrue');
+            commit('changeLoading',false);
+          }
+        )
+    }
 }
 
 

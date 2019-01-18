@@ -58,15 +58,15 @@ export default {
     }
   },
   computed:{
-      ...mapGetters([
-            'tutorials'
-        ]),
-        orderedTutorials: function(){
-            return _.orderBy(this.tutorials, 'order');
-        },
-        firstVideo(){
-          return this.tutorials.filter(o=> o.order == '1');
-        }
+    ...mapGetters([
+          'tutorials'
+      ]),
+      orderedTutorials: function(){
+          return _.orderBy(this.tutorials, 'order');
+      },
+      firstVideo(){
+        return this.tutorials.filter(o=> o.order == '1');
+      }
 
   },
   created() {
