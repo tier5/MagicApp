@@ -178,22 +178,45 @@ function createCard(customerId, cardToken) {
  * @param {string} planId 
  */
 function updateSubscription(subscriptionId, planId) {
+
+    
+
     return new Promise((resolve, reject) => {
+
+        let afterChecking = function(subscription){
+            stripe.subscriptions.update(subscriptionId, {
+                items: [{
+                    id: subscription.items.data[0].id,
+                    plan: planId,
+                }]
+            }, function (err, sub) {
+                // asynchronously called
+                if (!err) {
+                    resolve(sub)
+                } else {
+                    reject(err)
+                }
+            });
+        }
+
         stripe.subscriptions.retrieve(subscriptionId, function (err, subscription) {
+            //console.log(subscription);
             if (!err) {
-                stripe.subscriptions.update(subscriptionId, {
-                    items: [{
-                        id: subscription.items.data[0].id,
-                        plan: planId,
-                    }]
-                }, function (err, sub) {
-                    // asynchronously called
-                    if (!err) {
-                        resolve(sub)
-                    } else {
-                        reject(err)
-                    }
-                });
+                if (subscription.status === 'trialing'){
+                    stripe.subscriptions.update(subscriptionId, {
+                        trial_end: 'now',
+                      }).then(done => {
+
+                        afterChecking(subscription)
+
+                      }).catch(error=> {
+                          reject(error);
+                      })
+                } else {
+
+                    afterChecking(subscription)
+                }
+                
             } else {
                 reject(err)
             }

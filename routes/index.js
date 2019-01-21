@@ -32,7 +32,9 @@ var { userLogin,
       getUserPrimaryData, checkEmailExists}          = require('../controllers/authController');
 var { createUser,
       getAllUsers,
-      updateUser,updateProfile, cancelMembership}    = require('../controllers/usersController');
+      updateUser, 
+      updateProfile, 
+      cancelMembership, getUserCurrentSubscription}  = require('../controllers/usersController');
 
 var { createUserFromHook,
       deleteUserFromHook,
@@ -90,7 +92,8 @@ const { createTutorial,
   router.get('/users',isAuthorized,onlyAdminCan,getAllUsers);
   router.put('/users/:id', isAuthorized,onlyAdminCan,updateUser);
   router.post('/users',isAuthorized,onlyAdminCan,createUser);
-  router.get('/users/basic', isAuthorized,getUserPrimaryData)
+  router.get('/users/basic', isAuthorized,getUserPrimaryData);
+  router.get('/users/subscriptions', getUserCurrentSubscription);
 
 /**
  * Stripe
@@ -137,6 +140,11 @@ const { createTutorial,
   // @todo make use for this route currently not in use
   router.post('/users/:api_key/users_script_zap/:zapId/unsubscribe',(req,res)=>{
     return res.status(200).send({message : 'Ok'})
+  });
+
+  router.post('/stripe/webhook/events', function(req, res){
+    let body = req.body;
+    cns
   })
 
 

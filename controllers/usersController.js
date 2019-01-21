@@ -2,12 +2,13 @@
  * Name: usersController.js
  * Purpose :  a users controller
  */
-const Users = require('../models/users');
-const _ = require('lodash');
-const {createAccessToken} = require('../helpers/jwt');
-const ScriptData = require('../models/zaps');
-const WareHouse = require('../models/warehouse');
-const {deleteCustomer} = require('../helpers/stripe');
+const Users                     = require('../models/users');
+const _                         = require('lodash');
+const {createAccessToken}       = require('../helpers/jwt');
+const ScriptData                = require('../models/zaps');
+const WareHouse                 = require('../models/warehouse');
+const {deleteCustomer}          = require('../helpers/stripe');
+const Plans                     = require('../config/plans.config');
  
  /**
   * Function to create a user 
@@ -233,7 +234,11 @@ async function updateProfile(req, res){
     }
     
 }
-
+/**
+ * Function to cancel application membership
+ * @param {object} req 
+ * @param {object} res 
+ */
 async function cancelMembership(req, res){
     try {
         let thisUser = await Users.findOne({ accessToken : req.headers.authorization}).select({ stripe: 1 , email: 1 , name: 1});
@@ -253,7 +258,40 @@ async function cancelMembership(req, res){
     }
 }
 
- module.exports ={
+/**
+ * Function to get user's current subscription
+ * @param {object} req 
+ * @param {object} res 
+ */
+async function getUserCurrentSubscription(req, res){
+    try {
+        let token = req.headers.authorization;
+        let thisUser = await Users.findOne({ accessToken : token }).select({email: 1, stripe: 1, isSubscribed: 1, isHookedUser:1});
+        if(!thisUser){
+            return res.status(400).send({message: 'Not Found', status: false, data: {}});
+        }
+        let data = {
+            isSubscribed: thisUser.isSubscribed,
+            currentPlan: thisUser.stripe.plan.id,
+            isHookedUser: thisUser.isHookedUser
+        }
+        let findCurrentPlan = Plans.filter(plan=>{
+            if (plan.stripePlanId === data.currentPlan){
+                return plan;
+            }
+        });
+        if(findCurrentPlan.length){
+            data.currentPlanName = findCurrentPlan[0].planName;
+        }
+        return res.status(200).send({message: 'Ok', status: true, data : data});
+    } catch (error) {
+        return res.status(500).send({message: error.message, status: false , error: error.message});
+    }
+
+}
+
+
+ module.exports = {
     createUser,
     getAllUsers,
     updateUser,
@@ -261,5 +299,6 @@ async function cancelMembership(req, res){
     userWarehousing,
     removeUser,
     updateProfile,
-    cancelMembership
+    cancelMembership,
+    getUserCurrentSubscription,
  }

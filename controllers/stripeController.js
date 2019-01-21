@@ -5,6 +5,8 @@
 var _                       = require('lodash');
 var moment                  = require('moment');
 var Users                   = require('../models/users');
+const Plans                 = require('../config/plans.config');
+
 var {
         getAllPlans, 
         createCard , 
@@ -52,30 +54,26 @@ function getAllPlansCtrl (req,res,next){
 
  function updateUserSubscribtion(req,res){
     var token = req.headers.authorization;
+    let planName = req.body.plan;
+    let plan = Plans.filter(obj=> {
+        return obj.planName == planName
+    });
+    if (!plan.length){
+        return res.status(400).send({message: 'Wrong plan selected', status: false});
+    }
+    let planId = plan[0].stripePlanId
     Users
         .findOne({accessToken : token})
         .select({email:1, userType: 1, stripe:1, isActive:1,isAdmin:1, accessToken: 1})
         .then(user => {
-            createCard(user.stripe.customer.id,req.body.cardToken)
-                .then(()=>{
-                    user.stripe.card = {
-                        id : req.body.card.id
-                    }
-                    return updateSubscription(user.stripe.subscription.id,req.body.plan.id)
-                })
+            updateSubscription(user.stripe.subscription.id,planId)
                 .then(sub => {
-                   var startDate = new Date ;
-                   var endDate = startDate.addDays(365);
-
                    user.stripe.subscription = {
                        id : user.stripe.subscription.id,
-                       startDate :startDate,
-                       endDate : moment(endDate).format()
                    }
                    user.stripe.plan={
-                       id : req.body.plan.id
+                       id : planId
                    }
-                   user.userType = 'paid';
                    return user.save()
                 })
                 .then(updatedUser=>{
@@ -86,11 +84,11 @@ function getAllPlansCtrl (req,res,next){
                         isActive: updatedUser.isActive,
                         isSubscribed : true
                     }
-                    res.status(200).send({status: true, message: `Thanks, You're ready to go.`, token:updatedUser.accessToken , user:sendUserData });
+                    return res.status(200).send({status: true, message: `Thanks, You're ready to go.`, token: updatedUser.accessToken , user: sendUserData });
                 })
                 .catch(err=>{
-                    res.status(500).send({status: false, message: `Something went wrong`});
                     console.log(err)
+                    return res.status(500).send({status: false, message: `Something went wrong`});
                 })
 
         })
@@ -247,7 +245,6 @@ async function getUserDefaultCardInfo(req, res){
         return res.status(500).send({ message : error.message, status : false, data:[] });
     }
 }
-
 
 
 
