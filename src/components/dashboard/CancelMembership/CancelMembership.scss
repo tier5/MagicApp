@@ -10,4 +10,11 @@
             }
         }
     }
+    .v-input--is-dirty {
+        .v-select__selections {
+            input[type="text"] {
+                display: none;
+            }
+        }
+    }
 }

@@ -363,6 +363,7 @@ export default {
     if(!this.user.name){
       this.logout();
     }
+    this.$store.dispatch('getUserCurrentSubscribtion');
   },
   mounted(){
     this.$store.dispatch('getUserPrimaryData', {});

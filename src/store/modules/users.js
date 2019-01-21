@@ -4,6 +4,7 @@ import router from '../../router';
 const state = {
     USERS : [],
     openCreateUsersModel: false,
+    loggedInUserSubscribtions:{},
     
 };
 
@@ -12,6 +13,7 @@ const getters = {
       return state.USERS;
     },
     openCreateUsersModel :(state) => state.openCreateUsersModel,
+    loggedInUserSubscribtions: (state)=> state.loggedInUserSubscribtions
 };
 
 const mutations = {
@@ -23,7 +25,11 @@ const mutations = {
     },
     addUser:(state,payload)=>{
       state.USERS = [...state.USERS,{...payload}]
+    },
+    addLoggedInUserSubscribtions: (state, payload)=>{
+      state.loggedInUserSubscribtions = payload
     }
+
   }
   
   
@@ -67,21 +73,19 @@ const mutations = {
             }
           )
     },
-    updateSubscription : ({commit},payload)=>{
+    updateSubscription : ({commit, dispatch},payload)=>{
       commit('changeLoading',true);
       Vue.http.put('subscriptions',payload)
           .then(
             (res) => {
+              commit('changeLoading',false);
               if(res.body.status) {
-                commit('changeLoading',false);
                 var message = res.body.message;
                 commit('successMessage',message);
                 commit('successTrue');
-                commit('userSignIn',res.body);
-                router.push('/magic');
+                dispatch('getUserCurrentSubscribtion');
+                //commit('userSignIn',res.body);
                 
-              } else {
-                commit('changeLoading',false);
               }
             },
             (err) => {
@@ -120,11 +124,20 @@ const mutations = {
               commit('errorTrue');
             }
           )
+    },
+    getUserCurrentSubscribtion:({commit}) =>{
+      Vue.http.get('users/subscriptions')
+        .then(
+          (res) => {
+            commit('addLoggedInUserSubscribtions', res.body.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        )
     }
 
     
-  }
-  
+  };
   
   export default { state, getters, mutations, actions }
-  
