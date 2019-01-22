@@ -99,7 +99,7 @@
                     <span class="makeweb">make your website</span>
                     <h1>a Sales Tool Again</h1>
                     <p>Personalise, Track, and Engage your website visitors with a simple yet powerful software</p>
-                    <v-btn class="free-trial-btn">Start 14 Days FREE Trial</v-btn>
+                    <v-btn class="free-trial-btn" @click="customRouter('/register')">Start 14 Days FREE Trial</v-btn>
                   </div>
                 </v-flex>
                 <v-flex md5 sm5>
