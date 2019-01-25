@@ -141,10 +141,10 @@ const { createTutorial,
   router.post('/users/:api_key/users_script_zap/:zapId/unsubscribe',(req,res)=>{
     return res.status(200).send({message : 'Ok'})
   });
-
   router.post('/stripe/webhook/events', function(req, res){
     let body = req.body;
-    cns
+    console.log(body);
+    res.status(200).send({ message: 'Ok'});
   })
 
 

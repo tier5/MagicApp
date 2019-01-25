@@ -8,6 +8,7 @@ var _ = require('lodash');
 var mongoose = require('mongoose');
 var {sendRefreshStats} = require('../helpers/socket');
 var {getUserFromToken } = require('./usersController');
+const Plans             = require('../config/plans.config');
 
 /**
  * function to get all zaps
@@ -37,32 +38,27 @@ function getZaps(req,res,next){
  * @param {object} next 
  * @returns response 
  */
-function createZap(req,res,next){
+async function createZap(req,res,next){
 
-    var body = req.body;
-    var token = req.headers.token || req.headers.authorization;
-    Users
-        .findOne({accessToken : token})
-        .then((data)=>{
-            data.zaps.push(body);
-            data.save()
-                .then((dt)=>{
-                    var zaps = dt.zaps
-                    var zap = zaps.find((el)=>{
-                        return el.name == body.name
-                    })
-                    sendRefreshStats(data)
-                    return res.status(200).send({message:'Zap created !',zap:zap,status:true});
-                })
-                .catch(err=>{
-                    console.log(err);
-                    return res.status(400).send({message:'Something went wrong',status:false});
-                })
-        })
-        .catch((err)=>{
-            console.log(err);
-            return res.status(403).send({message: 'Unautherized',status:false});
-        })
+    try {
+        let {body} = req,
+            token = req.headers.authorization;
+
+        let isallowed = await checkZapCreationValidation(token);
+        let thisUser  = await Users.findOne({accessToken: token}).select({zaps: 1, email: 1});
+
+        thisUser.zaps.push(body);
+        let data = await thisUser.save()
+        let zaps = data.zaps
+        let zap = zaps[isallowed]
+        sendRefreshStats(thisUser)
+        return res.status(200).send({message:'Zap created !',zap:zap,status:true});
+
+
+
+    } catch (error) {
+        return res.status(400).send({message: error.message, status: false});
+    }
 }
 
 /**
@@ -242,6 +238,42 @@ function getUserZapsStats(req, res, next){
         return res.status(500).send({message : 'Server Internal Error', status: false, data : {}, error: error.message})
     })
 }
+
+
+async function checkZapCreationValidation(accessToken){
+    
+    return new Promise(async (resolve, reject)=>{
+
+        try {
+            let thisUser = await Users.findOne({accessToken: accessToken}).select({zaps: 1, stripe: 1, email: 1, isHooked: 1, isSubscribed: 1});
+    
+            if (thisUser.isHooked){
+                resolve(zapLength)
+            }
+            let {userType, stripe, zaps} = thisUser;
+    
+            let zapLength = zaps.length;
+            let planId = stripe.plan.id;
+            let findPlan = Plans.filter( plan => plan.stripePlanId === planId);
+            if (!findPlan.length){
+                reject({message: 'Your plan is unknown to us contact admin'});
+            }
+            let planName = findPlan[0].planName;
+            switch(planName){
+                case 'STARTER': 
+                    zapLength < 10 ? resolve(zapLength): reject({message : 'You already have maximum number of zaps'});
+                case 'STANDARD':
+                    zapLength < 50 ? resolve(zapLength): reject({message : 'You already have maximum number of zaps'});
+                case 'PROFESSIONAL':
+                    resolve(zapLength)
+            }
+                
+        } catch (error) {
+            reject({message : error.message});
+        }
+
+    })
+}
 module.exports = {
     getZaps,
     createZap,
@@ -249,5 +281,6 @@ module.exports = {
     findZap,
     updateZap,
     updateCounter,
-    getUserZapsStats
+    getUserZapsStats,
+    checkZapCreationValidation
 }

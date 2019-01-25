@@ -14,7 +14,8 @@ const UserSchema =  new Schema({
         required:[true,'Email is required'],
         unique:[true, 'Email must be unique'],
         trim: true,
-        validate: [{validator: value => validator.isEmail(value), msg : 'Not an email'}]
+        validate: [{validator: value => validator.isEmail(value), msg : 'Not an email'}],
+        lowercase: true
     },
     name:{
         type:String,
@@ -26,7 +27,6 @@ const UserSchema =  new Schema({
     accessToken:{
         type:String,unique:true
     },
-    domains: [],
     zaps:[
         {
             name:{
@@ -102,6 +102,13 @@ const UserSchema =  new Schema({
     isSubscribed: {
         type: Boolean, required: true, default: false
     },
+    subscriptionStatus:{
+        type: String,
+        enum: ['trialing', 'active', 'past_due', 'canceled', 'unpaid'], 
+    },
+    _currentSubscriptionId:{
+        type: Schema.Types.ObjectId
+    },
     stripe:{
         subscription : {
             id : {
@@ -124,7 +131,8 @@ const UserSchema =  new Schema({
                 isDefault:{type:Boolean, default: true}
             }
         ]
-    }
+    },
+
 
 },{
     usePushEach: true,

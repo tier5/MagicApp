@@ -64,33 +64,42 @@ function getAllPlansCtrl (req,res,next){
     let planId = plan[0].stripePlanId
     Users
         .findOne({accessToken : token})
-        .select({email:1, userType: 1, stripe:1, isActive:1,isAdmin:1, accessToken: 1})
         .then(user => {
-            updateSubscription(user.stripe.subscription.id,planId)
-                .then(sub => {
-                   user.stripe.subscription = {
-                       id : user.stripe.subscription.id,
-                   }
-                   user.stripe.plan={
-                       id : planId
-                   }
-                   return user.save()
+            let currentPlanName = getPlanName(user.stripe.plan.id);
+            checkUserDowngradeAllowed(user.zaps.length,currentPlanName,planName).then(done=>{
+                updateSubscription(user.stripe.subscription.id,planId)
+                    .then(sub => {
+                        user.stripe.subscription = {
+                            id : user.stripe.subscription.id,
+                        }
+                        user.stripe.plan={
+                            id : planId
+                        }
+                        return user.save()
+                    })
+                    .then(updatedUser=>{
+                        var sendUserData = {
+                            email : updatedUser.email,
+                            name : updatedUser.name,
+                            isAdmin: updatedUser.isAdmin,
+                            isActive: updatedUser.isActive,
+                            isSubscribed : true
+                        }
+                        return res.status(200).send({status: true, message: `Thanks, You're ready to go.`, token: updatedUser.accessToken , user: sendUserData });
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                        return res.status(500).send({status: false, message: `Something went wrong`});
+                    })
+            }).catch(data=>{
+                return res.status(400).send({
+                    message: `You need to delete ${data.zapDiff} ${ data.zapDiff > 1 ? 'zaps': 'zap'} in order to downgrade`,
+                    status: false
                 })
-                .then(updatedUser=>{
-                    var sendUserData = {
-                        email : updatedUser.email,
-                        name : updatedUser.name,
-                        isAdmin: updatedUser.isAdmin,
-                        isActive: updatedUser.isActive,
-                        isSubscribed : true
-                    }
-                    return res.status(200).send({status: true, message: `Thanks, You're ready to go.`, token: updatedUser.accessToken , user: sendUserData });
-                })
-                .catch(err=>{
-                    console.log(err)
-                    return res.status(500).send({status: false, message: `Something went wrong`});
-                })
+            })
 
+        }).catch(err=>{
+            return res.status(500).send({status: false, message: err.message});
         })
  }
 
@@ -246,6 +255,55 @@ async function getUserDefaultCardInfo(req, res){
     }
 }
 
+function checkUserDowngradeAllowed(zapLength, currentPlan, nextPlan){
+    return new Promise((resolve, reject)=>{
+        switch(nextPlan){
+            case 'STARTER':
+    
+                if (currentPlan == 'STANDARD'){
+                    if (zapLength > 10){
+                        return reject({allowed: false, zapDiff : Math.abs(zapLength-10)})
+                    } else {
+                        return resolve({allowed: true, zapDiff: Math.abs(zapLength-10)})
+                    }
+                } else if(currentPlan == 'PROFESSIONAL'){
+                    if (zapLength > 10){
+                        return reject({allowed: false, zapDiff : Math.abs(zapLength-10)})
+                    } else {
+                        resolve({allowed: true, zapDiff: Math.abs(zapLength-10)})
+                    }
+                }
+    
+            case 'STANDARD':
+    
+                if (currentPlan == 'PROFESSIONAL'){
+                    if (zapLength > 50){
+                        return reject({allowed: false, zapDiff : Math.abs(zapLength-50)})
+                    } else {
+                        return resolve({allowed: true, zapDiff: Math.abs(zapLength-50)})
+                    }
+                } else {
+                    return resolve({allowed: true, zapDiff: Math.abs(zapLength-50)})
+                }
+    
+            case 'PROFESSIONAL':
+    
+            return resolve({allowed: true, zapDiff: Math.abs(zapLength-50)})
+        }   
+    })
+    
+}
+
+function getPlanName(planId) {
+    let plan = Plans.filter(obj=> {
+        return obj.stripePlanId == planId
+    })
+    if (!plan.length){
+        return null
+    } else {
+        return plan[0].planName
+    }
+}
 
 
 module.exports = {
