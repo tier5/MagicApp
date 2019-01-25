@@ -6,7 +6,11 @@
       <p>Add multiple Params and Attributes as you need</p>
     </v-card-text>
     <v-card class="create-zap-form">
-
+      <v-layout row wrap>
+        <v-flex xs12>
+          <Error v-if="isError"/>
+        </v-flex>
+      </v-layout>
       <v-form>
         <!-- Name Starts -->
         <v-layout row wrap>
@@ -257,7 +261,10 @@
   </div>
 </template>
 <script>
-import { required, minValue, maxValue, numeric } from 'vuelidate/lib/validators'
+import { required, minValue, maxValue, numeric } from 'vuelidate/lib/validators';
+import Success from '../../../components/Success.vue';
+import Error from '../../../components/Error.vue';
+import {mapGetters} from 'vuex';
 export default {
   data() {
     return {
@@ -291,6 +298,10 @@ export default {
     };
   },
   computed:{
+    ...mapGetters([
+                'isSuccess',
+                'isError'
+    ]),
     timeoutProgess : function(){
       if ( (this.newZap.timeout.days || this.newZap.timeout.minutes || this.newZap.timeout.hours) && !this.$v.newZap.timeout.$invalid ){
         return true
@@ -329,6 +340,10 @@ export default {
     removeAttributes(index){
       this.newZap.element_attributes.splice(index,1);
     }
+  },
+  components: {
+    Success,
+    Error
   },
   validations:{
       newZap:{
