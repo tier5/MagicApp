@@ -2,14 +2,19 @@
  * Name: authController.js
  * Purpose : Authentication controller
  */
-var Users = require('../models/users');
-var bcrypt = require('bcrypt');
-var moment = require('moment');
-var { createCustomer, createSubscription, createCharge, deleteCustomer, retrieveCustomer, retriveSubscription, preAuthCharge } = require('../helpers/stripe');
-var { sendForgetPasswordMail } = require('../helpers/nodemailer.js');
-var { createAccessToken } = require('../helpers/jwt');
-var jwt = require('jsonwebtoken');
-const PLANS = require('../config/plans.config');
+const Users                                 = require('../models/users');
+const bcrypt                                = require('bcrypt');
+const moment                                = require('moment');
+const { createCustomer, 
+        createSubscription, 
+        retriveSubscription, 
+        preAuthCharge }                     = require('../helpers/stripe');
+const { sendForgetPasswordMail }            = require('../helpers/nodemailer.js');
+const { createAccessToken }                 = require('../helpers/jwt');
+const jwt                                   = require('jsonwebtoken');
+const PLANS                                 = require('../config/plans.config');
+
+const UserSubscriptionHistory               = require('../models/userSubscriptionHistory');
 
 /**
  * function to register a user
@@ -48,12 +53,34 @@ async function userRegister(req, res, next) {
             id: customer.id
         }
         let subscription = await createSubscription(body.stripe.customer.id, body.stripe.plan.id);
+        //console.log('subs',subscription);
         body.stripe.subscription = {
             id: subscription.id,
         };
+        body.isHookedUser = false
+        body.isSubscribed = true
+        body.subscriptionStatus = subscription.status
         body.accessToken = createAccessToken(body.email);
+        
+
+        let newCustomerHistory = {
+            startDate:subscription.current_period_start,
+            endDate:subscription.current_period_end,
+            email: body.email,
+            planId: body.stripe.plan.id,
+            planName: starterPlan[0].planName,
+            isTrial: true,
+        }
+        let newHistory = new UserSubscriptionHistory(newCustomerHistory);
+        let newHistorySave = await newHistory.save();
+
+        body.currentSubscriptionId = newHistorySave._id;
+
         var newUser = new Users(body);
         let user = await newUser.save();
+
+        
+
         var sendUserData = {
             email: user.email,
             name: user.name,
@@ -67,6 +94,7 @@ async function userRegister(req, res, next) {
     } catch (error) {
 
         if (body.stripe.customer) {
+
             let deleteCustomer = await deleteCustomer(body.stripe.customer.id);
         }
         return res.status(400).send({ status: false, message: error.message });
@@ -121,7 +149,7 @@ async function userLogin(req, res, next) {
 
     } catch (error) {
 
-        //console.log(error);
+        console.log(error);
 
         return res.status(500).send({ status: false, message: error.message })
     }

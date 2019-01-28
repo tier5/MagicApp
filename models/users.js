@@ -106,7 +106,7 @@ const UserSchema =  new Schema({
         type: String,
         enum: ['trialing', 'active', 'past_due', 'canceled', 'unpaid'], 
     },
-    _currentSubscriptionId:{
+    currentSubscriptionId:{
         type: Schema.Types.ObjectId
     },
     stripe:{

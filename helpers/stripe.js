@@ -4,8 +4,18 @@
  *  API REFERENCE : https://stripe.com/docs/api
  */
 
-var stripeKey = process.env.STRIPE_KEY;
-var stripe = require("stripe")(stripeKey);
+var stripeKey                   = process.env.STRIPE_KEY;
+var stripe                      = require("stripe")(stripeKey);
+const  WEBHOOK_SECRET           = process.env.WEBHOOK_SECRET
+
+
+if (!stripeKey){
+    throw new Error('Stripe key is missing in config')
+}
+
+if (!WEBHOOK_SECRET){
+    throw new Error('Missing webhook secret');
+}
 
 /**
  * Function for creating customer in stripe
@@ -377,6 +387,11 @@ function preAuthCharge(amount, currency, customerId) {
     })
   }
 
+ function checkStripeSignature(reqBody, reqSignature){
+
+    return stripe.webhooks.constructEvent(reqBody, reqSignature, WEBHOOK_SECRET);
+}
+
 module.exports = {
     createCustomer,
     getAllPlans,
@@ -393,5 +408,6 @@ module.exports = {
     deleteCard,
     demoCardToken,
     preAuthCharge,
-    retrieveCard
+    retrieveCard,
+    checkStripeSignature
 }

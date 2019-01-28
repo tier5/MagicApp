@@ -9,6 +9,7 @@ const ScriptData                = require('../models/zaps');
 const WareHouse                 = require('../models/warehouse');
 const {deleteCustomer}          = require('../helpers/stripe');
 const Plans                     = require('../config/plans.config');
+const UserSubscriptionHistory               = require('../models/userSubscriptionHistory');
  
  /**
   * Function to create a user 
@@ -201,6 +202,7 @@ async function removeUser(email){
     
             let removeZapsData = await ScriptData.remove({ zapId : { $in : usersZapsIds}});
             let removeTheUser = await Users.remove({ email : email });
+            let removeHistory = await UserSubscriptionHistory.remove({ email : email})
             return resolve({status: true, message : 'Deleted'});
        } catch (error) {
             return reject({ status : false, error : error.message})

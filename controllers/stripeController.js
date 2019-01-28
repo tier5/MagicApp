@@ -2,10 +2,12 @@
  * Name: stripeController.js
  * Purpose : Stripe Controller
  */
-var _                       = require('lodash');
-var moment                  = require('moment');
-var Users                   = require('../models/users');
-const Plans                 = require('../config/plans.config');
+var _                           = require('lodash');
+var moment                      = require('moment');
+var Users                       = require('../models/users');
+const Plans                     = require('../config/plans.config');
+const UserSubscriptionHistory   = require('../models/userSubscriptionHistory');
+
 
 var {
         getAllPlans, 
@@ -17,7 +19,14 @@ var {
         defaultSource,
         deleteCard,
         retrieveCustomer, 
-        retrieveCard}       = require('../helpers/stripe');
+        retrieveCard, 
+        checkStripeSignature}   = require('../helpers/stripe');
+
+
+
+
+
+
 
 
 // addDate method to date object 
@@ -305,6 +314,42 @@ function getPlanName(planId) {
     }
 }
 
+/**
+ * Function to listen to stripe webhook event
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} next 
+ */
+async function stripeWebhookEventListener(req, res, next){
+    let signature = req.headers["stripe-signature"];
+    //console.log(req.body);
+
+    if(!signature){
+        return res.status(403).send('Forbidden!');
+    }
+    let eventName = req.body.type;
+
+    switch(eventName){
+        case 'customer.subscription.created':
+            customerSubscriptionCreatedEvent(req.body);
+    }
+
+    return res.status(200).send('ok');
+    
+    
+}
+
+async function customerSubscriptionCreatedEvent(data){
+    try {
+        let newUser = await Users.findOne({"stripe.customer.id": data.data.object.customer});
+        if (!newUser){
+
+        }
+        //console.log('Found', newUser);
+    } catch (error) {
+        
+    }
+}
 
 module.exports = {
     getAllPlansCtrl,
@@ -313,5 +358,6 @@ module.exports = {
     addNewCardToUser,
     deleteUserCard,
     usersDefaultCard,
-    getUserDefaultCardInfo
+    getUserDefaultCardInfo,
+    stripeWebhookEventListener
 }

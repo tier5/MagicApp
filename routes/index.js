@@ -23,7 +23,8 @@ var { getAllPlansCtrl,
       retriveUsersCard,
       addNewCardToUser,
       deleteUserCard, usersDefaultCard, 
-      getUserDefaultCardInfo}                         = require('../controllers/stripeController');
+      getUserDefaultCardInfo,
+      stripeWebhookEventListener}                    = require('../controllers/stripeController');
 var { userLogin,
       userRegister,
       userForgetPassword,
@@ -141,11 +142,7 @@ const { createTutorial,
   router.post('/users/:api_key/users_script_zap/:zapId/unsubscribe',(req,res)=>{
     return res.status(200).send({message : 'Ok'})
   });
-  router.post('/stripe/webhook/events', function(req, res){
-    let body = req.body;
-    console.log(body);
-    res.status(200).send({ message: 'Ok'});
-  })
+  router.post('/stripe/webhook/events', stripeWebhookEventListener)
 
 
 module.exports = router;

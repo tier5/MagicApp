@@ -19,7 +19,6 @@ const UserSubscriptionHistroySchema = new Schema({
     },
     actualEndDate:{
         type: Number,
-        required: true
     },
     email:{
         type : String,
