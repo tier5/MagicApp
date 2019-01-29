@@ -13,8 +13,7 @@ const { sendForgetPasswordMail }            = require('../helpers/nodemailer.js'
 const { createAccessToken }                 = require('../helpers/jwt');
 const jwt                                   = require('jsonwebtoken');
 const PLANS                                 = require('../config/plans.config');
-
-const UserSubscriptionHistory               = require('../models/userSubscriptionHistory');
+const {createUserSubscriptionHistory}       = require('./userSubscriptionHistoryController');
 
 /**
  * function to register a user
@@ -71,10 +70,9 @@ async function userRegister(req, res, next) {
             planName: starterPlan[0].planName,
             isTrial: true,
         }
-        let newHistory = new UserSubscriptionHistory(newCustomerHistory);
-        let newHistorySave = await newHistory.save();
+        let newHistory = await createUserSubscriptionHistory(newCustomerHistory)
 
-        body.currentSubscriptionId = newHistorySave._id;
+        body.currentSubscriptionId = newHistory._id;
 
         var newUser = new Users(body);
         let user = await newUser.save();
@@ -110,35 +108,27 @@ async function userRegister(req, res, next) {
  */
 async function userLogin(req, res, next) {
     var { email, password } = req.body;
+
     try {
-        var user = await Users.findOne({ email }).select({ email: 1, password: 1, stripe: 1, isActive: 1, isAdmin: 1, userType: 1, accessToken: 1, userType: 1, name: 1 });
+        var user = await Users.findOne({ email }).select({ email: 1, password: 1, stripe: 1, isActive: 1, isAdmin: 1, userType: 1, accessToken: 1, userType: 1, name: 1, isSubscribed: 1});
+
         if (!user) { return res.status(400).send({ message: 'User not exists', status: false }) }
+
         var decoded = await bcrypt.compare(password, user.password);
+
         if (decoded) {
             var sendUserData = {
-                email: user.email,
-                name: user.name,
-                isAdmin: user.isAdmin,
-                isActive: user.isActive,
-                userType: user.userType
+                email:          user.email,
+                name:           user.name,
+                isAdmin:        user.isAdmin,
+                isActive:       user.isActive,
+                userType:       user.userType,
+                isSubscribed:   user.isSubscribed
             }
             if (user.userType == 'free') {
 
                 sendUserData.isSubscribed = true;
 
-            } else {
-
-                var subscribtion = await retriveSubscription(user.stripe.subscription.id);
-
-                if (subscribtion.status == 'active' || subscribtion.status == 'trialing') {
-
-                    sendUserData.isSubscribed = true;
-
-                } else {
-
-                    sendUserData.isSubscribed = false;
-
-                }
             }
             return res.status(200).send({ status: true, message: "success", token: user.accessToken, user: sendUserData })
 
@@ -149,7 +139,7 @@ async function userLogin(req, res, next) {
 
     } catch (error) {
 
-        console.log(error);
+        // console.log(error);
 
         return res.status(500).send({ status: false, message: error.message })
     }
@@ -177,7 +167,7 @@ function userForgetPassword(req, res) {
             })
         })
         .catch(err => {
-            console.log(err);
+            //console.log(err);
             res.status(500).send({ message: 'Something went wrong!', status: false });
         })
 }
@@ -250,29 +240,16 @@ async function getUserPrimaryData(req, res, next) {
             return res.status(404).send({ message: 'Not Found', status: false });
         }
         var sendUserData = {
-            email: user.email,
-            name: user.name,
-            isAdmin: user.isAdmin,
-            isActive: user.isActive,
-            userType: user.userType
+            email:          user.email,
+            name:           user.name,
+            isAdmin:        user.isAdmin,
+            isActive:       user.isActive,
+            userType:       user.userType,
+            isSubscribed:   user.isSubscribed,
         }
         if (user.userType == 'free') {
 
             sendUserData.isSubscribed = true;
-
-        } else {
-
-            var subscribtion = await retriveSubscription(user.stripe.subscription.id);
-
-            if (subscribtion.status == 'active' || subscribtion.status == 'trialing') {
-
-                sendUserData.isSubscribed = true;
-
-            } else {
-
-                sendUserData.isSubscribed = false;
-
-            }
         }
         return res.status(200).send({ status: true, message: "success", token: user.accessToken, user: sendUserData })
     } catch (error) {

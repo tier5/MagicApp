@@ -2,11 +2,12 @@
  * Name: stripeController.js
  * Purpose : Stripe Controller
  */
-var _                           = require('lodash');
-var moment                      = require('moment');
-var Users                       = require('../models/users');
-const Plans                     = require('../config/plans.config');
-const UserSubscriptionHistory   = require('../models/userSubscriptionHistory');
+var _                                   = require('lodash');
+var moment                              = require('moment');
+var Users                               = require('../models/users');
+const Plans                             = require('../config/plans.config');
+const UserSubscriptionHistory           = require('../models/userSubscriptionHistory');
+const {changeUserSubscriptionHistory}   = require('./userSubscriptionHistoryController');
 
 
 var {
@@ -78,13 +79,8 @@ function getAllPlansCtrl (req,res,next){
             checkUserDowngradeAllowed(user.zaps.length,currentPlanName,planName).then(done=>{
                 updateSubscription(user.stripe.subscription.id,planId)
                     .then(sub => {
-                        user.stripe.subscription = {
-                            id : user.stripe.subscription.id,
-                        }
-                        user.stripe.plan={
-                            id : planId
-                        }
-                        return user.save()
+
+                        return changeUserSubscriptionHistory(sub, user, planName, planId)
                     })
                     .then(updatedUser=>{
                         var sendUserData = {
@@ -328,10 +324,15 @@ async function stripeWebhookEventListener(req, res, next){
         return res.status(403).send('Forbidden!');
     }
     let eventName = req.body.type;
+    console.log('eventName', eventName);
 
     switch(eventName){
         case 'customer.subscription.created':
             customerSubscriptionCreatedEvent(req.body);
+        case 'customer.subscription.trial_will_end':
+            customerSubscriptionTrialWillEndEvent(req.body);
+        
+
     }
 
     return res.status(200).send('ok');
@@ -348,6 +349,22 @@ async function customerSubscriptionCreatedEvent(data){
         //console.log('Found', newUser);
     } catch (error) {
         
+    }
+}
+
+async function customerSubscriptionTrialWillEndEvent(data){
+    try {
+        let actualEndDate = data.data.object.ended_at
+        let user = await Users.findOne({"stripe.customer.id": data.data.object.customer});
+        if (!user.isHooked){
+            let trialHistory = await UserSubscriptionHistory.findOne({email: user.email , isTrial: true});
+            if(actualEndDate){
+                trialHistory.actualEndDate = actualEndDate;
+                let savetrial = await trialHistory.save()
+            }
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
