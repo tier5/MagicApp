@@ -2,12 +2,14 @@
  * Name: stripeController.js
  * Purpose : Stripe Controller
  */
-var _                                   = require('lodash');
-var moment                              = require('moment');
-var Users                               = require('../models/users');
-const Plans                             = require('../config/plans.config');
-const UserSubscriptionHistory           = require('../models/userSubscriptionHistory');
-const {changeUserSubscriptionHistory}   = require('./userSubscriptionHistoryController');
+var _                                       = require('lodash');
+var moment                                  = require('moment');
+var Users                                   = require('../models/users');
+const Plans                                 = require('../config/plans.config');
+const UserSubscriptionHistory               = require('../models/userSubscriptionHistory');
+const { changeUserSubscriptionHistory,
+        getUserSubscriptionHistoryById,
+        createUserSubscriptionHistory  }    = require('./userSubscriptionHistoryController');
 
 
 var {
@@ -324,14 +326,12 @@ async function stripeWebhookEventListener(req, res, next){
         return res.status(403).send('Forbidden!');
     }
     let eventName = req.body.type;
-    console.log('eventName', eventName);
 
     switch(eventName){
-        case 'customer.subscription.created':
-            customerSubscriptionCreatedEvent(req.body);
         case 'customer.subscription.trial_will_end':
             customerSubscriptionTrialWillEndEvent(req.body);
-        
+        case 'customer.subscription.updated':
+            customerSubscriptionUpdatedEvent(req.body);
 
     }
 
@@ -339,19 +339,10 @@ async function stripeWebhookEventListener(req, res, next){
     
     
 }
-
-async function customerSubscriptionCreatedEvent(data){
-    try {
-        let newUser = await Users.findOne({"stripe.customer.id": data.data.object.customer});
-        if (!newUser){
-
-        }
-        //console.log('Found', newUser);
-    } catch (error) {
-        
-    }
-}
-
+/**
+ * Function to listen stripe customer subscription trail end  
+ * @param {object} data 
+ */
 async function customerSubscriptionTrialWillEndEvent(data){
     try {
         let actualEndDate = data.data.object.ended_at
@@ -365,6 +356,88 @@ async function customerSubscriptionTrialWillEndEvent(data){
         }
     } catch (error) {
         console.log(error)
+    }
+}
+/**
+ * Function to listen to stripe customer subscription update
+ * @param {object} data 
+ */
+async function customerSubscriptionUpdatedEvent(data){
+
+    try {
+        let customer                = data.data.object.customer;
+        let eventData               = data.data.object
+        let user                    = await Users.findOne({"stripe.customer.id": customer});
+
+        if (!user) return
+
+        let subscriptionHistory     = await getUserSubscriptionHistoryById(user.currentSubscriptionId);
+        
+        if (user.subscriptionStatus !== eventData.status){
+
+            // case where a user subscription fails
+            if (eventData.status === 'past_due' || eventData.status === 'unpaid'){
+                user.subscriptionStatus = eventData.status
+                user.isSubscribed = false
+                let updateUser = await user.save()
+                return 
+            }
+            // case when user trail is end and actual subscription started 
+            if (user.subscriptionStatus ==='trailing' && eventData.status === 'active' ){
+                if (subscriptionHistory.isTrial){
+                    let newHistory = {
+                        startDate:  eventData.current_period_start,
+                        endDate:    eventData.current_period_end,
+                        email:      subscriptionHistory.email,
+                        planId:     subscriptionHistory.planId,
+                        planName:   subscriptionHistory.planName,
+                        isTrial:    false,
+                        currentAutomationCount: subscriptionHistory.currentAutomationCount,
+                        order:      subscriptionHistory.order + 1
+                    }
+
+                    let saveNewHistory = await createUserSubscriptionHistory(newHistory);
+
+                    user.subscriptionStatus = eventData.status
+
+                    user.currentSubscriptionId = saveNewHistory._id
+
+                    let updateUser = await user.save()
+                    return 
+
+                }
+            }
+
+
+        } else {
+                // subscription  billing cycle change
+            if (eventData.current_period_start !== subscriptionHistory.current_period_start  && eventData.current_period_start !== subscriptionHistory.current_period_start){
+                
+                let newHistory = {
+                    startDate:  eventData.current_period_start,
+                    endDate:    eventData.current_period_end,
+                    email:      subscriptionHistory.email,
+                    planId:     subscriptionHistory.planId,
+                    planName:   subscriptionHistory.planName,
+                    isTrial:    false,
+                    maxAutomationCount: subscriptionHistory.maxAutomationCount,
+                    order:      subscriptionHistory.order + 1
+                }
+
+                let saveNewHistory = await createUserSubscriptionHistory(newHistory);
+
+                user.subscriptionStatus = eventData.status
+
+                user.currentSubscriptionId = saveNewHistory._id
+
+                let updateUser = await user.save()
+                return 
+            }
+        }
+
+
+    } catch (error) {
+        console.log(error);
     }
 }
 

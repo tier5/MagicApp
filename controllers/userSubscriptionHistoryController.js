@@ -48,8 +48,14 @@ async function changeUserSubscriptionHistory(subscription, user, planName, planI
     })  
 }
 
+async function getUserSubscriptionHistoryById(id){
+    
+    return UserSubscriptionHistory.findById(id);
+}
+
 
 module.exports= {
     createUserSubscriptionHistory,
-    changeUserSubscriptionHistory
+    changeUserSubscriptionHistory,
+    getUserSubscriptionHistoryById
 }
