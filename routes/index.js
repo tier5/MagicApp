@@ -99,13 +99,11 @@ const { createTutorial,
 /**
  * Stripe
  */
-  router.get('/plans',getAllPlansCtrl);
-  router.put('/subscriptions',updateUserSubscribtion);
-  router.get('/cards',getUserDefaultCardInfo);
-  router.post('/cards',addNewCardToUser);
-  router.delete('/cards/:cardId',deleteUserCard);
-  router.put('/cards/:cardId',usersDefaultCard);
-  router.delete('/cancel-membership', cancelMembership)
+  router.put('/subscriptions',isAuthorized,updateUserSubscribtion);
+  router.get('/cards',isAuthorized, getUserDefaultCardInfo);
+  router.post('/cards',isAuthorized,addNewCardToUser);
+  router.delete('/cancel-membership', isAuthorized, cancelMembership);
+  router.post('/stripe/webhook/events', stripeWebhookEventListener);
 
 /**
  * WebHooks
@@ -136,13 +134,12 @@ const { createTutorial,
  * block-script
  */
   
-  router.get('/block-iframe/:domainId', blockDomainId);
+  //router.get('/block-iframe/:domainId', blockDomainId);
   
   // @todo make use for this route currently not in use
   router.post('/users/:api_key/users_script_zap/:zapId/unsubscribe',(req,res)=>{
     return res.status(200).send({message : 'Ok'})
   });
-  router.post('/stripe/webhook/events', stripeWebhookEventListener)
 
 
 module.exports = router;

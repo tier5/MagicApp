@@ -55,24 +55,22 @@ function isUserSubscribed(req,res,next){
     var token = req.headers.authorization;
     Users
         .findOne({accessToken : token})
-        .select({userType:1,stripe:1})
+        .select({userType:1,stripe:1, isSubscribed: 1, isHookedUser: 1})
         .then((data)=>{
             if(data.userType == 'paid'){
-                return retriveSubscription(data.stripe.subscription.id)
-                    .then(data=>{
-                        // active if the subscribtion is active and trialing if the user is in trail period
-                        if (data.status =='active' || data.status =='trialing'){
-                            next()
-                        } else {
-                            res.status(401).send({message : 'Your subscription is over due to payment issue'})
-                        }
-                    }).catch(err=> console.error('middleware.js line 60',err))
+                if (data.isHookedUser){
+                    next();
+                }
+                if ( data.isSubscribed ){
+                    next();
+                } else {
+                    return res.status(400).send({message : 'Your subscription failed', status: false});
+                }
             } else {
                 next();
             }
         })
         .catch(err => {
-            console.error('middleware.js line 70', err);
             res.status(500).send({message:'Something Went Wrong!' , status : false})
         })
 }
