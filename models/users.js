@@ -109,6 +109,9 @@ const UserSchema =  new Schema({
     currentSubscriptionId:{
         type: Schema.Types.ObjectId
     },
+    affiliateId:{
+        type: String
+    },
     stripe:{
         subscription : {
             id : {

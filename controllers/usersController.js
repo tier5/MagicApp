@@ -9,7 +9,7 @@ const ScriptData                = require('../models/zaps');
 const WareHouse                 = require('../models/warehouse');
 const {deleteCustomer}          = require('../helpers/stripe');
 const Plans                     = require('../config/plans.config');
-const UserSubscriptionHistory               = require('../models/userSubscriptionHistory');
+const UserSubscriptionHistory   = require('../models/userSubscriptionHistory');
  
  /**
   * Function to create a user 
@@ -268,14 +268,15 @@ async function cancelMembership(req, res){
 async function getUserCurrentSubscription(req, res){
     try {
         let token = req.headers.authorization;
-        let thisUser = await Users.findOne({ accessToken : token }).select({email: 1, stripe: 1, isSubscribed: 1, isHookedUser:1});
+        let thisUser = await Users.findOne({ accessToken : token }).select({email: 1, stripe: 1, isSubscribed: 1, isHookedUser:1, subscriptionStatus: 1});
         if(!thisUser){
             return res.status(400).send({message: 'Not Found', status: false, data: {}});
         }
         let data = {
             isSubscribed: thisUser.isSubscribed,
             currentPlan: thisUser.stripe.plan.id,
-            isHookedUser: thisUser.isHookedUser
+            isHookedUser: thisUser.isHookedUser,
+            subscriptionStatus: thisUser.subscriptionStatus
         }
         let findCurrentPlan = Plans.filter(plan=>{
             if (plan.stripePlanId === data.currentPlan){

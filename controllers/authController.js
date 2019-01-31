@@ -85,7 +85,9 @@ async function userRegister(req, res, next) {
             isAdmin: user.isAdmin,
             isActive: user.isActive,
             isSubscribed: true,
-            userType: user.userType
+            userType: user.userType,
+            isHookedUser: user.isHookedUser,
+            subscriptionStatus: user.subscriptionStatus
         }
         return res.status(200).send({ status: true, message: "User created", token: user.accessToken, user: sendUserData })
 
@@ -110,7 +112,19 @@ async function userLogin(req, res, next) {
     var { email, password } = req.body;
 
     try {
-        var user = await Users.findOne({ email }).select({ email: 1, password: 1, stripe: 1, isActive: 1, isAdmin: 1, userType: 1, accessToken: 1, userType: 1, name: 1, isSubscribed: 1});
+        var user = await Users.findOne({ email }).select({ 
+                                                            email: 1, 
+                                                            password: 1, 
+                                                            stripe: 1, 
+                                                            isActive: 1, 
+                                                            isAdmin: 1, 
+                                                            userType: 1, 
+                                                            accessToken: 1, 
+                                                            userType: 1, 
+                                                            name: 1, 
+                                                            isSubscribed: 1, 
+                                                            isHookedUser : 1,
+                                                            subscriptionStatus: 1});
 
         if (!user) { return res.status(400).send({ message: 'User not exists', status: false }) }
 
@@ -118,12 +132,14 @@ async function userLogin(req, res, next) {
 
         if (decoded) {
             var sendUserData = {
-                email:          user.email,
-                name:           user.name,
-                isAdmin:        user.isAdmin,
-                isActive:       user.isActive,
-                userType:       user.userType,
-                isSubscribed:   user.isSubscribed
+                email:              user.email,
+                name:               user.name,
+                isAdmin:            user.isAdmin,
+                isActive:           user.isActive,
+                userType:           user.userType,
+                isSubscribed:       user.isSubscribed,
+                isHookedUser:       user.isHookedUser,
+                subscriptionStatus: user.subscriptionStatus
             }
             if (user.userType == 'free') {
 
@@ -235,17 +251,29 @@ function userUpdatePassword(req, res) {
 async function getUserPrimaryData(req, res, next) {
     try {
         var token = req.headers.authorization
-        var user = await Users.findOne({ accessToken: token }).select({ email: 1, isActive: 1, isAdmin: 1, userType: 1, accessToken: 1, name: 1, isSubscribed: 1, stripe: 1 });
+        var user = await Users.findOne({ accessToken: token }).select({ 
+                    email: 1, 
+                    isActive: 1, 
+                    isAdmin: 1, 
+                    userType: 1, 
+                    accessToken: 1, 
+                    name: 1, 
+                    isSubscribed: 1, 
+                    isHookedUser: 1, 
+                    subscriptionStatus: 1});
         if (!user) {
             return res.status(404).send({ message: 'Not Found', status: false });
         }
+
         var sendUserData = {
-            email:          user.email,
-            name:           user.name,
-            isAdmin:        user.isAdmin,
-            isActive:       user.isActive,
-            userType:       user.userType,
-            isSubscribed:   user.isSubscribed,
+            email:              user.email,
+            name:               user.name,
+            isAdmin:            user.isAdmin,
+            isActive:           user.isActive,
+            userType:           user.userType,
+            isSubscribed:       user.isSubscribed,
+            subscriptionStatus: user.subscriptionStatus,
+            isHookedUser:       user.isHookedUser
         }
         if (user.userType == 'free') {
 

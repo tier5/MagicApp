@@ -230,7 +230,7 @@ function getUserZapsStats(req, res, next){
         }
     }).then(data => {
         if (!data.length){
-            return res.status(200).send({ message: 'No data found', status : false, data: {}})
+            return res.status(200).send({ message: 'ok', status : true, data: {totalZaps : 0, totalPageViews: 0, totalZapsTriggered: 0}})
         }
 
         return res.status(200).send({message : 'ok', status: true, data : data[0]})
@@ -239,7 +239,10 @@ function getUserZapsStats(req, res, next){
     })
 }
 
-
+/**
+ * Function to check a user can create more zaps based on plans the user is having
+ * @param {string} accessToken 
+ */
 async function checkZapCreationValidation(accessToken){
     
     return new Promise(async (resolve, reject)=>{
