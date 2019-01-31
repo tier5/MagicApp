@@ -25,13 +25,13 @@
               </div>
             </v-card-text>
             <v-card-text>
-              <v-btn class="submit-btn downgrade" v-if="this.currentPlan !== 'STARTER' && this.currentPrice > 27" @click.prevent="updateMembership('STARTER')">
+              <v-btn class="submit-btn downgrade" v-if="this.currentPlan !== 'STARTER' && this.currentPrice > 27 && !user.isHookedUser" @click.prevent="updateMembership('STARTER')">
                 <span>Downgrade</span>
               </v-btn>
               <div class="currentplan" v-if="this.currentPlan === 'STARTER'">
                 <span>Your current plan</span>
               </div>
-              <v-btn class="submit-btn" v-if="this.currentPlan !== 'STARTER' && this.currentPrice < 27" @click.prevent="updateMembership('STARTER')">
+              <v-btn class="submit-btn" v-if="this.currentPlan !== 'STARTER' && this.currentPrice < 27 && !user.isHookedUser" @click.prevent="updateMembership('STARTER')">
                 <span>Upgrade</span>
               </v-btn>
             </v-card-text>
@@ -55,13 +55,13 @@
               </div>
             </v-card-text>
             <v-card-text>
-              <v-btn class="submit-btn downgrade" v-if="this.currentPlan !== 'STANDARD' && this.currentPrice > 47"  @click.prevent="updateMembership('STANDARD')">
+              <v-btn class="submit-btn downgrade" v-if="this.currentPlan !== 'STANDARD' && this.currentPrice > 47 && !user.isHookedUser"  @click.prevent="updateMembership('STANDARD')">
                 <span>Downgrade</span>
               </v-btn>
               <div class="currentplan" v-if="this.currentPlan == 'STANDARD'">
                 <span>Your current plan</span>
               </div>
-              <v-btn class="submit-btn" v-if="this.currentPlan !== 'STANDARD' && this.currentPrice < 47" @click.prevent="updateMembership('STANDARD')">
+              <v-btn class="submit-btn" v-if="this.currentPlan !== 'STANDARD' && this.currentPrice < 47 && !user.isHookedUser" @click.prevent="updateMembership('STANDARD')">
                 <span>Upgrade</span>
               </v-btn>
             </v-card-text>
@@ -85,13 +85,13 @@
               </div>
             </v-card-text>
             <v-card-text>
-              <v-btn class="submit-btn downgrade" v-if="this.currentPlan !== 'PROFESSIONAL' && this.currentPrice > 97" @click.prevent="updateMembership('PROFESSIONAL')">
+              <v-btn class="submit-btn downgrade" v-if="this.currentPlan !== 'PROFESSIONAL' && this.currentPrice > 97 && !user.isHookedUser" @click.prevent="updateMembership('PROFESSIONAL')">
                 <span>Downgrade</span>
               </v-btn>
               <div class="currentplan" v-if="this.currentPlan == 'PROFESSIONAL'">
                 <span>Your current plan</span>
               </div>
-              <v-btn class="submit-btn" v-if="this.currentPlan !== 'PROFESSIONAL' && this.currentPrice < 97" @click.prevent="updateMembership('PROFESSIONAL')">
+              <v-btn class="submit-btn" v-if="this.currentPlan !== 'PROFESSIONAL' && this.currentPrice < 97 && !user.isHookedUser" @click.prevent="updateMembership('PROFESSIONAL')">
                 <span>Upgrade</span>
               </v-btn>
             </v-card-text>
@@ -105,11 +105,12 @@
           </v-flex>
         </v-layout>
         <v-card-text>
-          <v-layout row wrap class="cancel-membership">
+          <v-layout row wrap class="cancel-membership" v-if="!user.isHookedUser">
             <v-flex md12>
               <a @click.prevent="changeRouterState('/magic/cancel-membership')">Click here</a> to cancel my Magiczap membership.
             </v-flex>
           </v-layout>
+          <h4 v-else>Contact your partner for any upgrade or downgrade </h4>
         </v-card-text>
       </div>
     </v-card-text>
@@ -133,7 +134,8 @@
       ...mapGetters([
         'loggedInUserSubscribtions',
         'isError',
-        'isSuccess'
+        'isSuccess',
+        'user',
       ]),
       currentPrice(){
         switch (this.currentPlan){

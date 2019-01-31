@@ -12,10 +12,10 @@
     </v-card-text>
     <v-card-text class="key-section">
       <h2>Zapier Invitation Link</h2>
-      <div v-clipboard="token" class="copyscript hidden-sm-and-down" >
+      <div v-clipboard="inviteLink" class="copyscript hidden-sm-and-down" >
         <v-btn slot="activator">Copy</v-btn>
       </div>
-      <div v-clipboard="token" class="copyscript-mobile hidden-md-and-up">
+      <div v-clipboard="inviteLink" class="copyscript-mobile hidden-md-and-up">
         <img src="../../../assets/images/icon-copy.png">
       </div>
       <h4>{{inviteLink}}</h4>

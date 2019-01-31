@@ -180,24 +180,6 @@
                         >
                         <span>payment information</span>
                       </li>
-                      <li 
-                      @click.prevent="changeRouterState('/magic/users')" 
-                      :class="{'active' : this.$route.path == '/magic/users'}"
-                      >
-                        <img src="../../assets/images/users.png" alt="icon" class="icon-users">
-                        <span>Users</span>
-                      </li>
-                      <li 
-                        @click.prevent="changeRouterState('/magic/settings/tutorials')" 
-                        :class="{'active' : this.$route.path == '/magic/settings/tutorials'}"
-                        >
-                        <img src="../../assets/images/icon-tutorial.png" alt="icon" class="icon-tutorial">
-                        <span>Tutorial Video Settings</span>
-                      </li>
-                      <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
-                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                        <span>help</span>
-                      </li>
                       <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                         <span>help</span>
@@ -239,9 +221,9 @@
                       <li @click="openChangePassword()">
                         <img src="../../assets/images/back-icon.png" alt="icon" class="back-icon">
                       </li>
-                      <!-- <li>
+                      <li @click.prevent="changeRouterState('/magic/edit-profile')">
                         <img src="../../assets/images/user-icon.png" alt="icon" class="user-icon">
-                      </li> -->
+                      </li>
                       <li>
                         <v-tooltip top>
                           <v-btn slot="activator" @click="logout()">
@@ -340,22 +322,21 @@ export default {
         'searchZap'
     ]),
     totalPageViews: function(){
-      if (this.zapStats && this.zapStats.totalPageViews){
-        return this.zapStats.totalPageViews
-      }
-      return 0
+      return this.zapStats.totalPageViews
+      
+      
     },
     totalZaps: function(){
-      if (this.zapStats && this.zapStats.totalZaps){
-        return this.zapStats.totalZaps
-      }
-      return 0
+      
+      return this.zapStats.totalZaps
+     
+      
     },
     totalZapsTriggered: function(){
-      if (this.zapStats && this.zapStats.totalZapsTriggered){
-        return this.zapStats.totalZapsTriggered
-      }
-      return 0
+     
+      return this.zapStats.totalZapsTriggered
+      
+      
     }
   },
   created(){

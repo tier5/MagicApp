@@ -4,13 +4,17 @@ const state = {
   isSuccess : false,
   isError : false,
   successMessage:'',
-  errorMessage:''
+  errorMessage:'',
+  isAlertPopUpOpen: false,
+  alertMessage:''
 }
 const getters = {
   isSuccess:state => state.isSuccess,
   isError: state => state.isError,
   successMessage: state => state.successMessage,
-  errorMessage: state => state.errorMessage
+  errorMessage: state => state.errorMessage,
+  isAlertPopUpOpen: state => state.isAlertPopUpOpen,
+  alertMessage: state => state.alertMessage
 }
 
 const mutations = {
@@ -33,7 +37,9 @@ const mutations = {
     router.push(payload);
   },
   successMessage:(state,payload) => state.successMessage = payload ,
-  errorMessage:(state,payload) => state.errorMessage = payload
+  errorMessage:(state,payload) => state.errorMessage = payload,
+  changeIsAlertPopUpOpen : (state, payload)=> state.isAlertPopUpOpen = payload,
+  addAlertMessage: (state, payload)=> state.alertMessage = payload
 }
 const actions = {}
 

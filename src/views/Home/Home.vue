@@ -15,8 +15,8 @@
                   <v-toolbar>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                      <v-btn flat v-if="!isAuthenticated">Features</v-btn>
-                      <v-btn flat v-if="!isAuthenticated">Pricing</v-btn>
+                      <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetFeature, options)">Features</v-btn>
+                      <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetPricing, options)">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
                       <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/register')">14 day free trial</span>
                       <span
@@ -160,7 +160,7 @@
               </v-flex>
             </v-layout>
           </v-card>
-          <v-card class="section fourth-section">
+          <v-card class="section fourth-section" id="feature">
             <v-layout row wrap>
               <v-flex md12>
                 <div class="block-head">
@@ -295,7 +295,7 @@
                 </div>
               </v-flex>
             </v-layout>
-            <v-layout row wrap>
+            <v-layout row wrap id="pricing">
               <v-flex md4 xs12>
                 <v-card-text>
                   <div class="plan">
@@ -308,6 +308,7 @@
                         <li>10 magic zaps</li>
                         <li>1,000 Monthly Automations</li>
                         <li class="disabled">No Magic Option</li>
+                        <li class="disabled">No Timeout</li>
                         <li class="disabled">No Cookies</li>
                       </ul>
                     </div>
@@ -326,6 +327,7 @@
                         <li>50 magic zaps</li>
                         <li>1,000 Monthly Automations</li>
                         <li>Magic Option</li>
+                        <li class="disabled">No Timeout</li>
                         <li class="disabled">No Cookies</li>
                       </ul>
                     </div>
@@ -344,6 +346,7 @@
                         <li>Unlimited magic zaps</li>
                         <li>Unlimited Monthly Automations</li>
                         <li>Magic Option</li>
+                        <li>No Timeout</li>
                         <li>Cookies</li>
                       </ul>
                     </div>
@@ -382,12 +385,17 @@
 import Login from "../../components/Auth/Login/Login.vue";
 import ForgetPassword from "../../components/Auth/ForgetPassword/ForgetPassword.vue";
 import { mapGetters } from "vuex";
-import router from "../../router/index"
+import router from "../../router/index";
+import * as easings from 'vuetify/es5/util/easing-patterns'
+
 export default {
   data() {
     return {
       drawer: null,
-      mini: false
+      mini: false,
+      duration: 300,
+      offset: 0,
+      easing: 'easeInOutCubic',
     };
   },
   computed: {
@@ -395,8 +403,20 @@ export default {
     ...mapGetters([
       "isLoginModalOpen",
       "isAuthenticated",
-
-    ])
+    ]),
+    targetFeature(){
+      return '#feature'
+    },
+    targetPricing(){
+      return '#pricing'
+    },
+    options () {
+      return {
+        duration: this.duration,
+        offset: this.offset,
+        easing: this.easing
+      }
+    },
   },
   methods: {
     openLoginModel() {

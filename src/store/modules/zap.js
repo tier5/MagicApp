@@ -199,10 +199,10 @@ const actions = {
         (res) => {
           commit('changeLoading',false);
           if(res.body.status) {
-            if(res.body.data){
+            
               commit('getZapStats',res.body.data)
 
-            }
+            
           } else {
 
           }

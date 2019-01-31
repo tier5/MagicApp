@@ -4,7 +4,7 @@
       <div class="center-block">
         <h1>My payment information</h1>
         <p>You have attached below card informations with your account</p>
-        <v-layout row wrap class="eachblock checked" v-if="cards.length"> 
+        <v-layout row wrap class="eachblock checked" v-if="cards.length && !user.isHookedUser"> 
           <!-- <v-flex md3 xs12>
             <v-radio-group v-model="card.defaultCard">
               <v-radio
@@ -22,7 +22,10 @@
             <h2>{{cards[0].exp_month}}/{{cards[0].exp_year}}</h2>
           </v-flex>
         </v-layout>
-        <v-btn class="submit-btn"  @click="openAddNewCardModal()">
+        <v-card-text v-else>
+           <h3>Contact the partner from where you have bought </h3>
+        </v-card-text>
+        <v-btn class="submit-btn"  @click="openAddNewCardModal()" v-if="!user.isHookedUser">
           <span>Update Card</span>
         </v-btn>
       </div>
@@ -49,7 +52,8 @@
     },
     computed:{
       ...mapGetters([
-            'cards'
+            'cards',
+            'user'
       ])
     },
     methods:{
