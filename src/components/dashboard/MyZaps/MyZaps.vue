@@ -197,7 +197,7 @@
                   v-model="zap.timeoutOption"
                   row
                   @change="updateZap(zap)"
-                  v-if="loggedInUserSubscribtions.currentPlanName !== 'STARTER' || loggedInUserSubscribtions.currentPlanName !== 'STANDARD'"
+                  v-if="loggedInUserSubscribtions.currentPlanName === 'PROFESSIONAL'"
                 >
                   <v-radio
                     label="on"
@@ -212,7 +212,7 @@
                     v-bind:class="{ 'on': !zap.timeoutOption }"
                   ></v-radio>
                 </v-radio-group>
-                <v-radio-group v-model="zap.timeoutOption" row @click.prevent="notAllowed()" v-else>
+                <v-radio-group v-else v-model="zap.timeoutOption" row @click.prevent="notAllowed()">
                   <v-radio
                     label="on"
                     :value="true"
@@ -233,12 +233,14 @@
       </v-card-text>
       <v-layout row wrap v-else>
         <v-flex xs12>
-          <h2>Welcome to Magiczap Create Your First Zap</h2>
-          <div class="upgrade-box">
-            <v-btn class="upgrade-button" @click.prevent="changeRouterState('/magic/zaps/new')">
-              <span>Create</span>
-            </v-btn>
-          </div>
+          <v-card>
+            <h2>Welcome to Magiczap Create Your First Zap</h2>
+            <div class="upgrade-box">
+              <v-btn class="upgrade-button" @click.prevent="changeRouterState('/magic/zaps/new')">
+                <span>Create</span>
+              </v-btn>
+            </div>
+          </v-card>
         </v-flex>
       </v-layout>
     </div>
