@@ -109,10 +109,12 @@ function findZap (zapId){
             },
             {
                 $project:{
-                _id: 0,
-                zaps: 1,
-                isActive:1,
-                accessToken:1
+                    _id:                    0,
+                    zaps:                   1,
+                    isActive:               1,
+                    accessToken:            1,
+                    isHookedUser:           1,
+                    currentSubscriptionId:  1
                 }
             },
             { 
@@ -126,7 +128,7 @@ function findZap (zapId){
                 if (docs.length && docs[0].isActive){
                     let accessToken = docs[0].accessToken;
                     let zap = docs[0].zaps;
-                    resolve({ zap:zap, accessToken: accessToken});
+                    resolve({ zap:zap, accessToken: accessToken , currentSubscriptionId : currentSubscriptionId , isHookedUser: isHookedUser});
                 } else {
                     reject({ message:'Forbidden', status : false});
                 }

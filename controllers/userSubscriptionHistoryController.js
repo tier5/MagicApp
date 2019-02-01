@@ -5,6 +5,7 @@
 
 const UserSubscriptionHistory   = require('../models/userSubscriptionHistory');
 const Plans                     = require('../config/plans.config');
+const moment                    = require('moment');
 
 
 
@@ -53,9 +54,82 @@ async function getUserSubscriptionHistoryById(id){
     return UserSubscriptionHistory.findById(id);
 }
 
+/**
+ * Function to check if a user has exhausted the limit of automation count or subscription is active
+ * @param {string} id 
+ * @param {Boolean} isHookedUser 
+ */
+async function checkCounterAllowed(id, isHookedUser) { 
+    return new Promise(async (resolve, reject) => {
+        try {
+            let history = await getUserSubscriptionHistoryById(id);
+            let now = Date.now();
+            let nextMonthDate = new Date().setDate(new Date().getDate()+30)
+            if (history) {
+
+                let isSubscriptionOver = moment(now).isSameOrAfter(history.endDate);
+
+                if(!isSubscriptionOver) {
+                    // subscription is over
+
+                    if (isHookedUser) {
+                        
+                        let newHistory = {
+                            startDate:              now,
+                            endDate:                nextMonthDate,
+                            email:                  history.email,
+                            planId:                 history.planId,
+                            planName:               history,planName,
+                            order:                  history.order + 1,
+                            maxAutomationCount:     history.maxAutomationCount,
+                            currentAutomationCount: 0,
+                            isTrial:                false
+                        }
+
+                        let createNewHistory = await createUserSubscriptionHistory(newHistory);
+                        return resolve({data : createNewHistory, message: 'hooked guys are updated'});
+
+                    } else {
+                        return reject({message: 'Subscription date exceeded from current date'})
+                    }
+                    
+                } else {
+
+                    if (history.currentAutomationCount < history.maxAutomationCount) {
+                        
+                        return resolve({data : historyUpdated, message: 'hooked guys are updated'});
+
+                    } else {    
+                        // max zap triggered for the month
+                        return reject({message: 'Maximum automation reached, wait for renewal'})
+                    }
+                }
+            }
+        } catch (error) {
+            return reject(error)
+        }
+    })
+}
+
+/**
+ * Function to update the currentAutomationCount counter
+ * @param { string } id 
+ */
+async function updateCurrentAutomationCount(id) {
+    try {
+        let increment = await UserSubscriptionHistory.updateOne({_id : id}, {$inc : { currentAutomationCount : 1}}, {});    
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
+
 
 module.exports= {
     createUserSubscriptionHistory,
     changeUserSubscriptionHistory,
-    getUserSubscriptionHistoryById
+    getUserSubscriptionHistoryById,
+    checkCounterAllowed,
+    updateCurrentAutomationCount
 }

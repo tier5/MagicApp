@@ -133,6 +133,12 @@ const UserSchema =  new Schema({
                 id:{ type:String  },
                 isDefault:{type:Boolean, default: true}
             }
+        ],
+        invoices:[
+            {
+                id: { type : String},
+                isFailed: {type: Boolean, default: true}
+            }
         ]
     },
 

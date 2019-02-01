@@ -94,8 +94,11 @@ async function userRegister(req, res, next) {
     } catch (error) {
 
         if (body.stripe.customer) {
-
-            let deleteCustomer = await deleteCustomer(body.stripe.customer.id);
+            try {
+                let deleteCustomer = await deleteCustomer(body.stripe.customer.id);
+            } catch (error) {
+                return res.status(400).send({ status: false, message: error.message });
+            }
         }
         return res.status(400).send({ status: false, message: error.message });
     }

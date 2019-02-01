@@ -332,6 +332,9 @@ async function stripeWebhookEventListener(req, res, next){
             customerSubscriptionTrialWillEndEvent(req.body);
         case 'customer.subscription.updated':
             customerSubscriptionUpdatedEvent(req.body);
+        case 'invoice.payment_failed':
+            customerInvoicePaymentFailed(req.body);
+
 
     }
 
@@ -411,7 +414,7 @@ async function customerSubscriptionUpdatedEvent(data){
 
         } else {
                 // subscription  billing cycle change
-            if (eventData.current_period_start !== subscriptionHistory.current_period_start  && eventData.current_period_start !== subscriptionHistory.current_period_start){
+            if (eventData.current_period_start !== subscriptionHistory.startDate  && eventData.current_period_end !== subscriptionHistory.endDate){
                 
                 let newHistory = {
                     startDate:  eventData.current_period_start,
@@ -438,6 +441,32 @@ async function customerSubscriptionUpdatedEvent(data){
 
     } catch (error) {
         console.log(error);
+    }
+}
+
+async function customerInvoicePaymentFailed(data){
+    try {
+        let customer = data.data.object.customer
+        let user = await Users.findOne({"stripe.customer.id" : customer});
+        if (!user.stripe.invoices.length){
+            user.stripe.invoices = []
+            user.stripe.invoices.push({
+                id : data.data.object.id,
+            })
+        }
+
+        if (user.stripe.invoices.length){
+
+            user.stripe.invoices.push({
+                id : data.data.object.id,
+            });
+
+        }
+
+        let updateUser = await user.save();
+
+    } catch (error) {
+        
     }
 }
 
