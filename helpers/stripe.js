@@ -392,6 +392,15 @@ function preAuthCharge(amount, currency, customerId) {
     return stripe.webhooks.constructEvent(reqBody, reqSignature, WEBHOOK_SECRET);
 }
 
+/**
+ * Function to finzalize an unpaid invoices
+ * @param {string} id 
+ */
+function finalizeInvoice(id){
+    
+    return stripe.invoices.finalizeInvoice(id)
+}
+
 module.exports = {
     createCustomer,
     getAllPlans,
@@ -409,5 +418,6 @@ module.exports = {
     demoCardToken,
     preAuthCharge,
     retrieveCard,
-    checkStripeSignature
+    checkStripeSignature,
+    finalizeInvoice
 }

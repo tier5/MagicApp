@@ -22,7 +22,7 @@ MongoClient.connect(url, function(err, client) {
 
   const collection = db.collection('users');
   
-  collection.updateMany({'isHookedUser': null },{$set:{ 'isHookedUser': true}},function(err, result) {
+  collection.updateMany({'isHookedUser': null, name: 'test'},{$set:{ 'isHookedUser': true}},function(err, result) {
       if (!err){
         console.log("Updated all the documents with isHookedUser field");
       } else {

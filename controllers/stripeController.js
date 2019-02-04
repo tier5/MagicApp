@@ -23,7 +23,8 @@ var {
         deleteCard,
         retrieveCustomer, 
         retrieveCard, 
-        checkStripeSignature}   = require('../helpers/stripe');
+        checkStripeSignature, 
+        finalizeInvoice}                    = require('../helpers/stripe');
 
 
 
@@ -443,7 +444,10 @@ async function customerSubscriptionUpdatedEvent(data){
         console.log(error);
     }
 }
-
+/**
+ * Function to listen to all unpaid invoice and storing
+ * @param {object} data 
+ */
 async function customerInvoicePaymentFailed(data){
     try {
         let customer = data.data.object.customer
@@ -469,6 +473,8 @@ async function customerInvoicePaymentFailed(data){
         
     }
 }
+
+
 
 module.exports = {
     getAllPlansCtrl,

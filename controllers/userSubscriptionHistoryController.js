@@ -32,6 +32,9 @@ async function changeUserSubscriptionHistory(subscription, user, planName, planI
             if(planName === 'PROFESSIONAL'){
                 newCustomerHistory.maxAutomationCount = 10**10**10
             }
+            if(planName === 'STANDARD') {
+                newCustomerHistory.maxAutomationCount = 10000
+            }
             let newHistory =  new UserSubscriptionHistory(newCustomerHistory);
             let saveNewHistory =  await newHistory.save();
 
@@ -64,7 +67,7 @@ async function checkCounterAllowed(id, isHookedUser) {
         try {
             let history = await getUserSubscriptionHistoryById(id);
             let now = Date.now();
-            let nextMonthDate = new Date().setDate(new Date().getDate()+30)
+            let nextMonthDate = moment().add(30, 'days').unix()
             if (history) {
 
                 let isSubscriptionOver = moment(now).isSameOrAfter(history.endDate);
@@ -79,7 +82,7 @@ async function checkCounterAllowed(id, isHookedUser) {
                             endDate:                nextMonthDate,
                             email:                  history.email,
                             planId:                 history.planId,
-                            planName:               history,planName,
+                            planName:               history.planName,
                             order:                  history.order + 1,
                             maxAutomationCount:     history.maxAutomationCount,
                             currentAutomationCount: 0,

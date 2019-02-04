@@ -292,6 +292,71 @@ async function getUserCurrentSubscription(req, res){
     }
 
 }
+/**
+ * 
+ * @param {object} req 
+ * @param {object} res 
+ */
+async function overAllStats(req, res){
+    try {
+        let totalUsers = await Users.aggregate(
+                        {   $match : {} },
+                        { 
+                            $project : {
+                                zaps : 1 ,
+                                eachZapLength : {$size : "$zaps"},
+                                totalPageViewCount : { $sum : "$zaps.pageViewCount"},
+                                totalZapierTriggerCount : {$sum : "$zaps.zapierTriggerCount"}
+                            }
+                        },
+                        {
+                            $group : {
+                                _id : null,
+                                totalZapArr: { $push : '$eachZapLength'},
+                                totalPageViewCountArr: {$push : '$totalPageViewCount'},
+                                totalZapierTriggerCount: {$push : '$totalZapierTriggerCount'},
+                                totalUsers : { $sum : 1}
+                            }
+                        },
+                        {
+                            $project : {
+                                totalUsers : 1,
+                                totalZaps : {
+                                    $reduce : {
+                                        input : "$totalZapArr",
+                                        initialValue: 0,
+                                        in : {
+                                            $add : ["$$value","$$this"]
+                                        }
+                                    }
+                                },
+                                totalZapierTriggerCount: {
+                                    $reduce : {
+                                        input : "$totalZapierTriggerCount",
+                                        initialValue: 0,
+                                        in : {
+                                            $add : ["$$value","$$this"]
+                                        }
+                                    }
+                                },
+                                totalPageViewCount: {
+                                    $reduce : {
+                                        input : "$totalPageViewCountArr",
+                                        initialValue: 0,
+                                        in : {
+                                            $add : ["$$value","$$this"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                );
+        return res.status(200).json({message : 'ok', data : totalUsers[0], status : true});
+
+    } catch (error) {
+        return res.status(500).json({message : error.message, status : false});
+    }
+}
 
 
  module.exports = {
@@ -304,4 +369,5 @@ async function getUserCurrentSubscription(req, res){
     updateProfile,
     cancelMembership,
     getUserCurrentSubscription,
+    overAllStats
  }

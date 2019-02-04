@@ -35,7 +35,8 @@ var { createUser,
       getAllUsers,
       updateUser, 
       updateProfile, 
-      cancelMembership, getUserCurrentSubscription}  = require('../controllers/usersController');
+      cancelMembership,
+      getUserCurrentSubscription, overAllStats }    = require('../controllers/usersController');
 
 var { createUserFromHook,
       deleteUserFromHook,
@@ -130,6 +131,11 @@ const { createTutorial,
   router.put('/domains/:domainId',updateDomain);
   router.delete('/domains/:domainId', deleteDomain);
   router.get('/domains-status/:domainId', updateDomainStatus);
+
+/**
+ * Statictics 
+ */
+  router.get('/stats', overAllStats);
 /**
  * block-script
  */
