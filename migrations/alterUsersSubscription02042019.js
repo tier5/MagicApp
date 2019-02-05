@@ -39,7 +39,7 @@ if (!plan.length){
       const db = client.db(dbName);
   
       // Insert a single document
-          let newHistory = {
+        let newHistory = {
             startDate:              now,
             endDate:                nextMonthDate,
             planId:                 planId,
@@ -51,7 +51,7 @@ if (!plan.length){
         let Users = db.collection('users');
         let allUsers = await Users.find({ name : 'test'}).toArray();
         let user = allUsers[0]
-        //console.log('user', user);
+        
         letNotUpdateUser = []
         allUsers.forEach(async (user )=> {
             try {
@@ -70,9 +70,8 @@ if (!plan.length){
                 user.stripe.invoices = []
                 let update = await Users.updateOne({ email : user.email}, { $set : {...user}})
             } catch (error) {
-                console.log(error);
+                //console.log(error);
                 letNotUpdateUser.push(user.email);
-                //console.log('notdone', user.email)
             }
         })
         console.log('notInserted', letNotUpdateUser)

@@ -67,11 +67,11 @@ const { createTutorial,
 /**
  * Create, read, update and delete Zaps
  */
-  router.post('/zaps',isAuthorized,isUserSubscribed,createZap)
-  router.get('/zaps',isAuthorized, isUserSubscribed,getZaps);
-  router.delete('/zaps/:id',isAuthorized, isUserSubscribed,deleteZap);
-  router.put('/zaps/:id',isAuthorized, isUserSubscribed,updateZap);
-  router.get('/zaps/stats', isAuthorized, isUserSubscribed, getUserZapsStats);
+  router.post('/zaps',isUserSubscribed,createZap)
+  router.get('/zaps',isUserSubscribed,getZaps);
+  router.delete('/zaps/:id',isUserSubscribed,deleteZap);
+  router.put('/zaps/:id',isUserSubscribed,updateZap);
+  router.get('/zaps/stats',isUserSubscribed, getUserZapsStats);
 
 // Saves script's data to database
   router.post('/script-data',saveScriptData);
@@ -80,7 +80,7 @@ const { createTutorial,
   /**
    * Profile 
    */
-  router.put('/profile', updateProfile)
+  router.put('/profile', isAuthorized, updateProfile)
 /**
  * Zapier Authenicate and send data to zapier
  */
@@ -95,7 +95,7 @@ const { createTutorial,
   router.put('/users/:id', isAuthorized,onlyAdminCan,updateUser);
   router.post('/users',isAuthorized,onlyAdminCan,createUser);
   router.get('/users/basic', isAuthorized,getUserPrimaryData);
-  router.get('/users/subscriptions', getUserCurrentSubscription);
+  router.get('/users/subscriptions', isAuthorized, getUserCurrentSubscription);
 
 /**
  * Stripe

@@ -89,6 +89,10 @@ async function checkCounterAllowed(id, isHookedUser) {
                             isTrial:                false
                         }
 
+                        if (isSubscriptionOver.isTrial){
+                            newHistory.currentAutomationCount = isSubscriptionOver.currentAutomationCount
+                        }
+
                         let createNewHistory = await createUserSubscriptionHistory(newHistory);
                         return resolve({data : createNewHistory, message: 'hooked guys are updated'});
 
@@ -127,12 +131,17 @@ async function updateCurrentAutomationCount(id) {
     
 }
 
+async function removeUserHistory(email){
+    return UserSubscriptionHistory.remove(email);
+}
 
 
-module.exports= {
+
+module.exports = {
     createUserSubscriptionHistory,
     changeUserSubscriptionHistory,
     getUserSubscriptionHistoryById,
     checkCounterAllowed,
-    updateCurrentAutomationCount
+    updateCurrentAutomationCount,
+    removeUserHistory
 }

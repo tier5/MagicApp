@@ -3,12 +3,12 @@
  * Purpose : Zap Controller controls all the zap operation
  */
 
-var Users = require('../models/users');
-var _ = require('lodash');
-var mongoose = require('mongoose');
-var {sendRefreshStats} = require('../helpers/socket');
-var {getUserFromToken } = require('./usersController');
-const Plans             = require('../config/plans.config');
+var Users                       = require('../models/users');
+var _                           = require('lodash');
+var mongoose                    = require('mongoose');
+var {sendRefreshStats}          = require('../helpers/socket');
+var {getUserFromToken }         = require('./usersController');
+const Plans                     = require('../config/plans.config');
 
 /**
  * function to get all zaps

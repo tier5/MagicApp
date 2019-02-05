@@ -22,7 +22,7 @@ function isAuthorized(req,res,next){
             if(user){
                 next()
             } else {
-                res.status(401).send({message:'Unauthorized',status:false})
+                return res.status(401).send({message:'Unauthorized',status:false})
             }
         })
         
@@ -58,20 +58,17 @@ function isUserSubscribed(req,res,next){
         .select({userType:1,stripe:1, isSubscribed: 1, isHookedUser: 1})
         .then((data)=>{
             if(data.userType == 'paid'){
-                if (data.isHookedUser){
-                    next();
-                }
-                if ( data.isSubscribed ){
-                    next();
+                if (!data.isSubscribed){
+                    return res.status(400).send({message: 'Your subscription is inactive', status: false});
                 } else {
-                    return res.status(400).send({message : 'Your subscription failed', status: false});
+                    return next()
                 }
             } else {
-                next();
+                return next();
             }
         })
         .catch(err => {
-            res.status(500).send({message:'Something Went Wrong!' , status : false})
+            return res.status(500).send({message:'Something Went Wrong!' , status : false, err: err});
         })
 }
 

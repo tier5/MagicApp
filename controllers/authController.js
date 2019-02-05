@@ -113,22 +113,10 @@ async function userRegister(req, res, next) {
  */
 async function userLogin(req, res, next) {
     var { email, password } = req.body;
+    email = email.toLowerCase();
 
     try {
-        var user = await Users.findOne({ email }).select({ 
-                                                            email: 1, 
-                                                            password: 1, 
-                                                            stripe: 1, 
-                                                            isActive: 1, 
-                                                            isAdmin: 1, 
-                                                            userType: 1, 
-                                                            accessToken: 1, 
-                                                            userType: 1, 
-                                                            name: 1, 
-                                                            isSubscribed: 1, 
-                                                            isHookedUser : 1,
-                                                            subscriptionStatus: 1});
-
+        var user = await Users.findOne({ email }).select({ email: 1, password: 1, stripe: 1, isActive: 1, isAdmin: 1, userType: 1, accessToken: 1, userType: 1, name: 1, isSubscribed: 1, isHookedUser : 1,subscriptionStatus: 1});
         if (!user) { return res.status(400).send({ message: 'User not exists', status: false }) }
 
         var decoded = await bcrypt.compare(password, user.password);
