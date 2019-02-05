@@ -170,11 +170,17 @@
         register(){
             this.complete = false
             let createNewUser ={}
+            
             createToken().then(data => {
                 this.complete = true
                 createNewUser = this.registerUser;
                 createNewUser.cardToken = data.token.id;
-                createNewUser.card = data.token.card 
+                createNewUser.card = data.token.card;
+                let affiliateId= localStorage.getItem('affiliateId');
+                if(affiliateId){
+                    createNewUser.affiliateId = affiliateId
+                }
+                
                 this.$store.dispatch('userSignUp', createNewUser);
           }).catch((err)=> {
             console.log(err);

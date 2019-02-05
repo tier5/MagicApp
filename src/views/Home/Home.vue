@@ -434,6 +434,9 @@ export default {
     ForgetPassword
   },
   created(){
+    if (this.$route.query.aid){
+      localStorage.setItem('affiliateId', this.$route.query.aid);
+    }
     this.$store.commit('checkUserAuthentication');
   }
 };
