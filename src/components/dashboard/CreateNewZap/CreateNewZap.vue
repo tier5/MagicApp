@@ -1,6 +1,6 @@
 <template>
   <div class="createNewZap">
-    <div v-if="user.isSubscribed">
+    <div v-if="user.isSubscribed && user.isActive">
       <v-card-text>
         <img src="../../../assets/images/logo.png" alt="Header Logo" class="header-logo">
         <h2>Create a new ZAP</h2>
@@ -278,9 +278,15 @@
       </v-card>
     </div>
     <div v-else>
-       <v-card-text>
+       <v-card-text v-if="!user.isSubscribed">
         
         <h3>Your subscription is inactive. Please activate your subscription !</h3>
+        
+      </v-card-text>
+
+      <v-card-text v-if="!user.isActive">
+        
+        <h3>Your account has been suspended. Contact the person from whom you have bought the app</h3>
         
       </v-card-text>
     </div>

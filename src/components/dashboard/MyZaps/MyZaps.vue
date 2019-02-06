@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="user.isSubscribed">
+    <div v-if="user.isSubscribed && user.isActive">
       <v-card-text class="myZaps" v-if="zaps.length">
         <div class="firstZap hidden-xs-only">
           <v-layout row wrap>
@@ -245,9 +245,14 @@
       </v-layout>
     </div>
     <div v-else>
-       <v-layout row wrap>
+       <v-layout row wrap v-if="!user.isSubscribed">
         <v-flex xs12>
           <h2>Your subscription is inactive. Please activate your subscription !</h2>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap  v-if="!user.isActive">
+        <v-flex xs12>
+          <h2>Your account has been suspended. Contact the person from whom you have bought the app</h2>
         </v-flex>
       </v-layout>
     </div>
