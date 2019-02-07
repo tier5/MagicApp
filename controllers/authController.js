@@ -14,6 +14,7 @@ const { createAccessToken }                 = require('../helpers/jwt');
 const jwt                                   = require('jsonwebtoken');
 const PLANS                                 = require('../config/plans.config');
 const {createUserSubscriptionHistory}       = require('./userSubscriptionHistoryController');
+const {emitTotalDataStatistics}             = require('../helpers/socket');
 
 /**
  * function to register a user
@@ -89,6 +90,7 @@ async function userRegister(req, res, next) {
             isHookedUser: user.isHookedUser,
             subscriptionStatus: user.subscriptionStatus
         }
+        emitTotalDataStatistics()
         return res.status(200).send({ status: true, message: "User created", token: user.accessToken, user: sendUserData })
 
     } catch (error) {

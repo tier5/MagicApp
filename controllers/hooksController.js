@@ -3,21 +3,17 @@
  * @description It is a controller file for a webhook into the magic app
  */
 
-const uuid                          = require('uuid/v4'),
-Users                               = require('../models/users'),
-Zaps                                = require('../models/zaps'),
-_                                   = require('lodash'),
-Plans                               = require('../config/plans.config'),
-moment                              = require('moment'),
-{   demoCardToken, 
-    createCustomer, 
-    createSubscription, 
-    deleteCustomer}                 = require('../helpers/stripe'),
-{ createAccessToken }               = require('../helpers/jwt'),
-{ userWarehousing, removeUser}      = require('./usersController'),
-{   createUserSubscriptionHistory,
-    removeUserHistory, 
-    getUserSubscriptionHistoryById} = require('./userSubscriptionHistoryController');
+const Users                                 = require('../models/users');
+const _                                     = require('lodash');
+const Plans                                 = require('../config/plans.config');
+const moment                                = require('moment');
+const { deleteCustomer }                    = require('../helpers/stripe');
+const { createAccessToken }                 = require('../helpers/jwt');
+const { userWarehousing, removeUser}        = require('./usersController');
+const { createUserSubscriptionHistory,
+        removeUserHistory, 
+        getUserSubscriptionHistoryById}     = require('./userSubscriptionHistoryController');
+const { emitTotalDataStatistics }           = require('../helpers/socket');
 
  /**
   * Function to create a user from a hook
@@ -121,6 +117,7 @@ moment                              = require('moment'),
             newUser.subscriptionStatus = 'trialing'
         }
         let newUserCreated = await Users.create(newUser);
+        emitTotalDataStatistics()
         return res.status(200).send({http_code : 200, status :true , message : 'User Created'})
     } catch (error) {
         res.status(200).send({message : error.message, status:false , http_code:200})
@@ -218,7 +215,7 @@ moment                              = require('moment'),
         }
         let removeThisUser = await removeUser(email);
         let removeHistory = await removeUserHistory(email);
-
+        emitTotalDataStatistics()
         return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
 
     } catch (error) {

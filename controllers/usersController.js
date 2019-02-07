@@ -10,7 +10,9 @@ const WareHouse                 = require('../models/warehouse');
 const {deleteCustomer}          = require('../helpers/stripe');
 const Plans                     = require('../config/plans.config');
 const UserSubscriptionHistory   = require('../models/userSubscriptionHistory');
- 
+const {emitTotalDataStatistics} = require('../helpers/socket');
+
+
  /**
   * Function to create a user 
   * @param {object} req 
@@ -40,7 +42,6 @@ const UserSubscriptionHistory   = require('../models/userSubscriptionHistory');
         });
 
  };
-
  /**
  * function to get users list
  * @param {object} req 
@@ -202,7 +203,8 @@ async function removeUser(email){
     
             let removeZapsData = await ScriptData.remove({ zapId : { $in : usersZapsIds}});
             let removeTheUser = await Users.remove({ email : email });
-            let removeHistory = await UserSubscriptionHistory.remove({ email : email})
+            let removeHistory = await UserSubscriptionHistory.remove({ email : email});
+            emitTotalDataStatistics()
             return resolve({status: true, message : 'Deleted'});
        } catch (error) {
             return reject({ status : false, error : error.message})
@@ -253,6 +255,7 @@ async function cancelMembership(req, res){
         }
         let deleteCustomerFromStripe = await deleteCustomer(customerId);
         let deleteUserFromDB = await removeUser(thisUser.email);
+        emitTotalDataStatistics()
         return res.status(200).send({message: 'Deleted', status: true , data: { name : thisUser.name}});
 
     } catch (error) {
@@ -292,72 +295,6 @@ async function getUserCurrentSubscription(req, res){
     }
 
 }
-/**
- * 
- * @param {object} req 
- * @param {object} res 
- */
-async function overAllStats(req, res){
-    try {
-        let totalUsers = await Users.aggregate(
-                        {   $match : {} },
-                        { 
-                            $project : {
-                                zaps : 1 ,
-                                eachZapLength : {$size : "$zaps"},
-                                totalPageViewCount : { $sum : "$zaps.pageViewCount"},
-                                totalZapierTriggerCount : {$sum : "$zaps.zapierTriggerCount"}
-                            }
-                        },
-                        {
-                            $group : {
-                                _id : null,
-                                totalZapArr: { $push : '$eachZapLength'},
-                                totalPageViewCountArr: {$push : '$totalPageViewCount'},
-                                totalZapierTriggerCount: {$push : '$totalZapierTriggerCount'},
-                                totalUsers : { $sum : 1}
-                            }
-                        },
-                        {
-                            $project : {
-                                totalUsers : 1,
-                                totalZaps : {
-                                    $reduce : {
-                                        input : "$totalZapArr",
-                                        initialValue: 0,
-                                        in : {
-                                            $add : ["$$value","$$this"]
-                                        }
-                                    }
-                                },
-                                totalZapierTriggerCount: {
-                                    $reduce : {
-                                        input : "$totalZapierTriggerCount",
-                                        initialValue: 0,
-                                        in : {
-                                            $add : ["$$value","$$this"]
-                                        }
-                                    }
-                                },
-                                totalPageViewCount: {
-                                    $reduce : {
-                                        input : "$totalPageViewCountArr",
-                                        initialValue: 0,
-                                        in : {
-                                            $add : ["$$value","$$this"]
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                );
-        return res.status(200).json({message : 'ok', data : totalUsers[0], status : true});
-
-    } catch (error) {
-        return res.status(500).json({message : error.message, status : false});
-    }
-}
-
 
  module.exports = {
     createUser,
@@ -368,6 +305,5 @@ async function overAllStats(req, res){
     removeUser,
     updateProfile,
     cancelMembership,
-    getUserCurrentSubscription,
-    overAllStats
+    getUserCurrentSubscription
  }

@@ -6,6 +6,12 @@ var express = require('express');
 var router = express.Router();
 
 // import all controllers for the routes
+var { createUser,
+      getAllUsers,
+      updateUser, 
+      updateProfile, 
+      cancelMembership,
+  getUserCurrentSubscription}    = require('../controllers/usersController');
 var { createZap,
       getZaps,
       deleteZap,
@@ -31,12 +37,6 @@ var { userLogin,
       userResetPassword,
       userUpdatePassword, 
       getUserPrimaryData, checkEmailExists}          = require('../controllers/authController');
-var { createUser,
-      getAllUsers,
-      updateUser, 
-      updateProfile, 
-      cancelMembership,
-      getUserCurrentSubscription, overAllStats }    = require('../controllers/usersController');
 
 var { createUserFromHook,
       deleteUserFromHook,
@@ -54,6 +54,7 @@ const { createTutorial,
         getTutotialById, 
         updateTutorials, deleteTutorial}              = require('../controllers/tutorialsController');
 
+const {overAllStats}                                  = require('../controllers/statisticsController');
 /**
  * Users Registration, Login, Forget Password and Reset Password
  */

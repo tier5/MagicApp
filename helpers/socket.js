@@ -2,8 +2,9 @@
  * Helper function to implement socket IO
  * 
  */
-
+ var {getOverAllStats} = require('../controllers/statisticsController');
  var IO_GLOBAL = null;
+
  /**
   * Initiate The Socket
   * @param {object} IO 
@@ -35,8 +36,19 @@
     IO_GLOBAL.sockets.in(userEmail).emit('refresh-stats', {});
  }
 
+ async function emitTotalDataStatistics(){
+    try {
+        let data = await getOverAllStats();
+        IO_GLOBAL.sockets.emit('overall-stats', data);
+    } catch (error) {
+        IO_GLOBAL.sockets.emit('overall-stats', {});
+    }
+     
+ }
+
  module.exports = {
     socketHelperFunction,
-    sendRefreshStats
+    sendRefreshStats,
+    emitTotalDataStatistics
  }
 

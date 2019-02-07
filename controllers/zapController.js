@@ -9,6 +9,8 @@ var mongoose                    = require('mongoose');
 var {sendRefreshStats}          = require('../helpers/socket');
 var {getUserFromToken }         = require('./usersController');
 const Plans                     = require('../config/plans.config');
+const {emitTotalDataStatistics} = require('../helpers/socket');
+
 
 /**
  * function to get all zaps
@@ -51,7 +53,8 @@ async function createZap(req,res,next){
         let data = await thisUser.save()
         let zaps = data.zaps
         let zap = zaps[isallowed]
-        sendRefreshStats(thisUser)
+        sendRefreshStats(thisUser);
+        emitTotalDataStatistics();
         return res.status(200).send({message:'Zap created !',zap:zap,status:true});
 
 
@@ -82,8 +85,9 @@ function deleteZap (req,res,next){
         .then(result=>{
             if (result.n==1){
                 getUserFromToken(token).then(data => {
-                    sendRefreshStats(data)
+                    sendRefreshStats(data);
                 })
+                emitTotalDataStatistics()
                 return res.status(200).send({message: 'Zap Deleted', status :true})
             }
         })
@@ -198,11 +202,12 @@ function updateCounter(userToken,zapId,counterName){
         }
     }
     Users.update(conditions, update, options).then(updated => {
-        
+        emitTotalDataStatistics()
         getUserFromToken(userToken).then(data => {
             
             sendRefreshStats(data);
         })
+        
     });
 }
 
@@ -287,5 +292,5 @@ module.exports = {
     updateZap,
     updateCounter,
     getUserZapsStats,
-    checkZapCreationValidation
+    checkZapCreationValidation,
 }
