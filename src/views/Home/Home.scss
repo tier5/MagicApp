@@ -261,7 +261,7 @@
 
 .second-section{
     text-align: center;
-    padding: 200px 200px 0;
+    padding: 0 200px 0;
     @media screen and (min-width: 960px) and (max-width: 1259px) {
         padding: 100px 0;
     }
@@ -885,6 +885,32 @@
     right: 30px;
     top: 30px;
     cursor: pointer;
+}
+
+.numberBlock {
+    position: relative;
+    transform: translateX(-50%);
+    left: 40%;
+    top: 30%;
+    width: 55%;
+}
+.numberCell {
+    float: left;
+    margin-right: 30px;
+}
+.number {
+    font-size: 36px;
+    font-family: 'Avenir LT Std 95 Black';
+    color: $orange;
+    display: block;
+    margin: 0;
+    line-height: 100%;
+}
+.numberTitle {
+    font-size: 12px;
+    font-family: 'Avenir LT Std 95 Black';
+    color: $inputBlue;
+    margin: 0;
 }
 
 // responsive

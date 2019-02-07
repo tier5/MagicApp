@@ -60,11 +60,11 @@
                       </v-card-text>
                       <v-card-text class="left-menu">
                         <ul>
-                          <li v-if="!isAuthenticated">
+                          <li v-if="!isAuthenticated" @click="$vuetify.goTo(targetFeature, options)">
                             <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
                             <span>Features</span>
                           </li>
-                          <li v-if="!isAuthenticated">
+                          <li v-if="!isAuthenticated" @click="$vuetify.goTo(targetPricing, options)">
                             <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                             <span>Pricing</span>
                           </li>
@@ -102,15 +102,46 @@
                     <v-btn class="free-trial-btn" @click="customRouter('/register')">Start 14 Days FREE Trial</v-btn>
                   </div>
                 </v-flex>
-                <v-flex md5 sm5>
+                <v-flex md5 sm2>
                   <div class="banner-right">
                     <img src="../../assets/images/video-screen.png" alt="video-screen">
                   </div>
                 </v-flex>
               </v-layout>
+              <v-layout row wrap>
+                <v-flex md12>
+                  <div class="numberBlock">
+
+                      <div class="numberCell">
+                        <div v-if="overallStats.totalZaps" >
+                          <p class="number"> {{overallStats.totalZaps}}</p>
+                          <p class="numberTitle">TOTAL ZAPS</p>
+                        </div>
+                      </div>
+                      <div class="numberCell">
+                        <div v-if="overallStats.totalZapierTriggerCount">
+                          <p class="number"> {{overallStats.totalZapierTriggerCount}}</p>
+                          <p class="numberTitle">TOTAL AUTOMATION</p>
+                        </div>
+                      </div>
+                      <div class="numberCell">
+                        <div v-if="overallStats.totalPageViewCount">
+                          <p class="number"> {{overallStats.totalPageViewCount}}</p>
+                          <p class="numberTitle">TOTAL PAGE VIEWS</p>
+                        </div>
+                      </div>
+                      <div class="numberCell">
+                        <div v-if="overallStats.totalUsers" >
+                          <p class="number"> {{overallStats.totalUsers}}</p>
+                          <p class="numberTitle">TOTAL USERS</p>
+                        </div>
+                      </div>
+                  </div>
+                </v-flex>
+              </v-layout>
             </v-card-text>
           </v-card>
-          <v-card class="section second-section"  v-animate.repeat.fade="'slide-up'">
+          <v-card class="section second-section">
             <v-layout row wrap>
               <v-flex md3></v-flex>
               <v-flex md6>
@@ -325,7 +356,7 @@
                     <div class="body">
                       <ul>
                         <li>50 magic zaps</li>
-                        <li>1,000 Monthly Automations</li>
+                        <li>10,000 Monthly Automations</li>
                         <li>Magic Option</li>
                         <li class="disabled">No Timeout</li>
                         <li class="disabled">No Cookies</li>
@@ -387,6 +418,7 @@ import ForgetPassword from "../../components/Auth/ForgetPassword/ForgetPassword.
 import { mapGetters } from "vuex";
 import router from "../../router/index";
 import * as easings from 'vuetify/es5/util/easing-patterns'
+import io from 'socket.io-client';
 
 export default {
   data() {
@@ -396,6 +428,7 @@ export default {
       duration: 300,
       offset: 0,
       easing: 'easeInOutCubic',
+      socket : io(process.env.VUE_APP_SOCKET_ENDPOINT)
     };
   },
   computed: {
@@ -403,6 +436,7 @@ export default {
     ...mapGetters([
       "isLoginModalOpen",
       "isAuthenticated",
+      "overallStats"
     ]),
     targetFeature(){
       return '#feature'
@@ -438,6 +472,11 @@ export default {
       localStorage.setItem('affiliateId', this.$route.query.aid);
     }
     this.$store.commit('checkUserAuthentication');
+    this.$store.dispatch('getStats');
+    this.socket.on('overall-stats',(data)=> {
+      console.log(data);
+      this.$store.commit('changeOverallStats', data);
+    })
   }
 };
 </script>
