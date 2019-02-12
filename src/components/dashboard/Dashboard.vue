@@ -14,7 +14,7 @@
                 <v-flex md12 lg6>
                   <div class="upgrade-box">
                     <v-btn class="upgrade-button" @click.prevent="changeRouterState('/magic/upgrade-membership')">
-                      <span>Upgrade Membership</span>
+                      <span>Update Membership</span>
                     </v-btn>
                   </div>
                 </v-flex>

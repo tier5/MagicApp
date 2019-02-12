@@ -5,6 +5,7 @@ const state = {
     USERS : [],
     openCreateUsersModel: false,
     loggedInUserSubscribtions:{},
+    showCardRedirect: false
     
 };
 
@@ -13,7 +14,8 @@ const getters = {
       return state.USERS;
     },
     openCreateUsersModel :(state) => state.openCreateUsersModel,
-    loggedInUserSubscribtions: (state)=> state.loggedInUserSubscribtions
+    loggedInUserSubscribtions: (state)=> state.loggedInUserSubscribtions,
+    showCardRedirect: (state)=> state.showCardRedirect
 };
 
 const mutations = {
@@ -26,8 +28,14 @@ const mutations = {
     addUser:(state,payload)=>{
       state.USERS = [...state.USERS,{...payload}]
     },
-    addLoggedInUserSubscribtions: (state, payload)=>{
+    addLoggedInUserSubscribtions: (state, payload)=> {
       state.loggedInUserSubscribtions = payload
+    },
+    setShowCardRedirect:(state)=>{
+      state.showCardRedirect = true
+      setTimeout(()=>{
+        state.showCardRedirect = false
+      }, 10000)
     }
 
   }
@@ -45,7 +53,7 @@ const mutations = {
             }
           },
           (err) => {
-            console.log(err.body.message);
+            //console.log(err.body.message);
           }
         )
     },
@@ -65,7 +73,7 @@ const mutations = {
               }
             },
             (err) => {
-              console.log(err.body.message);
+              //console.log(err.body.message);
               commit('changeLoading',false);
               var message = err.body.message;
               commit('errorMessage',message);
@@ -83,15 +91,18 @@ const mutations = {
                 var message = res.body.message;
                 commit('successMessage',message);
                 commit('successTrue');
+                commit('changeIsAddNewCardOpen', false);
                 dispatch('getUserCurrentSubscribtion');
-                //commit('userSignIn',res.body);
+                commit('userSignIn',res.body);
                 
               }
             },
             (err) => {
-              console.log(err.body.message);
               commit('changeLoading',false);
               var message = err.body.message;
+              if (err.body.data.showRedirect){
+                commit('setShowCardRedirect');
+              }
               commit('errorMessage',message);
               commit('errorTrue');
             }

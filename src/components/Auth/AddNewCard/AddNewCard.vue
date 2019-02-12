@@ -66,7 +66,8 @@
                                                     type='submit'
                                                     :disabled='!complete'
                                                     >
-                                                    <span>Save This card</span>
+                                                    <span v-if="!selectedPlanForHookedUser">Save This card</span>
+                                                    <span v-else>Update</span>
                                                 </v-btn>
                                             </v-card-text>
                                         </v-flex>
@@ -107,7 +108,8 @@
             // mix the getters into computed with object spread operator
             ...mapGetters([
                 'isAddNewCardOpen',
-                'isError'
+                'isError',
+                'selectedPlanForHookedUser'
             ])
         },
         methods:{
@@ -137,7 +139,12 @@
                     let requestData = {
                         cardToken : data.token.id
                     }
-                    this.$store.dispatch('addUserCard', requestData);
+                    if (this.selectedPlanForHookedUser){
+                        requestData.plan = this.selectedPlanForHookedUser
+                        this.$store.dispatch('updateSubscription', requestData);
+                    } else {
+                        this.$store.dispatch('addUserCard', requestData);
+                    }
                 }).catch(err=>{
                     alert('Please refresh the page!');
                 })

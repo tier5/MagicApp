@@ -104,7 +104,14 @@
                 </v-flex>
                 <v-flex md5 sm2>
                   <div class="banner-right">
-                    <img src="../../assets/images/video-screen.png" alt="video-screen">
+                    <div v-if="salesVideo.length">
+                      <a :href ="salesVideo[0].source" data-lity>
+                        <img src="../../assets/images/video-screen.png" alt="video-screen">
+                      </a>
+                    </div>
+                    <div v-else>
+                      <img src="../../assets/images/video-screen.png" alt="video-screen">
+                    </div>
                   </div>
                 </v-flex>
               </v-layout>
@@ -436,7 +443,8 @@ export default {
     ...mapGetters([
       "isLoginModalOpen",
       "isAuthenticated",
-      "overallStats"
+      "overallStats",
+      "tutorials"
     ]),
     targetFeature(){
       return '#feature'
@@ -451,6 +459,14 @@ export default {
         easing: this.easing
       }
     },
+    salesVideo(){
+      if (this.tutorials.length){
+        let video = this.tutorials.filter(o => o.order == 0);
+        return video
+      } else {
+        return []
+      }
+    }
   },
   methods: {
     openLoginModel() {
@@ -461,20 +477,20 @@ export default {
     },
     customRouter(path){
       router.push(path);
-    }
+    },
   },
   components: {
     Login,
     ForgetPassword
   },
   created(){
+    this.$store.dispatch('getTutorials');
     if (this.$route.query.aid){
       localStorage.setItem('affiliateId', this.$route.query.aid);
     }
     this.$store.commit('checkUserAuthentication');
     this.$store.dispatch('getStats');
     this.socket.on('overall-stats',(data)=> {
-      console.log(data);
       this.$store.commit('changeOverallStats', data);
     })
   }

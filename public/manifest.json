@@ -1,6 +1,6 @@
 {
-  "name": "vue-material-app",
-  "short_name": "vue-material-app",
+  "name": "MagicZap",
+  "short_name": "MagicZap",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

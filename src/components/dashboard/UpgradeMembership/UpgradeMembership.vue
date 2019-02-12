@@ -61,7 +61,7 @@
               <div class="currentplan" v-if="this.currentPlan == 'STANDARD'">
                 <span>Your current plan</span>
               </div>
-              <v-btn class="submit-btn" v-if="this.currentPlan !== 'STANDARD' && this.currentPrice < 47 && !user.isHookedUser" @click.prevent="updateMembership('STANDARD')">
+              <v-btn class="submit-btn" v-if="this.currentPlan !== 'STANDARD' && this.currentPrice < 47" @click.prevent="updateMembership('STANDARD')">
                 <span>Upgrade</span>
               </v-btn>
             </v-card-text>
@@ -91,7 +91,7 @@
               <div class="currentplan" v-if="this.currentPlan == 'PROFESSIONAL'">
                 <span>Your current plan</span>
               </div>
-              <v-btn class="submit-btn" v-if="this.currentPlan !== 'PROFESSIONAL' && this.currentPrice < 97 && !user.isHookedUser" @click.prevent="updateMembership('PROFESSIONAL')">
+              <v-btn class="submit-btn" v-if="this.currentPlan !== 'PROFESSIONAL' && this.currentPrice < 97" @click.prevent="updateMembership('PROFESSIONAL')">
                 <span>Upgrade</span>
               </v-btn>
             </v-card-text>
@@ -105,15 +105,15 @@
           </v-flex>
         </v-layout>
         <v-card-text>
-          <v-layout row wrap class="cancel-membership" v-if="!user.isHookedUser">
+          <v-layout row wrap class="cancel-membership" v-if="!user.isHookedUser && !user.isAdmin">
             <v-flex md12>
               <a @click.prevent="changeRouterState('/magic/cancel-membership')">Click here</a> to cancel my Magiczap membership.
             </v-flex>
           </v-layout>
-          <h4 v-else>Contact your partner for any upgrade or downgrade </h4>
         </v-card-text>
       </div>
     </v-card-text>
+    <addnewcard></addnewcard>
   </div>
 </template>
 
@@ -123,7 +123,7 @@
   import Success from '../../../components/Success.vue';
   import Error from '../../../components/Error.vue';
   import router from "../../../router/index";
-
+  import AddNewCard from "../../Auth/AddNewCard/AddNewCard.vue";
   export default {
     data() {
       return {
@@ -136,6 +136,7 @@
         'isError',
         'isSuccess',
         'user',
+        'showCardRedirect'
       ]),
       currentPrice(){
         switch (this.currentPlan){
@@ -155,12 +156,19 @@
         router.push(path)
       },
       updateMembership(plan){
-        this.$store.dispatch('updateSubscription', {plan : plan});
+        if (this.user.isHookedUser){
+          this.$store.commit('changeSelectedPlanForHookedUser', plan);
+          this.$store.commit('changeIsAddNewCardOpen', true);
+        } else {
+          this.$store.dispatch('updateSubscription', {plan : plan});
+        }
+        
       }
     },
     components:{
       Error,
-      Success
+      Success,
+     addnewcard: AddNewCard
     },
     watch: {
       loggedInUserSubscribtions : function(value){

@@ -62,7 +62,8 @@ export default {
           'tutorials'
       ]),
       orderedTutorials: function(){
-          return _.orderBy(this.tutorials, 'order');
+          let data = this.tutorials.filter(o => o.order != 0);
+          return _.orderBy(data, 'order');
       },
       firstVideo(){
         return this.tutorials.filter(o=> o.order == '1');

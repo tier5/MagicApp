@@ -4,7 +4,7 @@
       <div class="center-block">
         <h1>My payment information</h1>
         <p>You have attached below card informations with your account</p>
-        <v-layout row wrap class="eachblock checked" v-if="cards.length && !user.isHookedUser"> 
+        <v-layout row wrap class="eachblock checked" v-if="cards.length"> 
           <!-- <v-flex md3 xs12>
             <v-radio-group v-model="card.defaultCard">
               <v-radio
@@ -22,11 +22,11 @@
             <h2>{{cards[0].exp_month}}/{{cards[0].exp_year}}</h2>
           </v-flex>
         </v-layout>
-        <v-card-text v-else>
-           <h3>Contact the partner from where you have bought </h3>
-        </v-card-text>
-        <v-btn class="submit-btn"  @click="openAddNewCardModal()" v-if="!user.isHookedUser">
-          <span>Update Card</span>
+        <v-btn class="submit-btn"  @click="openAddNewCardModal()" v-if="!user.isHookedUser && !user.isAdmin">
+          <span >Update Card</span>
+        </v-btn>
+        <v-btn class="submit-btn"  @click="payUnpaidInvoices()" v-if="loggedInUserSubscribtions.subscriptionStatus =='unpaid' || loggedInUserSubscribtions.subscriptionStatus=='past_due'">
+          <span>Pay unpaid invoice</span>
         </v-btn>
       </div>
     </v-card-text>
@@ -53,12 +53,16 @@
     computed:{
       ...mapGetters([
             'cards',
-            'user'
+            'user',
+            'loggedInUserSubscribtions'
       ])
     },
     methods:{
       openAddNewCardModal(){
         this.$store.commit('changeIsAddNewCardOpen', true);
+      },
+      payUnpaidInvoices(){
+        this.$store.dispatch('payUnpaidInvoices', {})
       }
     },
     created(){
