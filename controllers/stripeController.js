@@ -2,29 +2,24 @@
  * Name: stripeController.js
  * Purpose : Stripe Controller
  */
-var _                                       = require('lodash');
-var moment                                  = require('moment');
-var Users                                   = require('../models/users');
-const Plans                                 = require('../config/plans.config');
-const UserSubscriptionHistory               = require('../models/userSubscriptionHistory');
+var _                                               = require('lodash');
+var moment                                          = require('moment');
+var Users                                           = require('../models/users');
+const Plans                                         = require('../config/plans.config');
+const UserSubscriptionHistory                       = require('../models/userSubscriptionHistory');
 const { changeUserSubscriptionHistory,
         getUserSubscriptionHistoryById,
-        createUserSubscriptionHistory  }    = require('./userSubscriptionHistoryController');
+        createUserSubscriptionHistory  }            = require('./userSubscriptionHistoryController');
 
 
-var {
-        getAllPlans, 
-        createCard , 
-        createSubscription, 
-        updateSubscription,
-        retriveCustomerCard,
-        createSource,
-        defaultSource,
-        deleteCard,
-        retrieveCustomer, 
-        retrieveCard, 
-        checkStripeSignature, 
-        finalizeInvoice}                    = require('../helpers/stripe');
+var {   getAllPlans, createCard , 
+        createSubscription, updateSubscription,
+        retriveCustomerCard,createSource,
+        defaultSource,deleteCard,retrieveCustomer, 
+        retrieveCard, finalizeInvoice,
+        createCustomer,deleteCustomer}             = require('../helpers/stripe');
+
+var {resetZapsOptionsValue} = require('./zapController');
 
 
 
@@ -65,50 +60,103 @@ function getAllPlansCtrl (req,res,next){
  * @return response
  */
 
- function updateUserSubscribtion(req,res){
+ async function updateUserSubscribtion(req,res){
     var token = req.headers.authorization;
     let planName = req.body.plan;
+    let cardToken = req.body.cardToken
     let plan = Plans.filter(obj=> {
         return obj.planName == planName
     });
+    let customerId;
     if (!plan.length){
         return res.status(400).send({message: 'Wrong plan selected', status: false});
     }
     let planId = plan[0].stripePlanId
-    Users
-        .findOne({accessToken : token})
-        .then(user => {
-            let currentPlanName = getPlanName(user.stripe.plan.id);
-            checkUserDowngradeAllowed(user.zaps.length,currentPlanName,planName).then(done=>{
-                updateSubscription(user.stripe.subscription.id,planId)
-                    .then(sub => {
-
-                        return changeUserSubscriptionHistory(sub, user, planName, planId)
-                    })
-                    .then(updatedUser=>{
-                        var sendUserData = {
-                            email : updatedUser.email,
-                            name : updatedUser.name,
-                            isAdmin: updatedUser.isAdmin,
-                            isActive: updatedUser.isActive,
-                            isSubscribed : true
-                        }
-                        return res.status(200).send({status: true, message: `Thanks, You're ready to go.`, token: updatedUser.accessToken , user: sendUserData });
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                        return res.status(500).send({status: false, message: `Something went wrong`});
-                    })
-            }).catch(data=>{
-                return res.status(400).send({
-                    message: `You need to delete ${data.zapDiff} ${ data.zapDiff > 1 ? 'zaps': 'zap'} in order to downgrade`,
-                    status: false
-                })
+    try {
+        let user = await Users.findOne({accessToken: token});
+        
+        // Thus process change a user from hooked to stripe user
+        if(!user.stripe.customer.id){
+            let customer = await createCustomer(user.email, cardToken);
+            user.stripe.customer = {
+                id : customer.id
+            }
+            user.stripe.cards = [];
+            user.stripe.cards.push({
+                id : customer.default_source,
+                isDefault : true
             })
+            let subscription = await createSubscription(customer.id, planId, false);
+            user.stripe.subscription = {
+                id: subscription.id,
+            };
+            user.stripe.plan ={
+                id : planId
+            }
+            customerId = customer.id
+            user.isHookedUser = false
+            user.isSubscribed = true
+            user.subscriptionStatus = subscription.status;
+            let newCustomerHistory = {
+                startDate: subscription.current_period_start,
+                endDate: subscription.current_period_end,
+                email: user.email,
+                planId: planId,
+                planName: planName,
+                isTrial: true,
+            }
+            let newHistory = await createUserSubscriptionHistory(newCustomerHistory)
+    
+            user.currentSubscriptionId = newHistory._id;
+    
+            
+            let updatedUser = await user.save();
 
-        }).catch(err=>{
-            return res.status(500).send({status: false, message: err.message});
-        })
+            let sendUserData = {
+                email : updatedUser.email,
+                name : updatedUser.name,
+                isAdmin : updatedUser.isAdmin,
+                isActive : updatedUser.isActive,
+                isHooked: updatedUser.isHooked,
+                isSubscribed: true,
+                subscriptionStatus: user.subscriptionStatus
+            }
+            resetZapsOptionsValue(user.accessToken);
+            return res.status(200).send({ status: true, message: `Thanks, You're ready to go.`, token: updatedUser.accessToken , user: sendUserData });
+
+        } else {
+
+            let currentPlanName = getPlanName( user.stripe.plan.id );
+            try {
+                let isAllowed = await checkUserDowngradeAllowed( user.zaps.length, currentPlanName, planName);
+
+            } catch (data) {
+                return res.status(400).send({
+                        message: `You need to delete ${data.zapDiff} ${ data.zapDiff > 1 ? 'zaps': 'zap'} in order to downgrade`,
+                        status: false
+                    })
+            }
+            let sub = await updateSubscription(user.stripe.subscription.id,planId);
+            let updatedUser = await changeUserSubscriptionHistory(sub, user, planName, planId);
+            let sendUserData = {
+                email : updatedUser.email,
+                name : updatedUser.name,
+                isAdmin : updatedUser.isAdmin,
+                isActive : updatedUser.isActive,
+                isSubscribed: true,
+                isHooked: updatedUser.isHooked,
+                subscriptionStatus: user.subscriptionStatus
+            }
+            return res.status(200).send({status: true, message: `Thanks, You're ready to go.`, token: updatedUser.accessToken , user: sendUserData });
+        }
+        
+    } catch (err) {
+        
+        if (customerId) {
+            let delCus = await deleteCustomer(customerId);
+        }
+        return res.status(500).send({status: false, message: err.message});
+    }
  }
 
  /**
@@ -154,36 +202,29 @@ function getAllPlansCtrl (req,res,next){
   * @param {Object} req 
   * @param {Object} res 
   */
- function addNewCardToUser(req,res){
+ async function addNewCardToUser(req,res){
     var token = req.headers.authorization;
     var cardToken = req.body.cardToken;
-    var customerId, thisUser, cardId;
-    Users
-        .findOne({accessToken: token})
-        .select({stripe:1})
-        .then(user=>{
-            customerId = user.stripe.customer.id;
-            thisUser = user;
-            return createSource(customerId,cardToken);
+    var customerId, cardId;
+    try {
+        let user = await Users.findOne({ accessToken : token});
+        
+        customerId = user.stripe.customer.id;
+        let card =  await createSource(customerId,cardToken);
+        cardId = card.id;
+        let defaultCardSource = await defaultSource(customerId, cardId);
+        user.stripe.cards = [];
+        user.stripe.cards.push({
+            id : cardId, isDefault: true
         })
-        .then(card=>{
-            cardId = card.id
-            return defaultSource(customerId,cardId)
-        })
-        .then(confirm=> {
-            thisUser.stripe.cards.forEach(card=>{
-                card.isDefault = false
-            });
-            thisUser.stripe.cards.push({ id : cardId, isDefault: true});
-            return thisUser.save()
-        })
-        .then(done=>{
-            res.status(200).send({message: 'Card Added',status : true})
-        })
-        .catch(err=>{
-            console.log(err);
-            res.status(400).send({message:err.message, status:false});
-        })
+        let updateUser = await user.save();
+        return res.status(200).send({message: 'Card Added',status : true})
+        
+
+    } catch (error) {
+        return res.status(400).send({message: error.message, status: false})
+    }
+    
  };
 /**
  * Function to delete a card 
@@ -320,8 +361,8 @@ function getPlanName(planId) {
  * @param {object} next 
  */
 async function stripeWebhookEventListener(req, res, next){
+
     let signature = req.headers["stripe-signature"];
-    //console.log(req.body);
 
     if(!signature){
         return res.status(403).send('Forbidden!');
@@ -412,6 +453,29 @@ async function customerSubscriptionUpdatedEvent(data){
                 }
             }
 
+            if ((user.subscriptionStatus === 'past_due' || user.subscriptionStatus === 'unpaid') && eventData.status === 'active'){
+
+                let newHistory = {
+                    startDate:  eventData.current_period_start,
+                    endDate:    eventData.current_period_end,
+                    email:      subscriptionHistory.email,
+                    planId:     subscriptionHistory.planId,
+                    planName:   subscriptionHistory.planName,
+                    isTrial:    false,
+                    currentAutomationCount: 0,
+                    order:      subscriptionHistory.order + 1
+                }
+
+                let saveNewHistory = await createUserSubscriptionHistory(newHistory);
+
+                user.subscriptionStatus = eventData.status
+
+                user.currentSubscriptionId = saveNewHistory._id
+
+                let updateUser = await user.save()
+                return 
+            }
+
 
         } else {
                 // subscription  billing cycle change
@@ -474,6 +538,26 @@ async function customerInvoicePaymentFailed(data){
     }
 }
 
+async function payUnpaidInvoices(req, res){
+    let token = req.headers.authorization || req.body.token
+    try {
+        let user = await Users.findOne({accessToken : token});
+        let totalUnpaidInovice = user.stripe.invoices.length
+        if (!totalUnpaidInovice){
+            return res.status(400).send({message: `You don't have any pending invoice`, status: false});
+        }
+        let lastInvoice = user.stripe.invoices[totalUnpaidInovice-1].id;
+        
+        let chargeInvoice = await finalizeInvoice(lastInvoice);
+        user.stripe.invoices = []
+        let updateUser = user.save();
+        
+        return res.status(200).send({message: `Your ready to go`, status: true});
+    } catch (error) {
+        return res.status(400).send({message : error.message, status : false});
+    }
+}
+
 
 
 module.exports = {
@@ -484,5 +568,6 @@ module.exports = {
     deleteUserCard,
     usersDefaultCard,
     getUserDefaultCardInfo,
-    stripeWebhookEventListener
+    stripeWebhookEventListener,
+    payUnpaidInvoices
 }

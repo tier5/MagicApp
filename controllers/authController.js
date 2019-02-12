@@ -52,7 +52,7 @@ async function userRegister(req, res, next) {
         body.stripe.customer = {
             id: customer.id
         }
-        let subscription = await createSubscription(body.stripe.customer.id, body.stripe.plan.id);
+        let subscription = await createSubscription(body.stripe.customer.id, body.stripe.plan.id, true);
         //console.log('subs',subscription);
         body.stripe.subscription = {
             id: subscription.id,
@@ -86,7 +86,6 @@ async function userRegister(req, res, next) {
             isAdmin: user.isAdmin,
             isActive: user.isActive,
             isSubscribed: true,
-            userType: user.userType,
             isHookedUser: user.isHookedUser,
             subscriptionStatus: user.subscriptionStatus
         }

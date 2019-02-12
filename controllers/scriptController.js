@@ -7,6 +7,7 @@ var {findZap, updateCounter}                                = require('./zapCont
 var validation                                              = require('../helpers/validations');
 var {sendDataToZapier}                                      = require('./zapierController');
 var {checkCounterAllowed, updateCurrentAutomationCount}     = require('./userSubscriptionHistoryController');
+var User                                                    = require('../models/users');
 
 /**
  * Function to save script data 
@@ -34,7 +35,11 @@ function saveScriptData(req,res,next){
             return checkCounterAllowed(data.currentSubscriptionId,data.isHookedUser);
         })
         .then(isAllowed => {
-            historyId = isAllowed.data._id;
+            historyId = isAllowed.data._id
+            return User.updateOne({ accessToken : token}, { $set : { currentSubscriptionId : historyId}}, {upsert: false});
+
+            
+        }).then(updated => {
             return  validation.isAllParamsExists(zapParams,scriptParams);
         })
         .then(()=>{

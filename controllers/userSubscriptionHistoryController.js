@@ -66,15 +66,14 @@ async function checkCounterAllowed(id, isHookedUser) {
     return new Promise(async (resolve, reject) => {
         try {
             let history = await getUserSubscriptionHistoryById(id);
-            let now = Date.now();
+            let now = moment().unix();
             let nextMonthDate = moment().add(30, 'days').unix()
             if (history) {
 
-                let isSubscriptionOver = moment(now).isSameOrAfter(history.endDate);
-
+                let isSubscriptionOver = moment(now).isSameOrBefore(history.endDate);
                 if(!isSubscriptionOver) {
                     // subscription is over
-
+                    
                     if (isHookedUser) {
                         
                         let newHistory = {
@@ -88,23 +87,25 @@ async function checkCounterAllowed(id, isHookedUser) {
                             currentAutomationCount: 0,
                             isTrial:                false
                         }
-
-                        if (isSubscriptionOver.isTrial){
-                            newHistory.currentAutomationCount = isSubscriptionOver.currentAutomationCount
+    
+                        if (history.isTrial){
+                            
+                            newHistory.currentAutomationCount = history.currentAutomationCount
                         }
-
+                        
                         let createNewHistory = await createUserSubscriptionHistory(newHistory);
+                        
                         return resolve({data : createNewHistory, message: 'hooked guys are updated'});
-
+                        
                     } else {
                         return reject({message: 'Subscription date exceeded from current date'})
                     }
                     
                 } else {
-
+                    
                     if (history.currentAutomationCount < history.maxAutomationCount) {
                         
-                        return resolve({data : historyUpdated, message: 'hooked guys are updated'});
+                        return resolve({data : history, message: 'Allowed',});
 
                     } else {    
                         // max zap triggered for the month

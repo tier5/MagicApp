@@ -14,6 +14,7 @@ const { createUserSubscriptionHistory,
         removeUserHistory, 
         getUserSubscriptionHistoryById}     = require('./userSubscriptionHistoryController');
 const { emitTotalDataStatistics }           = require('../helpers/socket');
+var {resetZapsOptionsValue}                 = require('./zapController');
 
  /**
   * Function to create a user from a hook
@@ -27,7 +28,6 @@ const { emitTotalDataStatistics }           = require('../helpers/socket');
     };
     if (!email){ return res.status(200).send({message : 'email is required!' , status : false})}
     Users.findOne({email:req.body.email}).then((user)=>{
-        //console.log(user)
         if(user) {
             updateHookedUser(req, res, user);
         } else {
@@ -42,7 +42,6 @@ const { emitTotalDataStatistics }           = require('../helpers/socket');
 
 
  async function createNewHookedUser(req,res){
-    
     try {
         let email = req.body.email;
         let plan  = req.body.plan ? req.body.plan.trim().toUpperCase() : 'STARTER';
@@ -177,9 +176,11 @@ const { emitTotalDataStatistics }           = require('../helpers/socket');
             user.currentSubscriptionId = newSubscriptionHistory._id;
             user.subscriptionStatus = 'active'
             user.isSubscribed = true
+            user.stripe.plan.id = newSubscriptionHistory.planId
         }
         user.name = name
         let update = await user.save();
+        resetZapsOptionsValue(user.accessToken);
         return res.status(200).send({message : 'User updated', http_code: 200, status: true});
         
     } catch (error) {

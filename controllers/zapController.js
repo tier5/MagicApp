@@ -10,6 +10,7 @@ var {sendRefreshStats}          = require('../helpers/socket');
 var {getUserFromToken }         = require('./usersController');
 const Plans                     = require('../config/plans.config');
 const {emitTotalDataStatistics} = require('../helpers/socket');
+const UserHistory               = require('../models/userSubscriptionHistory');
 
 
 /**
@@ -118,7 +119,8 @@ function findZap (zapId){
                     isActive:               1,
                     accessToken:            1,
                     isHookedUser:           1,
-                    currentSubscriptionId:  1
+                    currentSubscriptionId:  1,
+                    isSubscribed: 1
                 }
             },
             { 
@@ -128,11 +130,11 @@ function findZap (zapId){
                     "zaps._id" : id
                 }
             }).then(docs => {
-                
-                if (docs.length && docs[0].isActive){
+                    //console.log(docs);
+                if (docs.length && docs[0].isActive && docs[0].isSubscribed){
                     let accessToken = docs[0].accessToken;
                     let zap = docs[0].zaps;
-                    resolve({ zap:zap, accessToken: accessToken , currentSubscriptionId : currentSubscriptionId , isHookedUser: isHookedUser});
+                    resolve({ zap:zap, accessToken: accessToken , currentSubscriptionId : docs[0].currentSubscriptionId , isHookedUser: docs[0].isHookedUser});
                 } else {
                     reject({ message:'Forbidden', status : false});
                 }
@@ -284,6 +286,40 @@ async function checkZapCreationValidation(accessToken){
 
     })
 }
+/**
+ * Function to 
+ * @param {string} accessToken 
+ */
+async function resetZapsOptionsValue(accessToken){
+    try {
+        let user = await Users.findOne({accessToken : accessToken});
+        let currentSubscriptionId = user.currentSubscriptionId;
+        let history = await UserHistory.findById(currentSubscriptionId);
+        let currentPlan = history.planName;
+        if (currentPlan === 'STARTER'){
+            user.zaps.map(element => {
+                element.magicOption = false
+                element.cookieOption = false
+                element.timeoutOption = false
+                return element
+            });
+            let updUser = await user.save();
+        }
+
+        if (currentPlan === 'STANDARD'){
+            user.zaps.map(element => {
+                element.cookieOption = false
+                element.timeoutOption = false
+                return element
+            });
+            let updUser = await user.save();
+        }
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getZaps,
     createZap,
@@ -293,4 +329,5 @@ module.exports = {
     updateCounter,
     getUserZapsStats,
     checkZapCreationValidation,
+    resetZapsOptionsValue
 }

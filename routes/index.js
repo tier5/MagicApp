@@ -28,7 +28,7 @@ var { getAllPlansCtrl,
       updateUserSubscribtion,
       retriveUsersCard,
       addNewCardToUser,
-      deleteUserCard, usersDefaultCard, 
+      deleteUserCard, payUnpaidInvoices, 
       getUserDefaultCardInfo,
       stripeWebhookEventListener}                    = require('../controllers/stripeController');
 var { userLogin,
@@ -106,6 +106,7 @@ const {overAllStats}                                  = require('../controllers/
   router.post('/cards',isAuthorized,addNewCardToUser);
   router.delete('/cancel-membership', isAuthorized, cancelMembership);
   router.post('/stripe/webhook/events', stripeWebhookEventListener);
+  router.put('/stripe/invoices/pay',isAuthorized, payUnpaidInvoices)
 
 /**
  * WebHooks
@@ -119,7 +120,7 @@ const {overAllStats}                                  = require('../controllers/
    * Tutorials
    */
   router.post('/tutorials',isAuthorized, onlyAdminCan, createTutorial);
-  router.get('/tutorials', isAuthorized, getAllTutorials);
+  router.get('/tutorials',getAllTutorials);
   router.get('/tutorials/:id',isAuthorized, onlyAdminCan, getTutotialById);
   router.put('/tutorials/:id', isAuthorized, onlyAdminCan, updateTutorials);
   router.delete('/tutorials/:id', isAuthorized, onlyAdminCan, deleteTutorial);

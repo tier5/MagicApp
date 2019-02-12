@@ -72,11 +72,11 @@ function getAllPlans() {
  * @param {string} planId
  * @returns Promise
  */
-function createSubscription(customerId, planId) {
+function createSubscription(customerId, planId, trail) {
     return new Promise((resolve, reject) => {
         stripe.subscriptions.create({
             customer: customerId,
-            trial_from_plan: true,
+            trial_from_plan: trail,
             items: [
                 {
                     plan: planId,
@@ -398,9 +398,8 @@ function preAuthCharge(amount, currency, customerId) {
  */
 function finalizeInvoice(id){
     
-    return stripe.invoices.finalizeInvoice(id)
+    return stripe.invoices.pay(id)
 }
-
 module.exports = {
     createCustomer,
     getAllPlans,
