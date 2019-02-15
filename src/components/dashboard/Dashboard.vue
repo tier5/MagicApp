@@ -154,8 +154,8 @@
                     </div>
                   </v-card-text>
                   <v-card-text class="upgrade-box">
-                    <v-btn class="upgrade-button">
-                      <span>Upgrade Membership</span>
+                    <v-btn class="upgrade-button" @click.prevent="changeRouterState('/magic/upgrade-membership')">
+                      <span>Update Membership</span>
                     </v-btn>
                   </v-card-text>
                   <v-card-text class="left-menu">

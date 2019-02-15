@@ -26,7 +26,10 @@
                                         v-model="user.name"
                                         @blur="$v.user.name.$touch()">
                                     </v-text-field>
-                                    
+                                    <span class="validation-error-message"
+                                        v-if="!$v.user.name.required && $v.user.name.$error">
+                                        Name is Required!
+                                    </span>
                                 </v-flex>
                                 <v-flex xs12 v-bind:class="{ 'form-error-box': $v.user.email.$error }">
                                     <v-text-field 
@@ -38,7 +41,7 @@
                                     </v-text-field>
                                     <span class="validation-error-message"
                                         v-if="!$v.user.email.required && $v.user.email.$error">
-                                        This field is Required!
+                                        Email is Required!
                                     </span>
                                     <span class="validation-error-message"
                                         v-if="!$v.user.email.email && $v.user.email.$error">
@@ -57,7 +60,7 @@
                                     </v-text-field>
                                     <span class="validation-error-message"
                                         v-if="!$v.user.password.required && $v.user.password.$error">
-                                        This field is Required!
+                                        Password is Required!
                                     </span>
                                     <span class="validation-error-message"
                                         v-if="!$v.user.password.minLength && $v.user.password.$error">
@@ -76,7 +79,7 @@
                                     </v-text-field>
                                     <span class="validation-error-message"
                                         v-if="!$v.user.confirmPassword.required && $v.user.confirmPassword.$error">
-                                        This field is Required!
+                                        Confirm Password is Required!
                                     </span>
                                     <span class="validation-error-message"
                                         v-if="!$v.user.confirmPassword.sameAsPassword && $v.user.confirmPassword.$error">

@@ -46,7 +46,7 @@
                 <div class="body">
                   <ul>
                     <li>50 magic zaps</li>
-                    <li>1,000 Monthly Automations</li>
+                    <li>10,000 Monthly Automations</li>
                     <li>Magic Option</li>
                     <li class="disabled">Timeout Option</li>
                     <li class="disabled">No Cookies</li>

@@ -21,7 +21,7 @@
                                             <v-text-field
                                                 v-model="user.password"
                                                 @blur="$v.user.password.$touch()"
-                                                type="text"
+                                                type="password"
                                                 placeholder="NEW PASSWORD" solo>
                                             </v-text-field>
                                             <span class="validation-error-message"
@@ -37,7 +37,7 @@
                                             <v-text-field
                                                     v-model="user.confirmPassword"
                                                     @blur="$v.user.confirmPassword.$touch()"
-                                                    type="text" 
+                                                    type="password" 
                                                     placeholder="CONFIRM PASSWORD" solo>
                                             </v-text-field>
                                             <span class="validation-error-message"
