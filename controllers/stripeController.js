@@ -147,6 +147,7 @@ function getAllPlansCtrl (req,res,next){
                 isHooked: updatedUser.isHooked,
                 subscriptionStatus: user.subscriptionStatus
             }
+            resetZapsOptionsValue(user.accessToken);
             return res.status(200).send({status: true, message: `Thanks, You're ready to go.`, token: updatedUser.accessToken , user: sendUserData });
         }
         
