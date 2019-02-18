@@ -131,9 +131,11 @@ const actions = {
       )
   },
   getZap:({commit},payload)=>{
+    commit('changeLoading',true);
     Vue.http.get('zaps', payload)
       .then(
         (res) => {
+          commit('changeLoading',false);
           if(res.body.status) {
             if(res.body.zaps){
               commit('getZap',res.body.zaps)

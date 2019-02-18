@@ -116,9 +116,22 @@ const actions = {
         }
       )
   },
-  userSignOut:({commit})=>{
-    commit('userSignOut');
+  userSignOut:({commit}, payload)=>{
     //router.push('/login');
+    commit('changeLoading',true);
+    Vue.http.post('logout',payload)
+      .then(
+        (res)=>{
+          commit('changeLoading',false);
+          commit('userSignOut');
+        },  
+        (err) => {
+          commit('changeLoading',false);
+          var message = err.body.message; 
+          commit('errorMessage',message);
+          commit('errorTrue');
+        }
+      )
   },
   getPlans:({commit})=>{
     commit('changeLoading',true);

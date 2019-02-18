@@ -305,7 +305,7 @@ export default {
       router.push(path)
     },
     logout(){
-      this.$store.commit('userSignOut');
+      this.$store.dispatch('userSignOut', {});
     },
     openChangePassword(){
       
