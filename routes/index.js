@@ -36,7 +36,8 @@ var { userLogin,
       userForgetPassword,
       userResetPassword,
       userUpdatePassword, 
-      getUserPrimaryData, checkEmailExists}          = require('../controllers/authController');
+      getUserPrimaryData, 
+      checkEmailExists, userLogout}                   = require('../controllers/authController');
 
 var { createUserFromHook,
       deleteUserFromHook,
@@ -64,6 +65,7 @@ const {overAllStats}                                  = require('../controllers/
   router.post('/reset-password/:token',userResetPassword);
   router.put('/change-password',userUpdatePassword);
   router.post('/register/validate-email', checkEmailExists);
+  router.post('/logout',isAuthorized, userLogout);
 
 /**
  * Create, read, update and delete Zaps

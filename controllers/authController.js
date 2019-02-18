@@ -15,6 +15,7 @@ const jwt                                   = require('jsonwebtoken');
 const PLANS                                 = require('../config/plans.config');
 const {createUserSubscriptionHistory}       = require('./userSubscriptionHistoryController');
 const {emitTotalDataStatistics}             = require('../helpers/socket');
+const {createSession, logOutSession}        = require('./sessionController');
 
 /**
  * function to register a user
@@ -89,6 +90,7 @@ async function userRegister(req, res, next) {
             isHookedUser: user.isHookedUser,
             subscriptionStatus: user.subscriptionStatus
         }
+        let sess = await createSession(user.accessToken);
         emitTotalDataStatistics()
         return res.status(200).send({ status: true, message: "User created", token: user.accessToken, user: sendUserData })
 
@@ -138,6 +140,7 @@ async function userLogin(req, res, next) {
                 sendUserData.isSubscribed = true;
 
             }
+            let sess = await createSession(user.accessToken);
             return res.status(200).send({ status: true, message: "success", token: user.accessToken, user: sendUserData })
 
         } else {
@@ -291,6 +294,15 @@ async function checkEmailExists(req, res) {
     }
 }
 
+async function userLogout(req,res){
+    try {
+        let accessToken = req.headers.authorization;
+        let doLogOut = await logOutSession(accessToken);
+        return res.status(200).send({message: 'ok', status: true});
+    } catch (error) {
+        return res.status(500).send({message: error.message, status: false});
+    }
+}
 module.exports = {
     userRegister,
     userLogin,
@@ -298,5 +310,6 @@ module.exports = {
     userResetPassword,
     userUpdatePassword,
     getUserPrimaryData,
-    checkEmailExists
+    checkEmailExists,
+    userLogout
 }
