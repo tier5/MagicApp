@@ -30,6 +30,10 @@
         </v-btn>
       </div>
     </v-card-text>
+    <v-card-text>
+      <Success v-if="isSuccess"/>
+      <Error v-if="isError"/>
+    </v-card-text>
     <!-- AddNewCard Component Model -->
       <addnewcard></addnewcard>
     <!-- AddNewCard Component Model -->
@@ -39,10 +43,14 @@
 <script>
   import AddNewCard from "../../Auth/AddNewCard/AddNewCard.vue";
   import { mapGetters } from 'vuex';
+  import Success from '../../../components/Success.vue';
+  import Error from '../../../components/Error.vue';
 
   export default {
     components: {
-      addnewcard: AddNewCard
+      addnewcard: AddNewCard,
+      Error,
+      Success
     },
     data() {
       return {
@@ -54,7 +62,9 @@
       ...mapGetters([
             'cards',
             'user',
-            'loggedInUserSubscribtions'
+            'loggedInUserSubscribtions',
+            'isError',
+            'isSuccess'
       ])
     },
     methods:{
