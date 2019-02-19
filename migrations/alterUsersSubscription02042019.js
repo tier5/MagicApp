@@ -49,7 +49,7 @@ if (!plan.length){
             isTrial:                false
         }
         let Users = db.collection('users');
-        let allUsers = await Users.find({ name : 'test'}).toArray();
+        let allUsers = await Users.find({ userType : 'paid' }).toArray();
         let user = allUsers[0]
         
         letNotUpdateUser = []
