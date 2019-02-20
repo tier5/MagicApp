@@ -246,7 +246,7 @@
             <v-card-text class="px-0">
               <v-layout row wrap>
                 <v-flex sm6 xs12>
-                  <v-card-text class="search-bar">
+                  <v-card-text class="search-bar" v-if="this.$route.path == '/magic'">
                     <v-text-field placeholder="Search your zaps"  v-model="search" :change="changeSearchZap()"></v-text-field>
                   </v-card-text>
                 </v-flex>
