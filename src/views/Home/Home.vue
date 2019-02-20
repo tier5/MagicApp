@@ -403,7 +403,7 @@
                   </div>
                   <div class="footer-bottom">
                     <span>A marketing effort by</span>
-                    <h5>Jon Vaughn Affiliates</h5>
+                    <h5>Jon Vaughn </h5>
                   </div>
                 </v-card-text>
               </v-flex>
