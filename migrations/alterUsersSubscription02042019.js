@@ -49,8 +49,7 @@ if (!plan.length){
             isTrial:                false
         }
         let Users = db.collection('users');
-        let allUsers = await Users.find({ userType : 'paid' }).toArray();
-        let user = allUsers[0]
+        let allUsers = await Users.find({}).toArray();
         
         letNotUpdateUser = []
         allUsers.forEach(async (user )=> {
@@ -68,6 +67,7 @@ if (!plan.length){
                 }
                 user.stripe.cards = []
                 user.stripe.invoices = []
+                user.userType = 'paid' 
                 let update = await Users.updateOne({ email : user.email}, { $set : {...user}})
             } catch (error) {
                 //console.log(error);
