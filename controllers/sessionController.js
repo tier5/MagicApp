@@ -26,10 +26,10 @@ async function logOutSession(accessToken){
     return new Promise(async (resolve, reject)=>{
         try {
             let getLastLogin = await Sessions.findOne({accessToken : accessToken}).sort({createdAt: -1});
-            if (!Object.keys(getLastLogin).length){
+            if (!getLastLogin){
                 return resolve();
             }
-                getLastLogin.logoutAt = nowTimestamp();
+            getLastLogin.logoutAt = nowTimestamp();
             let save = await getLastLogin.save();
             return resolve(save);
         } catch (error) {
