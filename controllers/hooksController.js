@@ -27,7 +27,8 @@ var {resetZapsOptionsValue}                 = require('./zapController');
         return res.status(200).send({http_code : 200, status :false , message : 'Token mismatch!'})
     };
     if (!email){ return res.status(200).send({message : 'email is required!' , status : false})}
-    Users.findOne({email:req.body.email}).then((user)=>{
+    email = email.toLowerCase();
+    Users.findOne({email:email}).then((user)=>{
         if(user) {
             updateHookedUser(req, res, user);
         } else {
@@ -128,9 +129,9 @@ var {resetZapsOptionsValue}                 = require('./zapController');
         let plan = req.body.plan ? req.body.plan.toUpperCase() : null;
         let totalPlans = ['STARTER', 'STANDARD', 'PROFESSIONAL']
         let name = req.body.name;
-        let email = req.body.email;
+        let email = req.body.email.toLowerCase();
         let changePlan = false
-        if (plan.length && totalPlans.includes(plan)){
+        if (plan && totalPlans.includes(plan)){
             changePlan = true
         }
 
@@ -178,12 +179,15 @@ var {resetZapsOptionsValue}                 = require('./zapController');
             user.isSubscribed = true
             user.stripe.plan.id = newSubscriptionHistory.planId
         }
-        user.name = name
+        if (name){
+            user.name = name
+        }
         let update = await user.save();
         resetZapsOptionsValue(user.accessToken);
         return res.status(200).send({message : 'User updated', http_code: 200, status: true});
         
     } catch (error) {
+        
         return res.status(200).send({ message : 'Server Internal Error', http_code:500, status: false, error : error.message})
     }
  }
