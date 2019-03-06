@@ -70,11 +70,11 @@ const {overAllStats}                                  = require('../controllers/
 /**
  * Create, read, update and delete Zaps
  */
-  router.post('/zaps',isUserSubscribed,createZap)
-  router.get('/zaps',isUserSubscribed,getZaps);
-  router.delete('/zaps/:id',isUserSubscribed,deleteZap);
-  router.put('/zaps/:id',isUserSubscribed,updateZap);
-  router.get('/zaps/stats',isUserSubscribed, getUserZapsStats);
+  router.post('/zaps',isAuthorized,isUserSubscribed,createZap)
+  router.get('/zaps',isAuthorized,isUserSubscribed,getZaps);
+  router.delete('/zaps/:id',isAuthorized,isUserSubscribed,deleteZap);
+  router.put('/zaps/:id',isAuthorized,isUserSubscribed,updateZap);
+  router.get('/zaps/stats',isAuthorized,isUserSubscribed, getUserZapsStats);
 
 // Saves script's data to database
   router.post('/script-data',saveScriptData);
@@ -103,10 +103,10 @@ const {overAllStats}                                  = require('../controllers/
 /**
  * Stripe
  */
-  router.put('/subscriptions',isAuthorized,updateUserSubscribtion);
-  router.get('/cards',isAuthorized, getUserDefaultCardInfo);
-  router.post('/cards',isAuthorized,addNewCardToUser);
-  router.delete('/cancel-membership', isAuthorized, cancelMembership);
+  router.put('/subscriptions',isAuthorized, isUserSubscribed, updateUserSubscribtion);
+  router.get('/cards',isAuthorized, isUserSubscribed,getUserDefaultCardInfo);
+  router.post('/cards',isAuthorized,isUserSubscribed,addNewCardToUser);
+  router.delete('/cancel-membership', isAuthorized,cancelMembership);
   router.post('/stripe/webhook/events', stripeWebhookEventListener);
   router.put('/stripe/invoices/pay',isAuthorized, payUnpaidInvoices)
 

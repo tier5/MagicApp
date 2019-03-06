@@ -55,10 +55,11 @@ function isUserSubscribed(req,res,next){
     var token = req.headers.authorization;
     Users
         .findOne({accessToken : token})
-        .select({userType:1,stripe:1, isSubscribed: 1, isHookedUser: 1})
+        .select({userType:1,stripe:1, isSubscribed: 1, isHookedUser: 1, isActive: 1})
         .then((data)=>{
             if(data.userType == 'paid'){
-                if (!data.isSubscribed){
+                let checkSubscription  = data.isSubscribed && data.isActive ? true : false 
+                if (!checkSubscription){
                     return res.status(400).send({message: 'Your subscription is inactive', status: false});
                 } else {
                     return next()
