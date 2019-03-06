@@ -100,9 +100,6 @@ const mutations = {
             (err) => {
               commit('changeLoading',false);
               var message = err.body.message;
-              if (err.body.data.showRedirect){
-                commit('setShowCardRedirect');
-              }
               commit('errorMessage',message);
               commit('errorTrue');
             }

@@ -145,14 +145,17 @@ const actions = {
           }
         },
         (err) => {
+          commit('changeLoading',false);
           console.log(err.body.message);
         }
       )
   },
   deleteZap:({commit},payload)=>{
+    commit('changeLoading',true);
     Vue.http.delete('zaps/' + payload)
       .then(
         (res) => {
+          commit('changeLoading',false);
           if(res.body.status) {
             commit('deleteZap',payload);
             let message = res.body.message;
@@ -163,6 +166,7 @@ const actions = {
           }
         },
         (err) => {
+          commit('changeLoading',false);
           let message = err.body.message;
           commit('errorMessage',message);
           commit('errorTrue');
