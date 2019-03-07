@@ -32,7 +32,13 @@ if (process.env.NODE_ENV ==='development') {
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Content-Type', 'application/json');
   request.headers.set('Authorization',localStorage.getItem('token'));
-  next()
+  next((response)=>{
+    if (response.status === 401){
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      router.push('/')
+    }
+  })
 });
 
 new Vue({
