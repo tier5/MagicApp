@@ -24,10 +24,11 @@ var {resetZapsOptionsValue}                 = require('./zapController');
     let testTokenNumber  =  '1234511';
     var email = req.body.email;
     if(!token || token !== testTokenNumber){
-        return res.status(200).send({http_code : 200, status :false , message : 'Token mismatch!'})
+        let data = {http_code : 200, status :false , message : 'Token mismatch!'}
+        return res.status(200).send({data: data})
     };
 
-    if (!email){ return res.status(200).send({message : 'email is required!' , status : false})}
+    if (!email){ return res.status(200).send({data: {message : 'email is required!' , status : false, http_code: 200}})}
     email = email.toLowerCase()
     Users.findOne({email: email}).then((user)=>{
         if(user) {
@@ -36,7 +37,8 @@ var {resetZapsOptionsValue}                 = require('./zapController');
             createNewHookedUser(req,res);
         }
     }).catch(err => {
-        res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
+        let data = { message : err.message , http_code : 200, status :false}
+        res.status(200).send({data : data})
     })
     
  };
@@ -48,11 +50,17 @@ var {resetZapsOptionsValue}                 = require('./zapController');
         let email = req.body.email;
         let plan  = req.body.plan ? req.body.plan.trim().toUpperCase() : 'STARTER';
 
-        
         let affiliateId = req.body.aid || null;
         let name = req.body.name ? req.body.name.trim() : 'Hello'
         let accessToken = createAccessToken(email);
-        
+        var token = req.body.token ;
+        let testTokenNumber  =  '1234511';
+         // checking token 
+        if(!token || token != testTokenNumber){
+            return res.status(200).send({data : { http_code : 200, status :false , message : 'Token mismatch!'}})
+        };
+        if (!email){ return res.status(200).send({ data : {message : 'Email is required!' , status : false , http_code: 200}})};
+
         let now = moment().unix();
         let nextMonthDate = function(){
             if (plan === 'STARTER'){
@@ -119,9 +127,9 @@ var {resetZapsOptionsValue}                 = require('./zapController');
         }
         let newUserCreated = await Users.create(newUser);
         emitTotalDataStatistics()
-        return res.status(200).send({http_code : 200, status :true , message : 'User Created'})
+        return res.status(200).send({ data : {http_code : 200, status :true , message : 'User Created'}})
     } catch (error) {
-        res.status(200).send({message : error.message, status:false , http_code:200})
+        res.status(200).send({ data : {message : error.message, status:false , http_code:200} })
     }
  };
 
@@ -131,6 +139,13 @@ var {resetZapsOptionsValue}                 = require('./zapController');
         let totalPlans = ['STARTER', 'STANDARD', 'PROFESSIONAL']
         let name = req.body.name;
         let email = req.body.email;
+        var token = req.body.token ;
+        let testTokenNumber  =  '1234511';
+         // checking token 
+        if(!token || token != testTokenNumber){
+            return res.status(200).send({data : { http_code : 200, status :false , message : 'Token mismatch!'}})
+        };
+        if (!email){ return res.status(200).send({ data : {message : 'Email is required!' , status : false , http_code: 200}})};
         let changePlan = false
         if (plan.length && totalPlans.includes(plan)){
             changePlan = true
@@ -183,10 +198,10 @@ var {resetZapsOptionsValue}                 = require('./zapController');
         user.name = name
         let update = await user.save();
         resetZapsOptionsValue(user.accessToken);
-        return res.status(200).send({message : 'User updated', http_code: 200, status: true});
+        return res.status(200).send({data : {message : 'User updated', http_code: 200, status: true}});
         
     } catch (error) {
-        return res.status(200).send({ message : 'Server Internal Error', http_code:500, status: false, error : error.message})
+        return res.status(200).send({data: { message : error.message, http_code:200, status: false}})
     }
  }
 
@@ -196,17 +211,17 @@ var {resetZapsOptionsValue}                 = require('./zapController');
     var email = req.body.email;
     // checking token 
     if(!token || token != testTokenNumber){
-        return res.status(200).send({http_code : 200, status :false , message : 'Token mismatch!'})
+        return res.status(200).send({data : { http_code : 200, status :false , message : 'Token mismatch!'}})
     };
     // checking email
-    if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
+    if (!email){ return res.status(200).send({ data : {message : 'Email is required!' , status : false , http_code: 200}})};
     email = email.toLowerCase()
     try {
 
         let user = await Users.findOne({email : email });
 
         if (!user) {
-            return res.status(200).send({message: 'User not exists!', status : false, http_code: 200 });
+            return res.status(200).send({data: { message: 'User not exists!', status : false, http_code: 200 }});
         }
         let backUpUser = await userWarehousing(email);
         // remove customer from stripe if exists or else remove the user
@@ -219,11 +234,10 @@ var {resetZapsOptionsValue}                 = require('./zapController');
         let removeThisUser = await removeUser(email);
         let removeHistory = await removeUserHistory(email);
         emitTotalDataStatistics()
-        return res.status(200).send({http_code : 200, status :true , message : 'User deleted!'})
+        return res.status(200).send({data: { http_code : 200, status :true , message : 'User deleted!'}})
 
     } catch (error) {
-        console.log(error);
-        return res.status(200).send({message : 'Something Went Wrong!', http_code : 200, status :false})
+        return res.status(200).send({data : { message : error.message, http_code : 200, status :false}})
     }
  }
 
@@ -233,10 +247,10 @@ var {resetZapsOptionsValue}                 = require('./zapController');
     var email = req.body.email;
     // checking token 
     if(!token || token != testTokenNumber){
-        return res.status(200).send({http_code : 200, status :false , message : 'Token mismatch!'})
+        return res.status(200).send({data: {http_code : 200, status : false , message : 'Token mismatch!'}})
     };
     // checking email
-    if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
+    if (!email){ return res.status(200).send({data: {message : 'email is required!' , status : false, http_code: 200}})};
     email = email.toLowerCase()
 
     Users.findOneAndUpdate({
@@ -247,10 +261,10 @@ var {resetZapsOptionsValue}                 = require('./zapController');
             isActive : false,
         }
     }).then(updated =>{
-        if (!updated) { return res.status(200).send({status : false , message : 'Account not found!'})}
-        return res.status(200).send({ status :true , message : 'Account suspended'});
+        if (!updated) { return res.status(200).send({data: { status : false , message : 'Account not found!', http_code: 200}})}
+        return res.status(200).send({data: { status :true , message : 'Account suspended', http_code: 200}});
     }).catch(error=>{
-        return res.status(200).send({message : 'Server Internal Error!', status:false});
+        return res.status(200).send({ data: { message : error.message, status:false, http_code: 200}});
     })
  }
 
@@ -260,10 +274,10 @@ var {resetZapsOptionsValue}                 = require('./zapController');
     var email = req.body.email;
     // checking token 
     if(!token || token != testTokenNumber){
-        return res.status(200).send({status :false , message : 'Token mismatch!'})
+        return res.status(200).send({ data : { status :false , message : 'Token mismatch!' , http_code: 200}})
     };
     // checking email
-    if (!email){ return res.status(200).send({message : 'email is required!' , status : false})};
+    if (!email){ return res.status(200).send({data :  {message : 'email is required!' , status : false, http_code: 200}})};
     email = email.toLowerCase()
 
     Users.findOneAndUpdate({
@@ -274,10 +288,10 @@ var {resetZapsOptionsValue}                 = require('./zapController');
             isActive: true,
         }
     }).then(updated =>{
-        if (!updated) { return res.status(200).send({ status : false , message : 'Account not found!'})}
-        return res.status(200).send({status : true , message : 'Account unsuspended'});
+        if (!updated) { return res.status(200).send({ data : { status : false , message : 'Account not found!', http_code: 200}})}
+        return res.status(200).send({ data : {status : true , message : 'Account unsuspended', http_code: 200}});
     }).catch(error=>{
-        return res.status(200).send({message : 'Server Internal Error!', status:false});
+        return res.status(200).send({ data : {message : error.message, status:false, http_code: 200}});
     })
  }
 
