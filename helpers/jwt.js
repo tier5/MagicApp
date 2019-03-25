@@ -10,7 +10,7 @@
  * @param {String} email 
  */
  function createAccessToken(email){
-    return jwt.sign({ email},"amagiczap.com");
+    return jwt.sign({ email},process.env.JWT_SECRET);
  }
 
  module.exports = {

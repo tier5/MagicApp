@@ -12,3 +12,11 @@ if (env === 'development' || env === 'test') {
         process.env[key] = envConfig[key];
     });
 }
+
+if (env === 'production' ){
+    var config = require('./index.json');
+    var envConfig = config[env];
+    Object.keys(envConfig).forEach((key) => {
+        process.env[key] = envConfig[key];
+    });
+}

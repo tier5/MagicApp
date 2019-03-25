@@ -168,7 +168,7 @@ function userForgetPassword(req, res) {
         .select({ email: 1 })
         .then(user => {
             if (!user) { return res.status(500).send({ message: 'Email not exists!', status: false }); }
-            var resetToken = jwt.sign({ email: user.email }, "amagiczap.com", { expiresIn: 60 * 60 });
+            var resetToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: 60 * 60 });
             sendForgetPasswordMail(email, resetToken, function (err, info) {
                 if (!err) {
                     res.status(200).send({ message: 'An email has been sent to reset password', status: true });
@@ -190,7 +190,7 @@ function userForgetPassword(req, res) {
 function userResetPassword(req, res) {
     var token = req.headers.authorization || req.params.token;
     var password = req.body.password;
-    jwt.verify(token, 'amagiczap.com', function (err, decoded) {
+    jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
         if (!err) {
             Users
                 .findOne({ email: decoded.email })

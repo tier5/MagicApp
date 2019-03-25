@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV='development' nodemon ./bin/www",
-    "prod": "NODE_ENV='production' node ./bin/www",
-    "start": "node ./bin/www"
+    "prod": "NODE_ENV='production' && pm2 start ./bin/www",
+    "start": "node ./bin/www",
+    "stage": "NODE_ENV='stagging' && pm2 start ./bin/www"
   },
   "dependencies": {
     "assert": "^1.4.1",

@@ -1,11 +1,30 @@
 {
     "development":{
         "DB_NAME":"magicAppDb",
-        "DB_USER":"root",
-        "DB_PASS":"root",
+        "DB_USER":"tier5",
+        "DB_PASS":"passw0rd",
         "DB_HOST":"localhost",
-        "JWT_SECRET":"qwertyuiopasdfghjklzxcvbnm",
-        "STRIPE_KEY": "sk_test_un7R5V4zG4n3bmwoYNbK8ME6",
-        "WEBHOOK_SECRET": "whsec_kKKlNhViHlVbPwNFt1qyyJHJQ3NRWf66"
+        "JWT_SECRET":"amagiczap.com",
+        "STRIPE_KEY": "sk_live_0YLtHTxwdciaTkOVGFzmRLtj",
+        "STRIPE_SECRET": "jnahsgfdhjasgdsadgdfad",
+        "WEBHOOK_SECRET": "jasgdhasdhasgdjasdvsa"
+    },
+    "production": {
+        "DB_NAME": "db-name",
+        "DB_USER": "db-user-name",
+        "DB_PASS":"db-password",
+        "DB_HOST":"db-host",
+        "JWT_SECRET":"amagiczap.com",
+        "STRIPE_KEY": "stripe-public-key",
+        "WEBHOOK_SECRET": "whsec_jhafgshndgvasdhjafsgdasgf"
+    },
+    "stagging": {
+        "DB_NAME": "db-name",
+        "DB_USER": "db-user-name",
+        "DB_PASS":"db-password",
+        "DB_HOST":"db-host",
+        "JWT_SECRET":"amagiczap.com",
+        "STRIPE_KEY": "stripe-public-key",
+        "WEBHOOK_SECRET": "whsec_jhafgshndgvasdhjafsgdasgf"
     }
 }
