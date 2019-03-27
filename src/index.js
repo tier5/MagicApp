@@ -1,10 +1,13 @@
 import _ from 'lodash';
-import newInstance from './vue_instance.js';
-function component() {
-  let element = document.createElement('mynewcomponent');
-  element.innerHTML = _.join(['Hello', 'Word'], ' ');
+import Vue from 'vue'
 
-  return element;
-}
-console.log('basic setup for creating any script for doing something in client side');
-document.body.appendChild(component());
+var container = document.createElement('div');
+container.setAttribute("id", "app");
+document.body.appendChild(container);
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Magic App Script loaded Successfully'
+  }
+})
