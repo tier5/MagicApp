@@ -24,6 +24,8 @@ import LockedAccount from '../components/dashboard/LockedAccount/LockedAccount.v
 import CancelMembershipConfirmation from '../components/dashboard/CancelMembershipConfirmation/CancelMembershipConfirmation.vue';
 import CancelMembership from '../components/dashboard/CancelMembership/CancelMembership.vue';
 import EditProfile from '../components/dashboard/EditProfile/EditProfile.vue';
+import Policy from '../components/Common/Policy.vue'
+import TermsAndCondition from '../components/Common/TermsAndCondition.vue'
 
 Vue.use(Router);
 
@@ -60,6 +62,16 @@ export default new Router({
       path: '/signup-payment-failure',
       name: 'SignUpPaymentFailure',
       component: SignUpPaymentFailure,
+    },
+    {
+      path: '/policy',
+      name: 'Policy',
+      component: Policy,
+    },
+    {
+      path: '/terms-and-conditions',
+      name: 'TermsAndCondition',
+      component: TermsAndCondition,
     },
     {
       path: '/magic',
