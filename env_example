@@ -1,0 +1,5 @@
+VUE_APP_URL = 'https://www.amagiczap.com'
+VUE_APP_DEV_API_ENDPOINT = 'http://localhost:3000/api/'
+VUE_APP_PROD_API_ENDPOINT = 'http://localhost:3000/api/'
+VUE_APP_SOCKET_ENDPOINT = 'http://localhost:3000'
+VUE_APP_STRIPE_KEY = 'pk_test_aFYmaDW3rf5AHh7MkX2BSshB'
