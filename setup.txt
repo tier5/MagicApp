@@ -1,0 +1,13 @@
+SETUP MAGIC ZAP APP IN UBUNTU MACHINES 18.04
+
+1. git clone git@github.com:tier5/MagicApp.git && cd MagicApp
+
+2. git checkout stage
+
+3. sudo chmod a+x setup.sh
+
+4. bash setup.sh
+
+5. Chill............
+
+IF you have any problem google the proplem before asking someone
