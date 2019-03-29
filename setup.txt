@@ -9,5 +9,3 @@ SETUP MAGIC ZAP APP IN UBUNTU MACHINES 18.04
 4. bash setup.sh
 
 5. Chill............
-
-IF you have any problem google the proplem before asking someone
