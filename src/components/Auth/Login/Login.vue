@@ -61,7 +61,7 @@
                                                 >
                                                 <img src="../../../assets/images/lock.png" alt="login">login
                                             </v-btn>
-                                            <span>Don't have an account?<a href="/register"> sign up now!</a></span>
+                                            <span>Don't have an account?<a click.prevent="signUp()"> sign up now!</a></span>
                                         </v-layout>
                                     </v-container>
                                 </v-form>
@@ -74,12 +74,14 @@
                 </v-card>
             </v-dialog>
         </v-layout>
+        <ForgetPassword />
    </div>
  </template> 
 
 <script>
     import Success from '../../../components/Success.vue';
     import Error from '../../../components/Error.vue';
+    import ForgetPassword from '../ForgetPassword/ForgetPassword.vue';
     import { required, email} from 'vuelidate/lib/validators';
     import {mapGetters} from 'vuex';
     export default {
@@ -99,7 +101,8 @@
         components: {
             // Loader,
              Success,
-             Error
+             Error,
+             ForgetPassword
         },
         computed: {
             // mix the getters into computed with object spread operator
@@ -118,6 +121,9 @@
             openForgetPassword(){
                 this.$store.commit('changeForgetPassword', true);
                 this.closeModal();
+            },
+            signUp(){
+                this.$store.commit("changeRoute", "/register");
             }
         },
         validations:{

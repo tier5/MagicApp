@@ -1,6 +1,7 @@
 .privacy {
     max-width: 1205px;
     margin: 80px auto;
+    text-align: justify
 }
 
 .ppTacPage strong {
@@ -92,7 +93,9 @@ margin-left: 40px;
 .ppTacPage .gdprList {
     margin: 25px 0;
 }
-
+.first-section{
+    background-size: 100% auto;
+}
 @media screen and (max-width: 1405px) {
     .privacy {
     margin-left: 20px;
