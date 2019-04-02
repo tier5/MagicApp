@@ -64,7 +64,7 @@ export default new Router({
       component: SignUpPaymentFailure,
     },
     {
-      path: '/policy',
+      path: '/privacy-policy',
       name: 'Policy',
       component: Policy,
     },

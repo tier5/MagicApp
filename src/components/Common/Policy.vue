@@ -7,8 +7,10 @@
             <v-card-text class="top-bar">
               <v-layout row wrap>
                 <v-flex md6 sm12>
-                  <div class="logo">
-                    <img src="../../assets/images/dashboard-logo.png" class="logo" alt="Logo">
+                  <div class="logo" @click="customRouter('/')">
+                    <a>
+                      <img src="../../assets/images/dashboard-logo.png" class="logo" alt="Logo">
+                    </a>
                   </div>
                 </v-flex>
                 <v-flex md6 hidden-sm-and-down>
