@@ -98,7 +98,7 @@
                                 </v-flex>
                                 <v-flex xs12>
                                     <p>Already have an account?<a @click.prevent="openLogin"> Login </a>in here.</p>
-                                    <p>By creating your account to use Magiczap, you are agreeing to our <a @click.prevent="changeRoute('/terms-and-conditions')"> Terms of Service </a>and <a @click.prevent="changeRoute('/policy')">Privacy Policy</a></p>
+                                    <p>By creating your account to use Magiczap, you are agreeing to our <a @click.prevent="changeRoute('/terms-and-conditions')"> Terms of Service </a>and <a @click.prevent="changeRoute('/privacy-policy')">Privacy Policy</a></p>
                                 </v-flex>
                             </v-layout>
                         </v-container>
