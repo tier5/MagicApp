@@ -5,7 +5,9 @@
             <v-flex lg4 md12 class="left-side">
                 <v-card-text>
                     <div class="form-top">
-                        <img src="../../../assets/images/dashboard-logo.png" alt="Header Logo" class="header-logo">
+                        <a @click.prevent="changeRoute('/')">
+                            <img src="../../../assets/images/dashboard-logo.png" alt="Header Logo" class="header-logo">
+                        </a>
                         <p>Magic Zap is a very powerful and magical software. Magic Zap will allow you to present personalised dynamic websites to your visitors. Start your 14 day free trial and <span>pay nothing today!</span> </p>
                     </div>
                     <div class="trial">
@@ -166,6 +168,9 @@
                     this.$refs.cardNumber.focus()
                 }
             }
+        },
+        changeRoute(path){
+            this.$store.commit('changeRoute', path);
         },
         register(){
             this.complete = false

@@ -10,7 +10,9 @@
             <v-flex md3 class="left-side">
                 <v-card-text>
                     <div class="form-top">
-                        <img src="../../../assets/images/dashboard-logo.png" alt="Header Logo" class="header-logo">
+                        <a @click.prevent="changeRoute('/')">
+                            <img src="../../../assets/images/dashboard-logo.png" alt="Header Logo" class="header-logo">
+                        </a>
                         <p>Sign Up to Magic Zap to Start Your <span>14 days FREE Trial</span> </p>
                     </div>
                     <v-form @submit.prevent="checkSignUp()">
@@ -96,7 +98,7 @@
                                 </v-flex>
                                 <v-flex xs12>
                                     <p>Already have an account?<a @click.prevent="openLogin"> Login </a>in here.</p>
-                                    <p>By creating your account to use Magiczap, you are agreeing to our <a @click.prevent="changeRoute('/terms-and-conditions')"> Terms of Service </a>and <a @click.prevent="changeRoute('/privacy-policy')">Privacy Policy</a></p>
+                                    <p>By creating your account to use Magiczap, you are agreeing to our <a @click.prevent="changeRoute('/terms-and-conditions')"> Terms of Service </a>and <a @click.prevent="changeRoute('/policy')">Privacy Policy</a></p>
                                 </v-flex>
                             </v-layout>
                         </v-container>
