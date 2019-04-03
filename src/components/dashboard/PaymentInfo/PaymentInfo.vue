@@ -3,7 +3,10 @@
     <v-card-text class="paymentinfo">
       <div class="center-block">
         <h1>My payment information</h1>
-        <p>You have attached below card informations with your account</p>
+        <div>
+          <p v-if="cards.length">You have attached below card informations with your account</p>
+          <p v-else> You haven't attached any card with your account</p>
+        </div>
         <v-layout row wrap class="eachblock checked" v-if="cards.length"> 
           <!-- <v-flex md3 xs12>
             <v-radio-group v-model="card.defaultCard">
@@ -22,7 +25,7 @@
             <h2>{{cards[0].exp_month}}/{{cards[0].exp_year}}</h2>
           </v-flex>
         </v-layout>
-        <v-btn class="submit-btn"  @click="openAddNewCardModal()" v-if="!user.isHookedUser && !user.isAdmin">
+        <v-btn class="submit-btn"  @click="openAddNewCardModal()" v-if="cards.length">
           <span >Update Card</span>
         </v-btn>
         <v-btn class="submit-btn"  @click="payUnpaidInvoices()" v-if="loggedInUserSubscribtions.subscriptionStatus =='unpaid' || loggedInUserSubscribtions.subscriptionStatus=='past_due'">

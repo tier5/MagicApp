@@ -96,6 +96,30 @@ margin-left: 40px;
 .first-section{
     background-size: 100% auto;
 }
+.acceptanceTxt {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    p{
+        font-family: 'Avenir LT Std 65 Medium';
+        color: #748eac;
+        font-size: 14px;
+        margin: 20px 0;
+        text-align: center;
+
+        a{
+            color: #ff6100;
+            text-decoration: underline;
+
+
+            &:hover {
+                color: #333;
+            }
+        }
+    }
+}
 @media screen and (max-width: 1405px) {
     .privacy {
     margin-left: 20px;

@@ -355,6 +355,11 @@
                 </v-card-text>
               </v-flex>
             </v-layout>
+            <v-flex md12 xs12 class="acceptanceTxt">
+              <div class="container">
+                <p>By creating your account to use Magiczap, you are agreeing to our <a @click.prevent="customRouter('/terms-and-conditions')"> Terms of Service </a>and <a @click.prevent="customRouter('/privacy-policy')">Privacy Policy</a></p>
+              </div>
+            </v-flex>
           </v-card>
         </v-flex>
       </v-layout>
