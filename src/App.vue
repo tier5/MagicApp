@@ -5,13 +5,14 @@
         <v-content>
           <router-view/>
         </v-content>
-       
+        <CookiePolicyComponent v-if="!cookiePolicy" />
     </v-app>
   </div> 
 </template>
 
 <script>
 import Loader from './components/Loader.vue';
+import CookiePolicyComponent from './components/Common/CookiePolicy.vue';
 import { mapGetters } from 'vuex';
 export default {
   name: 'App',
@@ -22,11 +23,16 @@ export default {
   },
   computed:{
     ...mapGetters([
-            'isLoading'
+            'isLoading',
+            'cookiePolicy'
     ])
   },
   components:{
-    Loader
+    Loader,
+    CookiePolicyComponent
+  },
+  created(){
+    this.$store.commit('checkCookiePolicy');
   }
 };
 </script>

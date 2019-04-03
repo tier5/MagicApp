@@ -6,7 +6,8 @@ const state = {
   successMessage:'',
   errorMessage:'',
   isAlertPopUpOpen: false,
-  alertMessage:''
+  alertMessage:'',
+  cookiePolicy: false
 }
 const getters = {
   isSuccess:state => state.isSuccess,
@@ -14,7 +15,8 @@ const getters = {
   successMessage: state => state.successMessage,
   errorMessage: state => state.errorMessage,
   isAlertPopUpOpen: state => state.isAlertPopUpOpen,
-  alertMessage: state => state.alertMessage
+  alertMessage: state => state.alertMessage,
+  cookiePolicy: state => state.cookiePolicy
 }
 
 const mutations = {
@@ -39,7 +41,17 @@ const mutations = {
   successMessage:(state,payload) => state.successMessage = payload ,
   errorMessage:(state,payload) => state.errorMessage = payload,
   changeIsAlertPopUpOpen : (state, payload)=> state.isAlertPopUpOpen = payload,
-  addAlertMessage: (state, payload)=> state.alertMessage = payload
+  addAlertMessage: (state, payload)=> state.alertMessage = payload,
+  acceptCookiePolicy:(state)=> {
+    state.cookiePolicy = true
+    localStorage.setItem('cookie_accepted_at', new Date());
+  },
+  checkCookiePolicy:(state)=>{
+    let data = localStorage.getItem('cookie_accepted_at');
+    if (data){
+      state.cookiePolicy = true
+    }
+  }
 }
 const actions = {}
 
