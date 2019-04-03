@@ -321,10 +321,10 @@ async function cancelMembership(req, res){
             return res.status(400).send({message: 'Bad request', status: false});
         }
         let customerId = thisUser.stripe.customer ? thisUser.stripe.customer.id : null;
-        if (!customerId){
-            return res.status(400).send({message: 'Bad request', status: false});
+        if (customerId){
+            let deleteCustomerFromStripe = await deleteCustomer(customerId);
         }
-        let deleteCustomerFromStripe = await deleteCustomer(customerId);
+        
         let deleteUserFromDB = await removeUser(thisUser.email);
         emitTotalDataStatistics()
         return res.status(200).send({message: 'Deleted', status: true , data: { name : thisUser.name}});
