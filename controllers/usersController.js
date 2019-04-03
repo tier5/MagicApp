@@ -11,6 +11,8 @@ const {deleteCustomer}          = require('../helpers/stripe');
 const Plans                     = require('../config/plans.config');
 const UserSubscriptionHistory   = require('../models/userSubscriptionHistory');
 const {emitTotalDataStatistics} = require('../helpers/socket');
+const moment                    = require('moment');
+const {createUserSubscriptionHistory} = require("./userSubscriptionHistoryController");
 
 
  /**
@@ -18,29 +20,98 @@ const {emitTotalDataStatistics} = require('../helpers/socket');
   * @param {object} req 
   * @param {object} res 
   */
- function createUser(req,res){ 
-    var body = req.body;
-    body.userType = 'free' ;// free user is created by admin and can access the system without any payment
-    body.accessToken = createAccessToken(body.email);
-    var user = new Users(body);
-    user.save()
-        .then(docs=>{
-            var data = _.pick(docs, ['_id', 'userType','isActive','email', 'name']);
-            res.status(200).send({status: true, message: 'users created', data :data });
-        })
-        .catch(err=>{
-            
-            for (var prop in err.errors){
-                var errorMessage = err.errors[prop].message;
-                break ;
+ async function createUser(req,res){ 
+    try {
+        var body = req.body;
+        body.userType = 'paid' ;// free user is created by admin and can access the system without any payment
+        let {email} = req.body;
+        let accessToken = createAccessToken(body.email);
+        let plan =req.body.plan ? req.body.plan.trim().toUpperCase() : 'PROFESSIONAL';
+        let now = moment().unix();
+            let nextMonthDate = function(){
+                if (plan === 'STARTER'){
+                    return moment().add(14, 'days').unix();
+                } else {
+                return moment().add(30, 'days').unix();
+                }
             }
-            if (err.code== 11000){
-                errorMessage = 'Email already taken'
-            }
-            var message = errorMessage ? errorMessage : 'Something Went Wrong!';
-            res.status(400).send({message : message, status:false});
-        });
+            let findPlan = Plans.filter(o =>  o.planName == plan);
+            let planId = findPlan[0].stripePlanId
+            let planName = findPlan[0].planName;
 
+            let newCustomerHistory = {
+                startDate:  now,
+                endDate:    nextMonthDate(),
+                email:      email,
+                planId:     planId,
+                planName:   planName,
+                order:      1,
+                isTrial: false
+            }
+
+            if (planName === 'STARTER'){
+                newCustomerHistory.isTrial = true
+            }
+
+
+            if(planName === 'PROFESSIONAL'){
+                newCustomerHistory.maxAutomationCount = 10**10**10
+            }
+            
+            if(planName === 'STANDARD') {
+                newCustomerHistory.maxAutomationCount = 10000
+            }
+
+        let createNewHistory = await createUserSubscriptionHistory(newCustomerHistory);
+        let newUser = {
+            email: body.email,
+            name: body.name,
+            password: body.password,
+            userType: 'paid',
+            isSubscribed: true,
+            affiliateId: body.affiliateId,
+            accessToken: accessToken,
+            currentSubscriptionId: createNewHistory._id,
+            isHookedUser: true,
+            stripe: {
+                customer: {
+                    id : null
+                },
+                subscription :{
+                    id : null
+                },
+                plan: {
+                    id : planId
+                },
+                cards:[],
+                invoices:[]
+            }
+        };
+        if (plan === 'STARTER'){
+            newUser.subscriptionStatus = 'trialing'
+        }
+        var user = new Users(newUser);
+        user.save()
+            .then(docs=>{
+                var data = _.pick(docs, ['_id', 'userType','isActive','email', 'name']);
+                res.status(200).send({status: true, message: 'users created', data :data });
+            })
+            .catch(err=>{
+                
+                for (var prop in err.errors){
+                    var errorMessage = err.errors[prop].message;
+                    break ;
+                }
+                if (err.code== 11000){
+                    errorMessage = 'Email already taken'
+                }
+                var message = errorMessage ? errorMessage : 'Something Went Wrong!';
+                return res.status(400).send({message : message, status:false});
+                
+            });
+    } catch (error) {
+        return res.status(400).send({message : error.message, status:false});
+    }
  };
  /**
  * function to get users list
