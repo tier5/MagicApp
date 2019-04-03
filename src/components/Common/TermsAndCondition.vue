@@ -17,6 +17,8 @@
                   <v-toolbar>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
+                      <v-btn flat v-if="!isAuthenticated" @click="customRouter('/#feature')">Features</v-btn>
+                      <v-btn flat v-if="!isAuthenticated" @click="customRouter('/#pricing')">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
                       <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/register')">14 day free trial</span>
                       <span
@@ -369,6 +371,9 @@ export default {
     },
     created(){
         //this.$store.commit('checkUserAuthentication');
+        this.$store.commit('checkCookiePolicy');
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     }
 }
 </script>

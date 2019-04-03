@@ -28,7 +28,7 @@ export default {
     },
     methods:{
         acceptCookie(){
-            this.$store.commit("acceptCookiePolicy");
+            this.$store.commit("acceptCookiePolicy")
         }
     }
 }
