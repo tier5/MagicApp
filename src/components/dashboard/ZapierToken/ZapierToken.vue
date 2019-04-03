@@ -38,6 +38,9 @@ export default {
         'token',
         'user'
       ])
+  },
+  mounted(){
+    this.$store.commit('checkCookiePolicy');
   }
 };
 </script>

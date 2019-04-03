@@ -237,6 +237,9 @@
     components:{
       Success,
       Error
+    },
+    mounted(){
+      this.$store.commit('checkCookiePolicy');
     }
   }
 </script>

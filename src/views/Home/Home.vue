@@ -493,6 +493,9 @@ export default {
     this.socket.on('overall-stats',(data)=> {
       this.$store.commit('changeOverallStats', data);
     })
+  },
+  mounted(){
+    this.$store.commit('checkCookiePolicy');
   }
 };
 </script>

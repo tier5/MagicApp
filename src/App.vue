@@ -33,6 +33,9 @@ export default {
   },
   created(){
     this.$store.commit('checkCookiePolicy');
+  },
+  mounted(){
+    this.$store.commit('checkCookiePolicy');
   }
 };
 </script>

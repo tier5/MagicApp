@@ -348,10 +348,12 @@ export default {
   },
   mounted(){
     this.$store.dispatch('getUserPrimaryData', {});
+    this.$store.commit('checkCookiePolicy');
     this.socket.emit('join', { user : this.user.email});
     this.socket.on('refresh-stats',(data)=> {
       this.$store.dispatch('getZapStats',{});
       this.$store.dispatch('getZap',this.user);
+
     })
   }
 };

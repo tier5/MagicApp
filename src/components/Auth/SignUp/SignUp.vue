@@ -170,6 +170,9 @@
                 sameAsPassword: sameAs('password')
             }
         }
+    },
+    mounted(){
+        this.$store.commit('checkCookiePolicy');
     }
   };
 </script>

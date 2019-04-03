@@ -77,6 +77,9 @@
     },
     created(){
       this.$store.dispatch('getUserCards',{});
+    },
+    mounted(){
+      this.$store.commit('checkCookiePolicy');
     }
   };
 </script>

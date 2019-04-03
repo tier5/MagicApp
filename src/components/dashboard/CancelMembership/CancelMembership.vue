@@ -103,6 +103,9 @@
     },
     created(){
 
+    },
+    mounted(){
+      this.$store.commit('checkCookiePolicy');
     }
   };
 </script>

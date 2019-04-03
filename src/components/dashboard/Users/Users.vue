@@ -210,6 +210,9 @@
     created(){
       this.$store.dispatch('getUsers');
     },
+    mounted(){
+      this.$store.commit('checkCookiePolicy');
+    },
     components:{
       Success,
       Error

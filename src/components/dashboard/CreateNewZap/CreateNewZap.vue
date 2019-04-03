@@ -455,6 +455,9 @@ export default {
         required
       }
     }
+  },
+  mounted(){
+    this.$store.commit('checkCookiePolicy');
   }
 };
 </script>

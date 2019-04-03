@@ -73,6 +73,9 @@ export default {
   created() {
     this.$store.dispatch('getTutorials',{});
   },
+  mounted(){
+    this.$store.commit('checkCookiePolicy');
+  }
 }
 </script>
 <style lang="scss">

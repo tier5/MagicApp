@@ -50,6 +50,8 @@ const mutations = {
     let data = localStorage.getItem('cookie_accepted_at');
     if (data){
       state.cookiePolicy = true
+    } else {
+      state.cookiePolicy = false
     }
   }
 }

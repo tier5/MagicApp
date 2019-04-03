@@ -433,6 +433,9 @@ export default {
         this.newZap = this.zap;
       
     },
+    mounted(){
+      this.$store.commit('checkCookiePolicy');
+    },
     destroyed: function(){
       this.$store.commit('viewZap',{});
     }

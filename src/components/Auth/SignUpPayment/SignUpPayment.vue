@@ -202,6 +202,9 @@
         number () { this.update() },
         expiry () { this.update() },
         cvc () { this.update() }
+    },
+    mounted(){
+        this.$store.commit('checkCookiePolicy');
     }
   };
 </script>

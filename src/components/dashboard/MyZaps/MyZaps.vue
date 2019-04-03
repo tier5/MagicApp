@@ -313,6 +313,9 @@ export default {
   },
   created() {
     this.$store.dispatch("getZap", this.user);
+  },
+  mounted(){
+    this.$store.commit('checkCookiePolicy');
   }
 };
 </script>

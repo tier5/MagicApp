@@ -177,6 +177,9 @@
     },
     created(){
       this.currentPlan = this.loggedInUserSubscribtions.currentPlanName;
+    },
+    mounted(){
+      this.$store.commit('checkCookiePolicy');
     }
   };
 </script>
