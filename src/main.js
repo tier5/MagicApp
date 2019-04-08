@@ -8,7 +8,7 @@ import App from './App.vue';
 import router from './router/index';
 import store from './store/index';
 import VueAnimate from 'vue-animate-scroll';
-import './registerServiceWorker';
+// import './registerServiceWorker';
 
 import '../node_modules/jquery/dist/jquery';
 import '../node_modules/lity/dist/lity.min.css';
