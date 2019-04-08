@@ -15,7 +15,7 @@
                   <v-toolbar>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                      <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetFeature, options)">Features</v-btn>
+                      <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetFeature, options)">Features 1</v-btn>
                       <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetPricing, options)">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
                       <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/register')">14 day free trial</span>
@@ -308,7 +308,7 @@
               </v-flex>
               <v-flex md7>
                 <v-card-text class="simple-text">
-                  <h2>We are loved by 10k+ clients worldwide</h2>
+                  <h2>We are loved by {{overallStats.totalUsers}} clients worldwide</h2>
                   <v-layout row wrap>
                     <v-flex md2 sm2 xs3>
                       <div class="image">
