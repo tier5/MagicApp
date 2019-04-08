@@ -2,7 +2,7 @@
 echo '-------------------Installing api packages----------------------------'
 sudo npm install
 echo '-------------------Moving to frontend---------------------------------'
-cd public/frontend/
+cd public/MagicApp/
 echo '-------------------Installing Frontend npm packages ------------------'
 npm install
 echo '-------------Building the frontend------------------------------------'
@@ -13,4 +13,4 @@ echo '-------------Installing and building the magicscript------------------'
 cd ../script/
 npm install 
 npm run build
-mv -v ./dist ../frontend/dist/mscript
+mv -v ./dist ../MagicApp/dist/mscript
