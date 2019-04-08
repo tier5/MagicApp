@@ -15,7 +15,7 @@
                   <v-toolbar>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                      <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetFeature, options)">Features 1</v-btn>
+                      <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetFeature, options)">Features</v-btn>
                       <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetPricing, options)">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
                       <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/register')">14 day free trial</span>
