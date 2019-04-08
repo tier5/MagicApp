@@ -61,7 +61,7 @@
                                                 >
                                                 <img src="../../../assets/images/lock.png" alt="login">login
                                             </v-btn>
-                                            <span>Don't have an account?<a click.prevent="signUp()"> sign up now!</a></span>
+                                            <span>Don't have an account? <a @click.prevent="signUp()">sign up now!</a> </span>
                                         </v-layout>
                                     </v-container>
                                 </v-form>

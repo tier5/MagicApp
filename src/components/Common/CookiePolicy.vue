@@ -74,7 +74,9 @@ export default {
     max-width: 1205px;
     margin: 0 auto;
 }
-
+.cookieCompliance .container p{
+    margin-bottom: 0;
+}
 .cookieCompliance p {
     font-size: 13px;
     color: #fff;
