@@ -139,6 +139,7 @@
         <Login></Login>
         <ForgetPassword />
     <!-- End of Child Components -->
+    <div class="fb-customerchat fb_invisible_flow" page_id="205868603526267" ref="b64:V2VsY29tZSBtZXNzYWdl"></div>
   </div>
 </template>
 
@@ -192,11 +193,12 @@ export default {
         document.documentElement.scrollTop = 0;
     }, 
     mounted(){
-        var div = document.createElement('div');
-        div.className = 'fb-customerchat';
-        div.setAttribute('page_id', '205868603526267');
-        div.setAttribute('ref', 'b64:V2VsY29tZSBtZXNzYWdl');
-        document.body.appendChild(div);
+        // var div = document.createElement('div');
+        // div.className = 'fb-customerchat';
+        // div.setAttribute('page_id', '205868603526267');
+        // div.setAttribute('ref', 'b64:V2VsY29tZSBtZXNzYWdl');
+        // document.body.appendChild(div);
+        // console.log(div);
         window.fbMessengerPlugins = window.fbMessengerPlugins || {
         init: function () {
             FB.init({
@@ -223,12 +225,12 @@ export default {
         }, 0);
     },
     destroyed(){
-        let nodes = document.getElementsByClassName('fb-customerchat');
-        if (nodes.length){
-            for(let i = 0; i < nodes.length; i ++){
-                nodes[i].remove()
-            }
-        }
+        // let nodes = document.getElementsByClassName('fb-customerchat');
+        // if (nodes.length){
+        //     for(let i = 0; i < nodes.length; i ++){
+        //         nodes[i].remove()
+        //     }
+        // }
     }
 }
 </script>
