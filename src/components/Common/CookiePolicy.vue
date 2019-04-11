@@ -51,6 +51,7 @@ export default {
     transition: transform ease-in-out 0.4s, -webkit-transform ease-in-out 0.4s;
     -webkit-transform: translateY(200%);
     transform: translateY(200%);
+    z-index: 9;
 }
 
 .showCookie {
