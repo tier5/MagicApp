@@ -25,7 +25,8 @@ import CancelMembershipConfirmation from '../components/dashboard/CancelMembersh
 import CancelMembership from '../components/dashboard/CancelMembership/CancelMembership.vue';
 import EditProfile from '../components/dashboard/EditProfile/EditProfile.vue';
 import Policy from '../components/Common/Policy.vue'
-import TermsAndCondition from '../components/Common/TermsAndCondition.vue'
+import TermsAndCondition from '../components/Common/TermsAndCondition.vue';
+import SupportComponent from '../components/Common/Support.vue';
 
 Vue.use(Router);
 
@@ -72,6 +73,11 @@ export default new Router({
       path: '/terms-and-conditions',
       name: 'TermsAndCondition',
       component: TermsAndCondition,
+    },
+    {
+      path: '/support',
+      name: 'Support',
+      component: SupportComponent,
     },
     {
       path: '/magic',

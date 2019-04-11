@@ -20,6 +20,7 @@
                       <v-btn flat v-if="!isAuthenticated" @click="customRouter('/#feature')">Features</v-btn>
                       <v-btn flat v-if="!isAuthenticated" @click="customRouter('/#pricing')">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
+                      <v-btn flat  @click="customRouter('/support')">Support</v-btn>
                       <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/register')">14 day free trial</span>
                       <span
                         class="loginbtn"
@@ -62,6 +63,18 @@
                       </v-card-text>
                       <v-card-text class="left-menu">
                         <ul>
+                          <li v-if="!isAuthenticated" @click="customRouter('/#feature')">
+                            <img src="../../assets/images/icon-zap.png" alt="icon" class="icon-zap">
+                            <span>Features</span>
+                          </li>
+                          <li v-if="!isAuthenticated" @click="customRouter('/#pricing')">
+                            <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                            <span>Pricing</span>
+                          </li>
+                          <li @click="customRouter('/support')">
+                            <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                            <span>Support</span>
+                          </li>
                           <li v-if="!isAuthenticated" @click="customRouter('/register')">
                             <span class="freetrialbtn">14 day free trial</span>
                           </li>

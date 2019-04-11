@@ -18,6 +18,7 @@
                       <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetFeature, options)">Features</v-btn>
                       <v-btn flat v-if="!isAuthenticated" @click="$vuetify.goTo(targetPricing, options)">Pricing</v-btn>
                       <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
+                      <v-btn flat  @click="customRouter('/support')">Support</v-btn>
                       <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/register')">14 day free trial</span>
                       <span
                         class="loginbtn"
@@ -67,6 +68,10 @@
                           <li v-if="!isAuthenticated" @click="$vuetify.goTo(targetPricing, options)">
                             <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                             <span>Pricing</span>
+                          </li>
+                          <li @click="customRouter('/support')">
+                            <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                            <span>Support</span>
                           </li>
                           <li v-if="!isAuthenticated" @click="customRouter('/register')">
                             <span class="freetrialbtn">14 day free trial</span>
