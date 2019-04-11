@@ -190,6 +190,9 @@ export default {
         this.$store.commit('checkCookiePolicy');
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
+        if (document.getElementById('fb-root')){
+            document.getElementById('fb-root').style.display = "block";
+        }
     }, 
     mounted(){
         var div = document.createElement('div');
@@ -223,7 +226,7 @@ export default {
         }, 0);
     },
     destroyed(){
-        document.getElementById('fb-root').remove()
+        document.getElementById('fb-root').style.display = "none";
     }
 }
 </script>
