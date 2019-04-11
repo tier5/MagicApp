@@ -64,8 +64,8 @@
                     </li>
                   </span>
                   <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
-                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                    <span>help</span>
+                    <img src="../../assets/images/icon-tutorial.png" alt="icon" class="icon-tutorial">
+                    <span>Tutorial Videos</span>
                   </li>
                   <li @click.prevent="changeRouterState('/support')">
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
@@ -185,8 +185,8 @@
                         <span>payment information</span>
                       </li>
                       <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
-                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
-                        <span>help</span>
+                        <img src="../../assets/images/icon-tutorial.png" alt="icon" class="icon-tutorial">
+                        <span>Tutorial Videos</span>
                       </li>
                       <li @click.prevent="changeRouterState('/support')">
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">

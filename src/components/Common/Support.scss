@@ -122,7 +122,7 @@ margin-left: 40px;
 }
 
 div#root {
-    position: fixed;
+    position: relative;
     width: 100%;
     height: 100%;
 }
@@ -135,11 +135,14 @@ div#root > iframe {
     border: none;
 }
 
-p#root {
+#root p {
     margin-top: 10px;
     text-align: center;
     font-size: 16px;
     letter-spacing: 0.5px;
+}
+.row_wrap_class_iframe {
+    min-height: 1270px
 }
 
 @media screen and (max-width: 1405px) {

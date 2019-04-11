@@ -34,7 +34,8 @@
                         @click="signOut()"
                         v-if="isAuthenticated"
                       >
-                        <img src="../../assets/images/icon-logout.png" alt="user-icon"> Logout
+                        Logout
+                        <!-- <img src="../../assets/images/icon-logout.png" alt="user-icon"> Logout -->
                       </span>
                     </v-toolbar-items>
                   </v-toolbar>
@@ -97,7 +98,7 @@
                 </v-navigation-drawer>
               </v-layout>
              
-              <v-layout row wrap>
+              <v-layout row wrap class="row_wrap_class_iframe">
                 <v-flex md12>
                         <div id="root">
                             <iframe src="https://magiczap.nolt.io/" class="iframe-div"></iframe>
