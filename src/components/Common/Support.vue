@@ -190,38 +190,47 @@ export default {
         this.$store.commit('checkCookiePolicy');
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
+    }, 
+    mounted(){
+        var div = document.createElement('div');
+        div.className = 'fb-customerchat';
+        div.setAttribute('page_id', '205868603526267');
+        div.setAttribute('ref', 'b64:V2VsY29tZSBtZXNzYWdl');
+        document.body.appendChild(div);
+        window.fbMessengerPlugins = window.fbMessengerPlugins || {
+        init: function () {
+            FB.init({
+            appId            : '1678638095724206',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v3.0'
+            });
+        }, callable: []
+        };
+        window.fbAsyncInit = window.fbAsyncInit || function () {
+        window.fbMessengerPlugins.callable.forEach(function (item) { item(); });
+        window.fbMessengerPlugins.init();
+        };
+        setTimeout(function () {
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        }, 0);
+    },
+    destroyed(){
+        let nodes = document.getElementsByClassName('fb-customerchat');
+        if (nodes.length){
+            for(let i = 0; i < nodes.length; i ++){
+                nodes[i].remove()
+            }
+        }
     }
 }
-
-var div = document.createElement('div');
-    div.className = 'fb-customerchat';
-    div.setAttribute('page_id', '205868603526267');
-    div.setAttribute('ref', 'b64:V2VsY29tZSBtZXNzYWdl');
-    document.body.appendChild(div);
-    window.fbMessengerPlugins = window.fbMessengerPlugins || {
-    init: function () {
-        FB.init({
-        appId            : '1678638095724206',
-        autoLogAppEvents : true,
-        xfbml            : true,
-        version          : 'v3.0'
-        });
-    }, callable: []
-    };
-    window.fbAsyncInit = window.fbAsyncInit || function () {
-    window.fbMessengerPlugins.callable.forEach(function (item) { item(); });
-    window.fbMessengerPlugins.init();
-    };
-    setTimeout(function () {
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) { return; }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-    }, 0);
 </script>
 
 <style>

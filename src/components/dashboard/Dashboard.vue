@@ -67,6 +67,10 @@
                     <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                     <span>help</span>
                   </li>
+                  <li @click.prevent="changeRouterState('/support')">
+                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                    <span>support</span>
+                  </li>
                 </ul>
               </v-card-text>
               <v-card-text class="create-new-zap" @click.prevent="changeRouterState('/magic/zaps/new')">
@@ -183,6 +187,10 @@
                       <li @click.prevent="changeRouterState('/magic/training')" :class="{'active' : this.$route.path == '/magic/training'}">
                         <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
                         <span>help</span>
+                      </li>
+                      <li @click.prevent="changeRouterState('/support')">
+                        <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                        <span>Support</span>
                       </li>
                       <span v-if="this.user.isAdmin">
                         <li @click.prevent="changeRouterState('/magic/users')" :class="{'active' : this.$route.path == '/magic/users'}">
