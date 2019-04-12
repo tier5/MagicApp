@@ -253,12 +253,18 @@
           <v-card>
             <v-card-text class="px-0">
               <v-layout row wrap>
-                <v-flex sm6 xs12>
+                <v-flex sm7 xs12>
                   <v-card-text class="search-bar" v-if="this.$route.path == '/magic'">
                     <v-text-field placeholder="Search your zaps"  v-model="search" :change="changeSearchZap()"></v-text-field>
                   </v-card-text>
                 </v-flex>
-                <v-flex sm6 xs12 hidden-xs-only>
+                <v-flex sm2 xs12 hidden-xs-only>
+                  <v-card-text class="how-it-works text-xs-right" @click.prevent="changeRouterState('/support')">
+                    <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                    <span class="hidden-sm-only">Support</span>
+                  </v-card-text>
+                </v-flex>
+                <v-flex sm2 xs12 hidden-xs-only>
                   <v-card-text class="how-it-works text-xs-right" @click.prevent="changeRouterState('/magic/training')">
                     <img src="../../assets/images/icon-video.png" alt="icon" class="icon-video">
                     <span class="hidden-sm-only">how it works</span>
