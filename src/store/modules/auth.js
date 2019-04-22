@@ -102,8 +102,9 @@ const actions = {
         (res) => {
           commit('changeLoading',false);
           if(res.body.status) {
-            // console.log(res.body.response);
             commit('userSignIn',res.body);
+            
+            commit("fireFacebookPixel", "STARTER");
             router.push('/magic');
           } else {
           }

@@ -61,7 +61,7 @@
               <div class="currentplan" v-if="this.currentPlan == 'STANDARD'">
                 <span>Your current plan</span>
               </div>
-              <v-btn class="submit-btn" v-if="this.currentPlan !== 'STANDARD' && this.currentPrice < 47" @click.prevent="updateMembership('STANDARD')">
+              <v-btn class="submit-btn" v-if="this.currentPlan !== 'STANDARD' && this.currentPrice < 47" @click.prevent="updateMembership('STANDARD', true)">
                 <span>Upgrade</span>
               </v-btn>
             </v-card-text>
@@ -91,7 +91,7 @@
               <div class="currentplan" v-if="this.currentPlan == 'PROFESSIONAL'">
                 <span>Your current plan</span>
               </div>
-              <v-btn class="submit-btn" v-if="this.currentPlan !== 'PROFESSIONAL' && this.currentPrice < 97" @click.prevent="updateMembership('PROFESSIONAL')">
+              <v-btn class="submit-btn" v-if="this.currentPlan !== 'PROFESSIONAL' && this.currentPrice < 97" @click.prevent="updateMembership('PROFESSIONAL', true)">
                 <span>Upgrade</span>
               </v-btn>
             </v-card-text>
@@ -155,12 +155,12 @@
       changeRouterState(path){
         router.push(path)
       },
-      updateMembership(plan){
+      updateMembership(plan, isUpgrade=false){
         if (this.user.isHookedUser){
           this.$store.commit('changeSelectedPlanForHookedUser', plan);
           this.$store.commit('changeIsAddNewCardOpen', true);
         } else {
-          this.$store.dispatch('updateSubscription', {plan : plan});
+          this.$store.dispatch('updateSubscription', {plan : plan , isUpgrade});
         }
         
       }

@@ -369,6 +369,8 @@ export default {
       this.$store.dispatch('getZap',this.user);
 
     })
+
+    fbq('track', 'PageView');
   }
 };
 </script>

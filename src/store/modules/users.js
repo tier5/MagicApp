@@ -36,6 +36,28 @@ const mutations = {
       setTimeout(()=>{
         state.showCardRedirect = false
       }, 10000)
+    },
+    fireFacebookPixel:(state, payload)=>{
+      if (payload == 'STANDARD'){
+        fbq('track', 'Purchase', {
+          value: 47.00,
+          currency: 'USD',
+          });
+      }
+
+      if (payload == 'STARTER'){
+        fbq('track', 'Purchase', {
+          value: 27.00,
+          currency: 'USD',
+          });
+      }
+
+      if (payload == 'PROFESSIONAL'){
+        fbq('track', 'Purchase', {
+          value: 97.00,
+          currency: 'USD',
+          });
+      }
     }
 
   }
@@ -94,6 +116,11 @@ const mutations = {
                 commit('changeIsAddNewCardOpen', false);
                 dispatch('getUserCurrentSubscribtion');
                 commit('userSignIn',res.body);
+                
+                if(payload.isUpgrade){
+                  console.log(payload);
+                  commit("fireFacebookPixel", payload.plan);
+                }
                 
               }
             },
