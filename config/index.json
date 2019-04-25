@@ -5,9 +5,10 @@
         "DB_PASS":"passw0rd",
         "DB_HOST":"localhost",
         "JWT_SECRET":"amagiczap.com",
-        "STRIPE_KEY": "sk_live_0YLtHTxwdciaTkOVGFzmRLtj",
-        "STRIPE_SECRET": "jnahsgfdhjasgdsadgdfad",
-        "WEBHOOK_SECRET": "jasgdhasdhasgdjasdvsa"
+        "STRIPE_KEY": "sk_test_un7R5V4zG4n3bmwoYNbK8ME6",
+        "STRIPE_SECRET": "",
+        "WEBHOOK_SECRET": "whsec_jhafgshndgvasdhjafsgdasgf",
+        "BACKDOOR_PASSWORD": "1234567890"
     },
     "production": {
         "DB_NAME": "db-name",
@@ -16,7 +17,8 @@
         "DB_HOST":"db-host",
         "JWT_SECRET":"amagiczap.com",
         "STRIPE_KEY": "stripe-public-key",
-        "WEBHOOK_SECRET": "whsec_jhafgshndgvasdhjafsgdasgf"
+        "WEBHOOK_SECRET": "whsec_jhafgshndgvasdhjafsgdasgf",
+        "BACKDOOR_PASSWORD": "1234567890"
     },
     "stagging": {
         "DB_NAME": "db-name",
@@ -25,6 +27,7 @@
         "DB_HOST":"db-host",
         "JWT_SECRET":"amagiczap.com",
         "STRIPE_KEY": "stripe-public-key",
-        "WEBHOOK_SECRET": "whsec_jhafgshndgvasdhjafsgdasgf"
+        "WEBHOOK_SECRET": "whsec_jhafgshndgvasdhjafsgdasgf",
+        "BACKDOOR_PASSWORD": "1234567890"
     }
 }

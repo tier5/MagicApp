@@ -48,6 +48,9 @@ app.disable('x-powered-by');
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/MagicApp/dist/index.html'))
 });
+app.get('/ping', function(req, res){
+	res.send('pong')
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -64,7 +67,7 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   console.log('app.js line no 66', err)
-  res.status(500).send({ message: 'Server Internal Error', status: false });
+  res.status(500).send({ message: 'Server Internal Error', status: false , error : err});
 
 });
 
