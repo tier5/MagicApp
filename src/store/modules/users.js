@@ -118,7 +118,6 @@ const mutations = {
                 commit('userSignIn',res.body);
                 
                 if(payload.isUpgrade){
-                  console.log(payload);
                   commit("fireFacebookPixel", payload.plan);
                 }
                 
