@@ -8,7 +8,7 @@
 export default {
 	data () {
 		return {
-				postUrl: 'https://amagiczap.com/api/script-data',
+				postUrl: 'https://stage.amagiczap.com/api/script-data',
 				hostname:''
 		}
 	},
@@ -19,7 +19,6 @@ export default {
 		this.$http.get(this.postUrl+'/'+ zapId).then(res=> {
 				let attributes = res.body.attributes; 
 				let trueIdsandValue =[]; // {id : name , value :'test'}
-				let params = this.getAllParams();
 				let cookie_url = this.$cookie.get('cache_url');
 				let elementOption = res.body.elementOption;
 				if(!elementOption){
@@ -27,6 +26,7 @@ export default {
 				}; 
 				
 				let cookieOption = res.body.cookieOption || false;
+				let params = cookieOption ? this.getAllParams(cookie_url) : this.getAllParams();
 				if (cookieOption && cookie_url && !window.location.search) {
 					
 					if (!window.location.search && cookie_url) {
@@ -84,14 +84,19 @@ export default {
 			this.hostname = location.hostname;
 			var queryParams = window.location.href.split('?')[1];
 			var requestLocation  = location.protocol + '//' + location.host + location.pathname;
-			var requestObj = {
+			//modified here
+			/*var requestObj = {
 				location : requestLocation,
 				params: this.getAllParams(),
 				zapId : zapId
-			}
+			}*/
+			var requestObj = {
+                                location : requestLocation,
+                                params: {},
+                                zapId : zapId
+                        }
 			this.$http.get('https://icanhazip.com').then((response)=>{
 				let ip = response.body.trim();
-				requestObj.params.clientId = ip;
 				this.$http.get(this.postUrl+'/'+ zapId).then(res => {
 					
 					let url = this.$cookie.get('cache_url');
@@ -110,11 +115,15 @@ export default {
 						minutes: minutes,
 					};
 					
-					
+					console.log("cookie option and magicOption before if :: ", cookieOption+'   '+magicOption);
 
-					if(window.location.search) {
+					if(!cookieOption && window.location.search) {
 						// cached url
 						this.addUrlToCookie();
+						//modified here
+						let cacheParams = this.getAllParams();
+						requestObj.params = cacheParams;
+						requestObj.params.clientId = ip;
 						// Append the url if magicOption turn on
 						magicOption && this.appendUrlsToAllLinksInTheDom(queryParams);
 						this.timeoutCheck({timeoutOption,timeout})
@@ -125,9 +134,7 @@ export default {
 								}
 							});
 					} else {
-
 						// if the cookieOption is ON
-						
 						if (cookieOption && url) {
 							// take cached url from cookie
 							let cacheParams = this.getAllParams(url);
@@ -138,6 +145,7 @@ export default {
 							
 							magicOption && this.appendUrlsToAllLinksInTheDom(cachedQueryParams);
 							this.timeoutCheck({timeoutOption,timeout}).then(allowed => {
+								console.log("here with allowed.isSendDataToZapier :: ", allowed.isSendDataToZapier);
 								if(allowed.isSendDataToZapier) {
 									
 									this.sendDataToApi(this.postUrl, requestObj);
