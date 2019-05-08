@@ -7,7 +7,7 @@
 export default {
 	data () {
 		return {
-			postUrl: 'https://stage.amagiczap.com/api/script-data',
+			postUrl: 'https://amagiczap.com/api/script-data',
 			hostname: ''
 		}
 	},
