@@ -48,7 +48,7 @@ var {resetZapsOptionsValue}                 = require('./zapController');
  async function createNewHookedUser(req,res){
     try {
         let email = req.body.email;
-        let plan  = req.body.plan ? req.body.plan.trim().toUpperCase() : 'PROFESSIONAL';
+        let plan  = req.body.plan ? req.body.plan.trim().toUpperCase() : 'STARTER';
 
         let affiliateId = req.body.aid || null;
         let name = req.body.name ? req.body.name.trim() : 'Hello'
