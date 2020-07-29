@@ -1,5 +1,5 @@
 <template>
-    <div>
+  <div>
     <v-container fluid>
       <v-layout row wrap>
         <v-flex md12>
@@ -17,23 +17,19 @@
                   <v-toolbar>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                      <v-btn flat v-if="!isAuthenticated" @click="customRouter('/#feature')">Features</v-btn>
-                      <v-btn flat v-if="!isAuthenticated" @click="customRouter('/#pricing')">Pricing</v-btn>
-                      <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard</v-btn>
-                      <v-btn flat  @click="customRouter('/support')">Support</v-btn>
-                      <span class="freetrialbtn"  v-if="!isAuthenticated" @click="customRouter('/register')">14 day free trial</span>
-                      <span
-                        class="loginbtn"
-                        @click="openLoginModel()"
-                        v-if="!isAuthenticated"
-                      >
+                      <v-btn flat v-if="!isAuthenticated" @click="customRouter('/#feature')">
+                        Features</v-btn>
+                      <v-btn flat v-if="!isAuthenticated" @click="customRouter('/#pricing')">Pricing
+                      </v-btn>
+                      <v-btn flat v-if="isAuthenticated" @click="customRouter('/magic')">Dashboard
+                      </v-btn>
+                      <v-btn flat @click="customRouter('/support')">Support</v-btn>
+                      <span class="freetrialbtn" v-if="!isAuthenticated"
+                        @click="customRouter('/register')">14 day free trial</span>
+                      <span class="loginbtn" @click="openLoginModel()" v-if="!isAuthenticated">
                         <img src="../../assets/images/user-icon-white.png" alt="user-icon"> Login
                       </span>
-                      <span
-                        class="loginbtn"
-                        @click="signOut()"
-                        v-if="isAuthenticated"
-                      >
+                      <span class="loginbtn" @click="signOut()" v-if="isAuthenticated">
                         Logout
                         <!-- <img src="../../assets/images/icon-logout.png" alt="user-icon"> Logout -->
                       </span>
@@ -69,7 +65,8 @@
                             <span>Features</span>
                           </li>
                           <li v-if="!isAuthenticated" @click="customRouter('/#pricing')">
-                            <img src="../../assets/images/icon-help.png" alt="icon" class="icon-help">
+                            <img src="../../assets/images/icon-help.png" alt="icon"
+                              class="icon-help">
                             <span>Pricing</span>
                           </li>
                           <li v-if="!isAuthenticated" @click="customRouter('/register')">
@@ -77,17 +74,19 @@
                           </li>
                           <li v-if="!isAuthenticated">
                             <span class="loginbtn" @click="openLoginModel()">
-                              <img src="../../assets/images/user-icon-white.png" alt="user-icon"> Login
+                              <img src="../../assets/images/user-icon-white.png" alt="user-icon">
+                              Login
                             </span>
                           </li>
                           <li v-if="isAuthenticated">
                             <span class="loginbtn" @click="customRouter('/magic')">
-                              <img src="../../assets/images/user-icon-white.png" alt="user-icon"> Dashboard
+                              <img src="../../assets/images/user-icon-white.png" alt="user-icon">
+                              Dashboard
                             </span>
                           </li>
                           <li v-if="isAuthenticated">
                             <span @click="signOut()" v-if="isAuthenticated">
-                              <img src="../../assets/images/icon-logout.png" alt="user-icon"> 
+                              <img src="../../assets/images/icon-logout.png" alt="user-icon">
                               <span>Logout</span>
                             </span>
                           </li>
@@ -97,17 +96,62 @@
                   </v-card>
                 </v-navigation-drawer>
               </v-layout>
-             
+
               <v-layout row wrap class="row_wrap_class_iframe">
                 <v-flex md12>
-                        <div id="root">
-                            <iframe src="https://magiczap.nolt.io/" class="iframe-div"></iframe>
-                            <div>
-                            <p>
-                                For any product related support please click on the messenger button showing on the right bottom corner of this page and connect with us.
-                            </p>
-                            </div>
+                  <div id="root">
+                    <div>
+                      <div class="pt-2 mb-0 d-flex">
+                        <div class="base-avatar d-inline-flex mb-3">
+                          <!---->
+                          <div class="v-avatar base-avatar__avatar transparent"
+                            style="height: 72px; min-width: 72px; width: 72px;"><i
+                              aria-hidden="true"
+                              class="v-icon notranslate mdi mdi-email theme--light"
+                              style="font-size: 36px;"></i></div>
                         </div>
+                        <div>
+                          <h3
+                            class="text-uppercase text-subtitle-1 font-weight-bold mb-3 text-left">
+                          </h3>
+                          <p class="base-body text-body-1 mx-auto grey--text text--darken-1 text-left mb-0"
+                            style="max-width: 700px;">
+                            <div><h3>EMAIL US AT:  hello@tier5.us</h3></div>
+                          </p>
+                        </div>
+                      </div>
+                      <hr role="separator" aria-orientation="horizontal" class="my-2 v-divider theme--light">
+                      <div class="pt-2 mb-0 d-flex">
+                        <div class="base-avatar d-inline-flex mb-3">
+                          <!---->
+                          <div class="v-avatar base-avatar__avatar transparent"
+                            style="height: 72px; min-width: 72px; width: 72px;"><i
+                              aria-hidden="true"
+                              class="v-icon notranslate mdi mdi-cellphone theme--light"
+                              style="font-size: 36px;"></i></div>
+                        </div>
+                        <div>
+                          <h3
+                            class="text-uppercase text-subtitle-1 font-weight-bold mb-3 text-left">
+                          </h3>
+                          <p class="base-body text-body-1 mx-auto grey--text text--darken-1 text-left mb-0"
+                            style="max-width: 700px;">
+                            <div><h3>CALL US AT: +1 812 722 4722</h3></div>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <p>
+                        IF YOU WANT TO LOG ANY FEEDBACK OR WANT TO LOG ANY FEATURE REQUEST CLICK ON
+                        THIS BUTTON
+                      </p>
+                      <p>
+                        <a data-nolt="button" href="https://magiczap.nolt.io">Request a feature</a>
+                      </p>
+                      <p>IF YOU WANT TO SPEAK WITH OUR SUPPORT ENGINEER PLEASE CLICK ON THE MESSENGER ICON.</p>
+                    </div>
+                  </div>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -117,7 +161,8 @@
               <v-flex md12>
                 <v-card-text class='text-xs-center'>
                   <div class="footer-top">
-                    <v-btn class="free-trial-btn" @click="customRouter('/register')">Start 14 Days FREE Trial</v-btn>
+                    <v-btn class="free-trial-btn" @click="customRouter('/register')">Start 14 Days
+                      FREE Trial</v-btn>
                     <img src="../../assets/images/footer-logo.png" alt="footer-logo">
                   </div>
                   <div class="footer-bottom">
@@ -129,111 +174,128 @@
             </v-layout>
             <v-flex md12 xs12 class="acceptanceTxt">
               <div class="container">
-                <p>By creating your account to use Magiczap, you are agreeing to our <a @click.prevent="customRouter('/terms-and-conditions')">Terms of Service</a> and <a @click.prevent="customRouter('/privacy-policy')">Privacy Policy</a></p>
+                <p>By creating your account to use Magiczap, you are agreeing to our <a
+                    @click.prevent="customRouter('/terms-and-conditions')">Terms of Service</a> and
+                  <a @click.prevent="customRouter('/privacy-policy')">Privacy Policy</a></p>
               </div>
             </v-flex>
           </v-card>
         </v-flex>
       </v-layout>
     </v-container>
-     <!-- Child Components Modals -->
-        <Login></Login>
-        <ForgetPassword />
+    <!-- Child Components Modals -->
+    <Login></Login>
+    <ForgetPassword />
     <!-- End of Child Components -->
   </div>
 </template>
 
+
 <script>
-import { mapGetters } from "vuex";
-import Login from "../../components/Auth/Login/Login.vue";
-import ForgetPassword from "../../components/Auth/ForgetPassword/ForgetPassword.vue";
-export default {
-    data(){
-        return {
-            drawer: null,
-            mini: false,
-            duration: 300,
-            offset: 0,
-        }
-    },
-     computed: {
-    // mix the getters into computed with object spread operator
-        ...mapGetters([
-        "isLoginModalOpen",
-        "isAuthenticated"
-        ]),
-        options () {
-            return {
-                duration: this.duration,
-                offset: this.offset,
-                easing: this.easing
-            }
-        },
+  import { mapGetters } from "vuex";
+  import Login from "../../components/Auth/Login/Login.vue";
+  import ForgetPassword from "../../components/Auth/ForgetPassword/ForgetPassword.vue";
+  // Vue.use(LoadScript);
+  export default {
     
+    data() {
+      
+      return {
+        drawer: null,
+        mini: false,
+        duration: 300,
+        offset: 0
+      };
+    },
+    computed: {
+      // mix the getters into computed with object spread operator
+      ...mapGetters(["isLoginModalOpen", "isAuthenticated"]),
+      options() {
+        return {
+          duration: this.duration,
+          offset: this.offset,
+          easing: this.easing,
+          noltBtn: renderNoltBtn()
+        };
+      }
     },
     components: {
-        Login,
-        ForgetPassword
+      Login,
+      ForgetPassword
     },
     methods: {
-        openLoginModel() {
-            this.$store.commit("changeIsLoginModalOpen", true);
-        },
-        signOut(){
-            this.$store.commit('userSignOut');
-        },
-        customRouter(path){
-            this.$store.commit('changeRoute', path);
-        }
+      openLoginModel() {
+        this.$store.commit("changeIsLoginModalOpen", true);
+      },
+      signOut() {
+        this.$store.commit("userSignOut");
+      },
+      customRouter(path) {
+        this.$store.commit("changeRoute", path);
+      }
     },
-    created(){
-        //this.$store.commit('checkUserAuthentication');
-        this.$store.commit('checkCookiePolicy');
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-        if (document.getElementById('fb-root')){
-            document.getElementById('fb-root').style.display = "block";
-        }
-    }, 
-    mounted(){
-        var div = document.createElement('div');
-        div.className = 'fb-customerchat';
-        div.setAttribute('page_id', '205868603526267');
-        div.setAttribute('ref', 'b64:V2VsY29tZSBtZXNzYWdl');
-        document.body.appendChild(div);
-        window.fbMessengerPlugins = window.fbMessengerPlugins || {
+    created() {
+      //this.$store.commit('checkUserAuthentication');
+      this.$store.commit("checkCookiePolicy");
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      if (document.getElementById("fb-root")) {
+        document.getElementById("fb-root").style.display = "block";
+      }
+    },
+    mounted() {
+      let nolt = document.createElement('script');
+      nolt.setAttribute('src', 'https://cdn.nolt.io/widgets.js');
+      document.head.appendChild(nolt);
+
+      var div = document.createElement("div");
+      div.className = "fb-customerchat";
+      div.setAttribute("page_id", "205868603526267");
+      div.setAttribute("ref", "b64:V2VsY29tZSBtZXNzYWdl");
+      document.body.appendChild(div);
+      window.fbMessengerPlugins = window.fbMessengerPlugins || {
         init: function () {
-            FB.init({
-            appId            : '1678638095724206',
-            autoLogAppEvents : true,
-            xfbml            : true,
-            version          : 'v3.0'
-            });
-        }, callable: []
+          FB.init({
+            appId: "1678638095724206",
+            autoLogAppEvents: true,
+            xfbml: true,
+            version: "v3.0"
+          });
+        },
+        callable: []
+      };
+      window.fbAsyncInit =
+        window.fbAsyncInit ||
+        function () {
+          window.fbMessengerPlugins.callable.forEach(function (item) {
+            item();
+          });
+          window.fbMessengerPlugins.init();
         };
-        window.fbAsyncInit = window.fbAsyncInit || function () {
-        window.fbMessengerPlugins.callable.forEach(function (item) { item(); });
-        window.fbMessengerPlugins.init();
-        };
-        setTimeout(function () {
+      setTimeout(function () {
         (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-        }, 0);
+          var js,
+            fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {
+            return;
+          }
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        })(document, "script", "facebook-jssdk");
+      }, 0);
     },
-    destroyed(){
-        document.getElementById('fb-root').style.display = "none";
+    destroyed() {
+      document.getElementById("fb-root").style.display = "none";
     }
-}
+  };
+
 </script>
 
 <style>
- @import '../../styles/common.scss';
- @import '../../views/Home/Home.scss';
- @import './Support.scss';
+  @import "../../styles/common.scss";
+  @import "../../views/Home/Home.scss";
+  @import "./Support.scss";
+
 </style>
